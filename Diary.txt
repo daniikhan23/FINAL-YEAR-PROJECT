@@ -1,0 +1,18 @@
+Week 1:
+Research generally on AI and Constraint Satisfaction
+
+Week 2:
+Research on Idea of the project
+Start of Project Plan
+Start of Abstract writing general AI definitions, algorithms and learning types
+
+Week 3:
+Decided project idea to be based on Checkers
+More research on Constraint Satisfaction and some of its techniques
+Research on algorithms that would be involed in implementation:
+    Minimax
+    Alpha-beta pruning
+    Heuristic Evaluation
+Research on Checkers and its rules
+Finalised Project Plan and decided timelines of development
+
