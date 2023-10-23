@@ -77,3 +77,18 @@ button:hover {
   -moz-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
 }
+
+
+.main .board-container {
+  margin: 10rem 50rem;
+}
+
+.main .board-container .row {
+  display: flex;
+  justify-content: center;
+}
+
+.main .board-container .row .col {
+  border: 2px solid black;
+  padding: 3rem;
+}
