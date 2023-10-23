@@ -16,3 +16,5 @@ Research on algorithms that would be involed in implementation:
 Research on Checkers and its rules
 Finalised Project Plan and decided timelines of development
 
+Week 4:
+Added boilerplate HTML/CSS/JS code
