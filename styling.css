@@ -83,12 +83,12 @@ button:hover {
   margin: 10rem 50rem;
 }
 
-.main .board-container .row {
+.main .board-container .row{
   display: flex;
   justify-content: center;
 }
 
-.main .board-container .row .col {
+.main .board-container .col {
   border: 2px solid black;
   padding: 3rem;
 }
