@@ -92,3 +92,15 @@ button:hover {
   border: 2px solid black;
   padding: 3rem;
 }
+
+/*Light brown squares*/
+.board-container .row:nth-child(odd) .col:nth-child(odd),
+.board-container .row:nth-child(even) .col:nth-child(even) {
+  background-color: #f0d9b5;
+}
+
+/*Dark brown squares */
+.board-container .row:nth-child(odd) .col:nth-child(even),
+.board-container .row:nth-child(even) .col:nth-child(odd) {
+  background-color: #b58863;
+}
