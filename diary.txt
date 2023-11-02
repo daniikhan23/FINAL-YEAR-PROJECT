@@ -32,3 +32,12 @@ is doable but will lead to complications down the line.
 
 Restructured file system and converted existing JS code to TypeScript
 
+Changed the TypeScript code completely to make use of classes for the Board and pieces
+for a more object oriented approach. This will make the game easier to not only
+implement but will scale better to as the codebase becomes larger and more complicated. 
+Styled the board and added images to the pieces. The correct divs not exist to represent 
+the pieces as well as the empty squares on the grid. Next step will be to clean up any
+issues in the code so I can move on to focusing on being able to make moves with the pieces
+and ensuring their validity.
+
+Big updates made to both the ts and css files.
