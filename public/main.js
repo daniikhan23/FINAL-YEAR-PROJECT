@@ -37,10 +37,15 @@ rows.forEach((row, rowIndex) => {
     cols.forEach((col, colIndex) => {
         const piece = checkersBoard.getPiece(rowIndex, colIndex);
         if (piece) {
-            col.textContent = piece.color.charAt(0).toUpperCase();
-        }
-        else {
-            col.textContent = '';
+            if (piece.color === 'black') {
+                col.classList.add('black-piece');
+            }
+            else if (piece.color == 'red') {
+                col.classList.add('red-piece');
+            }
+            else {
+                col.textContent = '';
+            }
         }
     });
 });

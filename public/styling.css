@@ -78,6 +78,7 @@ button:hover {
   transition: all 0.3s ease-in;
 }
 
+/* Main Board Section*/
 
 .main .board-container {
   margin: 10rem 50rem;
@@ -103,4 +104,25 @@ button:hover {
 .board-container .row:nth-child(odd) .col:nth-child(even),
 .board-container .row:nth-child(even) .col:nth-child(odd) {
   background-color: #b58863;
+}
+
+
+/* 
+Images from https://www.iconfinder.com/search?q=checkers
+*/
+
+/* Image for black piece */
+.black-piece {
+  background-image: url('/public/resources/img/blackBase.png'); 
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Image for red piece */
+.red-piece {
+  background-image: url('/public/resources/img/redBase.png'); 
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
