@@ -18,3 +18,17 @@ Finalised Project Plan and decided timelines of development
 
 Week 4:
 Added boilerplate HTML/CSS/JS code
+
+Week 5:
+Implementing a checkers board using an array in javascript
+Adding relevant HTMl and CSS as well as using DOM Manipulation to correctly
+display the board
+
+Week 6:
+Researched and learned TypeScript to have a more object oriented approach 
+to the development of the game.
+Simply using an array to store the state of the board and continue development
+is doable but will lead to complications down the line.
+
+Restructured file system and converted existing JS code to TypeScript
+
