@@ -58,14 +58,20 @@ rows.forEach((row, rowIndex) => {
         const piece: CheckersPiece | null = checkersBoard.getPiece(rowIndex, colIndex);
         if (piece) {
             if (piece.color === 'black') {
-                col.classList.add('black-piece');
+                const blackPiece = document.createElement('div');
+                blackPiece.classList.add('black-piece');
+                col.appendChild(blackPiece);
             }
             else if (piece.color == 'red') {
-                col.classList.add('red-piece');
+                const redPiece = document.createElement('div');
+                redPiece.classList.add('red-piece');
+                col.appendChild(redPiece);
             }
-            else {
-                col.textContent = '';
-            }
+        }
+        else {
+            const emptySquare = document.createElement('div');
+            emptySquare.classList.add('empty-square'); // Apply the empty-square class
+            col.appendChild(emptySquare);
         }
     });
 });

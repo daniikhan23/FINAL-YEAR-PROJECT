@@ -91,7 +91,6 @@ button:hover {
 
 .main .board-container .col {
   border: 2px solid black;
-  padding: 3rem;
 }
 
 /*Light brown squares*/
@@ -112,17 +111,29 @@ Images from https://www.iconfinder.com/search?q=checkers
 */
 
 /* Image for black piece */
-.black-piece {
+.main .board-container .col .black-piece {
   background-image: url('/public/resources/img/blackBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
+  border-radius: 50%; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 5rem;
+  width: 5rem;
 }
 
 /* Image for red piece */
-.red-piece {
+.main .board-container .col .red-piece {
   background-image: url('/public/resources/img/redBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 5rem;
+  width: 5rem;
+}
+
+.main .board-container .col .empty-square {
+  padding: 2.6rem;
 }
