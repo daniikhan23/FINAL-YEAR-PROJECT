@@ -30,4 +30,23 @@ class CheckersBoard {
         return this.board[row][col];
     }
 }
+const checkersBoard = new CheckersBoard();
+const rows = document.querySelectorAll('.board-container .row');
+rows.forEach((row, rowIndex) => {
+    const cols = row.querySelectorAll('.col');
+    cols.forEach((col, colIndex) => {
+        const piece = checkersBoard.getPiece(rowIndex, colIndex);
+        if (piece) {
+            col.textContent = piece.color.charAt(0).toUpperCase();
+        }
+        else {
+            col.textContent = '';
+        }
+    });
+});
+console.log(checkersBoard.getPiece(0, 1));
+console.log(checkersBoard.getPiece(0, 2));
+console.log(checkersBoard.getPiece(0, 3));
+console.log(checkersBoard.getPiece(0, 4));
+;
 //# sourceMappingURL=main.js.map
