@@ -11,3 +11,38 @@ class CheckersPiece {
         this.isKing = isKing;
     }
 }
+
+
+// Class representing the Checkers board
+class CheckersBoard {
+    private board: (CheckersPiece | null)[][] = [];
+
+    constructor(){
+        this.initializeBoard();
+    }
+
+    // start of game board method
+    private initializeBoard(): void {
+        for (let row = 0; row < 8; row++) {
+            this.board[row] = [];
+            for (let col = 0; col < 8; col++) {
+                if (row < 3 && (row + col) % 2 === 1) {
+                    this.board[row][col] = new CheckersPiece('black');
+                }
+                else if (row > 4 && (row + col) % 2 === 1) {
+                    this.board[row][col] = new CheckersPiece('red');
+                }
+                else {
+                    this.board[row][col] = null;
+                }
+            }
+        }
+    }
+
+    // get exact position of a checkers piece, in the absence of one
+    // return null, this is to ensure each piece is starting in its correct 
+    // place
+    public getPiece(row: number, col: number): CheckersPiece | null {
+        return this.board[row][col];
+    }
+}
