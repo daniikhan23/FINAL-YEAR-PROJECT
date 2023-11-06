@@ -1,3 +1,28 @@
+/*
+Creating a class for move generation
+*/
+
+class Moves {
+    public startRow: number;
+    public startCol: number;
+    public endRow: number;
+    public endCol: number;
+
+    constructor(startRow: number, startCol: number, endRow: number, endCol: number) {
+        this.startRow = startRow;
+        this.startCol = startCol;
+        this.endRow = endRow;
+        this.endCol = endCol;
+    }
+
+    validMove(board: CheckersBoard): boolean {
+        // if move is valid then return true and let the move proceed
+        // in whatever function that this will be used in.
+        return true; // for now
+    }
+}
+
+
 /* 
 Class representing Checkers Pieces
 Class will have properties of the color of the piece as well as tracking whether or not it is a King piece (when it has reached the opposite end of the board)
@@ -70,7 +95,7 @@ rows.forEach((row, rowIndex) => {
         }
         else {
             const emptySquare = document.createElement('div');
-            emptySquare.classList.add('empty-square'); // Apply the empty-square class
+            emptySquare.classList.add('empty-square');
             col.appendChild(emptySquare);
         }
     });
@@ -78,5 +103,5 @@ rows.forEach((row, rowIndex) => {
 
 console.log(checkersBoard.getPiece(0,1));
 console.log(checkersBoard.getPiece(0,2));
-console.log(checkersBoard.getPiece(0,3))
-console.log(checkersBoard.getPiece(0,4));;
+console.log(checkersBoard.getPiece(0,3));
+console.log(checkersBoard.getPiece(0,4));
