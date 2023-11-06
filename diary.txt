@@ -41,3 +41,8 @@ issues in the code so I can move on to focusing on being able to make moves with
 and ensuring their validity.
 
 Big updates made to both the ts and css files.
+
+Week 7:
+Starting work on move generation for checkers
+Created a new branch called "checkers-moves-gen" to separate implementation of this from the 
+main branch
