@@ -6,9 +6,6 @@ class Moves {
         this.endRow = endRow;
         this.endCol = endCol;
     }
-    validMove(board) {
-        return true;
-    }
 }
 var PieceColor;
 (function (PieceColor) {
@@ -45,6 +42,16 @@ class CheckersBoard {
     }
     getPiece(row, col) {
         return this.board[row][col];
+    }
+    validateMove(startRow, startCol, endRow, endCol) {
+        if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
+            return false;
+        }
+        const destinationPiece = this.getPiece(endRow, endCol);
+        if (destinationPiece !== null) {
+            return false;
+        }
+        return true;
     }
 }
 const checkersBoard = new CheckersBoard();

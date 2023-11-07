@@ -14,12 +14,6 @@ class Moves {
         this.endRow = endRow;
         this.endCol = endCol;
     }
-
-    validMove(board: CheckersBoard): boolean {
-        // if move is valid then return true and let the move proceed
-        // in whatever function that this will be used in.
-        return true; // for now
-    }
 }
 
 enum PieceColor {
@@ -68,11 +62,26 @@ class CheckersBoard {
         }
     }
 
-    // get exact position of a checkers piece, in the absence of one
-    // return null, this is to ensure each piece is starting in its correct 
-    // place
+    // position of piece
     public getPiece(row: number, col: number): CheckersPiece | null {
         return this.board[row][col];
+    }
+
+    // method to see if piece is being placed in the board and if the destination square is empty
+    private validateMove(startRow: number, startCol: number, endRow: number, endCol: number): boolean {
+        // check to see if attempted move will place piece outside board
+        if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
+            return false;
+        }
+
+        const destinationPiece = this.getPiece(endRow, endCol);
+        // there's a piece there already
+        if (destinationPiece !== null) {
+            return false;
+        }
+        return true;
+
+        // will add more conditions over time, need to see if this works at least
     }
 }
 
