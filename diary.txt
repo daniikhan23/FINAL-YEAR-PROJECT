@@ -41,3 +41,15 @@ issues in the code so I can move on to focusing on being able to make moves with
 and ensuring their validity.
 
 Big updates made to both the ts and css files.
+
+Week 7:
+Started work on implementing move functionality. Initially I've just added methods to validate
+the moves being made and generating all possible moves a piece has. These methods have been added
+to the CheckersBoard class. At the moment I am not even sure that these methods will work but will
+continue to build on the program and see how it develops and make changes where they are necessary.
+1 Potential Problem: The way I have manipulated the DOM to show the board and pieces could be an issue.
+When I have implemented move generation, the UI representation of the board is likely to break and lose 
+its symmetry.
+Potential Solution: I will likely have to change the way I have added padding to the individual columns 
+and the 'piece' divs, possibly restructure it entirely, hopefully the solution will be simpler than 
+I am imagining it to be.
