@@ -22,16 +22,19 @@ class Moves {
     }
 }
 
-
+enum PieceColor {
+    Black = 'black',
+    Red = 'red'
+}
 /* 
 Class representing Checkers Pieces
 Class will have properties of the color of the piece as well as tracking whether or not it is a King piece (when it has reached the opposite end of the board)
 */
 class CheckersPiece {
-    public color: string;
+    public color: PieceColor;
     public isKing: boolean;
 
-    constructor(color: string, isKing:boolean = false){
+    constructor(color: PieceColor, isKing:boolean = false){
         this.color = color;
         this.isKing = isKing;
     }
@@ -52,10 +55,10 @@ class CheckersBoard {
             this.board[row] = [];
             for (let col = 0; col < 8; col++) {
                 if (row < 3 && (row + col) % 2 === 1) {
-                    this.board[row][col] = new CheckersPiece('black');
+                    this.board[row][col] = new CheckersPiece(PieceColor.Black);
                 }
                 else if (row > 4 && (row + col) % 2 === 1) {
-                    this.board[row][col] = new CheckersPiece('red');
+                    this.board[row][col] = new CheckersPiece(PieceColor.Red);
                 }
                 else {
                     this.board[row][col] = null;
