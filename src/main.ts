@@ -47,6 +47,7 @@ class CheckersBoard {
 
     constructor(){
         this.initializeBoard();
+        console.log(this.board);
     }
 
     // start of game board method
@@ -80,26 +81,29 @@ class CheckersBoard {
 const checkersBoard = new CheckersBoard();
 const rows = document.querySelectorAll('.board-container .row')!;
 
-rows.forEach((row, rowIndex) => {
-    const cols = row.querySelectorAll('.col')!;
-    cols.forEach((col, colIndex) => {
-        const piece: CheckersPiece | null = checkersBoard.getPiece(rowIndex, colIndex);
-        if (piece) {
-            if (piece.color === PieceColor.Black) {
-                const blackPiece = document.createElement('div');
-                blackPiece.classList.add('black-piece');
-                col.appendChild(blackPiece);
+function startBoard() {
+    rows.forEach((row, rowIndex) => {
+        const cols = row.querySelectorAll('.col')!;
+        cols.forEach((col, colIndex) => {
+            const piece: CheckersPiece | null = checkersBoard.getPiece(rowIndex, colIndex);
+            if (piece) {
+                if (piece.color === PieceColor.Black) {
+                    const blackPiece = document.createElement('div');
+                    blackPiece.classList.add('black-piece');
+                    col.appendChild(blackPiece);
+                }
+                else if (piece.color === PieceColor.Red) {
+                    const redPiece = document.createElement('div');
+                    redPiece.classList.add('red-piece');
+                    col.appendChild(redPiece);
+                }
             }
-            else if (piece.color === PieceColor.Red) {
-                const redPiece = document.createElement('div');
-                redPiece.classList.add('red-piece');
-                col.appendChild(redPiece);
+            else {
+                const emptySquare = document.createElement('div');
+                emptySquare.classList.add('empty-square');
+                col.appendChild(emptySquare);
             }
-        }
-        else {
-            const emptySquare = document.createElement('div');
-            emptySquare.classList.add('empty-square');
-            col.appendChild(emptySquare);
-        }
+        });
     });
-});
+}
+startBoard();
