@@ -85,12 +85,12 @@ rows.forEach((row, rowIndex) => {
     cols.forEach((col, colIndex) => {
         const piece: CheckersPiece | null = checkersBoard.getPiece(rowIndex, colIndex);
         if (piece) {
-            if (piece.color === 'black') {
+            if (piece.color === PieceColor.Black) {
                 const blackPiece = document.createElement('div');
                 blackPiece.classList.add('black-piece');
                 col.appendChild(blackPiece);
             }
-            else if (piece.color == 'red') {
+            else if (piece.color === PieceColor.Red) {
                 const redPiece = document.createElement('div');
                 redPiece.classList.add('red-piece');
                 col.appendChild(redPiece);
@@ -103,8 +103,3 @@ rows.forEach((row, rowIndex) => {
         }
     });
 });
-
-console.log(checkersBoard.getPiece(0,1));
-console.log(checkersBoard.getPiece(0,2));
-console.log(checkersBoard.getPiece(0,3));
-console.log(checkersBoard.getPiece(0,4));
