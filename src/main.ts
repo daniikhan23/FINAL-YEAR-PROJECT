@@ -74,14 +74,43 @@ class CheckersBoard {
             return false;
         }
 
-        const destinationPiece = this.getPiece(endRow, endCol);
+        const destinationSquare = this.getPiece(endRow, endCol);
         // there's a piece there already
-        if (destinationPiece !== null) {
+        if (destinationSquare !== null) {
             return false;
         }
         return true;
 
         // will add more conditions over time, need to see if this works at least
+        // important conditions: capturing enemy pieces, nailing this is crucial
+        // first two arguments for now will remain unused.
+    }
+
+    public possibleMoves(row: number, col: number): Moves[] {
+        const piece = this.getPiece(row, col);
+        const moves: Moves[] = [];
+
+        if (piece !== null) {
+            // black will move by a positive number
+            // red by negative
+            const direction = piece.color === PieceColor.Black ? 1: -1;
+            const startRow = row;
+            const startCol = col;
+
+            const potentialMovesArr = [
+                {endRow: startRow + direction, endCol: startCol - 1},
+                {endRow: startRow + direction, endCol: startCol + 1}
+            ];
+
+            for (const move of potentialMovesArr) {
+                if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
+                    moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                }
+            }
+
+            // need to add potential moves to king pieces - future implementation
+        }
+        return moves;
     }
 }
 

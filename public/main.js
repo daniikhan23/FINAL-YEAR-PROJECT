@@ -47,11 +47,30 @@ class CheckersBoard {
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
             return false;
         }
-        const destinationPiece = this.getPiece(endRow, endCol);
-        if (destinationPiece !== null) {
+        const destinationSquare = this.getPiece(endRow, endCol);
+        if (destinationSquare !== null) {
             return false;
         }
         return true;
+    }
+    possibleMoves(row, col) {
+        const piece = this.getPiece(row, col);
+        const moves = [];
+        if (piece !== null) {
+            const direction = piece.color === PieceColor.Black ? 1 : -1;
+            const startRow = row;
+            const startCol = col;
+            const potentialMovesArr = [
+                { endRow: startRow + direction, endCol: startCol - 1 },
+                { endRow: startRow + direction, endCol: startCol + 1 }
+            ];
+            for (const move of potentialMovesArr) {
+                if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
+                    moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                }
+            }
+        }
+        return moves;
     }
 }
 const checkersBoard = new CheckersBoard();
