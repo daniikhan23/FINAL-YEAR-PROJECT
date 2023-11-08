@@ -112,6 +112,17 @@ class CheckersBoard {
         }
         return moves;
     }
+
+    public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
+        const piece = this.getPiece(startRow, startCol);
+        if (piece !== null) {
+            this.board[startRow][startCol] = null;
+            this.board[endRow][endCol] = piece;
+
+            // need to account for a piece capture and king pieces
+        }
+    }
+
 }
 
 // DOM Manipulation to show the board on the webpage

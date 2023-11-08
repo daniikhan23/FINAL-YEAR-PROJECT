@@ -72,6 +72,13 @@ class CheckersBoard {
         }
         return moves;
     }
+    movePiece(startRow, startCol, endRow, endCol) {
+        const piece = this.getPiece(startRow, startCol);
+        if (piece !== null) {
+            this.board[startRow][startCol] = null;
+            this.board[endRow][endCol] = piece;
+        }
+    }
 }
 const checkersBoard = new CheckersBoard();
 const rows = document.querySelectorAll('.board-container .row');
