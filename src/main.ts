@@ -1,6 +1,3 @@
-/*
-Creating a class for move generation
-*/
 
 class Moves {
     public startRow: number;
@@ -20,10 +17,7 @@ enum PieceColor {
     Black = 'black',
     Red = 'red'
 }
-/* 
-Class representing Checkers Pieces
-Class will have properties of the color of the piece as well as tracking whether or not it is a King piece (when it has reached the opposite end of the board)
-*/
+
 class CheckersPiece {
     public color: PieceColor;
     public isKing: boolean;
@@ -35,7 +29,6 @@ class CheckersPiece {
 }
 
 
-// Class representing the Checkers board
 class CheckersBoard {
     private board: (CheckersPiece | null)[][] = [];
 
@@ -44,7 +37,6 @@ class CheckersBoard {
         console.log(this.board);
     }
 
-    // start of game board method
     private initializeBoard(): void {
         for (let row = 0; row < 8; row++) {
             this.board[row] = [];
@@ -62,12 +54,10 @@ class CheckersBoard {
         }
     }
 
-    // position of piece
     public getPiece(row: number, col: number): CheckersPiece | null {
         return this.board[row][col];
     }
 
-    // method to see if piece is being placed in the board and if the destination square is empty
     private validateMove(startRow: number, startCol: number, endRow: number, endCol: number): boolean {
         // check to see if attempted move will place piece outside board
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
@@ -80,10 +70,6 @@ class CheckersBoard {
             return false;
         }
         return true;
-
-        // will add more conditions over time, need to see if this works at least
-        // important conditions: capturing enemy pieces, nailing this is crucial
-        // first two arguments for now will remain unused.
     }
 
     public possibleMoves(row: number, col: number): Moves[] {
@@ -126,7 +112,6 @@ class CheckersBoard {
         }
     }
 
-    // method to check if a piece can be captured
     private canCapture(startRow:number, startCol:number, endRow:number, endCol: number): boolean {
         if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
             const middleRow = (startRow + endRow) / 2;
@@ -149,8 +134,9 @@ class CheckersBoard {
 
 }
 
-// DOM Manipulation to show the board on the webpage
 
+
+// DOM Manipulation to show the board on the webpage
 const checkersBoard = new CheckersBoard();
 const rows = document.querySelectorAll('.board-container .row')!;
 
