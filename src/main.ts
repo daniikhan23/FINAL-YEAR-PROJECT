@@ -65,7 +65,6 @@ class CheckersBoard {
         }
 
         const destinationSquare = this.getPiece(endRow, endCol);
-        // there's a piece there already
 
         if (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 1) {
             if (destinationSquare !== null) {
@@ -109,26 +108,6 @@ class CheckersBoard {
         return moves;
     }
 
-    public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
-
-        if (this.canCapture(startRow, startCol, endRow, endCol)) {
-            const middleRow = (startRow + endRow) / 2;
-            const middleCol = (startCol + endCol) / 2;
-            this.board[middleRow][middleCol] = null;
-        }
-
-        const piece = this.getPiece(startRow, startCol);
-        let bool = this.validateMove(startRow, startCol, endRow, endCol);
-        if (bool !== false) {
-            if (piece !== null) {
-                this.board[startRow][startCol] = null;
-                this.board[endRow][endCol] = piece;
-    
-                // need to account for a piece capture and king pieces
-            }
-        }
-    }
-
     private canCapture(startRow:number, startCol:number, endRow:number, endCol: number): boolean {
         if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
             const middleRow = (startRow + endRow) / 2;
@@ -149,6 +128,20 @@ class CheckersBoard {
         return false;
     }
 
+    public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
+        if (this.validateMove(startRow, startCol, endRow, endCol)) {
+            const piece = this.getPiece(startRow, startCol);
+            if (piece !== null) {
+                if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                    const middleRow = (startRow + endRow) / 2;
+                    const middleCol = (startCol + endCol) / 2;
+                    this.board[middleRow][middleCol] = null;
+                }
+            }
+            this.board[startRow][startCol] = null;
+            this.board[endRow][endCol] = piece;
+        }
+    }
 }
 
 

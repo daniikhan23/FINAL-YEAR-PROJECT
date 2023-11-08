@@ -80,21 +80,6 @@ class CheckersBoard {
         }
         return moves;
     }
-    movePiece(startRow, startCol, endRow, endCol) {
-        if (this.canCapture(startRow, startCol, endRow, endCol)) {
-            const middleRow = (startRow + endRow) / 2;
-            const middleCol = (startCol + endCol) / 2;
-            this.board[middleRow][middleCol] = null;
-        }
-        const piece = this.getPiece(startRow, startCol);
-        let bool = this.validateMove(startRow, startCol, endRow, endCol);
-        if (bool !== false) {
-            if (piece !== null) {
-                this.board[startRow][startCol] = null;
-                this.board[endRow][endCol] = piece;
-            }
-        }
-    }
     canCapture(startRow, startCol, endRow, endCol) {
         if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
             const middleRow = (startRow + endRow) / 2;
@@ -111,6 +96,20 @@ class CheckersBoard {
             }
         }
         return false;
+    }
+    movePiece(startRow, startCol, endRow, endCol) {
+        if (this.validateMove(startRow, startCol, endRow, endCol)) {
+            const piece = this.getPiece(startRow, startCol);
+            if (piece !== null) {
+                if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                    const middleRow = (startRow + endRow) / 2;
+                    const middleCol = (startCol + endCol) / 2;
+                    this.board[middleRow][middleCol] = null;
+                }
+            }
+            this.board[startRow][startCol] = null;
+            this.board[endRow][endCol] = piece;
+        }
     }
 }
 const checkersBoard = new CheckersBoard();
