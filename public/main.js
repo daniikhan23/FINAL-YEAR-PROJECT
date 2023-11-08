@@ -74,9 +74,12 @@ class CheckersBoard {
     }
     movePiece(startRow, startCol, endRow, endCol) {
         const piece = this.getPiece(startRow, startCol);
-        if (piece !== null) {
-            this.board[startRow][startCol] = null;
-            this.board[endRow][endCol] = piece;
+        let bool = this.validateMove(startRow, startCol, endRow, endCol);
+        if (bool !== false) {
+            if (piece !== null) {
+                this.board[startRow][startCol] = null;
+                this.board[endRow][endCol] = piece;
+            }
         }
     }
 }
