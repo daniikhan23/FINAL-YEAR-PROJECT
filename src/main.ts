@@ -110,6 +110,13 @@ class CheckersBoard {
     }
 
     public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
+
+        if (this.canCapture(startRow, startCol, endRow, endCol)) {
+            const middleRow = (startRow + endRow) / 2;
+            const middleCol = (startCol + endCol) / 2;
+            this.board[middleRow][middleCol] = null;
+        }
+
         const piece = this.getPiece(startRow, startCol);
         let bool = this.validateMove(startRow, startCol, endRow, endCol);
         if (bool !== false) {
