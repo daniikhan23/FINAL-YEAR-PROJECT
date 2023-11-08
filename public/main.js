@@ -48,10 +48,16 @@ class CheckersBoard {
             return false;
         }
         const destinationSquare = this.getPiece(endRow, endCol);
-        if (destinationSquare !== null) {
-            return false;
+        if (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 1) {
+            if (destinationSquare !== null) {
+                return false;
+            }
+            return true;
         }
-        return true;
+        else if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
+            return this.canCapture(startRow, startCol, endRow, endCol);
+        }
+        return false;
     }
     possibleMoves(row, col) {
         const piece = this.getPiece(row, col);

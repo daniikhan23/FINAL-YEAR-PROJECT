@@ -63,13 +63,20 @@ class CheckersBoard {
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
             return false;
         }
-
+        
         const destinationSquare = this.getPiece(endRow, endCol);
         // there's a piece there already
-        if (destinationSquare !== null) {
-            return false;
+
+        if (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 1) {
+            if (destinationSquare !== null) {
+                return false;
+            }
+            return true;
+        } 
+        else if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
+            return this.canCapture(startRow, startCol, endRow, endCol);
         }
-        return true;
+        return false;
     }
 
     public possibleMoves(row: number, col: number): Moves[] {
