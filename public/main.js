@@ -68,7 +68,9 @@ class CheckersBoard {
             const startCol = col;
             const potentialMovesArr = [
                 { endRow: startRow + direction, endCol: startCol - 1 },
-                { endRow: startRow + direction, endCol: startCol + 1 }
+                { endRow: startRow + direction, endCol: startCol + 1 },
+                { endRow: startRow + 2 * direction, endCol: startCol - 2 },
+                { endRow: startRow + 2 * direction, endCol: startCol + 2 }
             ];
             for (const move of potentialMovesArr) {
                 if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {

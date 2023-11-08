@@ -63,7 +63,7 @@ class CheckersBoard {
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
             return false;
         }
-        
+
         const destinationSquare = this.getPiece(endRow, endCol);
         // there's a piece there already
 
@@ -92,7 +92,10 @@ class CheckersBoard {
 
             const potentialMovesArr = [
                 {endRow: startRow + direction, endCol: startCol - 1},
-                {endRow: startRow + direction, endCol: startCol + 1}
+                {endRow: startRow + direction, endCol: startCol + 1},
+                // capture moves
+                {endRow: startRow + 2 * direction, endCol: startCol - 2},
+                {endRow: startRow + 2 * direction, endCol: startCol + 2}
             ];
 
             for (const move of potentialMovesArr) {
