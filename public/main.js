@@ -82,6 +82,23 @@ class CheckersBoard {
             }
         }
     }
+    canCapture(startRow, startCol, endRow, endCol) {
+        if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
+            const middleRow = (startRow + endRow) / 2;
+            const middleCol = (startCol + endCol) / 2;
+            const middlePiece = this.getPiece(middleRow, middleCol);
+            const currentPiece = this.getPiece(startRow, startCol);
+            if (currentPiece !== null && middlePiece !== null) {
+                if (middlePiece.color !== currentPiece.color) {
+                    const destinationSquare = this.getPiece(endRow, endCol);
+                    if (destinationSquare === null) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
 const checkersBoard = new CheckersBoard();
 const rows = document.querySelectorAll('.board-container .row');
