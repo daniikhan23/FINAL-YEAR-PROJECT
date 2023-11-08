@@ -53,3 +53,10 @@ its symmetry.
 Potential Solution: I will likely have to change the way I have added padding to the individual columns 
 and the 'piece' divs, possibly restructure it entirely, hopefully the solution will be simpler than 
 I am imagining it to be.
+
+More work done on moves functionality. Several methods introduced which now allow me to move pieces to
+their desired location. The validateMove method was updated as well as creating a new method of 
+checking if a certain piece can capture another. Ultimately another method was created to actually 
+move the pieces and capture. So far everything works fine. Next step is to work on king pieces and ensure
+the methods mentioned are functioning correctly. Will work on displaying the game board to the page 
+once the game is complete. Finishing game logic is of utmost importance.
