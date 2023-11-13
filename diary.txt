@@ -60,3 +60,10 @@ checking if a certain piece can capture another. Ultimately another method was c
 move the pieces and capture. So far everything works fine. Next step is to work on king pieces and ensure
 the methods mentioned are functioning correctly. Will work on displaying the game board to the page 
 once the game is complete. Finishing game logic is of utmost importance.
+
+Week 8:
+Started implementation of King Pieces. Multiple methods required updating like validateMove(), movePiece() and possibleMoves().
+There was an error previously which allowed pieces that weren't kings to move backwards which I have now corrected. 
+The next step will be to create game states and players so it is now playable. I hope to complete this soon and then 
+start working on making the game playable on the actual web page rather than through the console. Multiple changes 
+will likely be required in the way the DOM is structured.
