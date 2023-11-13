@@ -51,14 +51,39 @@ class CheckersBoard {
             return false;
         }
         const destinationSquare = this.getPiece(endRow, endCol);
-        if (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 1) {
-            if (destinationSquare !== null) {
-                return false;
+        const piece = this.getPiece(startRow, startCol);
+        if ((piece === null || piece === void 0 ? void 0 : piece.color) === PieceColor.Black && piece.isKing === false) {
+            if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
+                if (destinationSquare !== null) {
+                    return false;
+                }
+                return true;
             }
-            return true;
+            else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
+                return this.canCapture(startRow, startCol, endRow, endCol);
+            }
         }
-        else if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
-            return this.canCapture(startRow, startCol, endRow, endCol);
+        else if ((piece === null || piece === void 0 ? void 0 : piece.color) === PieceColor.Red && piece.isKing === false) {
+            if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
+                if (destinationSquare !== null) {
+                    return false;
+                }
+                return true;
+            }
+            else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
+                return this.canCapture(startRow, startCol, endRow, endCol);
+            }
+        }
+        if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
+            if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 1) {
+                if (destinationSquare !== null) {
+                    return false;
+                }
+                return true;
+            }
+            else if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
+                return this.canCapture(startRow, startCol, endRow, endCol);
+            }
         }
         return false;
     }
