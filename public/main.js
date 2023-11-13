@@ -122,7 +122,7 @@ class CheckersBoard {
         return false;
     }
     movePiece(startRow, startCol, endRow, endCol) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         if (this.validateMove(startRow, startCol, endRow, endCol)) {
             const piece = this.getPiece(startRow, startCol);
             if (piece !== null) {
@@ -137,6 +137,9 @@ class CheckersBoard {
         }
         if (((_a = this.getPiece(endRow, endCol)) === null || _a === void 0 ? void 0 : _a.color) == PieceColor.Red && endRow == 0) {
             (_b = this.getPiece(endRow, endCol)) === null || _b === void 0 ? void 0 : _b.makeKing();
+        }
+        else if (((_c = this.getPiece(endRow, endCol)) === null || _c === void 0 ? void 0 : _c.color) == PieceColor.Black && endRow == 7) {
+            (_d = this.getPiece(endRow, endCol)) === null || _d === void 0 ? void 0 : _d.makeKing();
         }
     }
 }

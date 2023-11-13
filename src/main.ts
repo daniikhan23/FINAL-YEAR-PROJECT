@@ -168,8 +168,10 @@ class CheckersBoard {
 
         if (this.getPiece(endRow, endCol)?.color == PieceColor.Red && endRow == 0) {
             this.getPiece(endRow, endCol)?.makeKing();
+        } 
+        else if (this.getPiece(endRow, endCol)?.color == PieceColor.Black && endRow == 7) {
+            this.getPiece(endRow, endCol)?.makeKing();
         }
-
     }
 }
 
