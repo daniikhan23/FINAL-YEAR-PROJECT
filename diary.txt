@@ -46,3 +46,27 @@ Week 7:
 Starting work on move generation for checkers
 Created a new branch called "checkers-moves-gen" to separate implementation of this from the 
 main branch
+Started work on implementing move functionality. Initially I've just added methods to validate
+the moves being made and generating all possible moves a piece has. These methods have been added
+to the CheckersBoard class. At the moment I am not even sure that these methods will work but will
+continue to build on the program and see how it develops and make changes where they are necessary.
+1 Potential Problem: The way I have manipulated the DOM to show the board and pieces could be an issue.
+When I have implemented move generation, the UI representation of the board is likely to break and lose 
+its symmetry.
+Potential Solution: I will likely have to change the way I have added padding to the individual columns 
+and the 'piece' divs, possibly restructure it entirely, hopefully the solution will be simpler than 
+I am imagining it to be.
+
+More work done on moves functionality. Several methods introduced which now allow me to move pieces to
+their desired location. The validateMove method was updated as well as creating a new method of 
+checking if a certain piece can capture another. Ultimately another method was created to actually 
+move the pieces and capture. So far everything works fine. Next step is to work on king pieces and ensure
+the methods mentioned are functioning correctly. Will work on displaying the game board to the page 
+once the game is complete. Finishing game logic is of utmost importance.
+
+Week 8:
+Started implementation of King Pieces. Multiple methods required updating like validateMove(), movePiece() and possibleMoves().
+There was an error previously which allowed pieces that weren't kings to move backwards which I have now corrected. 
+The next step will be to create game states and players so it is now playable. I hope to complete this soon and then 
+start working on making the game playable on the actual web page rather than through the console. Multiple changes 
+will likely be required in the way the DOM is structured.

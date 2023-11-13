@@ -112,7 +112,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for black piece */
 .main .board-container .col .black-piece {
-  background-image: url('/public/resources/img/blackBase.png'); 
+  background-image: url('../public/resources/img/blackBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -124,7 +124,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for red piece */
 .main .board-container .col .red-piece {
-  background-image: url('/public/resources/img/redBase.png'); 
+  background-image: url('../public/resources/img/redBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
