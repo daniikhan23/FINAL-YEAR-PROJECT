@@ -53,26 +53,10 @@ class CheckersBoard {
         const destinationSquare = this.getPiece(endRow, endCol);
         const piece = this.getPiece(startRow, startCol);
         if ((piece === null || piece === void 0 ? void 0 : piece.color) === PieceColor.Black && piece.isKing === false) {
-            if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
-                if (destinationSquare !== null) {
-                    return false;
-                }
-                return true;
-            }
-            else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
-                return this.canCapture(startRow, startCol, endRow, endCol);
-            }
+            return this.validateBlack(startRow, startCol, endRow, endCol, destinationSquare, piece);
         }
         else if ((piece === null || piece === void 0 ? void 0 : piece.color) === PieceColor.Red && piece.isKing === false) {
-            if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
-                if (destinationSquare !== null) {
-                    return false;
-                }
-                return true;
-            }
-            else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
-                return this.canCapture(startRow, startCol, endRow, endCol);
-            }
+            return this.validateRed(startRow, startCol, endRow, endCol, destinationSquare, piece);
         }
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
             if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 1) {
@@ -84,6 +68,30 @@ class CheckersBoard {
             else if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
                 return this.canCapture(startRow, startCol, endRow, endCol);
             }
+        }
+        return false;
+    }
+    validateBlack(startRow, startCol, endRow, endCol, destinationSquare, piece) {
+        if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
+            if (destinationSquare !== null) {
+                return false;
+            }
+            return true;
+        }
+        else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
+            return this.canCapture(startRow, startCol, endRow, endCol);
+        }
+        return false;
+    }
+    validateRed(startRow, startCol, endRow, endCol, destinationSquare, piece) {
+        if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
+            if (destinationSquare !== null) {
+                return false;
+            }
+            return true;
+        }
+        else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
+            return this.canCapture(startRow, startCol, endRow, endCol);
         }
         return false;
     }

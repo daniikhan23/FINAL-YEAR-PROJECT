@@ -72,26 +72,10 @@ class CheckersBoard {
         const piece = this.getPiece(startRow, startCol);
 
         if (piece?.color === PieceColor.Black && piece.isKing === false) {
-            if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
-                if (destinationSquare !== null) {
-                    return false;
-                }
-                return true;
-            }
-            else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
-                return this.canCapture(startRow, startCol, endRow, endCol);
-            }
+            return this.validateBlack(startRow, startCol, endRow, endCol, destinationSquare, piece);
         }
         else if (piece?.color === PieceColor.Red && piece.isKing === false) {
-            if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
-                if (destinationSquare !== null) {
-                    return false;
-                }
-                return true;
-            }
-            else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
-                return this.canCapture(startRow, startCol, endRow, endCol);
-            }
+            return this.validateRed(startRow, startCol, endRow, endCol, destinationSquare, piece);
         }
 
         if (piece?.isKing === true) {
@@ -106,6 +90,32 @@ class CheckersBoard {
             }
         }
 
+        return false;
+    }
+
+    private validateBlack(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null, piece: CheckersPiece): boolean {
+        if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
+            if (destinationSquare !== null) {
+                return false;
+            }
+            return true;
+        }
+        else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
+            return this.canCapture(startRow, startCol, endRow, endCol);
+        }
+        return false;
+    }
+
+    private validateRed(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null, piece: CheckersPiece): boolean {
+        if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
+            if (destinationSquare !== null) {
+                return false;
+            }
+            return true;
+        }
+        else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
+            return this.canCapture(startRow, startCol, endRow, endCol);
+        }
         return false;
     }
 
