@@ -1,4 +1,3 @@
-
 class Moves {
     public startRow: number;
     public startCol: number;
