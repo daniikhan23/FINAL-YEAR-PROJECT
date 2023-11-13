@@ -17,6 +17,9 @@ class CheckersPiece {
         this.color = color;
         this.isKing = isKing;
     }
+    makeKing() {
+        this.isKing = true;
+    }
 }
 class CheckersBoard {
     constructor() {
@@ -98,6 +101,7 @@ class CheckersBoard {
         return false;
     }
     movePiece(startRow, startCol, endRow, endCol) {
+        var _a, _b;
         if (this.validateMove(startRow, startCol, endRow, endCol)) {
             const piece = this.getPiece(startRow, startCol);
             if (piece !== null) {
@@ -109,6 +113,9 @@ class CheckersBoard {
             }
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
+        }
+        if (((_a = this.getPiece(endRow, endCol)) === null || _a === void 0 ? void 0 : _a.color) == PieceColor.Red && endRow == 0) {
+            (_b = this.getPiece(endRow, endCol)) === null || _b === void 0 ? void 0 : _b.makeKing();
         }
     }
 }

@@ -26,6 +26,10 @@ class CheckersPiece {
         this.color = color;
         this.isKing = isKing;
     }
+
+    public makeKing(): void {
+        this.isKing = true;
+    }
 }
 
 
@@ -141,6 +145,11 @@ class CheckersBoard {
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
         }
+
+        if (this.getPiece(endRow, endCol)?.color == PieceColor.Red && endRow == 0) {
+            this.getPiece(endRow, endCol)?.makeKing();
+        }
+
     }
 }
 
