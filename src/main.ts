@@ -87,27 +87,47 @@ class CheckersBoard {
         const moves: Moves[] = [];
 
         if (piece !== null) {
-            // black will move by a positive number
-            // red by negative
-            const direction = piece.color === PieceColor.Black ? 1: -1;
-            const startRow = row;
-            const startCol = col;
+                const direction = piece.color === PieceColor.Black ? 1: -1;
+                const startRow = row;
+                const startCol = col;
+            if (piece.isKing === false) {
+                // black will move by a positive number
+                // red by negative
+                const potentialMovesArr = [
+                    {endRow: startRow + direction, endCol: startCol - 1},
+                    {endRow: startRow + direction, endCol: startCol + 1},
+                    // capture moves
+                    {endRow: startRow + 2 * direction, endCol: startCol - 2},
+                    {endRow: startRow + 2 * direction, endCol: startCol + 2}
+                ];
 
-            const potentialMovesArr = [
-                {endRow: startRow + direction, endCol: startCol - 1},
-                {endRow: startRow + direction, endCol: startCol + 1},
-                // capture moves
-                {endRow: startRow + 2 * direction, endCol: startCol - 2},
-                {endRow: startRow + 2 * direction, endCol: startCol + 2}
-            ];
+                for (const move of potentialMovesArr) {
+                    if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
+                        moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                    }
+                }
+                // for king pieces
+            } else {
+                const startRow = row;
+                const startCol = col;
 
-            for (const move of potentialMovesArr) {
-                if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
-                    moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                const potentialMovesArr = [
+                    {endRow: startRow + 1, endCol: startCol - 1},
+                    {endRow: startRow + 1, endCol: startCol + 1},
+                    {endRow: startRow - 1, endCol: startCol - 1},
+                    {endRow: startRow - 1, endCol: startCol + 1},
+                    // capture moves
+                    {endRow: startRow + 2 , endCol: startCol - 2},
+                    {endRow: startRow + 2 , endCol: startCol + 2},
+                    {endRow: startRow - 2 , endCol: startCol - 2},
+                    {endRow: startRow - 2 , endCol: startCol + 2}
+                ];
+                for (const move of potentialMovesArr) {
+                    if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
+                        moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                    }
                 }
             }
-
-            // need to add potential moves to king pieces - future implementation
         }
         return moves;
     }

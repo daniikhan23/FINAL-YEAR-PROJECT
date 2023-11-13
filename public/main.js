@@ -69,15 +69,36 @@ class CheckersBoard {
             const direction = piece.color === PieceColor.Black ? 1 : -1;
             const startRow = row;
             const startCol = col;
-            const potentialMovesArr = [
-                { endRow: startRow + direction, endCol: startCol - 1 },
-                { endRow: startRow + direction, endCol: startCol + 1 },
-                { endRow: startRow + 2 * direction, endCol: startCol - 2 },
-                { endRow: startRow + 2 * direction, endCol: startCol + 2 }
-            ];
-            for (const move of potentialMovesArr) {
-                if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
-                    moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+            if (piece.isKing === false) {
+                const potentialMovesArr = [
+                    { endRow: startRow + direction, endCol: startCol - 1 },
+                    { endRow: startRow + direction, endCol: startCol + 1 },
+                    { endRow: startRow + 2 * direction, endCol: startCol - 2 },
+                    { endRow: startRow + 2 * direction, endCol: startCol + 2 }
+                ];
+                for (const move of potentialMovesArr) {
+                    if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
+                        moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                    }
+                }
+            }
+            else {
+                const startRow = row;
+                const startCol = col;
+                const potentialMovesArr = [
+                    { endRow: startRow + 1, endCol: startCol - 1 },
+                    { endRow: startRow + 1, endCol: startCol + 1 },
+                    { endRow: startRow - 1, endCol: startCol - 1 },
+                    { endRow: startRow - 1, endCol: startCol + 1 },
+                    { endRow: startRow + 2, endCol: startCol - 2 },
+                    { endRow: startRow + 2, endCol: startCol + 2 },
+                    { endRow: startRow - 2, endCol: startCol - 2 },
+                    { endRow: startRow - 2, endCol: startCol + 2 }
+                ];
+                for (const move of potentialMovesArr) {
+                    if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
+                        moves.push(new Moves(startRow, startCol, move.endRow, move.endCol));
+                    }
                 }
             }
         }
