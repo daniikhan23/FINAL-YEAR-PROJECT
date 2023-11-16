@@ -46,6 +46,42 @@ class CheckersBoard {
     getPiece(row, col) {
         return this.board[row][col];
     }
+}
+var State;
+(function (State) {
+    State[State["inProgress"] = 0] = "inProgress";
+    State[State["gameFinished"] = 1] = "gameFinished";
+})(State || (State = {}));
+class Player {
+    constructor(name, color) {
+        this.name = name;
+        this.color = color;
+        this.score = 0;
+        this.capturedPieces = 0;
+    }
+    updateCapturedPieces(count) {
+        this.capturedPieces += count;
+    }
+    updateScore(score) {
+        this.score += score;
+    }
+    displayScore() {
+        return this.score;
+    }
+}
+class CheckersGame {
+    constructor(playerOne, playerTwo) {
+        this.board = new CheckersBoard().board;
+        this.players = [playerOne, playerTwo];
+        this.currentState = State.inProgress;
+        this.currentPlayer = playerOne;
+    }
+    changeTurn() {
+        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
+    }
+    getPiece(row, col) {
+        return this.board[row][col];
+    }
     validateMove(startRow, startCol, endRow, endCol) {
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
             return false;
@@ -158,68 +194,23 @@ class CheckersBoard {
         if (this.validateMove(startRow, startCol, endRow, endCol)) {
             const piece = this.getPiece(startRow, startCol);
             if (piece !== null) {
+                const middleRow = Math.floor((startRow + endRow) / 2);
+                const middleCol = Math.floor((startCol + endCol) / 2);
+                const enemyPiece = this.getPiece(middleRow, middleCol);
+                this.handlePieceCapture(enemyPiece);
                 if (this.canCapture(startRow, startCol, endRow, endCol)) {
-                    const middleRow = (startRow + endRow) / 2;
-                    const middleCol = (startCol + endCol) / 2;
                     this.board[middleRow][middleCol] = null;
                 }
             }
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
-        }
-    }
-}
-var State;
-(function (State) {
-    State[State["inProgress"] = 0] = "inProgress";
-    State[State["gameFinished"] = 1] = "gameFinished";
-})(State || (State = {}));
-class Player {
-    constructor(name, color) {
-        this.name = name;
-        this.color = color;
-        this.score = 0;
-        this.capturedPieces = 0;
-    }
-    updateCapturedPieces(count) {
-        this.capturedPieces += count;
-    }
-    updateScore(score) {
-        this.score += score;
-    }
-    displayScore() {
-        return this.score;
-    }
-}
-class CheckersGame {
-    constructor(playerOne, playerTwo) {
-        this.board = new CheckersBoard();
-        this.players = [playerOne, playerTwo];
-        this.currentState = State.inProgress;
-        this.currentPlayer = playerOne;
-    }
-    changeTurn() {
-        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
-    }
-    makeMove(move) {
-        const piece = this.board.getPiece(move.startRow, move.startCol);
-        if (piece && piece.color === this.currentPlayer.color) {
-            const isCaptureMove = Math.abs(move.startRow - move.endRow) === 2 && Math.abs(move.startCol - move.endCol) === 2;
-            if (isCaptureMove) {
-                this.handlePieceCapture(move.startRow, move.startCol, move.endRow, move.endCol);
-            }
-            this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
-            this.makeKingPiece(move.endRow, move.endCol);
+            this.promoteToKing(endRow, endCol);
             this.changeTurn();
             this.currentPlayer.displayScore();
-            return true;
         }
-        return false;
+        console.log(this.board);
     }
-    handlePieceCapture(startRow, startCol, endRow, endCol) {
-        const middleRow = (startRow + endRow) / 2;
-        const middleCol = (startCol + endCol) / 2;
-        const piece = this.board.getPiece(middleRow, middleCol);
+    handlePieceCapture(piece) {
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
             this.currentPlayer.updateScore(2);
             this.currentPlayer.updateCapturedPieces(1);
@@ -229,8 +220,8 @@ class CheckersGame {
             this.currentPlayer.updateCapturedPieces(1);
         }
     }
-    makeKingPiece(row, col) {
-        const piece = this.board.getPiece(row, col);
+    promoteToKing(row, col) {
+        const piece = this.getPiece(row, col);
         if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Red && row == 0) {
             piece.makeKing();
         }

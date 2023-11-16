@@ -32,7 +32,7 @@ class CheckersPiece {
 }
 
 class CheckersBoard {
-    private board: (CheckersPiece | null)[][] = [];
+    public board: (CheckersPiece | null)[][] = [];
 
     constructor(){
         this.initializeBoard();
@@ -59,13 +59,78 @@ class CheckersBoard {
     public getPiece(row: number, col: number): CheckersPiece | null {
         return this.board[row][col];
     }
+}
 
+// game state management
+enum State {
+    inProgress,
+    gameFinished
+}
+
+// a class representing a player
+class Player {
+    public name: string;
+    public color: PieceColor;
+    public score: number;
+    public capturedPieces: number;
+
+    constructor(name: string, color: PieceColor) {
+        this.name = name;
+        this.color = color;
+        this.score = 0;
+        this.capturedPieces = 0;
+    }
+
+    // update how many pieces are captured by a player
+    // this could be removed unless there is a separate functionality to the update score method
+    updateCapturedPieces(count: number): void {
+        this.capturedPieces += count;
+    }
+
+    // update the score of a player
+    updateScore(score: number): void {
+        this.score += score;
+    }
+
+    // display the score of a player
+    displayScore(): number {
+        return this.score;
+    }
+}
+
+// class for handling the actual game state and player turns
+class CheckersGame {
+    private board: (CheckersPiece | null) [][];
+    private players: [Player, Player];
+    private currentState: State;
+    private currentPlayer: Player;
+
+    constructor(playerOne: Player, playerTwo: Player) {
+        this.board = new CheckersBoard().board;
+        this.players = [playerOne, playerTwo];
+        this.currentState = State.inProgress;
+        this.currentPlayer = playerOne;
+    }
+
+    // a method to change the turn of a player
+    public changeTurn(): void {
+        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
+    }
+
+    // a method to perform a move on the board
+    // the return type is boolean as eventually when the game is playable on the webpage
+    // the user will need feedback as to whether a certain move is possible or not
+    public getPiece(row: number, col: number): CheckersPiece | null {
+        return this.board[row][col];
+    }
+
+    // method to validate move being made
     private validateMove(startRow: number, startCol: number, endRow: number, endCol: number): boolean {
         // check to see if attempted move will place piece outside board
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
             return false;
         }
-
+        
         const destinationSquare = this.getPiece(endRow, endCol);
         const piece = this.getPiece(startRow, startCol);
 
@@ -191,102 +256,28 @@ class CheckersBoard {
         if (this.validateMove(startRow, startCol, endRow, endCol)) {
             const piece = this.getPiece(startRow, startCol);
             if (piece !== null) {
+                const middleRow = Math.floor((startRow + endRow) / 2);
+                const middleCol = Math.floor((startCol + endCol) / 2);
+                const enemyPiece = this.getPiece(middleRow, middleCol);
+                this.handlePieceCapture(enemyPiece);
                 if (this.canCapture(startRow, startCol, endRow, endCol)) {
-                    const middleRow = (startRow + endRow) / 2;
-                    const middleCol = (startCol + endCol) / 2;
                     this.board[middleRow][middleCol] = null;
                 }
             }
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
-        }
-    }
-}
-
-// game state management
-enum State {
-    inProgress,
-    gameFinished
-}
-
-// a class representing a player
-class Player {
-    public name: string;
-    public color: PieceColor;
-    public score: number;
-    public capturedPieces: number;
-
-    constructor(name: string, color: PieceColor) {
-        this.name = name;
-        this.color = color;
-        this.score = 0;
-        this.capturedPieces = 0;
-    }
-
-    // update how many pieces are captured by a player
-    // this could be removed unless there is a separate functionality to the update score method
-    updateCapturedPieces(count: number): void {
-        this.capturedPieces += count;
-    }
-
-    // update the score of a player
-    updateScore(score: number): void {
-        this.score += score;
-    }
-
-    // display the score of a player
-    displayScore(): number {
-        return this.score;
-    }
-}
-
-// class for handling the actual game state and player turns
-class CheckersGame {
-    private board: CheckersBoard;
-    private players: [Player, Player];
-    private currentState: State;
-    private currentPlayer: Player;
-
-    constructor(playerOne: Player, playerTwo: Player) {
-        this.board = new CheckersBoard();
-        this.players = [playerOne, playerTwo];
-        this.currentState = State.inProgress;
-        this.currentPlayer = playerOne;
-    }
-
-    // a method to change the turn of a player
-    public changeTurn(): void {
-        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
-    }
-
-    // a method to perform a move on the board
-    // the return type is boolean as eventually when the game is playable on the webpage
-    // the user will need feedback as to whether a certain move is possible or not
-
-    public makeMove(move: Moves): boolean {
-        const piece = this.board.getPiece(move.startRow, move.startCol);
-        if (piece && piece.color === this.currentPlayer.color) {
-            const isCaptureMove = Math.abs(move.startRow - move.endRow) === 2 && Math.abs(move.startCol - move.endCol) === 2;
-            
-            // checking if the move captured a piece or not
-            if (isCaptureMove) {
-                this.handlePieceCapture(move.startRow, move.startCol, move.endRow, move.endCol);
-            }
-            this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
-            this.makeKingPiece(move.endRow, move.endCol);
+            this.promoteToKing(endRow, endCol);
             this.changeTurn();
             this.currentPlayer.displayScore();
-            return true;
-            }
-            // will use this false return to show on the UI that the user cannot make this move
-        return false;
+            // return true;
+        }
+        console.log(this.board);
+        // false value as feedback to user on DOM that a certain move cannot be made
+        // return false;
     }
 
-    public handlePieceCapture(startRow: number, startCol: number, endRow: number, endCol: number): void {
-        const middleRow = (startRow + endRow) / 2;
-        const middleCol = (startCol + endCol) / 2;
-        const piece = this.board.getPiece(middleRow, middleCol);
-
+    // method for handling capture of pieces and updating scores accordingly depending on whether a regular or king piece is captured
+    public handlePieceCapture(piece: CheckersPiece | null): void {
         if (piece?.isKing === true) {
             this.currentPlayer.updateScore(2);
             this.currentPlayer.updateCapturedPieces(1);
@@ -296,8 +287,9 @@ class CheckersGame {
         }
     }
 
-    public makeKingPiece(row: number, col: number): void {
-        const piece = this.board.getPiece(row, col);
+    // promotion of regular piece to king piece method
+    public promoteToKing(row: number, col: number): void {
+        const piece = this.getPiece(row, col);
         if (piece?.color == PieceColor.Red && row == 0) {
             piece.makeKing();
         } 
@@ -305,7 +297,6 @@ class CheckersGame {
             piece.makeKing();
         }
     }
-
 }
 
 

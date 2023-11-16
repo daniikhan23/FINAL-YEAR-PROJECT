@@ -70,3 +70,17 @@ There was an error previously which allowed pieces that weren't kings to move ba
 The next step will be to create game states and players so it is now playable. I hope to complete this soon and then 
 start working on making the game playable on the actual web page rather than through the console. Multiple changes 
 will likely be required in the way the DOM is structured.
+
+Created a new branch called checkers-game-state
+Made new classes for the Player and the CheckersGame as well as an enum 'State'
+Player tracks the color of the pieces that player has as well as their current
+score and number of captured pieces.
+CheckersGame creates a new CheckersBoard, two players and the state of the game.
+There's multiple methods within the class for tracking and changing turns as 
+well as being able to make moves on the board which includes handling captures 
+and piece promotion. More work to be done here.
+
+Initial Approach might in fact be incorrect. CheckersBoard class should be handling simply the representation of the board.
+CheckersGame should handle the actual functionality of moving pieces as well as validating those moves. Instead of essentially
+rewriting those methods again in the CheckersGame class I should be removing them from board class and adding them to the game class 
+with changes that would ensure theres two different players, each of whom have their own turns etc.
