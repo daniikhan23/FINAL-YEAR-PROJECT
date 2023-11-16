@@ -220,12 +220,43 @@ enum State {
 class Player {
     public name: string;
     public color: PieceColor;
+    public score: number;
+    public capturedPieces: number;
 
     constructor(name: string, color: PieceColor) {
         this.name = name;
         this.color = color;
+        this.score = 0;
+        this.capturedPieces = 0;
+    }
+
+    updateCapturedPieces(): void {
+        this.capturedPieces += 1;
+    }
+
+    updateScore(score:number): void {
+        this.score += score;
+    }
+
+    displayScore(): number {
+        return this.score;
     }
 }
+
+class CheckersGame {
+    private board: CheckersBoard;
+    private players: [Player, Player];
+    private currentState: State;
+    private currentPlayer: Player;
+
+    constructor(playerOne: Player, playerTwo: Player) {
+        this.board = new CheckersBoard();
+        this.players = [playerOne, playerTwo];
+        this.currentState = State.inProgress;
+        this.currentPlayer = playerOne;
+    }
+}
+
 
 // DOM Manipulation to show the board on the webpage
 const checkersBoard = new CheckersBoard();

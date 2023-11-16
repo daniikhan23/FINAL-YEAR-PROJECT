@@ -185,6 +185,25 @@ class Player {
     constructor(name, color) {
         this.name = name;
         this.color = color;
+        this.score = 0;
+        this.capturedPieces = 0;
+    }
+    updateCapturedPieces() {
+        this.capturedPieces += 1;
+    }
+    updateScore(score) {
+        this.score += score;
+    }
+    displayScore() {
+        return this.score;
+    }
+}
+class CheckersGame {
+    constructor(playerOne, playerTwo) {
+        this.board = new CheckersBoard();
+        this.players = [playerOne, playerTwo];
+        this.currentState = State.inProgress;
+        this.currentPlayer = playerOne;
     }
 }
 const checkersBoard = new CheckersBoard();
