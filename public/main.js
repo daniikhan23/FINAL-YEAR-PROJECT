@@ -176,6 +176,17 @@ class CheckersBoard {
         }
     }
 }
+var State;
+(function (State) {
+    State[State["inProgress"] = 0] = "inProgress";
+    State[State["gameFinished"] = 1] = "gameFinished";
+})(State || (State = {}));
+class Player {
+    constructor(name, color) {
+        this.name = name;
+        this.color = color;
+    }
+}
 const checkersBoard = new CheckersBoard();
 const rows = document.querySelectorAll('.board-container .row');
 function startBoard() {

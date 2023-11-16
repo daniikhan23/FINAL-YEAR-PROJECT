@@ -211,7 +211,21 @@ class CheckersBoard {
     }
 }
 
+// start of game state management
+enum State {
+    inProgress,
+    gameFinished
+}
 
+class Player {
+    public name: string;
+    public color: PieceColor;
+
+    constructor(name: string, color: PieceColor) {
+        this.name = name;
+        this.color = color;
+    }
+}
 
 // DOM Manipulation to show the board on the webpage
 const checkersBoard = new CheckersBoard();
