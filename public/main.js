@@ -188,8 +188,8 @@ class Player {
         this.score = 0;
         this.capturedPieces = 0;
     }
-    updateCapturedPieces() {
-        this.capturedPieces += 1;
+    updateCapturedPieces(count) {
+        this.capturedPieces += count;
     }
     updateScore(score) {
         this.score += score;
@@ -211,13 +211,29 @@ class CheckersGame {
     makeMove(move) {
         const piece = this.board.getPiece(move.startRow, move.startCol);
         if (piece && piece.color === this.currentPlayer.color) {
-            if (move.endRow !== null && move.endCol !== null) {
-                this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
-                this.changeTurn();
-                return true;
+            const isCaptureMove = Math.abs(move.startRow - move.endRow) === 2 && Math.abs(move.startCol - move.endCol) === 2;
+            if (isCaptureMove) {
+                this.handlePieceCapture(move.startRow, move.startCol, move.endRow, move.endCol);
             }
+            this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
+            this.changeTurn();
+            this.currentPlayer.displayScore();
+            return true;
         }
         return false;
+    }
+    handlePieceCapture(startRow, startCol, endRow, endCol) {
+        const middleRow = (startRow + endRow) / 2;
+        const middleCol = (startCol + endCol) / 2;
+        const piece = this.board.getPiece(middleRow, middleCol);
+        if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
+            this.currentPlayer.updateScore(2);
+            this.currentPlayer.updateCapturedPieces(1);
+        }
+        else {
+            this.currentPlayer.updateScore(1);
+            this.currentPlayer.updateCapturedPieces(1);
+        }
     }
 }
 const checkersBoard = new CheckersBoard();

@@ -232,12 +232,12 @@ class Player {
 
     // update how many pieces are captured by a player
     // this could be removed unless there is a separate functionality to the update score method
-    updateCapturedPieces(): void {
-        this.capturedPieces += 1;
+    updateCapturedPieces(count: number): void {
+        this.capturedPieces += count;
     }
 
     // update the score of a player
-    updateScore(score:number): void {
+    updateScore(score: number): void {
         this.score += score;
     }
 
@@ -269,17 +269,37 @@ class CheckersGame {
     // a method to perform a move on the board
     // the return type is boolean as eventually when the game is playable on the webpage
     // the user will need feedback as to whether a certain move is possible or not
-    
+
     public makeMove(move: Moves): boolean {
         const piece = this.board.getPiece(move.startRow, move.startCol);
         if (piece && piece.color === this.currentPlayer.color) {
-            if (move.endRow !== null && move.endCol !== null) {
+            const isCaptureMove = Math.abs(move.startRow - move.endRow) === 2 && Math.abs(move.startCol - move.endCol) === 2;
+            
+            // checking if the move captured a piece or not
+            if (isCaptureMove) {
+                this.handlePieceCapture(move.startRow, move.startCol, move.endRow, move.endCol);
+            }
             this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
             this.changeTurn();
+            this.currentPlayer.displayScore();
             return true;
             }
-        }
+            // will use this false return to show on the UI that the user cannot make this move
         return false;
+    }
+
+    public handlePieceCapture(startRow: number, startCol: number, endRow: number, endCol: number): void {
+        const middleRow = (startRow + endRow) / 2;
+        const middleCol = (startCol + endCol) / 2;
+        const piece = this.board.getPiece(middleRow, middleCol);
+
+        if (piece?.isKing === true) {
+            this.currentPlayer.updateScore(2);
+            this.currentPlayer.updateCapturedPieces(1);
+        } else {
+            this.currentPlayer.updateScore(1);
+            this.currentPlayer.updateCapturedPieces(1);
+        }
     }
 }
 
