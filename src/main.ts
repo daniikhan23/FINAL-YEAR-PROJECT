@@ -31,7 +31,6 @@ class CheckersPiece {
     }
 }
 
-
 class CheckersBoard {
     private board: (CheckersPiece | null)[][] = [];
 
@@ -211,12 +210,13 @@ class CheckersBoard {
     }
 }
 
-// start of game state management
+// game state management
 enum State {
     inProgress,
     gameFinished
 }
 
+// a class representing a player
 class Player {
     public name: string;
     public color: PieceColor;
@@ -230,19 +230,24 @@ class Player {
         this.capturedPieces = 0;
     }
 
+    // update how many pieces are captured by a player
+    // this could be removed unless there is a separate functionality to the update score method
     updateCapturedPieces(): void {
         this.capturedPieces += 1;
     }
 
+    // update the score of a player
     updateScore(score:number): void {
         this.score += score;
     }
 
+    // display the score of a player
     displayScore(): number {
         return this.score;
     }
 }
 
+// class for handling the actual game state and player turns
 class CheckersGame {
     private board: CheckersBoard;
     private players: [Player, Player];
@@ -254,6 +259,27 @@ class CheckersGame {
         this.players = [playerOne, playerTwo];
         this.currentState = State.inProgress;
         this.currentPlayer = playerOne;
+    }
+
+    // a method to change the turn of a player
+    public changeTurn(): void {
+        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
+    }
+
+    // a method to perform a move on the board
+    // the return type is boolean as eventually when the game is playable on the webpage
+    // the user will need feedback as to whether a certain move is possible or not
+    
+    public makeMove(move: Moves): boolean {
+        const piece = this.board.getPiece(move.startRow, move.startCol);
+        if (piece && piece.color === this.currentPlayer.color) {
+            if (move.endRow !== null && move.endCol !== null) {
+            this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
+            this.changeTurn();
+            return true;
+            }
+        }
+        return false;
     }
 }
 

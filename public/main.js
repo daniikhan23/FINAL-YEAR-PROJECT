@@ -205,6 +205,20 @@ class CheckersGame {
         this.currentState = State.inProgress;
         this.currentPlayer = playerOne;
     }
+    changeTurn() {
+        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
+    }
+    makeMove(move) {
+        const piece = this.board.getPiece(move.startRow, move.startCol);
+        if (piece && piece.color === this.currentPlayer.color) {
+            if (move.endRow !== null && move.endCol !== null) {
+                this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
+                this.changeTurn();
+                return true;
+            }
+        }
+        return false;
+    }
 }
 const checkersBoard = new CheckersBoard();
 const rows = document.querySelectorAll('.board-container .row');
