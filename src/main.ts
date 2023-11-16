@@ -200,13 +200,6 @@ class CheckersBoard {
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
         }
-
-        if (this.getPiece(endRow, endCol)?.color == PieceColor.Red && endRow == 0) {
-            this.getPiece(endRow, endCol)?.makeKing();
-        } 
-        else if (this.getPiece(endRow, endCol)?.color == PieceColor.Black && endRow == 7) {
-            this.getPiece(endRow, endCol)?.makeKing();
-        }
     }
 }
 
@@ -280,6 +273,7 @@ class CheckersGame {
                 this.handlePieceCapture(move.startRow, move.startCol, move.endRow, move.endCol);
             }
             this.board.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
+            this.makeKingPiece(move.endRow, move.endCol);
             this.changeTurn();
             this.currentPlayer.displayScore();
             return true;
@@ -301,6 +295,17 @@ class CheckersGame {
             this.currentPlayer.updateCapturedPieces(1);
         }
     }
+
+    public makeKingPiece(row: number, col: number): void {
+        const piece = this.board.getPiece(row, col);
+        if (piece?.color == PieceColor.Red && row == 0) {
+            piece.makeKing();
+        } 
+        else if (piece?.color == PieceColor.Black && row == 7) {
+            piece.makeKing();
+        }
+    }
+
 }
 
 
