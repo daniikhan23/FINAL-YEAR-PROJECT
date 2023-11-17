@@ -198,8 +198,8 @@ class CheckersGame {
                     const middleRow = Math.floor((startRow + endRow) / 2);
                     const middleCol = Math.floor((startCol + endCol) / 2);
                     const enemyPiece = this.getPiece(middleRow, middleCol);
-                    this.handlePieceCapture(enemyPiece);
                     if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                        this.handlePieceCapture(enemyPiece);
                         this.board[middleRow][middleCol] = null;
                     }
                 }
@@ -208,6 +208,7 @@ class CheckersGame {
                 this.promoteToKing(endRow, endCol);
                 this.changeTurn();
                 this.currentPlayer.displayScore();
+                console.log(`${this.currentPlayer.name}'s turn now`);
             }
         }
         console.log(this.board);
@@ -226,10 +227,26 @@ class CheckersGame {
         const piece = this.getPiece(row, col);
         if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Red && row == 0) {
             piece.makeKing();
+            console.log("This is your kingdom, my lord");
         }
         else if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Black && row == 7) {
             piece.makeKing();
+            console.log("This is your kingdom, my lord");
         }
+    }
+    capturesPossible() {
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = this.getPiece(row, col);
+                if (piece && piece.color === this.currentPlayer.color) {
+                    const moves = this.possibleMoves(row, col);
+                    if (moves.some(move => Math.abs(move.startRow - move.endRow) === 2)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
 const checkersBoard = new CheckersBoard();
