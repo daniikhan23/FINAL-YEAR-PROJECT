@@ -253,23 +253,25 @@ class CheckersGame {
     }
 
     public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
-        if (this.validateMove(startRow, startCol, endRow, endCol)) {
-            const piece = this.getPiece(startRow, startCol);
-            if (piece !== null) {
-                const middleRow = Math.floor((startRow + endRow) / 2);
-                const middleCol = Math.floor((startCol + endCol) / 2);
-                const enemyPiece = this.getPiece(middleRow, middleCol);
-                this.handlePieceCapture(enemyPiece);
-                if (this.canCapture(startRow, startCol, endRow, endCol)) {
-                    this.board[middleRow][middleCol] = null;
+        const piece = this.getPiece(startRow, startCol);
+        if (piece && piece.color === this.currentPlayer.color){
+            if (this.validateMove(startRow, startCol, endRow, endCol)) {
+                if (piece !== null) {
+                    const middleRow = Math.floor((startRow + endRow) / 2);
+                    const middleCol = Math.floor((startCol + endCol) / 2);
+                    const enemyPiece = this.getPiece(middleRow, middleCol);
+                    this.handlePieceCapture(enemyPiece);
+                    if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                        this.board[middleRow][middleCol] = null;
+                    }
                 }
+                this.board[startRow][startCol] = null;
+                this.board[endRow][endCol] = piece;
+                this.promoteToKing(endRow, endCol);
+                this.changeTurn();
+                this.currentPlayer.displayScore();
+                // return true;
             }
-            this.board[startRow][startCol] = null;
-            this.board[endRow][endCol] = piece;
-            this.promoteToKing(endRow, endCol);
-            this.changeTurn();
-            this.currentPlayer.displayScore();
-            // return true;
         }
         console.log(this.board);
         // false value as feedback to user on DOM that a certain move cannot be made
