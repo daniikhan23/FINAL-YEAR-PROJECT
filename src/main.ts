@@ -268,7 +268,14 @@ class CheckersGame {
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
                 this.promoteToKing(endRow, endCol);
-                this.changeTurn();
+                const nextCaptures = this.chainCaptures(endRow, endCol);
+                    console.log(nextCaptures);
+                    if (nextCaptures.length > 0) {
+                        return;
+                    }
+                    else {
+                        this.changeTurn();
+                    }
                 this.currentPlayer.displayScore();
                 console.log(`${this.currentPlayer.name}'s turn now`)
                 // return true;
@@ -302,6 +309,12 @@ class CheckersGame {
             console.log("This is your kingdom, my lord");
         }
         
+    }
+
+    public chainCaptures(row: number, col: number) {
+        const moves = this.possibleMoves(row, col);
+        const captureMoves = moves.filter(move => Math.abs(move.startRow - move.endRow) === 2);
+        return captureMoves.map(move => ({endRow: move.endRow, endCol: move.endCol}));
     }
 
     public capturesPossible(): boolean {
