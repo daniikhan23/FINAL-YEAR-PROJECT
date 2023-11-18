@@ -254,6 +254,7 @@ class CheckersGame {
 
     public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
         const piece = this.getPiece(startRow, startCol);
+        let capturedAlready;
         if (piece && piece.color === this.currentPlayer.color){
             if (this.validateMove(startRow, startCol, endRow, endCol)) {
                 if (piece !== null) {
@@ -263,20 +264,24 @@ class CheckersGame {
                     if (this.canCapture(startRow, startCol, endRow, endCol)) {
                         this.handlePieceCapture(enemyPiece);
                         this.board[middleRow][middleCol] = null;
+                        capturedAlready = true;
+                    }
+                    else {
+                        capturedAlready = false;
                     }
                 }
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
                 this.promoteToKing(endRow, endCol);
                 const nextCaptures = this.chainCaptures(endRow, endCol);
-                    console.log(nextCaptures);
+                    console.log(nextCaptures && capturedAlready === true);
                     if (nextCaptures.length > 0) {
                         return;
                     }
                     else {
                         this.changeTurn();
                     }
-                this.currentPlayer.displayScore();
+                    console.log(this.checkForEndGame());
                 console.log(`${this.currentPlayer.name}'s turn now`)
                 // return true;
             }
@@ -311,12 +316,15 @@ class CheckersGame {
         
     }
 
+    // this method checks if a piece can make further captures
     public chainCaptures(row: number, col: number) {
         const moves = this.possibleMoves(row, col);
         const captureMoves = moves.filter(move => Math.abs(move.startRow - move.endRow) === 2);
         return captureMoves.map(move => ({endRow: move.endRow, endCol: move.endCol}));
     }
 
+    // this method checks if there are currently any captures possible 
+    // to be worked on in the future
     public capturesPossible(): boolean {
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
@@ -330,6 +338,31 @@ class CheckersGame {
             }
         }
         return false;
+    }
+
+    // check if a player has any piecs left
+    public noPiecesLeft(player: Player) : boolean {
+        let numPieces = 0;
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = this.getPiece(row, col);
+                if (piece !== null && piece.color === player.color) {
+                    numPieces++;
+                }
+            }
+        }
+        if (numPieces === 0) {
+            return true;
+        }
+        else {return false;}
+    }
+
+    // check if game has ended
+    public checkForEndGame(): void {
+        if (this.noPiecesLeft(this.currentPlayer)) {
+            this.currentState = State.gameFinished;
+            console.log(`${this.currentPlayer.name} has lost the game :/`);
+        }
     }
 }
 

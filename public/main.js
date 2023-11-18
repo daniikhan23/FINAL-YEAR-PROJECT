@@ -192,6 +192,7 @@ class CheckersGame {
     }
     movePiece(startRow, startCol, endRow, endCol) {
         const piece = this.getPiece(startRow, startCol);
+        let capturedAlready;
         if (piece && piece.color === this.currentPlayer.color) {
             if (this.validateMove(startRow, startCol, endRow, endCol)) {
                 if (piece !== null) {
@@ -201,20 +202,24 @@ class CheckersGame {
                     if (this.canCapture(startRow, startCol, endRow, endCol)) {
                         this.handlePieceCapture(enemyPiece);
                         this.board[middleRow][middleCol] = null;
+                        capturedAlready = true;
+                    }
+                    else {
+                        capturedAlready = false;
                     }
                 }
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
                 this.promoteToKing(endRow, endCol);
                 const nextCaptures = this.chainCaptures(endRow, endCol);
-                console.log(nextCaptures);
+                console.log(nextCaptures && capturedAlready === true);
                 if (nextCaptures.length > 0) {
                     return;
                 }
                 else {
                     this.changeTurn();
                 }
-                this.currentPlayer.displayScore();
+                console.log(this.checkForEndGame());
                 console.log(`${this.currentPlayer.name}'s turn now`);
             }
         }
@@ -259,6 +264,29 @@ class CheckersGame {
             }
         }
         return false;
+    }
+    noPiecesLeft(player) {
+        let numPieces = 0;
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = this.getPiece(row, col);
+                if (piece !== null && piece.color === player.color) {
+                    numPieces++;
+                }
+            }
+        }
+        if (numPieces === 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    checkForEndGame() {
+        if (this.noPiecesLeft(this.currentPlayer)) {
+            this.currentState = State.gameFinished;
+            console.log(`${this.currentPlayer.name} has lost the game :/`);
+        }
     }
 }
 const checkersBoard = new CheckersBoard();

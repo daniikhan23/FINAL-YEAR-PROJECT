@@ -84,3 +84,9 @@ Initial Approach might in fact be incorrect. CheckersBoard class should be handl
 CheckersGame should handle the actual functionality of moving pieces as well as validating those moves. Instead of essentially
 rewriting those methods again in the CheckersGame class I should be removing them from board class and adding them to the game class 
 with changes that would ensure theres two different players, each of whom have their own turns etc.
+
+Scores are correctly displayed now as well as turns correctly being updated. The code now checks for chain captures for a piece 
+and if there is another capture available, it does not change the turn of the player until the capture is completed.
+It is going to be difficult to have a separate method to check for possible captures on the board and ensuring that only capture moves  
+are being made due to the complexity of the task as well as checking if the method is working correctly through the console.
+Potentially something to work on after the DOM updates are made. 
