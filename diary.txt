@@ -90,3 +90,9 @@ and if there is another capture available, it does not change the turn of the pl
 It is going to be difficult to have a separate method to check for possible captures on the board and ensuring that only capture moves  
 are being made due to the complexity of the task as well as checking if the method is working correctly through the console.
 Potentially something to work on after the DOM updates are made. 
+
+Week 9:
+Completed the second condition for checking end of game. Only thing remaining is adding "forced jumps" functionality. I will be doing
+that as soon as I have made the game playable on the DOM or potentially in the future as it is not a 'fixed' rule in checkers, some 
+variants use it and others do not. So far the game logic is solid and error-free, will test it further and then work on optimization 
+and refactoring. 
