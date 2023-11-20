@@ -126,6 +126,10 @@ Images from https://www.iconfinder.com/search?q=checkers
   width: 5rem;
 }
 
+.main .board-container .col .black-piece .selected {
+  border-color: gold;
+}
+
 /* Image for red piece */
 .main .board-container .col .red-piece {
   background-image: url('../public/resources/img/redBase.png'); 

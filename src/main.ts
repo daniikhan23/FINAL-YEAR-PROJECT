@@ -100,7 +100,7 @@ class Player {
 
 // class for handling the actual game state and player turns
 class CheckersGame {
-    private board: (CheckersPiece | null) [][];
+    public board: (CheckersPiece | null) [][];
     private players: [Player, Player];
     private currentState: State;
     private currentPlayer: Player;
@@ -392,24 +392,51 @@ class CheckersGame {
 
 
 // DOM Manipulation to show the board on the webpage
-const checkersBoard = new CheckersBoard();
+const playerOne = new Player("Dani", PieceColor.Red);
+const playerTwo = new Player("AI", PieceColor.Black);
+const game = new CheckersGame(playerOne, playerTwo);
+
 const rows = document.querySelectorAll('.board-container .row')!;
 
 function startBoard() {
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col')!;
         cols.forEach((col, colIndex) => {
-            const piece: CheckersPiece | null = checkersBoard.getPiece(rowIndex, colIndex);
+            const piece: CheckersPiece | null = game.getPiece(rowIndex, colIndex);
             if (piece) {
                 if (piece.color === PieceColor.Black) {
                     const blackPiece = document.createElement('div');
                     blackPiece.classList.add('black-piece');
                     col.appendChild(blackPiece);
+                    blackPiece.addEventListener("click", () => {
+                        const moves = game.possibleMoves(rowIndex, colIndex);
+                        if (moves.length > 0) {
+                            const selected = document.createElement('selected');
+                            selected.classList.add('selected');
+                            blackPiece.appendChild(selected);
+                            console.log(moves);
+                            // for (let i = 0; i < moves.length; i++) {
+
+                            // }
+                        }
+                    });
                 }
                 else if (piece.color === PieceColor.Red) {
                     const redPiece = document.createElement('div');
                     redPiece.classList.add('red-piece');
                     col.appendChild(redPiece);
+                    redPiece.addEventListener("click", () => {
+                        const moves = game.possibleMoves(rowIndex, colIndex);
+                        if (moves.length > 0) {
+                            const selected = document.createElement('selected');
+                            selected.classList.add('selected');
+                            redPiece.appendChild(selected);
+                            console.log(moves);
+                            // for (let i = 0; i < moves.length; i++) {
+
+                            // }
+                        }
+                    });
                 }
             }
             else {
