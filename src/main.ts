@@ -281,8 +281,14 @@ class CheckersGame {
                     else {
                         this.changeTurn();
                     }
-                    console.log(this.checkForEndGame());
-                console.log(`${this.currentPlayer.name}'s turn now`)
+                    this.checkForEndGame();
+                    if (this.currentState === State.gameFinished) {
+                        console.log(`${this.currentPlayer.name} has lost the game :/`);
+                    }
+                    else {
+                        console.log(`${this.currentPlayer.name}'s turn now`);
+                    }
+                
                 // return true;
             }
         }
@@ -357,9 +363,27 @@ class CheckersGame {
         else {return false;}
     }
 
+    // check if there arent any possible moves left
+    public noValidMoves(): boolean {
+        let movePossible = true;
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                if (this.getPiece(row, col) !== null) {
+                    if (this.possibleMoves(row, col) === null) {
+                        movePossible = false;
+                    }
+                    else {
+                        movePossible = true;
+                    }
+                }
+            }
+        }
+        return movePossible;
+    }
+
     // check if game has ended
     public checkForEndGame(): void {
-        if (this.noPiecesLeft(this.currentPlayer)) {
+        if (this.noPiecesLeft(this.currentPlayer) && this.noValidMoves() === false) {
             this.currentState = State.gameFinished;
             console.log(`${this.currentPlayer.name} has lost the game :/`);
         }
