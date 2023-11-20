@@ -87,10 +87,14 @@ button:hover {
 .main .board-container .row{
   display: flex;
   justify-content: center;
+  
 }
 
 .main .board-container .col {
   border: 2px solid black;
+  padding: 0;
+  height: 6rem;
+  width: 6rem;
 }
 
 /*Light brown squares*/
@@ -117,7 +121,7 @@ Images from https://www.iconfinder.com/search?q=checkers
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 50%; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 0.75rem rgb(72, 72, 72));
   height: 5rem;
   width: 5rem;
 }
@@ -129,11 +133,11 @@ Images from https://www.iconfinder.com/search?q=checkers
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 0.75rem rgb(188, 1, 1));
   height: 5rem;
   width: 5rem;
 }
-
+/* 
 .main .board-container .col .empty-square {
   padding: 2.6rem;
-}
+} */
