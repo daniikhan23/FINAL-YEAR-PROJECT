@@ -390,7 +390,6 @@ class CheckersGame {
     }
 }
 
-
 // DOM Manipulation to show the board on the webpage
 const playerOne = new Player("Dani", PieceColor.Red);
 const playerTwo = new Player("AI", PieceColor.Black);
@@ -408,13 +407,20 @@ function startBoard() {
                 pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
                 col.appendChild(pieceDiv);
 
-                // Bind the function with the current context and parameters
+                // bind function with correct parameters
                 pieceDiv.addEventListener("click", selectPiece.bind(null, rowIndex, colIndex, pieceDiv));
             }
         });
     });
 }
 
+function clearHighlights() {
+    document.querySelectorAll('.highlight').forEach(highlighted => {
+        highlighted.classList.remove('highlight');
+    });
+}
+
+// selects piece that is clicked on and highlights potential locations
 function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElement) {
     const piece = game.getPiece(rowIndex, colIndex);
     // check player's turn
@@ -422,19 +428,28 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
         const moves = game.possibleMoves(rowIndex, colIndex);
         // check if any moves available
         if (moves.length > 0) {
-            // remove any previously selected pieces 
+            // clear existing higlights
+            clearHighlights(); 
+            
+            // remove any previously selectec pieces
             document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
                 p.classList.remove('selected');
             });
-            // select correct piece
+            // select current piece
             pieceDiv.classList.toggle('selected');
             console.log(moves);
+
+            // highlight potential move locations
+            moves.forEach(move => {
+                const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
+                if (targetCell) {
+                    targetCell.classList.add('highlight');
+                }
+            });
         }
-    } 
-    else {
+    } else {
         console.log(`It's not ${piece?.color}'s turn.`);
     }
 }
-
 
 startBoard();

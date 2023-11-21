@@ -149,3 +149,7 @@ Images from https://www.iconfinder.com/search?q=checkers
   height: 5rem;
   width: 5rem;
 }
+
+.main .board-container .col.highlight {
+  background-color: rgb(101, 230, 150) !important;
+}

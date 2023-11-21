@@ -328,16 +328,28 @@ function startBoard() {
         });
     });
 }
+function clearHighlights() {
+    document.querySelectorAll('.highlight').forEach(highlighted => {
+        highlighted.classList.remove('highlight');
+    });
+}
 function selectPiece(rowIndex, colIndex, pieceDiv) {
     const piece = game.getPiece(rowIndex, colIndex);
     if (piece && piece.color === game.currentPlayer.color) {
         const moves = game.possibleMoves(rowIndex, colIndex);
         if (moves.length > 0) {
+            clearHighlights();
             document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
                 p.classList.remove('selected');
             });
             pieceDiv.classList.toggle('selected');
             console.log(moves);
+            moves.forEach(move => {
+                const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
+                if (targetCell) {
+                    targetCell.classList.add('highlight');
+                }
+            });
         }
     }
     else {
