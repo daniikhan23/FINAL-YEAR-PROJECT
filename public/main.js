@@ -320,34 +320,24 @@ function startBoard() {
         cols.forEach((col, colIndex) => {
             const piece = game.getPiece(rowIndex, colIndex);
             if (piece) {
-                if (piece.color === PieceColor.Black) {
-                    const blackPiece = document.createElement('div');
-                    blackPiece.classList.add('black-piece');
-                    col.appendChild(blackPiece);
-                    blackPiece.addEventListener("click", () => {
+                const pieceDiv = document.createElement('div');
+                pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
+                col.appendChild(pieceDiv);
+                pieceDiv.addEventListener("click", () => {
+                    if (piece.color === game.currentPlayer.color) {
                         const moves = game.possibleMoves(rowIndex, colIndex);
                         if (moves.length > 0) {
-                            const selected = document.createElement('selected');
-                            selected.classList.add('selected');
-                            blackPiece.appendChild(selected);
+                            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+                                p.classList.remove('selected');
+                            });
+                            pieceDiv.classList.toggle('selected');
                             console.log(moves);
                         }
-                    });
-                }
-                else if (piece.color === PieceColor.Red) {
-                    const redPiece = document.createElement('div');
-                    redPiece.classList.add('red-piece');
-                    col.appendChild(redPiece);
-                    redPiece.addEventListener("click", () => {
-                        const moves = game.possibleMoves(rowIndex, colIndex);
-                        if (moves.length > 0) {
-                            const selected = document.createElement('selected');
-                            selected.classList.add('selected');
-                            redPiece.appendChild(selected);
-                            console.log(moves);
-                        }
-                    });
-                }
+                    }
+                    else {
+                        console.log(`It's not ${piece.color}'s turn.`);
+                    }
+                });
             }
             else {
                 const emptySquare = document.createElement('div');

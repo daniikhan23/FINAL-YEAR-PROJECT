@@ -103,7 +103,7 @@ class CheckersGame {
     public board: (CheckersPiece | null) [][];
     private players: [Player, Player];
     private currentState: State;
-    private currentPlayer: Player;
+    public currentPlayer: Player;
 
     constructor(playerOne: Player, playerTwo: Player) {
         this.board = new CheckersBoard().board;
@@ -404,42 +404,30 @@ function startBoard() {
         cols.forEach((col, colIndex) => {
             const piece: CheckersPiece | null = game.getPiece(rowIndex, colIndex);
             if (piece) {
-                if (piece.color === PieceColor.Black) {
-                    const blackPiece = document.createElement('div');
-                    blackPiece.classList.add('black-piece');
-                    col.appendChild(blackPiece);
-                    blackPiece.addEventListener("click", () => {
+                const pieceDiv = document.createElement('div');
+                pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
+                col.appendChild(pieceDiv);
+
+                pieceDiv.addEventListener("click", () => {
+                    // check current player's turn
+                    if (piece.color === game.currentPlayer.color) {
                         const moves = game.possibleMoves(rowIndex, colIndex);
                         if (moves.length > 0) {
-                            const selected = document.createElement('selected');
-                            selected.classList.add('selected');
-                            blackPiece.appendChild(selected);
-                            console.log(moves);
-                            // for (let i = 0; i < moves.length; i++) {
+                            // remove selection highlight from all pieces
+                            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+                                p.classList.remove('selected');
+                            });
 
-                            // }
-                        }
-                    });
-                }
-                else if (piece.color === PieceColor.Red) {
-                    const redPiece = document.createElement('div');
-                    redPiece.classList.add('red-piece');
-                    col.appendChild(redPiece);
-                    redPiece.addEventListener("click", () => {
-                        const moves = game.possibleMoves(rowIndex, colIndex);
-                        if (moves.length > 0) {
-                            const selected = document.createElement('selected');
-                            selected.classList.add('selected');
-                            redPiece.appendChild(selected);
+                            // select the correct piece
+                            pieceDiv.classList.toggle('selected');
                             console.log(moves);
-                            // for (let i = 0; i < moves.length; i++) {
-
-                            // }
                         }
-                    });
-                }
-            }
-            else {
+                    } 
+                    else {
+                        console.log(`It's not ${piece.color}'s turn.`);
+                    }
+                });
+            } else {
                 const emptySquare = document.createElement('div');
                 emptySquare.classList.add('empty-square');
                 col.appendChild(emptySquare);
@@ -447,4 +435,7 @@ function startBoard() {
         });
     });
 }
+
+
+
 startBoard();

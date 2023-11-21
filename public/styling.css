@@ -126,8 +126,16 @@ Images from https://www.iconfinder.com/search?q=checkers
   width: 5rem;
 }
 
-.main .board-container .col .black-piece .selected {
-  border-color: gold;
+.main .board-container .col .black-piece.selected {
+  border: 3px solid gold;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.main .board-container .col .red-piece.selected {
+  border: 3px solid gold;
+  border-radius: 50%;
+  box-sizing: border-box;
 }
 
 /* Image for red piece */
@@ -141,7 +149,3 @@ Images from https://www.iconfinder.com/search?q=checkers
   height: 5rem;
   width: 5rem;
 }
-/* 
-.main .board-container .col .empty-square {
-  padding: 2.6rem;
-} */
