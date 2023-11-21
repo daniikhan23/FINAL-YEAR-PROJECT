@@ -323,29 +323,26 @@ function startBoard() {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
                 col.appendChild(pieceDiv);
-                pieceDiv.addEventListener("click", () => {
-                    if (piece.color === game.currentPlayer.color) {
-                        const moves = game.possibleMoves(rowIndex, colIndex);
-                        if (moves.length > 0) {
-                            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
-                                p.classList.remove('selected');
-                            });
-                            pieceDiv.classList.toggle('selected');
-                            console.log(moves);
-                        }
-                    }
-                    else {
-                        console.log(`It's not ${piece.color}'s turn.`);
-                    }
-                });
-            }
-            else {
-                const emptySquare = document.createElement('div');
-                emptySquare.classList.add('empty-square');
-                col.appendChild(emptySquare);
+                pieceDiv.addEventListener("click", selectPiece.bind(null, rowIndex, colIndex, pieceDiv));
             }
         });
     });
+}
+function selectPiece(rowIndex, colIndex, pieceDiv) {
+    const piece = game.getPiece(rowIndex, colIndex);
+    if (piece && piece.color === game.currentPlayer.color) {
+        const moves = game.possibleMoves(rowIndex, colIndex);
+        if (moves.length > 0) {
+            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+                p.classList.remove('selected');
+            });
+            pieceDiv.classList.toggle('selected');
+            console.log(moves);
+        }
+    }
+    else {
+        console.log(`It's not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn.`);
+    }
 }
 startBoard();
 //# sourceMappingURL=main.js.map

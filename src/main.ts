@@ -402,40 +402,39 @@ function startBoard() {
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col')!;
         cols.forEach((col, colIndex) => {
-            const piece: CheckersPiece | null = game.getPiece(rowIndex, colIndex);
+            const piece = game.getPiece(rowIndex, colIndex);
             if (piece) {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
                 col.appendChild(pieceDiv);
 
-                pieceDiv.addEventListener("click", () => {
-                    // check current player's turn
-                    if (piece.color === game.currentPlayer.color) {
-                        const moves = game.possibleMoves(rowIndex, colIndex);
-                        if (moves.length > 0) {
-                            // remove selection highlight from all pieces
-                            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
-                                p.classList.remove('selected');
-                            });
-
-                            // select the correct piece
-                            pieceDiv.classList.toggle('selected');
-                            console.log(moves);
-                        }
-                    } 
-                    else {
-                        console.log(`It's not ${piece.color}'s turn.`);
-                    }
-                });
-            } else {
-                const emptySquare = document.createElement('div');
-                emptySquare.classList.add('empty-square');
-                col.appendChild(emptySquare);
+                // Bind the function with the current context and parameters
+                pieceDiv.addEventListener("click", selectPiece.bind(null, rowIndex, colIndex, pieceDiv));
             }
         });
     });
 }
 
+function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElement) {
+    const piece = game.getPiece(rowIndex, colIndex);
+    // check player's turn
+    if (piece && piece.color === game.currentPlayer.color) {
+        const moves = game.possibleMoves(rowIndex, colIndex);
+        // check if any moves available
+        if (moves.length > 0) {
+            // remove any previously selected pieces 
+            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+                p.classList.remove('selected');
+            });
+            // select correct piece
+            pieceDiv.classList.toggle('selected');
+            console.log(moves);
+        }
+    } 
+    else {
+        console.log(`It's not ${piece?.color}'s turn.`);
+    }
+}
 
 
 startBoard();
