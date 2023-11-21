@@ -254,7 +254,7 @@ class CheckersGame {
 
     public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
         const piece = this.getPiece(startRow, startCol);
-        let capturedAlready;
+        let capturedAlready = false;
         if (piece && piece.color === this.currentPlayer.color){
             if (this.validateMove(startRow, startCol, endRow, endCol)) {
                 if (piece !== null) {
@@ -274,22 +274,27 @@ class CheckersGame {
                 this.board[endRow][endCol] = piece;
                 this.promoteToKing(endRow, endCol);
                 const nextCaptures = this.chainCaptures(endRow, endCol);
-                    console.log(nextCaptures && capturedAlready === true);
+                if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
                         return;
                     }
                     else {
                         this.changeTurn();
                     }
-                    this.checkForEndGame();
-                    if (this.currentState === State.gameFinished) {
-                        console.log(`${this.currentPlayer.name} has lost the game :/`);
-                    }
-                    else {
-                        console.log(`${this.currentPlayer.name}'s turn now`);
-                    }
+                }
+                else {
+                    this.changeTurn();
+                }
                 
-                // return true;
+                this.checkForEndGame();
+                if (this.currentState === State.gameFinished) {
+                    console.log(`${this.currentPlayer.name} has lost the game :/`);
+                }
+                else {
+                    console.log(`${this.currentPlayer.name}'s turn now`);
+                }
+            
+            // return true;
             }
         }
         console.log(this.board);
@@ -391,8 +396,8 @@ class CheckersGame {
 }
 
 // DOM Manipulation to show the board on the webpage
-const playerOne = new Player("Dani", PieceColor.Red);
-const playerTwo = new Player("AI", PieceColor.Black);
+const playerOne = new Player("Red", PieceColor.Red);
+const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
 
 const rows = document.querySelectorAll('.board-container .row')!;
@@ -444,11 +449,36 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
                 const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
                 if (targetCell) {
                     targetCell.classList.add('highlight');
+                    targetCell.addEventListener('click', () => {
+                        executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
+                    });
                 }
             });
         }
     } else {
         console.log(`It's not ${piece?.color}'s turn.`);
+    }
+}
+
+function executeMove(startRow: number, startCol: number, endRow: number, endCol: number, pieceDiv: HTMLDivElement) {
+    // move the piece in the game.board array
+    const piece = game.getPiece(startRow, startCol);
+    if (piece && piece.color === game.currentPlayer.color) {
+        game.movePiece(startRow, startCol, endRow, endCol);
+
+    // find target cell to move to
+    const targetCell = document.querySelector(`.col[data-row='${endRow}'][data-col='${endCol}']`);
+    if (targetCell) {
+        targetCell.appendChild(pieceDiv);
+    }
+
+    // clear highlights
+    clearHighlights();
+    // clear previous selections
+    document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+        p.classList.remove('selected');
+    });    
+    console.log(`${[piece?.color]} piece has moved from ${startRow}, ${startCol} to ${endRow}, ${endCol}`);
     }
 }
 

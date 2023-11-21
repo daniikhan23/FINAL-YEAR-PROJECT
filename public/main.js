@@ -192,7 +192,7 @@ class CheckersGame {
     }
     movePiece(startRow, startCol, endRow, endCol) {
         const piece = this.getPiece(startRow, startCol);
-        let capturedAlready;
+        let capturedAlready = false;
         if (piece && piece.color === this.currentPlayer.color) {
             if (this.validateMove(startRow, startCol, endRow, endCol)) {
                 if (piece !== null) {
@@ -212,9 +212,13 @@ class CheckersGame {
                 this.board[endRow][endCol] = piece;
                 this.promoteToKing(endRow, endCol);
                 const nextCaptures = this.chainCaptures(endRow, endCol);
-                console.log(nextCaptures && capturedAlready === true);
-                if (nextCaptures.length > 0) {
-                    return;
+                if (nextCaptures && capturedAlready === true) {
+                    if (nextCaptures.length > 0) {
+                        return;
+                    }
+                    else {
+                        this.changeTurn();
+                    }
                 }
                 else {
                     this.changeTurn();
@@ -310,8 +314,8 @@ class CheckersGame {
         }
     }
 }
-const playerOne = new Player("Dani", PieceColor.Red);
-const playerTwo = new Player("AI", PieceColor.Black);
+const playerOne = new Player("Red", PieceColor.Red);
+const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
 const rows = document.querySelectorAll('.board-container .row');
 function startBoard() {
@@ -348,12 +352,30 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
                 const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
                 if (targetCell) {
                     targetCell.classList.add('highlight');
+                    targetCell.addEventListener('click', () => {
+                        executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
+                    });
                 }
             });
         }
     }
     else {
         console.log(`It's not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn.`);
+    }
+}
+function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
+    const piece = game.getPiece(startRow, startCol);
+    if (piece && piece.color === game.currentPlayer.color) {
+        game.movePiece(startRow, startCol, endRow, endCol);
+        const targetCell = document.querySelector(`.col[data-row='${endRow}'][data-col='${endCol}']`);
+        if (targetCell) {
+            targetCell.appendChild(pieceDiv);
+        }
+        clearHighlights();
+        document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+            p.classList.remove('selected');
+        });
+        console.log(`${[piece === null || piece === void 0 ? void 0 : piece.color]} piece has moved from ${startRow}, ${startCol} to ${endRow}, ${endCol}`);
     }
 }
 startBoard();
