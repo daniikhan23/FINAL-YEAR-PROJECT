@@ -319,7 +319,7 @@ const playerOne = new Player("Red", PieceColor.Red);
 const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
 const rows = document.querySelectorAll('.board-container .row');
-function startBoard() {
+function populateBoard() {
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col');
         cols.forEach((col, colIndex) => {
@@ -390,35 +390,21 @@ function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
     }
 }
 function updateBoardDOM() {
-    rows.forEach(row => {
-        row.querySelectorAll('.col').forEach(col => {
-            col.classList.remove('highlight');
+    clearHighlights();
+    rows.forEach((row) => {
+        row.querySelectorAll('.col').forEach((col) => {
             if (col.firstChild) {
                 const pieceDiv = col.firstChild;
                 const existingListener = pieceEventListeners.get(pieceDiv);
                 if (existingListener) {
-                    pieceDiv.removeEventListener("click", existingListener);
+                    pieceDiv.removeEventListener('click', existingListener);
                     pieceEventListeners.delete(pieceDiv);
                 }
                 col.removeChild(col.firstChild);
             }
         });
     });
-    game.board.forEach((row, rowIndex) => {
-        row.forEach((cell, colIndex) => {
-            if (cell !== null) {
-                const pieceDiv = document.createElement('div');
-                pieceDiv.classList.add(cell.color === PieceColor.Black ? 'black-piece' : 'red-piece');
-                const newEventListener = selectPiece.bind(null, rowIndex, colIndex, pieceDiv);
-                pieceDiv.addEventListener("click", newEventListener);
-                pieceEventListeners.set(pieceDiv, newEventListener);
-                const col = document.querySelector(`.col[data-row='${rowIndex}'][data-col='${colIndex}']`);
-                if (col) {
-                    col.appendChild(pieceDiv);
-                }
-            }
-        });
-    });
+    populateBoard();
 }
-startBoard();
+populateBoard();
 //# sourceMappingURL=main.js.map

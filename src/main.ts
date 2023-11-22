@@ -405,7 +405,7 @@ const game = new CheckersGame(playerOne, playerTwo);
 
 const rows = document.querySelectorAll('.board-container .row')!;
 
-function startBoard() {
+function populateBoard() {
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col')!;
         cols.forEach((col, colIndex) => {
@@ -502,46 +502,25 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
     }
 }
 
-
 function updateBoardDOM() {
-    // clear the board currently displayed in the DOM
-    rows.forEach(row => {
-        row.querySelectorAll('.col').forEach(col => {
-            // clear all highlights
-            col.classList.remove('highlight');
-            
-            // remove pieces and event listeners
+    clearHighlights();
+    // iterate through the board
+    rows.forEach((row) => {
+        row.querySelectorAll('.col').forEach((col) => {
+            // remove all existing pieces and event listeners
             if (col.firstChild) {
                 const pieceDiv = col.firstChild as HTMLDivElement;
                 const existingListener = pieceEventListeners.get(pieceDiv);
                 if (existingListener) {
-                    pieceDiv.removeEventListener("click", existingListener);
+                    pieceDiv.removeEventListener('click', existingListener);
                     pieceEventListeners.delete(pieceDiv);
                 }
                 col.removeChild(col.firstChild);
             }
         });
     });
-    // add pieces to the DOM as they are in the game.board state
-    game.board.forEach((row, rowIndex) => {
-        row.forEach((cell, colIndex) => {
-            if (cell !== null) {
-                // create divs again for the pieces 
-                const pieceDiv = document.createElement('div');
-                pieceDiv.classList.add(cell.color === PieceColor.Black ? 'black-piece' : 'red-piece');
-
-                // bind event listeners to the pieces 
-                const newEventListener = selectPiece.bind(null, rowIndex, colIndex, pieceDiv);
-                pieceDiv.addEventListener("click", newEventListener);
-                pieceEventListeners.set(pieceDiv, newEventListener);
-
-                const col = document.querySelector(`.col[data-row='${rowIndex}'][data-col='${colIndex}']`);
-                if (col) {
-                    col.appendChild(pieceDiv);
-                }
-            }
-        });
-    });
+    // populate the board with the pieces as well as their event listeners
+    populateBoard();
 }
 
-startBoard();
+populateBoard();

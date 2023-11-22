@@ -125,3 +125,5 @@ Next Steps till interim report are:
 The issue now is that there's multiple event listeners that are created on specific columns that a piece is moved to. Because of this there are times 
 where a piece is not correctly selected or its selection and highlighted potential locations arent shown even though it can be moved. Trying to figure
 out how to fix this at the moment. 
+Made modifications to updateBoardDOM() function to simply remove everything entirely and once that is done, call the populateBoard() function, the same 
+function that is used to start the game. 
