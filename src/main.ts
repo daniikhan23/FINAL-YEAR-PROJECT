@@ -423,44 +423,55 @@ function startBoard() {
 }
 
 function clearHighlights() {
-    document.querySelectorAll('.highlight').forEach(highlighted => {
+    document.querySelectorAll('.highlight').forEach(highlightedElement => {
+        const highlighted = highlightedElement as HTMLDivElement;
         highlighted.classList.remove('highlight');
+
+        const moveListener = pieceEventListeners.get(highlighted);
+        if (moveListener) {
+            highlighted.removeEventListener("click", moveListener);
+            pieceEventListeners.delete(highlighted);
+        } 
     });
 }
 
 // selects piece that is clicked on and highlights potential locations
 function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElement) {
+    // select current piece
     const piece = game.getPiece(rowIndex, colIndex);
-
+    // clear existing highlights
+    clearHighlights(); 
+            
+    // remove any previously selectec pieces
+    document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+        p.classList.remove('selected');
+    });
+    pieceDiv.classList.toggle('selected');
+    
     // check player's turn and if piece exists
     if (piece && piece.color === game.currentPlayer.color) {
         console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
+
+        console.log(moves);
+
         // check if any moves available
         if (moves.length > 0) {
-            // clear existing highlights
-            clearHighlights(); 
-            
-            // remove any previously selectec pieces
-            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
-                p.classList.remove('selected');
-            });
-            // select current piece
-            pieceDiv.classList.toggle('selected');
-            console.log(moves);
-
             // highlight potential move locations
             moves.forEach(move => {
-                const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
+                const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`) as HTMLDivElement;
                 if (targetCell) {
                     targetCell.classList.add('highlight');
-                    targetCell.addEventListener('click', () => {
+                    const moveListener = () => {
                         executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
-                    });
+                    };
+                    targetCell.addEventListener('click', moveListener);
+                    pieceEventListeners.set(targetCell, moveListener);
                 }
             });
         }
-    } else {
+    } 
+    else {
         console.log(`It's not ${piece?.color}'s turn.`);
     }
 }

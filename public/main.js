@@ -334,29 +334,37 @@ function startBoard() {
     });
 }
 function clearHighlights() {
-    document.querySelectorAll('.highlight').forEach(highlighted => {
+    document.querySelectorAll('.highlight').forEach(highlightedElement => {
+        const highlighted = highlightedElement;
         highlighted.classList.remove('highlight');
+        const moveListener = pieceEventListeners.get(highlighted);
+        if (moveListener) {
+            highlighted.removeEventListener("click", moveListener);
+            pieceEventListeners.delete(highlighted);
+        }
     });
 }
 function selectPiece(rowIndex, colIndex, pieceDiv) {
     const piece = game.getPiece(rowIndex, colIndex);
+    clearHighlights();
+    document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
+        p.classList.remove('selected');
+    });
+    pieceDiv.classList.toggle('selected');
     if (piece && piece.color === game.currentPlayer.color) {
         console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
+        console.log(moves);
         if (moves.length > 0) {
-            clearHighlights();
-            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
-                p.classList.remove('selected');
-            });
-            pieceDiv.classList.toggle('selected');
-            console.log(moves);
             moves.forEach(move => {
                 const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
                 if (targetCell) {
                     targetCell.classList.add('highlight');
-                    targetCell.addEventListener('click', () => {
+                    const moveListener = () => {
                         executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
-                    });
+                    };
+                    targetCell.addEventListener('click', moveListener);
+                    pieceEventListeners.set(targetCell, moveListener);
                 }
             });
         }
