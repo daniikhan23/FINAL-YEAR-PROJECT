@@ -96,3 +96,20 @@ Completed the second condition for checking end of game. Only thing remaining is
 that as soon as I have made the game playable on the DOM or potentially in the future as it is not a 'fixed' rule in checkers, some 
 variants use it and others do not. So far the game logic is solid and error-free, will test it further and then work on optimization 
 and refactoring. 
+
+Created a third branch called dom-manipulation, to start working on the visual representation of the board as well as making it playable
+on the actual page rather than the console. Had to make some changes to the HTML structure to add data-rows and cols to be able to actually 
+be able to make moves on the page and create child divs in those particular columns and delete them from the previous ones. 
+Simplified the startBoard() function to simply create the board and the relevant divs for where there are pieces as well as adding event 
+listeners to those pieces which will call the selectPiece() function. selectPiece() has gone through some changes as well to able to 
+correctly select the piece that the user wants, removing any previous highlighted locations of other pieces as well as their selection. 
+When a piece is selected a change is made to that div to add .selected which by the CSS adds a golden border around that particular piece. 
+Clicking the piece also logs the array of moves available to it and that is use to then highlight the relevant rows and columns that the 
+piece can then move to. The executeMove() function then is attached as an event listener to the selected piece. 
+Initially the executeMove() function was becoming incredibly complicated and the more I developed it the more the function became redundant 
+as it started making use of the same validation and capture checks that the CheckersGame movePiece() function already internally checked for 
+before making a move. I decided to restructure this part of the code as it made a lot more sense to instead update the DOM to reflect the internal 
+state of the game board rather after a move is made than constantly updating the individual parts of the HTML structure. 
+The updateBoardDOM() function simply removes all pieces from the board initially as well as their individual event listeners and then iterates through 
+the entire board array again, creating the relevant piece divs as children to their relevant columns as well as attaching event listeners to them. 
+This allowed the game to be completely playable, however, there are still some minor bugs that I have to fix. 
