@@ -465,42 +465,17 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
 }
 
 function executeMove(startRow: number, startCol: number, endRow: number, endCol: number, pieceDiv: HTMLDivElement) {
-    
-    // move the piece in the game.board array
+    // get and move the piece to its intended location
     const piece = game.getPiece(startRow, startCol);
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
 
-        // find target cell to move to
-        const targetCell = document.querySelector(`.col[data-row='${endRow}'][data-col='${endCol}']`);
-        if (targetCell) {
-            // check if there's a listener for this piece and remove it
-            const existingListener = pieceEventListeners.get(pieceDiv);
-            if (existingListener) {
-                pieceDiv.removeEventListener("click", existingListener);
-                pieceEventListeners.delete(pieceDiv);
-            }
-
-            // attach new click listener to the piece
-            const newListener = selectPiece.bind(null, endRow, endCol, pieceDiv);
-            pieceDiv.addEventListener("click", newListener);
-            pieceEventListeners.set(pieceDiv, newListener);
-
-            // append the moved piece to the target cell
-            targetCell.appendChild(pieceDiv);
-
-            // clear highlights
-            clearHighlights();
-            // clear previous selections
-            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
-                p.classList.remove('selected');
-            });
-        }
+        // update DOM to show new state of the board
         updateBoardDOM();
-
-        console.log(`${piece?.color} piece has moved from ${startRow}, ${startCol} to ${endRow}, ${endCol}`);
-    } else {
-        console.log(`Invalid move or not ${piece?.color}'s turn.`);
+        console.log(`${piece?.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
+    } 
+    else {
+        console.log(`It is not ${piece?.color}'s turn`);
     }
 }
 

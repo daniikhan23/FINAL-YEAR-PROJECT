@@ -368,27 +368,11 @@ function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
     const piece = game.getPiece(startRow, startCol);
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
-        const targetCell = document.querySelector(`.col[data-row='${endRow}'][data-col='${endCol}']`);
-        if (targetCell) {
-            const existingListener = pieceEventListeners.get(pieceDiv);
-            if (existingListener) {
-                pieceDiv.removeEventListener("click", existingListener);
-                pieceEventListeners.delete(pieceDiv);
-            }
-            const newListener = selectPiece.bind(null, endRow, endCol, pieceDiv);
-            pieceDiv.addEventListener("click", newListener);
-            pieceEventListeners.set(pieceDiv, newListener);
-            targetCell.appendChild(pieceDiv);
-            clearHighlights();
-            document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
-                p.classList.remove('selected');
-            });
-        }
         updateBoardDOM();
-        console.log(`${piece === null || piece === void 0 ? void 0 : piece.color} piece has moved from ${startRow}, ${startCol} to ${endRow}, ${endCol}`);
+        console.log(`${piece === null || piece === void 0 ? void 0 : piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
     }
     else {
-        console.log(`Invalid move or not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn.`);
+        console.log(`It is not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn`);
     }
 }
 function updateBoardDOM() {
