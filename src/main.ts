@@ -462,6 +462,14 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
                 const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`) as HTMLDivElement;
                 if (targetCell) {
                     targetCell.classList.add('highlight');
+
+                    // remove any exisint listeners
+                    const existingListener = pieceEventListeners.get(targetCell);
+                    if (existingListener) {
+                        targetCell.removeEventListener('click', existingListener);
+                    }
+
+                    // add new event listener
                     const moveListener = () => {
                         executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
                     };

@@ -360,6 +360,10 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
                 const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
                 if (targetCell) {
                     targetCell.classList.add('highlight');
+                    const existingListener = pieceEventListeners.get(targetCell);
+                    if (existingListener) {
+                        targetCell.removeEventListener('click', existingListener);
+                    }
                     const moveListener = () => {
                         executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
                     };

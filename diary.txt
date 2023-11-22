@@ -121,3 +121,7 @@ Next Steps till interim report are:
 4. Multiple Pages
 5. Simple AI (hopefully)
 6. Backend (very unlikely because of remaining time)
+
+The issue now is that there's multiple event listeners that are created on specific columns that a piece is moved to. Because of this there are times 
+where a piece is not correctly selected or its selection and highlighted potential locations arent shown even though it can be moved. Trying to figure
+out how to fix this at the moment. 
