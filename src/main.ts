@@ -434,6 +434,7 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
 
     // check player's turn and if piece exists
     if (piece && piece.color === game.currentPlayer.color) {
+        console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
         // check if any moves available
         if (moves.length > 0) {
@@ -465,19 +466,23 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
 }
 
 function executeMove(startRow: number, startCol: number, endRow: number, endCol: number, pieceDiv: HTMLDivElement) {
-    // get and move the piece to its intended location
+    // Get the piece before moving
     const piece = game.getPiece(startRow, startCol);
-    if (piece && piece.color === game.currentPlayer.color) {
-        game.movePiece(startRow, startCol, endRow, endCol);
 
-        // update DOM to show new state of the board
+    if (piece && piece.color === game.currentPlayer.color) {
+        // Move the piece and update the DOM
+        game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
-        console.log(`${piece?.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
-    } 
-    else {
-        console.log(`It is not ${piece?.color}'s turn`);
+
+        // Check if the start position is now empty and the end position has a piece
+        const pieceAtEnd = game.getPiece(endRow, endCol);
+        const pieceAtStart = game.getPiece(startRow, startCol);
+        if (!pieceAtStart && pieceAtEnd) {
+            console.log(`${piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
+        }
     }
 }
+
 
 function updateBoardDOM() {
     // clear the board currently displayed in the DOM

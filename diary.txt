@@ -113,3 +113,11 @@ state of the game board rather after a move is made than constantly updating the
 The updateBoardDOM() function simply removes all pieces from the board initially as well as their individual event listeners and then iterates through 
 the entire board array again, creating the relevant piece divs as children to their relevant columns as well as attaching event listeners to them. 
 This allowed the game to be completely playable, however, there are still some minor bugs that I have to fix. 
+
+Next Steps till interim report are:
+1. Fully Playable (in progress)
+2. Documentation
+3. Unit Testing!
+4. Multiple Pages
+5. Simple AI (hopefully)
+6. Backend (very unlikely because of remaining time)

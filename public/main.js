@@ -341,6 +341,7 @@ function clearHighlights() {
 function selectPiece(rowIndex, colIndex, pieceDiv) {
     const piece = game.getPiece(rowIndex, colIndex);
     if (piece && piece.color === game.currentPlayer.color) {
+        console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
         if (moves.length > 0) {
             clearHighlights();
@@ -369,10 +370,11 @@ function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
-        console.log(`${piece === null || piece === void 0 ? void 0 : piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
-    }
-    else {
-        console.log(`It is not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn`);
+        const pieceAtEnd = game.getPiece(endRow, endCol);
+        const pieceAtStart = game.getPiece(startRow, startCol);
+        if (!pieceAtStart && pieceAtEnd) {
+            console.log(`${piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
+        }
     }
 }
 function updateBoardDOM() {
