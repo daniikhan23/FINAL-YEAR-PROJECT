@@ -384,11 +384,28 @@ function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
                 p.classList.remove('selected');
             });
         }
+        updateBoardDOM();
         console.log(`${piece === null || piece === void 0 ? void 0 : piece.color} piece has moved from ${startRow}, ${startCol} to ${endRow}, ${endCol}`);
     }
     else {
         console.log(`Invalid move or not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn.`);
     }
+}
+function updateBoardDOM() {
+    rows.forEach(row => {
+        row.querySelectorAll('.col').forEach(col => {
+            col.classList.remove('highlight');
+            if (col.firstChild) {
+                const pieceDiv = col.firstChild;
+                const existingListener = pieceEventListeners.get(pieceDiv);
+                if (existingListener) {
+                    pieceDiv.removeEventListener("click", existingListener);
+                    pieceEventListeners.delete(pieceDiv);
+                }
+                col.removeChild(col.firstChild);
+            }
+        });
+    });
 }
 startBoard();
 //# sourceMappingURL=main.js.map

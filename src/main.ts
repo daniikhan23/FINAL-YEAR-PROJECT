@@ -496,11 +496,34 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
                 p.classList.remove('selected');
             });
         }
+        updateBoardDOM();
 
         console.log(`${piece?.color} piece has moved from ${startRow}, ${startCol} to ${endRow}, ${endCol}`);
     } else {
         console.log(`Invalid move or not ${piece?.color}'s turn.`);
     }
+}
+
+function updateBoardDOM() {
+    // clear the board currently displayed in the DOM
+    rows.forEach(row => {
+        row.querySelectorAll('.col').forEach(col => {
+            // clear all highlights
+            col.classList.remove('highlight');
+            
+            // remove pieces and event listeners
+            if (col.firstChild) {
+                const pieceDiv = col.firstChild as HTMLDivElement;
+                const existingListener = pieceEventListeners.get(pieceDiv);
+                if (existingListener) {
+                    pieceDiv.removeEventListener("click", existingListener);
+                    pieceEventListeners.delete(pieceDiv);
+                }
+                col.removeChild(col.firstChild);
+            }
+        });
+    });
+    
 }
 
 startBoard();
