@@ -122,20 +122,20 @@ Images from https://www.iconfinder.com/search?q=checkers
   background-position: center;
   border-radius: 50%; 
   filter: drop-shadow(0 0 0.75rem rgb(72, 72, 72));
-  height: 5rem;
-  width: 5rem;
+  height: 5.5rem;
+  width: 5.5rem;
 }
 
-.main .board-container .col .black-piece.selected {
-  border: 3px solid gold;
+/* Image for king black piece */
+.main .board-container .col .black-piece-king {
+  background-image: url('../public/resources/img/blackKing.png'); 
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
   border-radius: 50%;
-  box-sizing: border-box;
-}
-
-.main .board-container .col .red-piece.selected {
-  border: 3px solid gold;
-  border-radius: 50%;
-  box-sizing: border-box;
+  filter: drop-shadow(0 0 1.5rem rgb(188, 1, 1));
+  height: 6rem;
+  width: 6rem;
 }
 
 /* Image for red piece */
@@ -146,8 +146,26 @@ Images from https://www.iconfinder.com/search?q=checkers
   background-position: center;
   border-radius: 50%;
   filter: drop-shadow(0 0 0.75rem rgb(188, 1, 1));
-  height: 5rem;
-  width: 5rem;
+  height: 5.5rem;
+  width: 5.5rem;
+}
+
+/* Image for king red piece */
+.main .board-container .col .red-piece-king {
+  background-image: url('../public/resources/img/redKing.png'); 
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 1.5rem rgb(72, 72, 72));
+  height: 6rem;
+  width: 6rem;
+}
+
+.main .board-container .col .selected {
+  border: 4px solid gold;
+  border-radius: 100%;
+  box-sizing: border-box;
 }
 
 .main .board-container .col.highlight {

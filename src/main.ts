@@ -412,7 +412,12 @@ function populateBoard() {
             const piece = game.getPiece(rowIndex, colIndex);
             if (piece) {
                 const pieceDiv = document.createElement('div');
-                pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
+                if (piece.isKing === true) {
+                    pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece-king': 'red-piece-king')
+                } 
+                else {
+                    pieceDiv.classList.add(piece.color === PieceColor.Black ? 'black-piece' : 'red-piece');
+                }
                 col.appendChild(pieceDiv);
 
                 // bind function with correct parameters
