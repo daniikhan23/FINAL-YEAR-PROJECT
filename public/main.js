@@ -406,6 +406,21 @@ function updateBoardDOM() {
             }
         });
     });
+    game.board.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+            if (cell !== null) {
+                const pieceDiv = document.createElement('div');
+                pieceDiv.classList.add(cell.color === PieceColor.Black ? 'black-piece' : 'red-piece');
+                const newEventListener = selectPiece.bind(null, rowIndex, colIndex, pieceDiv);
+                pieceDiv.addEventListener("click", newEventListener);
+                pieceEventListeners.set(pieceDiv, newEventListener);
+                const col = document.querySelector(`.col[data-row='${rowIndex}'][data-col='${colIndex}']`);
+                if (col) {
+                    col.appendChild(pieceDiv);
+                }
+            }
+        });
+    });
 }
 startBoard();
 //# sourceMappingURL=main.js.map

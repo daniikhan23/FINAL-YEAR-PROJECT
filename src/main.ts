@@ -523,7 +523,26 @@ function updateBoardDOM() {
             }
         });
     });
-    
+    // add pieces to the DOM as they are in the game.board state
+    game.board.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+            if (cell !== null) {
+                // create divs again for the pieces 
+                const pieceDiv = document.createElement('div');
+                pieceDiv.classList.add(cell.color === PieceColor.Black ? 'black-piece' : 'red-piece');
+
+                // bind event listeners to the pieces 
+                const newEventListener = selectPiece.bind(null, rowIndex, colIndex, pieceDiv);
+                pieceDiv.addEventListener("click", newEventListener);
+                pieceEventListeners.set(pieceDiv, newEventListener);
+
+                const col = document.querySelector(`.col[data-row='${rowIndex}'][data-col='${colIndex}']`);
+                if (col) {
+                    col.appendChild(pieceDiv);
+                }
+            }
+        });
+    });
 }
 
 startBoard();
