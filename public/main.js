@@ -318,7 +318,7 @@ const pieceEventListeners = new Map();
 const playerOne = new Player("Red", PieceColor.Red);
 const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
-const rows = document.querySelectorAll('.board-container .row');
+const rows = document.querySelectorAll('.board-container .container .row');
 function populateBoard() {
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col');

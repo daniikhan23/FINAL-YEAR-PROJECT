@@ -84,29 +84,37 @@ button:hover {
   margin: 10rem 50rem;
 }
 
+.main .board-container .container {
+  border: 0.2rem solid black;
+}
+
 .main .board-container .row{
-  display: flex;
+  /* display: flex; */
   justify-content: center;
-  
 }
 
 .main .board-container .col {
-  border: 2px solid black;
+  /* border: 0.1rem solid black; */
+  display: flex;
+  font-size: 1.3rem;
   padding: 0;
   height: 6rem;
   width: 6rem;
 }
 
+
 /*Light brown squares*/
-.board-container .row:nth-child(odd) .col:nth-child(odd),
-.board-container .row:nth-child(even) .col:nth-child(even) {
+.board-container .container .row:nth-child(odd) .col:nth-child(odd),
+.board-container .container .row:nth-child(even) .col:nth-child(even) {
   background-color: #f0d9b5;
+  color: #b58863
 }
 
 /*Dark brown squares */
-.board-container .row:nth-child(odd) .col:nth-child(even),
+.board-container .container .row:nth-child(odd) .col:nth-child(even),
 .board-container .row:nth-child(even) .col:nth-child(odd) {
   background-color: #b58863;
+  color: #f0d9b5
 }
 
 
@@ -115,7 +123,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 */
 
 /* Image for black piece */
-.main .board-container .col .black-piece {
+.main .board-container .container .col .black-piece {
   background-image: url('../public/resources/img/blackBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
@@ -127,7 +135,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 }
 
 /* Image for king black piece */
-.main .board-container .col .black-piece-king {
+.main .board-container .container .col .black-piece-king {
   background-image: url('../public/resources/img/blackKing.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
@@ -139,7 +147,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 }
 
 /* Image for red piece */
-.main .board-container .col .red-piece {
+.main .board-container .container .col .red-piece {
   background-image: url('../public/resources/img/redBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
@@ -151,7 +159,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 }
 
 /* Image for king red piece */
-.main .board-container .col .red-piece-king {
+.main .board-container .container .col .red-piece-king {
   background-image: url('../public/resources/img/redKing.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
@@ -162,12 +170,12 @@ Images from https://www.iconfinder.com/search?q=checkers
   width: 6rem;
 }
 
-.main .board-container .col .selected {
+.main .board-container .container .col .selected {
   border: 4px solid gold;
   border-radius: 100%;
   box-sizing: border-box;
 }
 
-.main .board-container .col.highlight {
+.main .board-container .container .col.highlight {
   background-color: rgb(101, 230, 150) !important;
 }
