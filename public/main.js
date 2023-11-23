@@ -1,4 +1,3 @@
-"use strict";
 class Moves {
     constructor(startRow, startCol, endRow, endCol) {
         this.startRow = startRow;
@@ -7,12 +6,12 @@ class Moves {
         this.endCol = endCol;
     }
 }
-var PieceColor;
+export var PieceColor;
 (function (PieceColor) {
     PieceColor["Black"] = "black";
     PieceColor["Red"] = "red";
 })(PieceColor || (PieceColor = {}));
-class CheckersPiece {
+export class CheckersPiece {
     constructor(color, isKing = false) {
         this.color = color;
         this.isKing = isKing;

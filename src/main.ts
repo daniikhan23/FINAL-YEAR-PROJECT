@@ -25,7 +25,7 @@ class Moves {
 /**
  * Enum for piece colors in the checkers game.
  */
-enum PieceColor {
+export enum PieceColor {
     Black = 'black',
     Red = 'red'
 }
@@ -33,7 +33,7 @@ enum PieceColor {
 /**
  * Represents a checkers piece, including its color and king status.
  */
-class CheckersPiece {
+export class CheckersPiece {
     public color: PieceColor;
     public isKing: boolean;
 
