@@ -101,15 +101,17 @@ class Player {
 // class for handling the actual game state and player turns
 class CheckersGame {
     public board: (CheckersPiece | null) [][];
-    private players: [Player, Player];
-    private currentState: State;
+    public players: [Player, Player];
+    public currentState: State;
     public currentPlayer: Player;
+    public winner: Player | null;
 
     constructor(playerOne: Player, playerTwo: Player) {
         this.board = new CheckersBoard().board;
         this.players = [playerOne, playerTwo];
         this.currentState = State.inProgress;
         this.currentPlayer = playerOne;
+        this.winner = null;
     }
 
     // a method to change the turn of a player
@@ -285,16 +287,6 @@ class CheckersGame {
                 else {
                     this.changeTurn();
                 }
-                
-                this.checkForEndGame();
-                if (this.currentState === State.gameFinished) {
-                    console.log(`${this.currentPlayer.name} has lost the game :/`);
-                }
-                else {
-                    console.log(`${this.currentPlayer.name}'s turn now`);
-                }
-            
-            // return true;
             }
         }
         console.log(this.board);
@@ -302,7 +294,7 @@ class CheckersGame {
         // return false;
     }
 
-    // method for handling capture of pieces and updating scores accordingly depending on whether a regular or king piece is captured
+    // method that updates players scores and number of captured pieces 
     public handlePieceCapture(piece: CheckersPiece | null): void {
         if (piece?.isKing === true) {
             this.currentPlayer.updateScore(2);
@@ -370,27 +362,31 @@ class CheckersGame {
 
     // check if there arent any possible moves left
     public noValidMoves(): boolean {
-        let movePossible = true;
+        let validMoves = true;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 if (this.getPiece(row, col) !== null) {
                     if (this.possibleMoves(row, col) === null) {
-                        movePossible = false;
+                        validMoves = false;
                     }
                     else {
-                        movePossible = true;
+                        validMoves = true;
                     }
                 }
             }
         }
-        return movePossible;
+        return validMoves;
     }
 
     // check if game has ended
-    public checkForEndGame(): void {
-        if (this.noPiecesLeft(this.currentPlayer) && this.noValidMoves() === false) {
-            this.currentState = State.gameFinished;
-            console.log(`${this.currentPlayer.name} has lost the game :/`);
+    public checkEndOfGame(): void {
+        if (this.noPiecesLeft(this.players[0])) {
+            this.currentState = State.gameFinished
+            this.winner = this.players[1];
+        }
+        else if (this.noPiecesLeft(this.players[1])) {
+            this.currentState = State.gameFinished
+            this.winner = this.players[0];
         }
     }
 }
@@ -402,6 +398,7 @@ const pieceEventListeners = new Map<HTMLDivElement, EventListener>();
 const playerOne = new Player("Red", PieceColor.Red);
 const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
+let gameStatus: boolean = false;
 
 const rows = document.querySelectorAll('.board-container .container .row')!;
 
@@ -507,6 +504,10 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
         if (!pieceAtStart && pieceAtEnd) {
             console.log(`${piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
         }
+    }
+    game.checkEndOfGame();
+    if (game.currentState === State.gameFinished) {
+        alert(`${game.winner?.name} has won the game! \n${game.winner?.name} had a score of ${game.winner?.score} and captured ${game.winner?.capturedPieces} pieces`);
     }
 }
 

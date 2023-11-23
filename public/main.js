@@ -75,6 +75,7 @@ class CheckersGame {
         this.players = [playerOne, playerTwo];
         this.currentState = State.inProgress;
         this.currentPlayer = playerOne;
+        this.winner = null;
     }
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
@@ -223,13 +224,6 @@ class CheckersGame {
                 else {
                     this.changeTurn();
                 }
-                this.checkForEndGame();
-                if (this.currentState === State.gameFinished) {
-                    console.log(`${this.currentPlayer.name} has lost the game :/`);
-                }
-                else {
-                    console.log(`${this.currentPlayer.name}'s turn now`);
-                }
             }
         }
         console.log(this.board);
@@ -292,25 +286,29 @@ class CheckersGame {
         }
     }
     noValidMoves() {
-        let movePossible = true;
+        let validMoves = true;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 if (this.getPiece(row, col) !== null) {
                     if (this.possibleMoves(row, col) === null) {
-                        movePossible = false;
+                        validMoves = false;
                     }
                     else {
-                        movePossible = true;
+                        validMoves = true;
                     }
                 }
             }
         }
-        return movePossible;
+        return validMoves;
     }
-    checkForEndGame() {
-        if (this.noPiecesLeft(this.currentPlayer) && this.noValidMoves() === false) {
+    checkEndOfGame() {
+        if (this.noPiecesLeft(this.players[0])) {
             this.currentState = State.gameFinished;
-            console.log(`${this.currentPlayer.name} has lost the game :/`);
+            this.winner = this.players[1];
+        }
+        else if (this.noPiecesLeft(this.players[1])) {
+            this.currentState = State.gameFinished;
+            this.winner = this.players[0];
         }
     }
 }
@@ -318,6 +316,7 @@ const pieceEventListeners = new Map();
 const playerOne = new Player("Red", PieceColor.Red);
 const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
+let gameStatus = false;
 const rows = document.querySelectorAll('.board-container .container .row');
 function populateBoard() {
     rows.forEach((row, rowIndex) => {
@@ -386,6 +385,7 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
     }
 }
 function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
+    var _a, _b, _c, _d;
     const piece = game.getPiece(startRow, startCol);
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
@@ -395,6 +395,10 @@ function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
         if (!pieceAtStart && pieceAtEnd) {
             console.log(`${piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
         }
+    }
+    game.checkEndOfGame();
+    if (game.currentState === State.gameFinished) {
+        alert(`${(_a = game.winner) === null || _a === void 0 ? void 0 : _a.name} has won the game! \n${(_b = game.winner) === null || _b === void 0 ? void 0 : _b.name} had a score of ${(_c = game.winner) === null || _c === void 0 ? void 0 : _c.score} and captured ${(_d = game.winner) === null || _d === void 0 ? void 0 : _d.capturedPieces} pieces`);
     }
 }
 function updateBoardDOM() {
