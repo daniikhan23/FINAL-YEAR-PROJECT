@@ -516,10 +516,6 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
             console.log(`${piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
         }
     }
-    game.checkEndOfGame();
-    if (game.currentState === State.gameFinished) {
-        alert(`${game.winner?.name} has won the game! \n${game.winner?.name} had a score of ${game.winner?.score} and captured ${game.winner?.capturedPieces} pieces`);
-    }
 }
 
 function updateScoreCard() {
@@ -537,6 +533,21 @@ function updateScoreCard() {
     } else {
         playerOneTurn.textContent = `Turn: No`;
         playerTwoTurn.textContent = `Turn: Yes`;
+    }
+
+    game.checkEndOfGame();
+
+    if (game.currentState === State.gameFinished) {
+        if (game.winner === game.players[0]) {
+            playerOneName.textContent = `${game.players[0].name} has won the game!`;
+            playerTwoName.textContent = `${game.players[1].name}, you lost homie`;
+        }
+        else {
+            playerOneName.textContent = `${game.players[1].name} has won the game!`;
+            playerTwoName.textContent = `${game.players[0].name}, you lost homie`;
+        }
+        playerOneTurn.textContent = `Game Over`;
+        playerTwoTurn.textContent = `Game Over`;
     }
 }
 

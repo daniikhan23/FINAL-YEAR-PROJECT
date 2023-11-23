@@ -394,7 +394,6 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
     }
 }
 function executeMove(startRow, startCol, endRow, endCol) {
-    var _a, _b, _c, _d;
     const piece = game.getPiece(startRow, startCol);
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
@@ -404,10 +403,6 @@ function executeMove(startRow, startCol, endRow, endCol) {
         if (!pieceAtStart && pieceAtEnd) {
             console.log(`${piece.color} piece has moved from (${startRow}, ${startCol}) to (${endRow}, ${endCol})`);
         }
-    }
-    game.checkEndOfGame();
-    if (game.currentState === State.gameFinished) {
-        alert(`${(_a = game.winner) === null || _a === void 0 ? void 0 : _a.name} has won the game! \n${(_b = game.winner) === null || _b === void 0 ? void 0 : _b.name} had a score of ${(_c = game.winner) === null || _c === void 0 ? void 0 : _c.score} and captured ${(_d = game.winner) === null || _d === void 0 ? void 0 : _d.capturedPieces} pieces`);
     }
 }
 function updateScoreCard() {
@@ -424,6 +419,19 @@ function updateScoreCard() {
     else {
         playerOneTurn.textContent = `Turn: No`;
         playerTwoTurn.textContent = `Turn: Yes`;
+    }
+    game.checkEndOfGame();
+    if (game.currentState === State.gameFinished) {
+        if (game.winner === game.players[0]) {
+            playerOneName.textContent = `${game.players[0].name} has won the game!`;
+            playerTwoName.textContent = `${game.players[1].name}, you lost homie`;
+        }
+        else {
+            playerOneName.textContent = `${game.players[1].name} has won the game!`;
+            playerTwoName.textContent = `${game.players[0].name}, you lost homie`;
+        }
+        playerOneTurn.textContent = `Game Over`;
+        playerTwoTurn.textContent = `Game Over`;
     }
 }
 function updateBoardDOM() {

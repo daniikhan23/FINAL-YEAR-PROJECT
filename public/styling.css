@@ -86,12 +86,35 @@ body {
   background-color: #363430;
 }
 /* Navbar Section */
-.header .nav .nav-item a{
-  text-align: center;
+
+.header .header-container .container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+}
+
+.header .header-container .container .home a{
   font-size: 2.5rem;
   color: red;
 }
 
+
+.header .header-container .container ul {
+  list-style: none;
+}
+
+.header .header-container .container .list li a {
+  margin: 1.5rem 1rem;
+  font-size: 2rem;
+  color: red;
+}
+
+.header .header-container .container .list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 /* Main Board Section*/
 
 .player-one .player-one-container .container {
@@ -106,14 +129,14 @@ body {
 
 .player-two .player-two-container .container,
 .player-one .player-one-container .container {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 600;
   line-height: 1;
   text-align: center;
 }
 
 .main .board-container {
-  margin: 1rem 50rem;
+  margin: 2rem 50rem;
 }
 
 .main .board-container .container {
