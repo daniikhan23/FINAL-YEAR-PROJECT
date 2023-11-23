@@ -1,3 +1,4 @@
+// class to store moves for a piece
 class Moves {
     public startRow: number;
     public startCol: number;
@@ -17,6 +18,7 @@ enum PieceColor {
     Red = 'red'
 }
 
+// class for the properties of a piece
 class CheckersPiece {
     public color: PieceColor;
     public isKing: boolean;
@@ -31,6 +33,7 @@ class CheckersPiece {
     }
 }
 
+// class for storing and initialising the board
 class CheckersBoard {
     public board: (CheckersPiece | null)[][] = [];
 
@@ -39,6 +42,7 @@ class CheckersBoard {
         console.log(this.board);
     }
 
+    // method to set the board to its starting state
     private initializeBoard(): void {
         for (let row = 0; row < 8; row++) {
             this.board[row] = [];
@@ -81,20 +85,14 @@ class Player {
         this.capturedPieces = 0;
     }
 
-    // update how many pieces are captured by a player
-    // this could be removed unless there is a separate functionality to the update score method
+    // method to keep track of captured pieces of a player
     updateCapturedPieces(count: number): void {
         this.capturedPieces += count;
     }
 
-    // update the score of a player
+    // method to update the score of a player
     updateScore(score: number): void {
         this.score += score;
-    }
-
-    // display the score of a player
-    displayScore(): number {
-        return this.score;
     }
 }
 
@@ -119,9 +117,7 @@ class CheckersGame {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
     }
 
-    // a method to perform a move on the board
-    // the return type is boolean as eventually when the game is playable on the webpage
-    // the user will need feedback as to whether a certain move is possible or not
+    // method that returns a piece at particular coordinate
     public getPiece(row: number, col: number): CheckersPiece | null {
         return this.board[row][col];
     }
@@ -158,6 +154,7 @@ class CheckersGame {
         return false;
     }
 
+    // method of validation for black pieces
     private validateBlack(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null, piece: CheckersPiece): boolean {
         if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
             if (destinationSquare !== null) {
@@ -171,6 +168,7 @@ class CheckersGame {
         return false;
     }
 
+    // method of validation for red pieces
     private validateRed(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null, piece: CheckersPiece): boolean {
         if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
             if (destinationSquare !== null) {
@@ -184,18 +182,20 @@ class CheckersGame {
         return false;
     }
 
+    // method to create an array of possible moves a piece can make 
     public possibleMoves(row: number, col: number): Moves[] {
         const piece = this.getPiece(row, col);
         const moves: Moves[] = [];
 
         if (piece !== null) {
-                const direction = piece.color === PieceColor.Black ? 1: -1;
-                const startRow = row;
-                const startCol = col;
+            const direction = piece.color === PieceColor.Black ? 1: -1;
+            const startRow = row;
+            const startCol = col;
+            
+            // check for regular pieces
             if (piece.isKing === false) {
-                // black will move by a positive number
-                // red by negative
                 const potentialMovesArr = [
+                    // regular moves
                     {endRow: startRow + direction, endCol: startCol - 1},
                     {endRow: startRow + direction, endCol: startCol + 1},
                     // capture moves
@@ -214,6 +214,7 @@ class CheckersGame {
                 const startCol = col;
 
                 const potentialMovesArr = [
+                    // regular moves
                     {endRow: startRow + 1, endCol: startCol - 1},
                     {endRow: startRow + 1, endCol: startCol + 1},
                     {endRow: startRow - 1, endCol: startCol - 1},
@@ -234,6 +235,7 @@ class CheckersGame {
         return moves;
     }
 
+    // method to check if a piece can capture another
     private canCapture(startRow:number, startCol:number, endRow:number, endCol: number): boolean {
         if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
             const middleRow = (startRow + endRow) / 2;
@@ -254,6 +256,7 @@ class CheckersGame {
         return false;
     }
 
+    // method to actually move the piece
     public movePiece(startRow: number, startCol: number, endRow: number, endCol: number): void {
         const piece = this.getPiece(startRow, startCol);
         let capturedAlready = false;
@@ -289,9 +292,6 @@ class CheckersGame {
                 }
             }
         }
-        console.log(this.board);
-        // false value as feedback to user on DOM that a certain move cannot be made
-        // return false;
     }
 
     // method that updates players scores and number of captured pieces 
@@ -305,16 +305,14 @@ class CheckersGame {
         }
     }
 
-    // promotion of regular piece to king piece method
+    // method that handles promotion of pieces to king
     public promoteToKing(row: number, col: number): void {
         const piece = this.getPiece(row, col);
         if (piece?.color == PieceColor.Red && row == 0) {
             piece.makeKing();
-            console.log("This is your kingdom, my lord");
         } 
         else if (piece?.color == PieceColor.Black && row == 7) {
             piece.makeKing();
-            console.log("This is your kingdom, my lord");
         }
         
     }
@@ -326,8 +324,7 @@ class CheckersGame {
         return captureMoves.map(move => ({endRow: move.endRow, endCol: move.endCol}));
     }
 
-    // this method checks if there are currently any captures possible 
-    // to be worked on in the future
+    // method to see if there's any captures available to a piece
     public capturesPossible(): boolean {
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
@@ -343,7 +340,7 @@ class CheckersGame {
         return false;
     }
 
-    // check if a player has any piecs left
+    // method to see if a player has run out of pieces
     public noPiecesLeft(player: Player) : boolean {
         let numPieces = 0;
         for (let row = 0; row < 8; row++) {
@@ -360,7 +357,7 @@ class CheckersGame {
         else {return false;}
     }
 
-    // check if there arent any possible moves left
+    // method to see if a player cannot make a valid move
     public noValidMoves(): boolean {
         let validMoves = true;
         for (let row = 0; row < 8; row++) {
@@ -378,7 +375,7 @@ class CheckersGame {
         return validMoves;
     }
 
-    // check if game has ended
+    // method to check if the game is finished and declare winner
     public checkEndOfGame(): void {
         if (this.noPiecesLeft(this.players[0])) {
             this.currentState = State.gameFinished
@@ -412,6 +409,7 @@ const playerTwoTurn = document.querySelector('.player-two .container .turn') as 
 
 const rows = document.querySelectorAll('.board-container .container .row')!;
 
+// method to show the state of the board on the DOM
 function populateBoard() {
     updateScoreCard();
     rows.forEach((row, rowIndex) => {
@@ -435,6 +433,7 @@ function populateBoard() {
     });
 }
 
+// method to clear any highlights on the DOM as well as event listeners
 function clearHighlights() {
     document.querySelectorAll('.highlight').forEach(highlightedElement => {
         const highlighted = highlightedElement as HTMLDivElement;
@@ -448,14 +447,12 @@ function clearHighlights() {
     });
 }
 
-// selects piece that is clicked on and highlights potential locations
+// method to select pieces on the DOM, higghlight their potential locations, and add execute move event listener if possible
 function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElement) {
-    // select current piece
     const piece = game.getPiece(rowIndex, colIndex);
-    // clear existing highlights
     clearHighlights(); 
             
-    // remove any previously selectec pieces
+    // remove previously selected pieces
     document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
         p.classList.remove('selected');
     });
@@ -466,10 +463,7 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
     // check player's turn and if piece exists
     if (piece && piece.color === game.currentPlayer.color) {
         pieceDiv.classList.toggle('selected');
-        console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
-
-        console.log(moves);
 
         // check if any moves available
         if (moves.length > 0) {
@@ -479,13 +473,13 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
                 if (targetCell) {
                     targetCell.classList.add('highlight');
 
-                    // remove any exisint listeners
+                    // remove any existing listeners
                     const existingListener = pieceEventListeners.get(targetCell);
                     if (existingListener) {
                         targetCell.removeEventListener('click', existingListener);
                     }
 
-                    // add new event listener
+                    // add new event listener to move execution
                     const moveListener = () => {
                         executeMove(rowIndex, colIndex, move.endRow, move.endCol);
                     };
@@ -496,12 +490,12 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
         }
     } 
     else {
-        console.log(`It's not ${piece?.color}'s turn.`);
+        console.log(`It's not ${piece?.color}'s turn.`); // maybe remove this now?
     }
 }
 
+// method to move the piece on the DOM
 function executeMove(startRow: number, startCol: number, endRow: number, endCol: number) {
-    // Get the piece before moving
     const piece = game.getPiece(startRow, startCol);
 
     if (piece && piece.color === game.currentPlayer.color) {
@@ -509,7 +503,7 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
 
-        // Check if the start position is now empty and the end position has a piece
+        // Check if the start position is now empty and the end position has a piece, maybe remove this now
         const pieceAtEnd = game.getPiece(endRow, endCol);
         const pieceAtStart = game.getPiece(startRow, startCol);
         if (!pieceAtStart && pieceAtEnd) {
@@ -518,6 +512,7 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
     }
 }
 
+// method to update the score card of each player as well as declare end of game winner
 function updateScoreCard() {
     playerOneName.textContent = `Player One: ${playerOne.name}`;
     playerOneScore.textContent = `Score: ${playerOne.score}`;
@@ -551,6 +546,7 @@ function updateScoreCard() {
     }
 }
 
+// method to update the board after each move
 function updateBoardDOM() {
     clearHighlights();
     // iterate through the board

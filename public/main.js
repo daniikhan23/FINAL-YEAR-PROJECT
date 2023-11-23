@@ -65,9 +65,6 @@ class Player {
     updateScore(score) {
         this.score += score;
     }
-    displayScore() {
-        return this.score;
-    }
 }
 class CheckersGame {
     constructor(playerOne, playerTwo) {
@@ -226,7 +223,6 @@ class CheckersGame {
                 }
             }
         }
-        console.log(this.board);
     }
     handlePieceCapture(piece) {
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
@@ -242,11 +238,9 @@ class CheckersGame {
         const piece = this.getPiece(row, col);
         if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Red && row == 0) {
             piece.makeKing();
-            console.log("This is your kingdom, my lord");
         }
         else if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Black && row == 7) {
             piece.makeKing();
-            console.log("This is your kingdom, my lord");
         }
     }
     chainCaptures(row, col) {
@@ -368,9 +362,7 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
     });
     if (piece && piece.color === game.currentPlayer.color) {
         pieceDiv.classList.toggle('selected');
-        console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
-        console.log(moves);
         if (moves.length > 0) {
             moves.forEach(move => {
                 const targetCell = document.querySelector(`.col[data-row='${move.endRow}'][data-col='${move.endCol}']`);
