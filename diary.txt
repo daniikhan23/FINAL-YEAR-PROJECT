@@ -134,3 +134,7 @@ their divs in the populateBoard() function. Made pieces a bit bigger as well as 
 Significant updates to the DOM so there's a much better looking page now. Will work on it further to make it even more visually appealing.
 
 Removed a lot of the comments for classes and methods and instead made use of JSDoc for better code readability, maintenance and documentation.
+Starting to write unit tests. In order to do this I had to install and setup jest and its config file. Was getting errors initially as the test
+was going through the dom manipulation code. In order to counter-act that I separated the checkers game related classes into a separate file and 
+the dom manipulation into a separate one. This will also allows for easier code management and ensures that the DOM manipulation code depends on 
+the game logic rather than the other way around.

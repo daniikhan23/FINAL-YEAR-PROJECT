@@ -11,7 +11,6 @@ describe('CheckersBoard', () => {
                 if (row < 3 && (row + col % 2 === 1)) {
                     expect(board.getPiece(row, col)).toBeInstanceOf(CheckersPiece);
                     expect((_a = board.getPiece(row, col)) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Black);
-                    expect(board.getPiece(row, col)).toBe(!null);
                 }
             }
         }
