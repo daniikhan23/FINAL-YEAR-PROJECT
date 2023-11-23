@@ -138,3 +138,10 @@ Starting to write unit tests. In order to do this I had to install and setup jes
 was going through the dom manipulation code. In order to counter-act that I separated the checkers game related classes into a separate file and 
 the dom manipulation into a separate one. This will also allows for easier code management and ensures that the DOM manipulation code depends on 
 the game logic rather than the other way around.
+Testing for the main classes in the code, namely, CheckersBoard and CheckersGame is complete, the game is working perfectly now. The final end game 
+condition that was remaining, was checking for if the current player has no valid moves, that is also complete and I've developed a scoring system 
+that favours the accumulated scores of each player to decide the final outcome of the match. However, if there's no valid moves and each player has
+the same score, then the match will ultimately be a draw. Next things to work on are:
+1. Home Page
+2. Rules Page
+3. About Page
