@@ -126,6 +126,39 @@ describe('CheckersGame', () => {
         expect(game.noPiecesLeft(game.players[0])).toBe(true);
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
+        game = new CheckersGame(playerOne, playerTwo);
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                if (row > 0 && row < 4 && (row + col) % 2 === 1) {
+                    game.board[row][col] = new CheckersPiece(PieceColor.Black);
+                }
+                else if (row >= 4 && row < 7 && (row + col) % 2 === 1) {
+                    game.board[row][col] = new CheckersPiece(PieceColor.Red);
+                }
+                else {
+                    game.board[row][col] = null;
+                }
+            }
+        }
+        game.players[0].score = 0;
+        game.players[1].score = 0;
+        game.checkEndOfGame();
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBeNull();
+        game.players[0].score = 1;
+        game.players[1].score = 0;
+        game.currentState = State.inProgress;
+        game.winner = null;
+        game.checkEndOfGame();
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBe(game.players[0]);
+        game.players[0].score = 0;
+        game.players[1].score = 1;
+        game.currentState = State.inProgress;
+        game.winner = null;
+        game.checkEndOfGame();
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBe(game.players[1]);
     });
 });
 //# sourceMappingURL=game.test.js.map

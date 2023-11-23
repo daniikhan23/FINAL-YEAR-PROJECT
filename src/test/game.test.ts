@@ -156,6 +156,53 @@ describe('CheckersGame', () => {
         expect(game.noPiecesLeft(game.players[0])).toBe(true);
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
+
+        // Reset the board for new game
+        game = new CheckersGame(playerOne, playerTwo);
+
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                // For the first three rows, place black pieces on the dark squares
+                if (row > 0 && row < 4 && (row + col) % 2 === 1) {
+                    game.board[row][col] = new CheckersPiece(PieceColor.Black);
+                }
+                // For the last three rows, place red pieces on the dark squares
+                else if (row >= 4 && row < 7 && (row + col) % 2 === 1) {
+                    game.board[row][col] = new CheckersPiece(PieceColor.Red);
+                }
+                // The middle rows are empty, but we still need to nullify them explicitly
+                else {
+                    game.board[row][col] = null;
+                }
+            }
+        }
+        // Case of a Draw
+        game.players[0].score = 0;
+        game.players[1].score = 0;
+
+        game.checkEndOfGame();
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBeNull();
+
+        // Case where Player One has greater score than Player Two
+        game.players[0].score = 1;
+        game.players[1].score = 0;
+        game.currentState = State.inProgress;
+        game.winner = null;
+
+        game.checkEndOfGame();
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBe(game.players[0]);
+
+        // Case where Player Two has greater score than Player One
+        game.players[0].score = 0;
+        game.players[1].score = 1;
+        game.currentState = State.inProgress;
+        game.winner = null;
+
+        game.checkEndOfGame();
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBe(game.players[1]);
     });
     
 });
