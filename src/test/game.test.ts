@@ -123,5 +123,39 @@ describe('CheckersGame', () => {
         expect(game.players[0].score).toBe(4);
         
     });
+    test('possibleMoves should return all valid moves for a piece or none if there are none', () => {
+        let moves = game.possibleMoves(5, 0);
+    
+        expect(moves).toBeInstanceOf(Array);
+        expect(moves.length).toBeGreaterThan(0);
+        expect(moves.length).toBe(1);
+
+        moves = game.possibleMoves(0, 1);
+        expect(moves).toBeInstanceOf(Array);
+        expect(moves.length).toBe(0);
+
+        moves = game.possibleMoves(5, 6);
+        expect(moves).toBeInstanceOf(Array);
+        expect(moves.length).toBeGreaterThan(0);
+        expect(moves.length).toBe(2);
+    });    
+    test('Endgame conditions should be correctly detected', () => {
+
+        // Clear all red pieces
+        // Clear the board
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = game.getPiece(row, col);
+                if (piece && piece.color === PieceColor.Red) {
+                    game.board[row][col] = null;
+                }
+            }
+        }
+        game.checkEndOfGame();
+    
+        expect(game.noPiecesLeft(game.players[0])).toBe(true);
+        expect(game.currentState).toBe(State.gameFinished);
+        expect(game.winner).toBe(game.players[1]);
+    });
     
 });

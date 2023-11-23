@@ -111,9 +111,13 @@ function updateScoreCard() {
             playerOneName.textContent = `${game.players[0].name} has won the game!`;
             playerTwoName.textContent = `${game.players[1].name}, you lost homie`;
         }
-        else {
+        else if (game.winner === game.players[1]) {
             playerOneName.textContent = `${game.players[1].name} has won the game!`;
             playerTwoName.textContent = `${game.players[0].name}, you lost homie`;
+        }
+        else {
+            playerOneName.textContent = 'Game is a draw!';
+            playerTwoName.textContent = 'Game is a draw!';
         }
         playerOneTurn.textContent = `Game Over`;
         playerTwoTurn.textContent = `Game Over`;

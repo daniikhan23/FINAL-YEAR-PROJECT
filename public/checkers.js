@@ -279,20 +279,23 @@ export class CheckersGame {
         }
     }
     noValidMoves() {
-        let validMoves = true;
+        let validMoves = 0;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
-                if (this.getPiece(row, col) !== null) {
-                    if (this.possibleMoves(row, col) === null) {
-                        validMoves = false;
-                    }
-                    else {
-                        validMoves = true;
+                const piece = this.getPiece(row, col);
+                if (piece && piece.color === this.currentPlayer.color) {
+                    if (this.possibleMoves(row, col).length > 0) {
+                        validMoves++;
                     }
                 }
             }
         }
-        return validMoves;
+        if (validMoves === 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     checkEndOfGame() {
         if (this.noPiecesLeft(this.players[0])) {
@@ -302,6 +305,18 @@ export class CheckersGame {
         else if (this.noPiecesLeft(this.players[1])) {
             this.currentState = State.gameFinished;
             this.winner = this.players[0];
+        }
+        else if (this.noValidMoves()) {
+            this.currentState = State.gameFinished;
+            if (this.players[0].score > this.players[1].score) {
+                this.winner = this.players[0];
+            }
+            else if (this.players[0].score < this.players[1].score) {
+                this.winner = this.players[1];
+            }
+            else {
+                this.winner = null;
+            }
         }
     }
 }
