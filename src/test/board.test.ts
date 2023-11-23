@@ -28,15 +28,6 @@ describe('CheckersBoard', () => {
             expect(row.length).toBe(8);
         })
     });
-});
-
-describe('CheckersBoard', () => {
-    let checkersBoard: CheckersBoard;
-
-    beforeEach(() => {
-        checkersBoard = new CheckersBoard();
-    })
-
     test('Ensure number of pieces is 12 and the same for Red and Black', () => {
         let blackPieces = 0;
         let redPieces = 0;
@@ -64,18 +55,9 @@ describe('CheckersBoard', () => {
         expect(blackPieces).toBe(12);
         expect(redPieces).toBe(12);
     });
-});
-
-describe('CheckersBoard', () => {
-    let checkersBoard: CheckersBoard;
-
-    beforeEach(() => {
-        checkersBoard = new CheckersBoard();
-    })
-
     test('Accessing out of bounds should be handled', () => {
         expect(checkersBoard.board[10]).toBeUndefined();
         expect(checkersBoard.board[0][19]).toBeUndefined();
         expect(checkersBoard.board[-1]).toBeUndefined();
-    });    
+    });
 });
