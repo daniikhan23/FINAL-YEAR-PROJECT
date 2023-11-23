@@ -131,4 +131,6 @@ function that is used to start the game.
 Now that the game is complete I am able to make some CSS changes including king piece images as well as adding the relevant check for king pieces to make 
 their divs in the populateBoard() function. Made pieces a bit bigger as well as adding a border to the entire board.
 
-Significant updates to the DOM so there's a much better looking page now. Will work on it further to make it even more visually appealing
+Significant updates to the DOM so there's a much better looking page now. Will work on it further to make it even more visually appealing.
+
+Removed a lot of the comments for classes and methods and instead made use of JSDoc for better code readability, maintenance and documentation.

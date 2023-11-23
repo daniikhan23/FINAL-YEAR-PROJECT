@@ -87,10 +87,10 @@ class CheckersGame {
         const destinationSquare = this.getPiece(endRow, endCol);
         const piece = this.getPiece(startRow, startCol);
         if ((piece === null || piece === void 0 ? void 0 : piece.color) === PieceColor.Black && piece.isKing === false) {
-            return this.validateBlack(startRow, startCol, endRow, endCol, destinationSquare, piece);
+            return this.validateBlack(startRow, startCol, endRow, endCol, destinationSquare);
         }
         else if ((piece === null || piece === void 0 ? void 0 : piece.color) === PieceColor.Red && piece.isKing === false) {
-            return this.validateRed(startRow, startCol, endRow, endCol, destinationSquare, piece);
+            return this.validateRed(startRow, startCol, endRow, endCol, destinationSquare);
         }
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
             if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 1) {
@@ -105,7 +105,7 @@ class CheckersGame {
         }
         return false;
     }
-    validateBlack(startRow, startCol, endRow, endCol, destinationSquare, piece) {
+    validateBlack(startRow, startCol, endRow, endCol, destinationSquare) {
         if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
             if (destinationSquare !== null) {
                 return false;
@@ -117,7 +117,7 @@ class CheckersGame {
         }
         return false;
     }
-    validateRed(startRow, startCol, endRow, endCol, destinationSquare, piece) {
+    validateRed(startRow, startCol, endRow, endCol, destinationSquare) {
         if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
             if (destinationSquare !== null) {
                 return false;
