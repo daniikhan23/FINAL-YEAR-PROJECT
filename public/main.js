@@ -317,8 +317,17 @@ const playerOne = new Player("Red", PieceColor.Red);
 const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
 let gameStatus = false;
+const playerOneName = document.querySelector('.player-one .container .name');
+const playerOneScore = document.querySelector('.player-one .container .score');
+const playerOneCaptured = document.querySelector('.player-one .container .captured');
+const playerOneTurn = document.querySelector('.player-one .container .turn');
+const playerTwoName = document.querySelector('.player-two .container .name');
+const playerTwoScore = document.querySelector('.player-two .container .score');
+const playerTwoCaptured = document.querySelector('.player-two .container .captured');
+const playerTwoTurn = document.querySelector('.player-two .container .turn');
 const rows = document.querySelectorAll('.board-container .container .row');
 function populateBoard() {
+    updateScoreCard();
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col');
         cols.forEach((col, colIndex) => {
@@ -372,7 +381,7 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
                         targetCell.removeEventListener('click', existingListener);
                     }
                     const moveListener = () => {
-                        executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
+                        executeMove(rowIndex, colIndex, move.endRow, move.endCol);
                     };
                     targetCell.addEventListener('click', moveListener);
                     pieceEventListeners.set(targetCell, moveListener);
@@ -384,7 +393,7 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
         console.log(`It's not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn.`);
     }
 }
-function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
+function executeMove(startRow, startCol, endRow, endCol) {
     var _a, _b, _c, _d;
     const piece = game.getPiece(startRow, startCol);
     if (piece && piece.color === game.currentPlayer.color) {
@@ -399,6 +408,22 @@ function executeMove(startRow, startCol, endRow, endCol, pieceDiv) {
     game.checkEndOfGame();
     if (game.currentState === State.gameFinished) {
         alert(`${(_a = game.winner) === null || _a === void 0 ? void 0 : _a.name} has won the game! \n${(_b = game.winner) === null || _b === void 0 ? void 0 : _b.name} had a score of ${(_c = game.winner) === null || _c === void 0 ? void 0 : _c.score} and captured ${(_d = game.winner) === null || _d === void 0 ? void 0 : _d.capturedPieces} pieces`);
+    }
+}
+function updateScoreCard() {
+    playerOneName.textContent = `Player One: ${playerOne.name}`;
+    playerOneScore.textContent = `Score: ${playerOne.score}`;
+    playerOneCaptured.textContent = `Captured Pieces: ${playerOne.capturedPieces}`;
+    playerTwoName.textContent = 'Player Two: ' + playerTwo.name;
+    playerTwoScore.textContent = 'Score: ' + playerTwo.score;
+    playerTwoCaptured.textContent = 'Captured Pieces: ' + playerTwo.capturedPieces;
+    if (game.currentPlayer === game.players[0]) {
+        playerOneTurn.textContent = `Turn: Yes`;
+        playerTwoTurn.textContent = `Turn: No`;
+    }
+    else {
+        playerOneTurn.textContent = `Turn: No`;
+        playerTwoTurn.textContent = `Turn: Yes`;
     }
 }
 function updateBoardDOM() {

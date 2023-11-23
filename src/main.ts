@@ -400,9 +400,20 @@ const playerTwo = new Player("Black", PieceColor.Black);
 const game = new CheckersGame(playerOne, playerTwo);
 let gameStatus: boolean = false;
 
+const playerOneName = document.querySelector('.player-one .container .name') as HTMLDivElement;
+const playerOneScore = document.querySelector('.player-one .container .score') as HTMLDivElement;
+const playerOneCaptured = document.querySelector('.player-one .container .captured') as HTMLDivElement;
+const playerOneTurn = document.querySelector('.player-one .container .turn') as HTMLDivElement;
+
+const playerTwoName = document.querySelector('.player-two .container .name') as HTMLDivElement;
+const playerTwoScore = document.querySelector('.player-two .container .score') as HTMLDivElement;
+const playerTwoCaptured = document.querySelector('.player-two .container .captured') as HTMLDivElement;
+const playerTwoTurn = document.querySelector('.player-two .container .turn') as HTMLDivElement;
+
 const rows = document.querySelectorAll('.board-container .container .row')!;
 
 function populateBoard() {
+    updateScoreCard();
     rows.forEach((row, rowIndex) => {
         const cols = row.querySelectorAll('.col')!;
         cols.forEach((col, colIndex) => {
@@ -476,7 +487,7 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
 
                     // add new event listener
                     const moveListener = () => {
-                        executeMove(rowIndex, colIndex, move.endRow, move.endCol, pieceDiv);
+                        executeMove(rowIndex, colIndex, move.endRow, move.endCol);
                     };
                     targetCell.addEventListener('click', moveListener);
                     pieceEventListeners.set(targetCell, moveListener);
@@ -489,7 +500,7 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
     }
 }
 
-function executeMove(startRow: number, startCol: number, endRow: number, endCol: number, pieceDiv: HTMLDivElement) {
+function executeMove(startRow: number, startCol: number, endRow: number, endCol: number) {
     // Get the piece before moving
     const piece = game.getPiece(startRow, startCol);
 
@@ -508,6 +519,24 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
     game.checkEndOfGame();
     if (game.currentState === State.gameFinished) {
         alert(`${game.winner?.name} has won the game! \n${game.winner?.name} had a score of ${game.winner?.score} and captured ${game.winner?.capturedPieces} pieces`);
+    }
+}
+
+function updateScoreCard() {
+    playerOneName.textContent = `Player One: ${playerOne.name}`;
+    playerOneScore.textContent = `Score: ${playerOne.score}`;
+    playerOneCaptured.textContent = `Captured Pieces: ${playerOne.capturedPieces}`;
+
+    playerTwoName.textContent = 'Player Two: ' + playerTwo.name;
+    playerTwoScore.textContent = 'Score: ' + playerTwo.score;
+    playerTwoCaptured.textContent = 'Captured Pieces: ' + playerTwo.capturedPieces;
+
+    if (game.currentPlayer === game.players[0]) {
+        playerOneTurn.textContent = `Turn: Yes`;
+        playerTwoTurn.textContent = `Turn: No`;
+    } else {
+        playerOneTurn.textContent = `Turn: No`;
+        playerTwoTurn.textContent = `Turn: Yes`;
     }
 }
 

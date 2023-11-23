@@ -8,6 +8,9 @@
     <!--Bootstrap 5 CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Schoolbell&display=swap" rel="stylesheet">
+
     <!--Font Awesome 5-->
     <script src="https://kit.fontawesome.com/e6df258aa2.js" crossorigin="anonymous"></script>
     
@@ -15,7 +18,23 @@
     <link rel="stylesheet" href="./public/styling.css">
 </head>
 <body>
-    <h1>CheckersMate AI</h1>
+    <!--Header Section-->
+    <div class="header">
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">CheckersMate</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">How to Play</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Let's Play!</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">About</a>
+            </li>
+          </ul>
+    </div>
 
     <!--Main Board Section-->
     <div class="main">
@@ -23,10 +42,10 @@
             <div class="player-two">
                 <div class="player-two-container">
                     <div class="container">
-                        <h5>Player Two</h5>
-                        <h5>Score: 7</h5>
-                        <h5>Captured Pieces: 5</h5>
-                        <h5>Turn?</h5>
+                        <div class="name">Player Two: </div>
+                        <div class="score">Score: </div>
+                        <div class="captured">Captured Pieces: </div>
+                        <div class="turn">Turn: </div>
                     </div>
                 </div>
             </div>
@@ -115,15 +134,18 @@
             <div class="player-one">
                 <div class="player-one-container">
                     <div class="container">
-                        <h5>Player One</h5>
-                        <h5>Score: 9</h5>
-                        <h5>Captured Pieces: 7</h5>
-                        <h5>Turn?</h5>
+                        <div class="name">Player One: </div>
+                        <div class="score">Score: </div>
+                        <div class="captured">Captured Pieces: </div>
+                        <div class="turn">Turn: </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <div class="footer-section"> Made by Daniyal Ashraf Khan</div>
     
     <script src="./public/main.js"></script>
 </body>

@@ -78,29 +78,42 @@ button:hover {
   transition: all 0.3s ease-in;
 }
 
-/* Main Board Section*/
-h1 {
-  text-align: center;
-  font-size: 5rem;
+* {
+  font-family: 'Black Ops One', cursive;
 }
+
+body {
+  background-color: #363430;
+}
+/* Navbar Section */
+.header .nav .nav-item a{
+  text-align: center;
+  font-size: 2.5rem;
+  color: red;
+}
+
+/* Main Board Section*/
 
 .player-one .player-one-container .container {
   background-color: red;
-  color: white;
+  color: black;
 }
 
 .player-two .player-two-container .container {
   background-color: black;
-  color: white;
+  color: red;
 }
 
-.player-two .player-two-container .container h5,
-.player-one .player-one-container .container h5 {
+.player-two .player-two-container .container,
+.player-one .player-one-container .container {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
   text-align: center;
 }
 
 .main .board-container {
-  margin: 2rem 50rem;
+  margin: 1rem 50rem;
 }
 
 .main .board-container .container {
@@ -195,4 +208,13 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 .main .board-container .container .col.highlight {
   background-color: rgb(65, 105, 93) !important;
+}
+
+/* Footer Section */
+.footer-section {
+  text-align: center;
+  color: red;
+  background-color: black;
+  font-size: 1rem;
+  padding: 1rem;
 }
