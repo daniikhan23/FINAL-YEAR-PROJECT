@@ -79,9 +79,28 @@ button:hover {
 }
 
 /* Main Board Section*/
+h1 {
+  text-align: center;
+  font-size: 5rem;
+}
+
+.player-one .player-one-container .container {
+  background-color: red;
+  color: white;
+}
+
+.player-two .player-two-container .container {
+  background-color: black;
+  color: white;
+}
+
+.player-two .player-two-container .container h5,
+.player-one .player-one-container .container h5 {
+  text-align: center;
+}
 
 .main .board-container {
-  margin: 10rem 50rem;
+  margin: 2rem 50rem;
 }
 
 .main .board-container .container {
