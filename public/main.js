@@ -355,8 +355,11 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
     document.querySelectorAll('.black-piece, .red-piece').forEach(p => {
         p.classList.remove('selected');
     });
-    pieceDiv.classList.toggle('selected');
+    document.querySelectorAll('.black-piece-king, .red-piece-king').forEach(p => {
+        p.classList.remove('selected');
+    });
     if (piece && piece.color === game.currentPlayer.color) {
+        pieceDiv.classList.toggle('selected');
         console.log(piece);
         const moves = game.possibleMoves(rowIndex, colIndex);
         console.log(moves);
