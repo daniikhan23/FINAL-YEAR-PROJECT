@@ -1,4 +1,4 @@
-import { PieceColor, CheckersPiece, State, Player, CheckersGame } from "../checkers";
+import { PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame } from "../checkers";
 describe('CheckersGame', () => {
     let game;
     let playerOne;
@@ -40,6 +40,65 @@ describe('CheckersGame', () => {
         const piece = new CheckersPiece(PieceColor.Red, false);
         piece.makeKing();
         expect(piece.isKing).toBe(true);
+    });
+    test('movePiece should correctly handle valid and invalid moves', () => {
+        expect(() => game.movePiece(5, 0, 4, 1)).not.toThrow();
+        expect(game.getPiece(4, 1)).toBeInstanceOf(CheckersPiece);
+        game.board = new CheckersBoard().board;
+        game.movePiece(5, 0, 6, 1);
+        expect(game.getPiece(5, 0)).toBeInstanceOf(CheckersPiece);
+        game.board = new CheckersBoard().board;
+        game.movePiece(0, 1, 5, 7);
+        expect(game.getPiece(5, 7)).toBeNull();
+    });
+    test('promoteToKing should promote a piece to king at the end of the board', () => {
+        var _a, _b, _c;
+        game.board[0][1] = game.getPiece(5, 0);
+        game.promoteToKing(0, 1);
+        expect((_a = game.getPiece(0, 1)) === null || _a === void 0 ? void 0 : _a.isKing).toBe(true);
+        game.board[7][0] = game.getPiece(1, 0);
+        game.promoteToKing(7, 0);
+        expect((_b = game.getPiece(7, 0)) === null || _b === void 0 ? void 0 : _b.isKing).toBe(true);
+        game.promoteToKing(6, 3);
+        expect((_c = game.getPiece(6, 3)) === null || _c === void 0 ? void 0 : _c.isKing).toBe(false);
+    });
+    test('Capturing mechanics should work correctly, including chain captures, score and captured piece updates', () => {
+        var _a, _b, _c;
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                game.board[row][col] = null;
+            }
+        }
+        game.board[4][1] = new CheckersPiece(PieceColor.Black);
+        game.board[5][0] = new CheckersPiece(PieceColor.Red);
+        game.movePiece(5, 0, 3, 2);
+        expect(game.getPiece(4, 1)).toBeNull();
+        expect(game.getPiece(3, 2)).toBeInstanceOf(CheckersPiece);
+        expect((_a = game.getPiece(3, 2)) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
+        expect(game.players[0].capturedPieces).toBe(1);
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                game.board[row][col] = null;
+            }
+        }
+        game.changeTurn();
+        const kingPiece = new CheckersPiece(PieceColor.Black);
+        kingPiece.isKing = true;
+        game.board[5][1] = kingPiece;
+        game.board[6][0] = new CheckersPiece(PieceColor.Red);
+        game.board[3][1] = new CheckersPiece(PieceColor.Black);
+        game.movePiece(6, 0, 4, 2);
+        expect(game.getPiece(5, 1)).toBeNull();
+        expect(game.getPiece(4, 2)).toBeInstanceOf(CheckersPiece);
+        expect((_b = game.getPiece(4, 2)) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
+        expect(game.players[0].capturedPieces).toBe(2);
+        expect(game.players[0].score).toBe(3);
+        game.movePiece(4, 2, 2, 0);
+        expect(game.getPiece(3, 1)).toBeNull();
+        expect(game.getPiece(2, 0)).toBeInstanceOf(CheckersPiece);
+        expect((_c = game.getPiece(2, 0)) === null || _c === void 0 ? void 0 : _c.color).toBe(PieceColor.Red);
+        expect(game.players[0].capturedPieces).toBe(3);
+        expect(game.players[0].score).toBe(4);
     });
 });
 //# sourceMappingURL=game.test.js.map
