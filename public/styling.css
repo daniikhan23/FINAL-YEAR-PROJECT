@@ -89,7 +89,6 @@ body {
 
 .header .header-container {
   background-color: black;
-  padding: 0.5rem;
 }
 
 .header .header-container .container {
@@ -123,7 +122,7 @@ body {
 }
 
 .header .header-container .container .list li {
-  margin: 1.5rem 1rem;
+  margin: 0rem 1rem;
 }
 
 .header .header-container .container .list li button {
@@ -248,7 +247,7 @@ body {
 }
 
 .main .board-container {
-  margin: 2.5rem 50rem;
+  margin: 2rem 50rem;
 }
 
 .main .board-container .container {
@@ -261,10 +260,11 @@ body {
 
 .main .board-container .container .col {
   display: flex;
-  font-size: 1.3rem;
   padding: 0;
   height: 6rem;
   width: 6rem;
+  align-items: center;
+  justify-content: center;
 }
 
 

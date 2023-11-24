@@ -31,21 +31,293 @@
         font-size: 1.5rem;
       }
 
+
+    /* Main Section */
+    .main .board-container {
+        margin: 7rem 0rem;
+    }
+
+    .main .board-container .container .col {
+        padding: 0;
+        height: 4rem;
+        width: 4rem;
+    }
+
+    /* Scorecards */
+    .player-one .player-one-container .container {
+        padding: 0.5rem;
+    }
+        
+    .player-two .player-two-container .container {
+        padding: 0.5rem;
+    }
+        
+    .player-two .player-two-container .container,
+    .player-one .player-one-container .container {
+        font-size: 1rem;
+    }
+
+    /* Pieces */
+    .main .board-container .container .col .black-piece {
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+      
+      .main .board-container .container .col .black-piece:hover {
+        height: 3.6rem;
+        width: 3.6rem;
+    }
+      
+      /* Image for king black piece */
+      .main .board-container .container .col .black-piece-king {
+        height: 4rem;
+        width: 4rem;
+    }
+      
+      .main .board-container .container .col .black-piece-king:hover {
+        height: 4.1rem;
+        width: 4.1rem;
+    }
+      
+      .main .board-container .container .col .red-piece {
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+      
+      .main .board-container .container .col .red-piece:hover {
+        height: 3.6rem;
+        width: 3.6rem;
+    }
+      
+      /* Image for king red piece */
+      .main .board-container .container .col .red-piece-king {
+        height: 4rem;
+        width: 4rem;
+      }
+      
+      .main .board-container .container .col .red-piece-king:hover {
+        height: 4.1rem;
+        width: 4.1rem;
+      }
+      
+      .main .board-container .container .col .selected {
+        border: 2px solid gold;
+        border-radius: 100%;
+        box-sizing: border-box;
+      }
+
       /* Footer Section */
     .footer-section {
         font-size: 1rem;
         padding: 1.3rem;
     }
+
+    /* End of Game Section */
+
+    .end-of-game-section .end-of-game-container .container {
+        padding: 3rem;
+        margin-left: 1rem;
+    }
+    .end-of-game-section .end-of-game-container .container #winnerAnnouncement {
+        font-size: 1.5rem;
+    }
+
+    .end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalName,
+    .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalName{
+        font-size: 1.5rem;
+    }
+
+    .end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalScore,
+    .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalScore,
+    .end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalCaptured,
+    .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalCaptured {
+        font-size: 1rem;
+    }
+
+    .end-of-game-section .end-of-game-container .container #restartGameButton {
+        font-size: 1rem;
+      }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 /* @media only screen and (min-width: 600px) {} */
 
 /* Medium devices (landscape tablets, 768px and up) */
-/* @media only screen and (min-width: 768px) {} */
+@media only screen and (min-width: 768px) {
 
-/* Large devices (laptops/desktops, 992px and up) */
-/* @media only screen and (min-width: 992px) {} */
+    /* Header */
+    .header .header-container {
+        padding: 0;
+    }
+
+    .header .header-container .container .home button a {
+    font-size: 2rem;
+    }
+
+    .header .header-container .container .list li {
+    margin: 0 0;
+    }
+
+    .header .header-container .container .list li button a {
+        font-size: 2rem;
+    }
+
+    /* Scorecards */
+    .player-one .player-one-container .container {
+        padding: 0.5rem;
+    }
+        
+    .player-two .player-two-container .container {
+        padding: 0.5rem;
+    }
+        
+    .player-two .player-two-container .container,
+    .player-one .player-one-container .container {
+        font-size: 1rem;
+    }
+
+    .main .board-container {
+        margin: 2rem 10rem;
+    }
+
+    .end-of-game-section {
+        margin: -1rem -2rem;
+    }
+}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-/* @media only screen and (min-width: 1200px) {} */
+@media only screen and (min-width: 1080px) {
+    .main .board-container {
+        margin: 4rem 45rem;
+    }
+
+    /* Main Board Section*/
+
+    .main {
+        display: none;
+    }
+
+    .player-one .player-one-container .container {
+        padding: 1rem;
+    }
+
+    .player-two .player-two-container .container {
+        padding: 1rem;
+    }
+
+    .player-two .player-two-container .container,
+    .player-one .player-one-container .container {
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1;
+    }
+
+    .main .board-container .container {
+        border: 0.2rem solid black;
+    }
+    .main .board-container .container .col {
+        padding: 0;
+        height: 6rem;
+        width: 6rem;
+    }
+
+    /* Image for black piece */
+    .main .board-container .container .col .black-piece {
+        height: 5.5rem;
+        width: 5.5rem;
+    }
+
+    .main .board-container .container .col .black-piece:hover {
+        height: 5.6rem;
+        width: 5.6rem;
+    }
+
+    /* Image for king black piece */
+    .main .board-container .container .col .black-piece-king {
+        height: 6rem;
+        width: 6rem;
+    }
+
+    .main .board-container .container .col .black-piece-king:hover {
+        height: 6.1rem;
+        width: 6.1rem;
+    }
+
+    /* Image for red piece */
+    .main .board-container .container .col .red-piece {
+        height: 5.5rem;
+        width: 5.5rem;
+    }
+
+    .main .board-container .container .col .red-piece:hover {
+        height: 5.6rem;
+        width: 5.6rem;
+    }
+
+    /* Image for king red piece */
+    .main .board-container .container .col .red-piece-king {
+        height: 6rem;
+        width: 6rem;
+    }
+
+    .main .board-container .container .col .red-piece-king:hover {
+        height: 6.1rem;
+        width: 6.1rem;
+    }
+
+    .main .board-container .container .col .selected {
+        border: 4px solid gold;
+        border-radius: 100%;
+        box-sizing: border-box;
+    }
+
+    .main .board-container .container .col .selected:active {
+        transform: translateY(4px);
+    }
+
+    .main .board-container .container .col.highlight:active {
+        transform: translateY(2px) !important;
+    }
+
+    /* End of Game Section */
+    .end-of-game-section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .end-of-game-section .end-of-game-container .container {
+        padding: 5rem;
+        margin: 2rem;
+    }
+
+    .end-of-game-section .end-of-game-container .container #winnerAnnouncement {
+        font-size: 4rem;
+    }
+
+    .end-of-game-section .end-of-game-container .container .player-info {
+        margin-bottom: 20px;
+    }
+
+    .end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalName,
+    .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalName{
+        font-size: 2rem;
+    }
+    .end-of-game-section .end-of-game-container .container #restartGameButton {
+        font-size: 2rem;
+    }
+    .end-of-game-section .end-of-game-container .container #restartGameButton:active {
+        transform: translateY(2px) !important;
+    }
+    /* Footer Section */
+    .footer-section {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        font-size: 1rem;
+        padding: 1.3rem;
+    }
+}
