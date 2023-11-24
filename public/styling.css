@@ -85,6 +85,9 @@ button:hover {
 body {
   background-color: #363430;
 }
+
+
+
 /* Navbar Section */
 
 .header .header-container {
@@ -227,7 +230,7 @@ body {
   color: black;
   display: flex;
   justify-content: space-around;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .player-two .player-two-container .container {
@@ -235,7 +238,7 @@ body {
   color: red;
   display: flex;
   justify-content: space-around;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .player-two .player-two-container .container,
@@ -247,7 +250,7 @@ body {
 }
 
 .main .board-container {
-  margin: 2rem 50rem;
+  margin: 4rem 45rem;
 }
 
 .main .board-container .container {
