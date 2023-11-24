@@ -182,4 +182,4 @@ function updateBoardDOM() {
     });
     populateBoard();
 }
-//# sourceMappingURL=checkersdom.js.map
+//# sourceMappingURL=checkers-dom.js.map

@@ -292,7 +292,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for black piece */
 .main .board-container .container .col .black-piece {
-  background-image: url('../public/resources/img/blackBase.png'); 
+  background-image: url('../resources/img/blackBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -310,7 +310,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for king black piece */
 .main .board-container .container .col .black-piece-king {
-  background-image: url('../public/resources/img/blackKing.png'); 
+  background-image: url('../resources/img/blackKing.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -328,7 +328,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for red piece */
 .main .board-container .container .col .red-piece {
-  background-image: url('../public/resources/img/redBase.png'); 
+  background-image: url('../resources/img/redBase.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -346,7 +346,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for king red piece */
 .main .board-container .container .col .red-piece-king {
-  background-image: url('../public/resources/img/redKing.png'); 
+  background-image: url('../resources/img/redKing.png'); 
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;

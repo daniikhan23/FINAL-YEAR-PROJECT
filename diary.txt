@@ -145,3 +145,12 @@ the same score, then the match will ultimately be a draw. Next things to work on
 1. Home Page
 2. Rules Page
 3. About Page
+
+Main Page is fully developed now, there's a starting initial screen where two users can enter their names and start the game anew. Then there is the 
+same board that is displayed so the game can be played. There's more visual feedback now with pieces responding to mouse hovers and clicks. At the 
+end of the game there is a scorecard that is shown with the score of both players as well as an option to start a new game. The page has also been 
+made responsive to different screen sizes. 
+
+The next step is to develop multiple web pages as well as develop even a simple AI. I still have to decide which problem I will tackle first as making 
+multiple web pages would be relatively simple and possible to finish within a day. However, developing the AI to play against would be a tougher challenge
+as the Minimax algorithm would be a relatively new experience to code.
