@@ -616,6 +616,13 @@
     .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalName{
         font-size: 2rem;
     }
+
+    .end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalScore,
+    .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalScore,
+    .end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalCaptured,
+    .end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalCaptured {
+        font-size: 1.5rem;
+    }
     .end-of-game-section .end-of-game-container .container #restartGameButton {
         font-size: 2rem;
     }
