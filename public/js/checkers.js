@@ -1,9 +1,20 @@
-export class Moves {
-    constructor(startRow, startCol, endRow, endCol) {
-        this.startRow = startRow;
-        this.startCol = startCol;
-        this.endRow = endRow;
-        this.endCol = endCol;
+export var State;
+(function (State) {
+    State[State["inProgress"] = 0] = "inProgress";
+    State[State["gameFinished"] = 1] = "gameFinished";
+})(State || (State = {}));
+export class Player {
+    constructor(name, color) {
+        this.name = name;
+        this.color = color;
+        this.score = 0;
+        this.capturedPieces = 0;
+    }
+    updateCapturedPieces(count) {
+        this.capturedPieces += count;
+    }
+    updateScore(score) {
+        this.score += score;
     }
 }
 export var PieceColor;
@@ -18,6 +29,14 @@ export class CheckersPiece {
     }
     makeKing() {
         this.isKing = true;
+    }
+}
+export class Moves {
+    constructor(startRow, startCol, endRow, endCol) {
+        this.startRow = startRow;
+        this.startCol = startCol;
+        this.endRow = endRow;
+        this.endCol = endCol;
     }
 }
 export class CheckersBoard {
@@ -44,25 +63,6 @@ export class CheckersBoard {
     }
     getPiece(row, col) {
         return this.board[row][col];
-    }
-}
-export var State;
-(function (State) {
-    State[State["inProgress"] = 0] = "inProgress";
-    State[State["gameFinished"] = 1] = "gameFinished";
-})(State || (State = {}));
-export class Player {
-    constructor(name, color) {
-        this.name = name;
-        this.color = color;
-        this.score = 0;
-        this.capturedPieces = 0;
-    }
-    updateCapturedPieces(count) {
-        this.capturedPieces += count;
-    }
-    updateScore(score) {
-        this.score += score;
     }
 }
 export class CheckersGame {

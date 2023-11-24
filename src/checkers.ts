@@ -1,26 +1,49 @@
 /**
- * Class to store the start and end positions of a move in a checkers game.
+ * Enum representing the state of the checkers game.
  */
-export class Moves {
-    public startRow: number;
-    public startCol: number;
-    public endRow: number;
-    public endCol: number;
+export enum State {
+    inProgress,
+    gameFinished
+}
+
+/**
+ * Represents a player in the checkers game.
+ */
+export class Player {
+    public name: string;
+    public color: PieceColor;
+    public score: number;
+    public capturedPieces: number;
+
+     /**
+     * Constructs a Player object.
+     * @param {string} name - The name of the player.
+     * @param {PieceColor} color - The color assigned to the player.
+     */
+    constructor(name: string, color: PieceColor) {
+        this.name = name;
+        this.color = color;
+        this.score = 0;
+        this.capturedPieces = 0;
+    }
 
     /**
-     * Constructs a Moves object.
-     * @param {number} startRow - The starting row of the move.
-     * @param {number} startCol - The starting column of the move.
-     * @param {number} endRow - The ending row of the move.
-     * @param {number} endCol - The ending column of the move.
+     * Updates the number of pieces captured by the player.
+     * @param {number} count - The number of pieces captured in a move.
      */
-    constructor(startRow: number, startCol: number, endRow: number, endCol: number) {
-        this.startRow = startRow;
-        this.startCol = startCol;
-        this.endRow = endRow;
-        this.endCol = endCol;
+    updateCapturedPieces(count: number): void {
+        this.capturedPieces += count;
+    }
+
+    /**
+     * Updates the score of the player.
+     * @param {number} score - The score to be added to the player's current score.
+     */
+    updateScore(score: number): void {
+        this.score += score;
     }
 }
+
 
 /**
  * Enum for piece colors in the checkers game.
@@ -52,6 +75,30 @@ export class CheckersPiece {
      */
     public makeKing(): void {
         this.isKing = true;
+    }
+}
+
+/**
+ * Class to store the start and end positions of a move in a checkers game.
+ */
+export class Moves {
+    public startRow: number;
+    public startCol: number;
+    public endRow: number;
+    public endCol: number;
+
+    /**
+     * Constructs a Moves object.
+     * @param {number} startRow - The starting row of the move.
+     * @param {number} startCol - The starting column of the move.
+     * @param {number} endRow - The ending row of the move.
+     * @param {number} endCol - The ending column of the move.
+     */
+    constructor(startRow: number, startCol: number, endRow: number, endCol: number) {
+        this.startRow = startRow;
+        this.startCol = startCol;
+        this.endRow = endRow;
+        this.endCol = endCol;
     }
 }
 
@@ -103,51 +150,6 @@ export class CheckersBoard {
     }
 }
 
-/**
- * Enum representing the state of the checkers game.
- */
-export enum State {
-    inProgress,
-    gameFinished
-}
-
-/**
- * Represents a player in the checkers game.
- */
-export class Player {
-    public name: string;
-    public color: PieceColor;
-    public score: number;
-    public capturedPieces: number;
-
-     /**
-     * Constructs a Player object.
-     * @param {string} name - The name of the player.
-     * @param {PieceColor} color - The color assigned to the player.
-     */
-    constructor(name: string, color: PieceColor) {
-        this.name = name;
-        this.color = color;
-        this.score = 0;
-        this.capturedPieces = 0;
-    }
-
-    /**
-     * Updates the number of pieces captured by the player.
-     * @param {number} count - The number of pieces captured in a move.
-     */
-    updateCapturedPieces(count: number): void {
-        this.capturedPieces += count;
-    }
-
-    /**
-     * Updates the score of the player.
-     * @param {number} score - The score to be added to the player's current score.
-     */
-    updateScore(score: number): void {
-        this.score += score;
-    }
-}
 
 /**
  * Manages the overall game state of a checkers game, including the board, players, turns, and game progress.
