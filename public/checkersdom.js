@@ -1,9 +1,9 @@
 import { PieceColor, State, Player, CheckersGame } from './checkers.js';
 const pieceEventListeners = new Map();
-const playerOne = new Player("Red", PieceColor.Red);
-const playerTwo = new Player("Black", PieceColor.Black);
-const game = new CheckersGame(playerOne, playerTwo);
 let gameStatus = false;
+let game;
+const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
+startGameBtn === null || startGameBtn === void 0 ? void 0 : startGameBtn.addEventListener('click', startGame);
 const playerOneName = document.querySelector('.player-one .container .name');
 const playerOneScore = document.querySelector('.player-one .container .score');
 const playerOneCaptured = document.querySelector('.player-one .container .captured');
@@ -13,6 +13,17 @@ const playerTwoScore = document.querySelector('.player-two .container .score');
 const playerTwoCaptured = document.querySelector('.player-two .container .captured');
 const playerTwoTurn = document.querySelector('.player-two .container .turn');
 const rows = document.querySelectorAll('.board-container .container .row');
+function startGame() {
+    const playerOneName = document.getElementById('playerOneName').value || 'Player 1';
+    const playerTwoName = document.getElementById('playerTwoName').value || 'Player 2';
+    const playerOne = new Player(playerOneName, PieceColor.Red);
+    const playerTwo = new Player(playerTwoName, PieceColor.Black);
+    game = new CheckersGame(playerOne, playerTwo);
+    updateScoreCard();
+    document.querySelector('.initial-screen').style.display = 'none';
+    document.querySelector('.main').style.display = 'block';
+    populateBoard();
+}
 function populateBoard() {
     updateScoreCard();
     rows.forEach((row, rowIndex) => {
@@ -88,12 +99,12 @@ function executeMove(startRow, startCol, endRow, endCol) {
     }
 }
 function updateScoreCard() {
-    playerOneName.textContent = `Player One: ${playerOne.name}`;
-    playerOneScore.textContent = `Score: ${playerOne.score}`;
-    playerOneCaptured.textContent = `Captured Pieces: ${playerOne.capturedPieces}`;
-    playerTwoName.textContent = 'Player Two: ' + playerTwo.name;
-    playerTwoScore.textContent = 'Score: ' + playerTwo.score;
-    playerTwoCaptured.textContent = 'Captured Pieces: ' + playerTwo.capturedPieces;
+    playerOneName.textContent = `${game.players[0].name}`;
+    playerOneScore.textContent = `Score: ${game.players[0].score}`;
+    playerOneCaptured.textContent = `Captured Pieces: ${game.players[0].capturedPieces}`;
+    playerTwoName.textContent = `${game.players[1].name}`;
+    playerTwoScore.textContent = `Score: ${game.players[1].score}`;
+    playerTwoCaptured.textContent = `Captured Pieces: ${game.players[1].capturedPieces}`;
     if (game.currentPlayer === game.players[0]) {
         playerOneTurn.textContent = `Turn: Yes`;
         playerTwoTurn.textContent = `Turn: No`;
@@ -106,18 +117,18 @@ function updateScoreCard() {
     if (game.currentState === State.gameFinished) {
         if (game.winner === game.players[0]) {
             playerOneName.textContent = `${game.players[0].name} has won the game!`;
-            playerTwoName.textContent = `${game.players[1].name}, you lost homie`;
+            playerTwoName.textContent = `${game.players[1].name}, you lost, homie!`;
         }
         else if (game.winner === game.players[1]) {
-            playerOneName.textContent = `${game.players[0].name}, you lost homie`;
+            playerOneName.textContent = `${game.players[0].name}, you lost, homie!`;
             playerTwoName.textContent = `${game.players[1].name} has won the game!`;
         }
         else {
             playerOneName.textContent = 'Game is a draw!';
             playerTwoName.textContent = 'Game is a draw!';
         }
-        playerOneTurn.textContent = `Game Over`;
-        playerTwoTurn.textContent = `Game Over`;
+        playerOneTurn.textContent = ``;
+        playerTwoTurn.textContent = ``;
     }
 }
 function updateBoardDOM() {
@@ -137,5 +148,4 @@ function updateBoardDOM() {
     });
     populateBoard();
 }
-populateBoard();
 //# sourceMappingURL=checkersdom.js.map

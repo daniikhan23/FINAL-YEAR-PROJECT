@@ -8,12 +8,18 @@ import { PieceColor, State, Player, CheckersGame } from './checkers.js';
 const pieceEventListeners = new Map<HTMLDivElement, EventListener>();
 
 // Initial setup of players and game instance
-const playerOne = new Player("Red", PieceColor.Red);
-const playerTwo = new Player("Black", PieceColor.Black);
-const game = new CheckersGame(playerOne, playerTwo);
+
+
 let gameStatus: boolean = false;
 
 // DOM Element References
+let game: CheckersGame;
+
+//Initial Screen replace with Game Board
+
+const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
+startGameBtn?.addEventListener('click', startGame);
+
 // Player One
 const playerOneName = document.querySelector('.player-one .container .name') as HTMLDivElement;
 const playerOneScore = document.querySelector('.player-one .container .score') as HTMLDivElement;
@@ -27,6 +33,26 @@ const playerTwoCaptured = document.querySelector('.player-two .container .captur
 const playerTwoTurn = document.querySelector('.player-two .container .turn') as HTMLDivElement;
 
 const rows = document.querySelectorAll('.board-container .container .row')!;
+
+/**
+ * Starts the game on the DOM, by hiding the initial screen and showing the main game screen
+ */
+function startGame() {
+    const playerOneName = (document.getElementById('playerOneName') as HTMLInputElement).value || 'Player 1';
+    const playerTwoName = (document.getElementById('playerTwoName') as HTMLInputElement).value || 'Player 2';
+
+    const playerOne = new Player(playerOneName, PieceColor.Red);
+    const playerTwo = new Player(playerTwoName, PieceColor.Black);
+    game = new CheckersGame(playerOne, playerTwo)
+
+    // Update UI with player names
+    updateScoreCard();
+
+    (document.querySelector('.initial-screen') as HTMLElement).style.display = 'none';
+    (document.querySelector('.main') as HTMLElement).style.display = 'block';
+
+    populateBoard();
+}
 
 /**
  * Populates the game board on the DOM, showing the current state of the game.
@@ -148,13 +174,13 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
  * Updates the score card of each player and declares the winner if the game has ended.
  */
 function updateScoreCard() {
-    playerOneName.textContent = `Player One: ${playerOne.name}`;
-    playerOneScore.textContent = `Score: ${playerOne.score}`;
-    playerOneCaptured.textContent = `Captured Pieces: ${playerOne.capturedPieces}`;
+    playerOneName.textContent = `${game.players[0].name}`;
+    playerOneScore.textContent = `Score: ${game.players[0].score}`;
+    playerOneCaptured.textContent = `Captured Pieces: ${game.players[0].capturedPieces}`;
 
-    playerTwoName.textContent = 'Player Two: ' + playerTwo.name;
-    playerTwoScore.textContent = 'Score: ' + playerTwo.score;
-    playerTwoCaptured.textContent = 'Captured Pieces: ' + playerTwo.capturedPieces;
+    playerTwoName.textContent = `${game.players[1].name}`;
+    playerTwoScore.textContent = `Score: ${game.players[1].score}`;
+    playerTwoCaptured.textContent = `Captured Pieces: ${game.players[1].capturedPieces}`;
 
     if (game.currentPlayer === game.players[0]) {
         playerOneTurn.textContent = `Turn: Yes`;
@@ -169,18 +195,18 @@ function updateScoreCard() {
     if (game.currentState === State.gameFinished) {
         if (game.winner === game.players[0]) {
             playerOneName.textContent = `${game.players[0].name} has won the game!`;
-            playerTwoName.textContent = `${game.players[1].name}, you lost homie`;
+            playerTwoName.textContent = `${game.players[1].name}, you lost, homie!`;
         }
         else if (game.winner === game.players[1]) {
-            playerOneName.textContent = `${game.players[0].name}, you lost homie`;
+            playerOneName.textContent = `${game.players[0].name}, you lost, homie!`;
             playerTwoName.textContent = `${game.players[1].name} has won the game!`;
         }
         else {
             playerOneName.textContent = 'Game is a draw!';
             playerTwoName.textContent = 'Game is a draw!';
         }
-        playerOneTurn.textContent = `Game Over`;
-        playerTwoTurn.textContent = `Game Over`;
+            playerOneTurn.textContent = ``;
+            playerTwoTurn.textContent = ``;
     }
 }
 
@@ -208,5 +234,3 @@ function updateBoardDOM() {
     // populate the board with the pieces as well as their event listeners
     populateBoard();
 }
-
-populateBoard();

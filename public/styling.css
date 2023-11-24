@@ -159,7 +159,7 @@ body {
 /* Initial Screen Section  */
 .initial-screen {
   display: flex;
-  height: 88vh;
+  height: 82vh;
   justify-content: center;
   align-items: center;
   background-color: #363430;
@@ -300,6 +300,12 @@ Images from https://www.iconfinder.com/search?q=checkers
   width: 5.5rem;
 }
 
+.main .board-container .container .col .black-piece:hover {
+  filter: drop-shadow(0 0 1.5rem rgb(72, 72, 72));
+  height: 5.6rem;
+  width: 5.6rem;
+}
+
 /* Image for king black piece */
 .main .board-container .container .col .black-piece-king {
   background-image: url('../public/resources/img/blackKing.png'); 
@@ -310,6 +316,12 @@ Images from https://www.iconfinder.com/search?q=checkers
   filter: drop-shadow(0 0 1.5rem rgb(188, 1, 1));
   height: 6rem;
   width: 6rem;
+}
+
+.main .board-container .container .col .black-piece-king:hover {
+  filter: drop-shadow(0 0 2rem rgb(188, 1, 1));
+  height: 6.1rem;
+  width: 6.1rem;
 }
 
 /* Image for red piece */
@@ -324,6 +336,12 @@ Images from https://www.iconfinder.com/search?q=checkers
   width: 5.5rem;
 }
 
+.main .board-container .container .col .red-piece:hover {
+  filter: drop-shadow(0 0 1.5rem rgb(188, 1, 1));
+  height: 5.6rem;
+  width: 5.6rem;
+}
+
 /* Image for king red piece */
 .main .board-container .container .col .red-piece-king {
   background-image: url('../public/resources/img/redKing.png'); 
@@ -336,17 +354,33 @@ Images from https://www.iconfinder.com/search?q=checkers
   width: 6rem;
 }
 
+.main .board-container .container .col .red-piece-king:hover {
+  filter: drop-shadow(0 0 2rem rgb(72, 72, 72));
+  height: 6.1rem;
+  width: 6.1rem;
+}
+
 .main .board-container .container .col .selected {
   border: 4px solid gold;
   border-radius: 100%;
   box-sizing: border-box;
 }
 
+.main .board-container .container .col .selected:active {
+  transform: translateY(4px);
+}
+
 .main .board-container .container .col.highlight {
   background-color: rgb(65, 105, 93) !important;
 }
 
+.main .board-container .container .col.highlight:hover {
+  background-color: rgb(54, 87, 78) !important;
+}
 
+.main .board-container .container .col.highlight:active {
+  transform: translateY(2px) !important;
+}
 
 /* Footer Section */
 .footer-section {
