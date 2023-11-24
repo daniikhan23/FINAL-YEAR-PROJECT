@@ -74,9 +74,6 @@ function selectPiece(rowIndex, colIndex, pieceDiv) {
             });
         }
     }
-    else {
-        console.log(`It's not ${piece === null || piece === void 0 ? void 0 : piece.color}'s turn.`);
-    }
 }
 function executeMove(startRow, startCol, endRow, endCol) {
     const piece = game.getPiece(startRow, startCol);

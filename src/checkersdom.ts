@@ -118,9 +118,6 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
             });
         }
     } 
-    else {
-        console.log(`It's not ${piece?.color}'s turn.`); // maybe remove this now?
-    }
 }
 
 /**
