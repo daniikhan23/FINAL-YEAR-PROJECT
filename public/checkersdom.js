@@ -1,9 +1,17 @@
 import { PieceColor, State, Player, CheckersGame } from './checkers.js';
 const pieceEventListeners = new Map();
-let gameStatus = false;
 let game;
 const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
 startGameBtn === null || startGameBtn === void 0 ? void 0 : startGameBtn.addEventListener('click', startGame);
+const endOfGameSection = document.querySelector('.end-of-game-section');
+const winnerAnnouncement = document.getElementById('winnerAnnouncement');
+const playerOneFinalName = document.getElementById('playerOneFinalName');
+const playerOneFinalScore = document.getElementById('playerOneFinalScore');
+const playerOneFinalCaptured = document.getElementById('playerOneFinalCaptured');
+const playerTwoFinalName = document.getElementById('playerTwoFinalName');
+const playerTwoFinalScore = document.getElementById('playerTwoFinalScore');
+const playerTwoFinalCaptured = document.getElementById('playerTwoFinalCaptured');
+const restartGameButton = document.getElementById('restartGameButton');
 const playerOneName = document.querySelector('.player-one .container .name');
 const playerOneScore = document.querySelector('.player-one .container .score');
 const playerOneCaptured = document.querySelector('.player-one .container .captured');
@@ -24,6 +32,24 @@ function startGame() {
     document.querySelector('.main').style.display = 'block';
     populateBoard();
 }
+restartGameButton.addEventListener('click', () => {
+    endOfGameSection.style.display = 'none';
+    clearHighlights();
+    rows.forEach((row) => {
+        row.querySelectorAll('.col').forEach((col) => {
+            if (col.firstChild) {
+                const pieceDiv = col.firstChild;
+                const existingListener = pieceEventListeners.get(pieceDiv);
+                if (existingListener) {
+                    pieceDiv.removeEventListener('click', existingListener);
+                    pieceEventListeners.delete(pieceDiv);
+                }
+                col.removeChild(col.firstChild);
+            }
+        });
+    });
+    startGame();
+});
 function populateBoard() {
     updateScoreCard();
     rows.forEach((row, rowIndex) => {
@@ -129,6 +155,14 @@ function updateScoreCard() {
         }
         playerOneTurn.textContent = ``;
         playerTwoTurn.textContent = ``;
+        endOfGameSection.style.display = 'flex';
+        winnerAnnouncement.textContent = game.winner ? `Winner: ${game.winner.name}` : "It's a draw!";
+        playerOneFinalName.textContent = game.players[0].name;
+        playerOneFinalScore.textContent = `Score: ${game.players[0].score}`;
+        playerOneFinalCaptured.textContent = `Captured Pieces: ${game.players[0].capturedPieces}`;
+        playerTwoFinalName.textContent = game.players[1].name;
+        playerTwoFinalScore.textContent = `Score: ${game.players[1].score}`;
+        playerTwoFinalCaptured.textContent = `Captured Pieces: ${game.players[1].capturedPieces}`;
     }
 }
 function updateBoardDOM() {

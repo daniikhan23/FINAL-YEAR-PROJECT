@@ -6,19 +6,23 @@ import { PieceColor, State, Player, CheckersGame } from './checkers.js';
  * A map to hold event listeners for each piece on the checkers board.
  */
 const pieceEventListeners = new Map<HTMLDivElement, EventListener>();
-
-// Initial setup of players and game instance
-
-
-let gameStatus: boolean = false;
-
-// DOM Element References
 let game: CheckersGame;
 
 //Initial Screen replace with Game Board
 
 const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
 startGameBtn?.addEventListener('click', startGame);
+
+// End of Game elements
+const endOfGameSection = document.querySelector('.end-of-game-section') as HTMLElement;
+const winnerAnnouncement = document.getElementById('winnerAnnouncement') as HTMLDivElement;
+const playerOneFinalName = document.getElementById('playerOneFinalName') as HTMLDivElement;
+const playerOneFinalScore = document.getElementById('playerOneFinalScore') as HTMLDivElement;
+const playerOneFinalCaptured = document.getElementById('playerOneFinalCaptured') as HTMLDivElement;
+const playerTwoFinalName = document.getElementById('playerTwoFinalName') as HTMLDivElement;
+const playerTwoFinalScore = document.getElementById('playerTwoFinalScore') as HTMLDivElement;
+const playerTwoFinalCaptured = document.getElementById('playerTwoFinalCaptured') as HTMLDivElement;
+const restartGameButton = document.getElementById('restartGameButton') as HTMLButtonElement;
 
 // Player One
 const playerOneName = document.querySelector('.player-one .container .name') as HTMLDivElement;
@@ -53,6 +57,30 @@ function startGame() {
 
     populateBoard();
 }
+
+/**
+ * Restarts the Game to its start state
+ */
+restartGameButton.addEventListener('click', () => {
+    endOfGameSection.style.display = 'none'; 
+    clearHighlights();
+    // iterate through the board
+    rows.forEach((row) => {
+        row.querySelectorAll('.col').forEach((col) => {
+            // remove all existing pieces and event listeners
+            if (col.firstChild) {
+                const pieceDiv = col.firstChild as HTMLDivElement;
+                const existingListener = pieceEventListeners.get(pieceDiv);
+                if (existingListener) {
+                    pieceDiv.removeEventListener('click', existingListener);
+                    pieceEventListeners.delete(pieceDiv);
+                }
+                col.removeChild(col.firstChild);
+            }
+        });
+    });
+    startGame();
+});
 
 /**
  * Populates the game board on the DOM, showing the current state of the game.
@@ -207,6 +235,17 @@ function updateScoreCard() {
         }
             playerOneTurn.textContent = ``;
             playerTwoTurn.textContent = ``;
+            endOfGameSection.style.display = 'flex';
+
+            winnerAnnouncement.textContent = game.winner ? `Winner: ${game.winner.name}` : "It's a draw!";
+    
+            playerOneFinalName.textContent = game.players[0].name;
+            playerOneFinalScore.textContent = `Score: ${game.players[0].score}`;
+            playerOneFinalCaptured.textContent = `Captured Pieces: ${game.players[0].capturedPieces}`;
+    
+            playerTwoFinalName.textContent = game.players[1].name;
+            playerTwoFinalScore.textContent = `Score: ${game.players[1].score}`;
+            playerTwoFinalCaptured.textContent = `Captured Pieces: ${game.players[1].capturedPieces}`;
     }
 }
 
