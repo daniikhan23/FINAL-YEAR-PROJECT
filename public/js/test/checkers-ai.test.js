@@ -58,5 +58,23 @@ describe('CheckersGame', () => {
         expect(capturedPieces).toHaveLength(2);
         expect(wasPromoted).toBe(false);
     });
+    test('Chain Captures leading to Piece Promotion', () => {
+        game.movePiece(5, 6, 4, 7);
+        game.movePiece(2, 1, 3, 2);
+        game.movePiece(6, 7, 5, 6);
+        game.movePiece(3, 2, 4, 3);
+        game.movePiece(5, 4, 3, 2);
+        game.movePiece(2, 5, 3, 6);
+        game.movePiece(6, 5, 5, 4);
+        game.movePiece(1, 4, 2, 5);
+        game.movePiece(3, 2, 2, 1);
+        game.movePiece(0, 5, 1, 4);
+        game.movePiece(5, 4, 4, 3);
+        game.movePiece(2, 5, 3, 4);
+        game.movePiece(7, 6, 6, 5);
+        const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
+        expect(capturedPieces).toHaveLength(3);
+        expect(wasPromoted).toBe(true);
+    });
 });
 //# sourceMappingURL=checkers-ai.test.js.map

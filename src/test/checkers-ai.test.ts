@@ -81,5 +81,23 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
         expect(capturedPieces).toHaveLength(2);
         expect(wasPromoted).toBe(false);
-    })
+    });
+    test('Chain Captures leading to Piece Promotion', () => {
+        game.movePiece(5, 6, 4, 7); //red turn
+        game.movePiece(2, 1, 3, 2); // black turn
+        game.movePiece(6, 7, 5, 6); // red turn
+        game.movePiece(3, 2, 4, 3); // black turn
+        game.movePiece(5, 4, 3, 2); // red turn
+        game.movePiece(2, 5, 3, 6); // black turn
+        game.movePiece(6, 5, 5, 4); // red turn
+        game.movePiece(1, 4, 2, 5); // black turn
+        game.movePiece(3, 2, 2, 1); // red turn
+        game.movePiece(0, 5, 1, 4); // black turn
+        game.movePiece(5, 4, 4, 3); // red turn
+        game.movePiece(2, 5, 3, 4); // black turn
+        game.movePiece(7, 6, 6, 5); // red turn
+        const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
+        expect(capturedPieces).toHaveLength(3);
+        expect(wasPromoted).toBe(true);
+    });
 });
