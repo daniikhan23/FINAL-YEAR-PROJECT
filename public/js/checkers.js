@@ -322,5 +322,35 @@ export class CheckersGame {
     setAI(aiPlayer) {
         this.players[1] = aiPlayer;
     }
+    simulateMove(startRow, startCol, endRow, endCol) {
+        const piece = this.getPiece(startRow, startCol);
+        let capturedPiece = null;
+        let wasPromoted = false;
+        if (piece && this.validateMove(startRow, startCol, endRow, endCol)) {
+            if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                const middleRow = Math.floor((startRow + endRow) / 2);
+                const middleCol = Math.floor((startCol + endCol) / 2);
+                capturedPiece = this.getPiece(middleRow, middleCol);
+                this.board[middleRow][middleCol] = null;
+            }
+            this.board[startRow][startCol] = null;
+            this.board[endRow][endCol] = piece;
+            this.promoteToKing(endRow, endCol);
+        }
+        return capturedPiece;
+    }
+    undoSimulation(startRow, startCol, endRow, endCol, capturedPiece) {
+        const piece = this.getPiece(endRow, endCol);
+        this.board[endRow][endCol] = null;
+        this.board[startRow][startCol] = piece;
+        if (capturedPiece !== null) {
+            const middleRow = Math.floor((startRow + endRow) / 2);
+            const middleCol = Math.floor((startCol + endCol) / 2);
+            this.board[middleRow][middleCol] = capturedPiece;
+        }
+        if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
+            piece.isKing = false;
+        }
+    }
 }
 //# sourceMappingURL=checkers.js.map

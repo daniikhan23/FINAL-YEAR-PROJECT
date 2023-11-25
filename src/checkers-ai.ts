@@ -11,6 +11,11 @@ export class CheckersAI extends Player{
         this.depth = 1;
     }
 
+    /**
+     * Calculates a score for the AI based on number of regular and king pieces it has opposed to the user
+     * @param {CheckersGame} game - Current state of the game 
+     * @returns {number} - The score calculated
+     */
     public evaluateState(game: CheckersGame): number {
         let score = 0;
         let aiPieceCount = 0, playerPieceCount = 0;
@@ -41,5 +46,5 @@ export class CheckersAI extends Player{
         score += (aiKingCount - playerKingCount) * 2;
 
         return score;
-    }    
+    }   
 }

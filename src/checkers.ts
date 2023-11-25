@@ -524,7 +524,48 @@ export class CheckersGame {
         }
     }
 
-    public setAI(aiPlayer: CheckersAI) {
+    // AI Player Specific Methods:
+
+    public setAI(aiPlayer: CheckersAI): void {
         this.players[1] = aiPlayer;
+    }
+
+    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number): CheckersPiece | null {
+        const piece = this.getPiece(startRow, startCol);
+        let capturedPiece = null;
+        let wasPromoted = false;
+
+        if (piece && this.validateMove(startRow, startCol, endRow, endCol)) {
+            if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                const middleRow = Math.floor((startRow + endRow) / 2);
+                const middleCol = Math.floor((startCol + endCol) / 2);
+                capturedPiece = this.getPiece(middleRow, middleCol);
+                this.board[middleRow][middleCol] = null;  
+            }
+            this.board[startRow][startCol] = null;
+            this.board[endRow][endCol] = piece;
+            this.promoteToKing(endRow, endCol);
+        }
+        // Keep track of capturedPiece if there is one to reverse it in the game state after the simulation
+        return capturedPiece;
+    }
+    
+    public undoSimulation(startRow: number, startCol: number, endRow: number, endCol: number, capturedPiece: CheckersPiece | null): void {
+        // Reverse the position of the piece to what it was before the 'simulated move'
+        const piece = this.getPiece(endRow, endCol);
+        this.board[endRow][endCol] = null;
+        this.board[startRow][startCol] = piece;
+        
+        if (capturedPiece !== null) {
+            // Put the captured piece back in it's place
+            const middleRow = Math.floor((startRow + endRow) / 2);
+            const middleCol = Math.floor((startCol + endCol) / 2);
+            this.board[middleRow][middleCol] = capturedPiece;
+        }
+
+        // reverse the AI's piece if it was promoted to King status
+        if (piece?.isKing === true) {
+            piece.isKing = false;
+        }
     }
 }
