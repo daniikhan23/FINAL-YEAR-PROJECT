@@ -34,5 +34,29 @@ describe('CheckersGame', () => {
         game.movePiece(4, 7, 2, 5);
         expect(ai.evaluateState(game)).toBe(-1);
     });
+    test('Basic move without captures', () => {
+        game.movePiece(5, 6, 4, 7);
+        const [capturedPieces, wasPromoted] = game.simulateMove(2, 1, 3, 0);
+        expect(capturedPieces).toHaveLength(0);
+        expect(wasPromoted).toBe(false);
+    });
+    test('Singular capture scenarios should work appropriately', () => {
+        game.movePiece(5, 6, 4, 7);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(5, 2, 4, 1);
+        const [capturedPieces, wasPromoted] = game.simulateMove(3, 0, 5, 2);
+        expect(capturedPieces).toHaveLength(1);
+        expect(wasPromoted).toBe(false);
+    });
+    test('Chain Captures', () => {
+        game.movePiece(5, 6, 4, 5);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(4, 5, 3, 4);
+        game.movePiece(1, 0, 2, 1);
+        game.movePiece(6, 7, 5, 6);
+        const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
+        expect(capturedPieces).toHaveLength(2);
+        expect(wasPromoted).toBe(false);
+    });
 });
 //# sourceMappingURL=checkers-ai.test.js.map
