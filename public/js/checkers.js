@@ -330,22 +330,52 @@ export class CheckersGame {
     }
     simulateMove(startRow, startCol, endRow, endCol) {
         const piece = this.getPiece(startRow, startCol);
-        let capturedPiece = null;
+        let capturedPieces = [];
         let wasPromoted = false;
         if (piece && this.validateMove(startRow, startCol, endRow, endCol)) {
-            if (this.canCapture(startRow, startCol, endRow, endCol)) {
-                const middleRow = Math.floor((startRow + endRow) / 2);
-                const middleCol = Math.floor((startCol + endCol) / 2);
-                capturedPiece = this.getPiece(middleRow, middleCol);
-                this.board[middleRow][middleCol] = null;
-            }
-            this.board[startRow][startCol] = null;
-            this.board[endRow][endCol] = piece;
-            if (piece.isKing === false) {
-                wasPromoted = this.promoteToKing(endRow, endCol);
+            let currentRow = startRow, currentCol = startCol;
+            let moveRow = endRow, moveCol = endCol;
+            let canContinueCapture = true;
+            while (canContinueCapture) {
+                if (this.canCapture(currentRow, currentCol, moveRow, moveCol)) {
+                    const middleRow = Math.floor((currentRow + moveRow) / 2);
+                    const middleCol = Math.floor((currentCol + moveCol) / 2);
+                    const capturedPiece = this.getPiece(middleRow, middleCol);
+                    if (capturedPiece) {
+                        capturedPieces.push(capturedPiece);
+                        this.board[middleRow][middleCol] = null;
+                        this.board[currentRow][currentCol] = null;
+                        this.board[moveRow][moveCol] = piece;
+                        if (piece.isKing === false) {
+                            if (this.promoteToKing(moveRow, moveCol) === true) {
+                                piece.makeKing();
+                                wasPromoted = true;
+                            }
+                        }
+                        currentRow = moveRow;
+                        currentCol = moveCol;
+                        const nextCaptures = this.chainCaptures(moveRow, moveCol);
+                        canContinueCapture = nextCaptures.length > 0;
+                        if (canContinueCapture) {
+                            moveRow = nextCaptures[0].endRow;
+                            moveCol = nextCaptures[0].endCol;
+                        }
+                    }
+                }
+                else {
+                    canContinueCapture = false;
+                    this.board[startRow][startCol] = null;
+                    this.board[currentRow][currentCol] = piece;
+                    if (piece.isKing === false) {
+                        if (this.promoteToKing(moveRow, moveCol) === true) {
+                            piece.makeKing();
+                            wasPromoted = true;
+                        }
+                    }
+                }
             }
         }
-        return [capturedPiece, wasPromoted];
+        return [capturedPieces, wasPromoted];
     }
     undoSimulation(startRow, startCol, endRow, endCol, capturedPiece) {
         const piece = this.getPiece(endRow, endCol);

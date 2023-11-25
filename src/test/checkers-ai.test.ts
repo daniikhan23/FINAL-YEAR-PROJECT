@@ -15,6 +15,7 @@ describe('CheckersGame', () => {
         game.setAI(ai);
     });
 
+    // Tests for initialisation of AI player
     test('Check if AI has been correctly initialised to player 2', () => {    
         expect(game.players[1]).toBeInstanceOf(CheckersAI);
         expect(game.players[1]).toBe(ai);
@@ -43,5 +44,7 @@ describe('CheckersGame', () => {
         // red turn
         game.movePiece(4, 7, 2, 5)
         expect(ai.evaluateState(game)).toBe(-1);
-    })
+    });
+
+    
 });

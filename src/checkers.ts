@@ -535,27 +535,66 @@ export class CheckersGame {
         this.players[1] = aiPlayer;
     }
 
-    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number): [CheckersPiece | null, boolean] {
+    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number): [CheckersPiece [], boolean] {
         const piece = this.getPiece(startRow, startCol);
-        let capturedPiece = null;
+        // keep track of all captured pieces or none if none are captured
+        let capturedPieces: CheckersPiece[] = [];
         let wasPromoted = false;
 
         if (piece && this.validateMove(startRow, startCol, endRow, endCol)) {
-            if (this.canCapture(startRow, startCol, endRow, endCol)) {
-                const middleRow = Math.floor((startRow + endRow) / 2);
-                const middleCol = Math.floor((startCol + endCol) / 2);
-                capturedPiece = this.getPiece(middleRow, middleCol);
-                this.board[middleRow][middleCol] = null;  
-            }
-            this.board[startRow][startCol] = null;
-            this.board[endRow][endCol] = piece;
-            
-            if (piece.isKing === false) {
-                wasPromoted = this.promoteToKing(endRow, endCol);
-            }
+            let currentRow = startRow, currentCol = startCol;
+            let moveRow = endRow, moveCol = endCol;
+            let canContinueCapture = true;
+
+            while (canContinueCapture) {
+                if (this.canCapture(currentRow, currentCol, moveRow, moveCol)) {
+                    const middleRow = Math.floor((currentRow + moveRow) / 2);
+                    const middleCol = Math.floor((currentCol + moveCol) / 2);
+                    const capturedPiece = this.getPiece(middleRow, middleCol);
+                    
+                    // store captured pieces in this array
+                    if (capturedPiece) {
+                        capturedPieces.push(capturedPiece);
+                        this.board[middleRow][middleCol] = null;
+                        this.board[currentRow][currentCol] = null; 
+                        this.board[moveRow][moveCol] = piece;
+
+                        if (piece.isKing === false) {
+                            if (this.promoteToKing(moveRow, moveCol) === true) {
+                                piece.makeKing();
+                                wasPromoted = true;
+                            }
+                        }
+                        
+                        // update current row and col
+                        currentRow = moveRow;
+                        currentCol = moveCol;
+                        const nextCaptures = this.chainCaptures(moveRow, moveCol);
+                        canContinueCapture = nextCaptures.length > 0;
+
+                        if (canContinueCapture) {
+                            // assuming ai will choose first capture move
+                            moveRow = nextCaptures[0].endRow;
+                            moveCol = nextCaptures[0].endCol;
+                        }
+                    }
+                }
+                else {
+                    canContinueCapture = false;
+                    this.board[startRow][startCol] = null;
+                    this.board[currentRow][currentCol] = piece;
+
+                    if (piece.isKing === false) {
+                        if (this.promoteToKing(moveRow, moveCol) === true) {
+                            piece.makeKing();
+                            wasPromoted = true;
+                        }
+                    }
+                }
+            }        
         }
         // Keep track of capturedPiece if there is one to reverse it in the game state after the simulation
-        return [capturedPiece, wasPromoted];
+        return [capturedPieces, wasPromoted];
     }
     
     public undoSimulation(startRow: number, startCol: number, endRow: number, endCol: number, capturedPiece: CheckersPiece | null): void {
