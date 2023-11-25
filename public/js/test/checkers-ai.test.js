@@ -76,5 +76,11 @@ describe('CheckersGame', () => {
         expect(capturedPieces).toHaveLength(3);
         expect(wasPromoted).toBe(true);
     });
+    test('Undo: Basic move without captures', () => {
+        game.movePiece(5, 6, 4, 7);
+        const [capturedPieces, wasPromoted] = game.simulateMove(2, 1, 3, 0);
+        game.undoSimulation(2, 1, 3, 0, capturedPieces, wasPromoted);
+        expect(game.board[3][0]).toBeNull();
+    });
 });
 //# sourceMappingURL=checkers-ai.test.js.map

@@ -47,6 +47,7 @@ describe('CheckersGame', () => {
     });
 
     // Tests for Move Simulation:
+    // Move Simulation Tests
     test('Basic move without captures', () => {
         // red turn
         game.movePiece(5, 6, 4, 7);
@@ -99,5 +100,14 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
         expect(capturedPieces).toHaveLength(3);
         expect(wasPromoted).toBe(true);
+    });
+    // Undo Move Simulation Tests
+    test('Undo: Basic move without captures', () => {
+        // red turn
+        game.movePiece(5, 6, 4, 7);
+        // ai/black turn
+        const [capturedPieces, wasPromoted] = game.simulateMove(2, 1, 3, 0);
+        game.undoSimulation(2, 1, 3, 0, capturedPieces, wasPromoted);
+        expect(game.board[3][0]).toBeNull();
     });
 });

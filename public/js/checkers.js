@@ -342,7 +342,7 @@ export class CheckersGame {
                     const middleCol = Math.floor((currentCol + moveCol) / 2);
                     const capturedPiece = this.getPiece(middleRow, middleCol);
                     if (capturedPiece) {
-                        capturedPieces.push(capturedPiece);
+                        capturedPieces.push({ piece: capturedPiece, row: middleRow, col: middleCol });
                         this.board[middleRow][middleCol] = null;
                         this.board[currentRow][currentCol] = null;
                         this.board[moveRow][moveCol] = piece;
@@ -377,16 +377,14 @@ export class CheckersGame {
         }
         return [capturedPieces, wasPromoted];
     }
-    undoSimulation(startRow, startCol, endRow, endCol, capturedPiece) {
+    undoSimulation(startRow, startCol, endRow, endCol, capturedPieces, wasPromoted) {
         const piece = this.getPiece(endRow, endCol);
         this.board[endRow][endCol] = null;
         this.board[startRow][startCol] = piece;
-        if (capturedPiece !== null) {
-            const middleRow = Math.floor((startRow + endRow) / 2);
-            const middleCol = Math.floor((startCol + endCol) / 2);
-            this.board[middleRow][middleCol] = capturedPiece;
-        }
-        if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
+        capturedPieces.forEach((capturedPiece) => {
+            this.board[capturedPiece.row][capturedPiece.col] = capturedPiece.piece;
+        });
+        if (wasPromoted && piece) {
             piece.isKing = false;
         }
     }
