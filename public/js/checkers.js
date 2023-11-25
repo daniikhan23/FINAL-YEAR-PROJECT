@@ -319,5 +319,8 @@ export class CheckersGame {
             }
         }
     }
+    setAI(aiPlayer) {
+        this.players[1] = aiPlayer;
+    }
 }
 //# sourceMappingURL=checkers.js.map

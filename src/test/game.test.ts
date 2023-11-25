@@ -203,6 +203,5 @@ describe('CheckersGame', () => {
         game.checkEndOfGame();
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
-    });
-    
+    }); 
 });

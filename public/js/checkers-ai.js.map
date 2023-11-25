@@ -1,1 +1,1 @@
-{"version":3,"file":"checkers-ai.js","sourceRoot":"","sources":["../../src/checkers-ai.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,UAAU;CAEtB"}
+{"version":3,"file":"checkers-ai.js","sourceRoot":"","sources":["../../src/checkers-ai.ts"],"names":[],"mappings":"AAAA,OAAO,EAAyD,MAAM,EAAe,MAAM,YAAY,CAAC;AAExG,MAAM,OAAO,UAAW,SAAQ,MAAM;IAGlC,YAAY,IAAY,EAAE,KAAiB,EAAE,IAAkB;QAC3D,KAAK,CAAC,IAAI,EAAE,KAAK,CAAC,CAAC;QACnB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACrB,CAAC;CACJ"}

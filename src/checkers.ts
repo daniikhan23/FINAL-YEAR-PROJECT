@@ -1,3 +1,5 @@
+import { CheckersAI } from "./checkers-ai";
+
 /**
  * Enum representing the state of the checkers game.
  */
@@ -520,5 +522,9 @@ export class CheckersGame {
                 this.winner = null;
             }
         }
+    }
+
+    public setAI(aiPlayer: CheckersAI) {
+        this.players[1] = aiPlayer;
     }
 }

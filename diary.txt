@@ -154,3 +154,6 @@ made responsive to different screen sizes.
 The next step is to develop multiple web pages as well as develop even a simple AI. I still have to decide which problem I will tackle first as making 
 multiple web pages would be relatively simple and possible to finish within a day. However, developing the AI to play against would be a tougher challenge
 as the Minimax algorithm would be a relatively new experience to code.
+
+I want to at least develop a simple minimax algorithm with a depth limit of one to start off it's development, see it's performance and improve it
+further. After researching a lot on just the minmax algorithm and game trees I should be able to start the development of the AI. 
