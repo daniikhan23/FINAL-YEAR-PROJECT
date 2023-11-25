@@ -207,7 +207,9 @@ export class CheckersGame {
                 }
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
-                this.promoteToKing(endRow, endCol);
+                if (this.promoteToKing(endRow, endCol) === true) {
+                    piece.makeKing();
+                }
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
@@ -236,11 +238,15 @@ export class CheckersGame {
     promoteToKing(row, col) {
         const piece = this.getPiece(row, col);
         if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Red && row == 0) {
-            piece.makeKing();
+            return true;
         }
         else if ((piece === null || piece === void 0 ? void 0 : piece.color) == PieceColor.Black && row == 7) {
-            piece.makeKing();
+            return true;
         }
+        else {
+            return false;
+        }
+        ;
     }
     chainCaptures(row, col) {
         const moves = this.possibleMoves(row, col);
@@ -335,9 +341,11 @@ export class CheckersGame {
             }
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
-            this.promoteToKing(endRow, endCol);
+            if (piece.isKing === false) {
+                wasPromoted = this.promoteToKing(endRow, endCol);
+            }
         }
-        return capturedPiece;
+        return [capturedPiece, wasPromoted];
     }
     undoSimulation(startRow, startCol, endRow, endCol, capturedPiece) {
         const piece = this.getPiece(endRow, endCol);

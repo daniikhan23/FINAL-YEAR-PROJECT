@@ -376,7 +376,11 @@ export class CheckersGame {
                 }
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
-                this.promoteToKing(endRow, endCol);
+
+                if (this.promoteToKing(endRow, endCol) === true) {
+                    piece.makeKing();
+                }
+
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
@@ -411,16 +415,17 @@ export class CheckersGame {
      * Promotes a piece to a king if it reaches the opposite end of the board.
      * @param {number} row - The row of the piece.
      * @param {number} col - The column of the piece.
+     * @returns {boolean} - Return whether or not a piece was promoted
      */
-    public promoteToKing(row: number, col: number): void {
+    public promoteToKing(row: number, col: number): boolean {
         const piece = this.getPiece(row, col);
         if (piece?.color == PieceColor.Red && row == 0) {
-            piece.makeKing();
+            return true;
         } 
         else if (piece?.color == PieceColor.Black && row == 7) {
-            piece.makeKing();
+            return true;
         }
-        
+        else {return false};
     }
 
     /**
@@ -530,7 +535,7 @@ export class CheckersGame {
         this.players[1] = aiPlayer;
     }
 
-    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number): CheckersPiece | null {
+    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number): [CheckersPiece | null, boolean] {
         const piece = this.getPiece(startRow, startCol);
         let capturedPiece = null;
         let wasPromoted = false;
@@ -544,10 +549,13 @@ export class CheckersGame {
             }
             this.board[startRow][startCol] = null;
             this.board[endRow][endCol] = piece;
-            this.promoteToKing(endRow, endCol);
+            
+            if (piece.isKing === false) {
+                wasPromoted = this.promoteToKing(endRow, endCol);
+            }
         }
         // Keep track of capturedPiece if there is one to reverse it in the game state after the simulation
-        return capturedPiece;
+        return [capturedPiece, wasPromoted];
     }
     
     public undoSimulation(startRow: number, startCol: number, endRow: number, endCol: number, capturedPiece: CheckersPiece | null): void {
