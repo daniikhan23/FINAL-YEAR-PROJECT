@@ -11,7 +11,7 @@ describe('CheckersGame', () => {
         playerOne = new Player("Dani", PieceColor.Red);
         playerTwo = new Player("Khan", PieceColor.Black);
         game = new CheckersGame(playerOne, playerTwo);
-        ai = new CheckersAI('Zero', PieceColor.Black, game, 1);
+        ai = new CheckersAI('Zero', PieceColor.Black, game, 2);
         game.setAI(ai);
     });
 
@@ -206,5 +206,25 @@ describe('CheckersGame', () => {
         expect(game.board[2][1]?.color).toBe(PieceColor.Red);
         expect(game.board[4][3]?.color).toBe(PieceColor.Red);
         expect(game.board[6][5]?.color).toBe(PieceColor.Red);
+    });
+    // Tests for Minimax:
+    test('Basic Move Test for starting board', () => {
+        // player-red turn
+        game.movePiece(5, 0, 4, 1);
+        //ai-black turn
+        const [, aiMove] = ai.minimax(game, 1, true);
+        const expectedMoves = [
+            new Moves(2, 1, 3, 0), new Moves (2, 1, 3, 2), new Moves (2, 3, 3, 2), new Moves (2, 3, 3, 4),
+            new Moves (2, 5, 3, 3), new Moves (2, 5, 3, 7), new Moves (2, 7, 3, 6)
+        ];
+
+        const isValidMove = expectedMoves.some(expectedMove => 
+            expectedMove.startRow === aiMove?.startRow && 
+            expectedMove.startCol === aiMove?.startCol && 
+            expectedMove.endRow === aiMove?.endRow && 
+            expectedMove.endCol === aiMove?.endCol
+        );
+    
+        expect(isValidMove).toBe(true);
     });
 });

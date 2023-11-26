@@ -47,6 +47,27 @@ export class CheckersAI extends Player {
             isMaximizingPlayer = false;
             bestEvalScore = Infinity;
         }
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = game.getPiece(row, col);
+                if (piece && piece.color === checkColor) {
+                    const moves = game.possibleMoves(row, col);
+                    moves.forEach(move => {
+                        const [capturedPieces, wasPromoted, finalRow, finalCol] = game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
+                        const [evaluatedScore, evaluatedMove] = this.minimax(game, depth - 1, !isMaximizingPlayer);
+                        game.undoSimulation(move.startRow, move.endRow, finalRow, finalCol, capturedPieces, wasPromoted);
+                        if (isMaximizingPlayer && evaluatedScore > bestEvalScore) {
+                            bestEvalScore = evaluatedScore;
+                            bestMove = move;
+                        }
+                        else if (!isMaximizingPlayer && evaluatedScore < bestEvalScore) {
+                            bestEvalScore = evaluatedScore;
+                            bestMove = move;
+                        }
+                    });
+                }
+            }
+        }
         return [bestEvalScore, bestMove];
     }
 }

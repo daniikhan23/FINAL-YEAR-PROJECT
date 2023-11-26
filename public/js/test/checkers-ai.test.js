@@ -1,4 +1,4 @@
-import { PieceColor, CheckersPiece, Player, CheckersGame } from "../checkers";
+import { Moves, PieceColor, CheckersPiece, Player, CheckersGame } from "../checkers";
 import { CheckersAI } from "../checkers-ai";
 describe('CheckersGame', () => {
     let game;
@@ -9,7 +9,7 @@ describe('CheckersGame', () => {
         playerOne = new Player("Dani", PieceColor.Red);
         playerTwo = new Player("Khan", PieceColor.Black);
         game = new CheckersGame(playerOne, playerTwo);
-        ai = new CheckersAI('Zero', PieceColor.Black, game, 1);
+        ai = new CheckersAI('Zero', PieceColor.Black, game, 2);
         game.setAI(ai);
     });
     test('Check if AI has been correctly initialised to player 2', () => {
@@ -168,6 +168,19 @@ describe('CheckersGame', () => {
         expect((_a = game.board[2][1]) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
         expect((_b = game.board[4][3]) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
         expect((_c = game.board[6][5]) === null || _c === void 0 ? void 0 : _c.color).toBe(PieceColor.Red);
+    });
+    test('Basic Move Test for starting board', () => {
+        game.movePiece(5, 0, 4, 1);
+        const [, aiMove] = ai.minimax(game, 1, true);
+        const expectedMoves = [
+            new Moves(2, 1, 3, 0), new Moves(2, 1, 3, 2), new Moves(2, 3, 3, 2), new Moves(2, 3, 3, 4),
+            new Moves(2, 5, 3, 3), new Moves(2, 5, 3, 7), new Moves(2, 7, 3, 6)
+        ];
+        const isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
     });
 });
 //# sourceMappingURL=checkers-ai.test.js.map
