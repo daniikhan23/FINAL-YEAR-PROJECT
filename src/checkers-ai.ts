@@ -46,5 +46,5 @@ export class CheckersAI extends Player{
         score += (aiKingCount - playerKingCount) * 2;
 
         return score;
-    }   
+    }
 }

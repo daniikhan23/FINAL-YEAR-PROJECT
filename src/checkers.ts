@@ -530,11 +530,23 @@ export class CheckersGame {
     }
 
     // AI Player Specific Methods:
-
+    /**
+     * Sets player 2 as the AI
+     * @param aiPlayer - The AI player
+     */
     public setAI(aiPlayer: CheckersAI): void {
         this.players[1] = aiPlayer;
     }
 
+    /**
+     * The AI player uses this method to simulate moves on the board
+     * @param startRow - Starting row of the moving piece
+     * @param startCol - Starting column of the moving piece
+     * @param endRow - Ending row of the moving piece
+     * @param endCol - Ending column of the moving piece
+     * @returns {[{piece: CheckersPiece, row: number, col: number}[], boolean, number, number]} - Return an array containaing an array of the pieces captured as well as 
+     * their positions, a boolean tracking whether the moving piece was promoted and the final row and column of the piece
+     */
     public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number):
      [{piece: CheckersPiece, row: number, col: number}[], boolean, number, number] {
         const piece = this.getPiece(startRow, startCol);
@@ -601,6 +613,15 @@ export class CheckersGame {
         return [capturedPieces, wasPromoted, currentRow, currentCol];
     }
     
+    /**
+     * Bring the board back to it's initial state before the simulated move
+     * @param startRow - Starting row of the AI's piece
+     * @param startCol - Starting column of the AI's piece
+     * @param finalRow - Final row of the AI's piece
+     * @param finalCol - Final row of the AI's piece
+     * @param capturedPieces - Array of pieces captured and their position
+     * @param wasPromoted - Boolean tracking whether the moving piece was promoted 
+     */
     public undoSimulation(startRow: number, startCol: number, finalRow: number, finalCol: number, 
         capturedPieces: {piece: CheckersPiece, row: number, col: number}[], wasPromoted: boolean): void {
         // Reverse the position of the piece to what it was before the 'simulated move'

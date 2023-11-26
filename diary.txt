@@ -157,3 +157,11 @@ as the Minimax algorithm would be a relatively new experience to code.
 
 I want to at least develop a simple minimax algorithm with a depth limit of one to start off it's development, see it's performance and improve it
 further. After researching a lot on just the minmax algorithm and game trees I should be able to start the development of the AI. 
+
+Started off development of the AI player. This has been quite the strenuous process. Initially, I just had to make a function that evaluates the current 
+state of the game and gives it an appropriate score for the AI player based on number of regular and king pieces for each player. 
+The next step was to find a way for the AI to simulate moves to assess whether or not that move will be beneficial or not. For this I had to make two 
+functions in the CheckersGame class to allow the AI to make moves (simulateMove function) and then undoes them after seeing the result (undoSimulation).
+This was necessary as the movePiece() function would simply change the state of the board with no way of going back to the previous state, since it does 
+not allow for invalid moves or redos. Tested these two methods comprehensively. The next logical step, I believe to be the development of the minimax 
+algorithm. I hope to finish this by Sunday so I can flesh out the webpage to allow for local 2 player games and games against the AI. 
