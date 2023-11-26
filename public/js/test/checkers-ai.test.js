@@ -137,5 +137,37 @@ describe('CheckersGame', () => {
         expect((_a = game.board[3][4]) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
         expect((_b = game.board[5][6]) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
     });
+    test('Chain Captures leading to Piece Promotion', () => {
+        var _a, _b, _c;
+        game.movePiece(5, 6, 4, 7);
+        game.movePiece(2, 1, 3, 2);
+        game.movePiece(6, 7, 5, 6);
+        game.movePiece(3, 2, 4, 3);
+        game.movePiece(5, 4, 3, 2);
+        game.movePiece(2, 5, 3, 6);
+        game.movePiece(6, 5, 5, 4);
+        game.movePiece(1, 4, 2, 5);
+        game.movePiece(3, 2, 2, 1);
+        game.movePiece(0, 5, 1, 4);
+        game.movePiece(5, 4, 4, 3);
+        game.movePiece(2, 5, 3, 4);
+        game.movePiece(7, 6, 6, 5);
+        const piece = game.getPiece(1, 0);
+        const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
+        game.undoSimulation(1, 0, 7, 6, capturedPieces, wasPromoted);
+        expect(game.board[1][0]).not.toBeNull();
+        expect(game.board[2][1]).not.toBeNull();
+        expect(game.board[3][2]).toBeNull();
+        expect(game.board[4][3]).not.toBeNull();
+        expect(game.board[5][4]).toBeNull();
+        expect(game.board[6][5]).not.toBeNull();
+        expect(game.board[7][6]).toBeNull();
+        expect(piece).toBe(game.board[1][0]);
+        expect(piece === null || piece === void 0 ? void 0 : piece.color).toBe(PieceColor.Black);
+        expect(piece === null || piece === void 0 ? void 0 : piece.isKing).toBe(false);
+        expect((_a = game.board[2][1]) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
+        expect((_b = game.board[4][3]) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
+        expect((_c = game.board[6][5]) === null || _c === void 0 ? void 0 : _c.color).toBe(PieceColor.Red);
+    });
 });
 //# sourceMappingURL=checkers-ai.test.js.map

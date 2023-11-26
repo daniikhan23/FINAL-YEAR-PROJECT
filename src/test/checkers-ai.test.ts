@@ -172,4 +172,39 @@ describe('CheckersGame', () => {
         expect(game.board[3][4]?.color).toBe(PieceColor.Red);
         expect(game.board[5][6]?.color).toBe(PieceColor.Red);
     });
+    test('Chain Captures leading to Piece Promotion', () => {
+        game.movePiece(5, 6, 4, 7); //red turn
+        game.movePiece(2, 1, 3, 2); // black turn
+        game.movePiece(6, 7, 5, 6); // red turn
+        game.movePiece(3, 2, 4, 3); // black turn
+        game.movePiece(5, 4, 3, 2); // red turn
+        game.movePiece(2, 5, 3, 6); // black turn
+        game.movePiece(6, 5, 5, 4); // red turn
+        game.movePiece(1, 4, 2, 5); // black turn
+        game.movePiece(3, 2, 2, 1); // red turn
+        game.movePiece(0, 5, 1, 4); // black turn
+        game.movePiece(5, 4, 4, 3); // red turn
+        game.movePiece(2, 5, 3, 4); // black turn
+        game.movePiece(7, 6, 6, 5); // red turn
+        
+        const piece = game.getPiece(1, 0);
+        const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
+
+        game.undoSimulation(1, 0, 7, 6, capturedPieces, wasPromoted);
+        expect(game.board[1][0]).not.toBeNull();
+        expect(game.board[2][1]).not.toBeNull();
+        expect(game.board[3][2]).toBeNull();
+        expect(game.board[4][3]).not.toBeNull();
+        expect(game.board[5][4]).toBeNull();
+        expect(game.board[6][5]).not.toBeNull();
+        expect(game.board[7][6]).toBeNull();
+
+        expect(piece).toBe(game.board[1][0]);
+        expect(piece?.color).toBe(PieceColor.Black);
+        expect(piece?.isKing).toBe(false);
+
+        expect(game.board[2][1]?.color).toBe(PieceColor.Red);
+        expect(game.board[4][3]?.color).toBe(PieceColor.Red);
+        expect(game.board[6][5]?.color).toBe(PieceColor.Red);
+    });
 });
