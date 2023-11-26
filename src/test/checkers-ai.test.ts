@@ -82,6 +82,11 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
         expect(capturedPieces).toHaveLength(2);
         expect(wasPromoted).toBe(false);
+        expect(game.board[2][3]).toBeNull();
+        expect(game.board[3][4]).toBeNull();
+        expect(game.board[4][5]).toBeNull();
+        expect(game.board[5][6]).toBeNull();
+        expect(game.board[6][7]).not.toBeNull();
     });
     test('Chain Captures leading to Piece Promotion', () => {
         game.movePiece(5, 6, 4, 7); //red turn
@@ -100,6 +105,16 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
         expect(capturedPieces).toHaveLength(3);
         expect(wasPromoted).toBe(true);
+        expect(game.board[1][0]).toBeNull();
+        expect(game.board[2][1]).toBeNull();
+        expect(game.board[3][2]).toBeNull();
+        expect(game.board[4][3]).toBeNull();
+        expect(game.board[5][4]).toBeNull();
+        expect(game.board[6][5]).toBeNull();
+        expect(game.board[7][6]).not.toBeNull();
+        expect(game.board[7][6]).toBeInstanceOf(CheckersPiece);
+        expect(game.board[7][6]?.color).toBe(PieceColor.Black);
+        expect(game.board[7][6]?.isKing).toBe(true);
     });
     // Undo Move Simulation Tests
     test('Undo: Basic move without captures', () => {
@@ -114,5 +129,42 @@ describe('CheckersGame', () => {
         expect(piece).toBe(game.board[2][1]);
         expect(piece?.isKing).toBe(false);
         expect(piece?.color).toBe(PieceColor.Black);
+    });
+    test('Undo: Singular capture scenarios should work appropriately', () => {
+        // red turn
+        game.movePiece(5, 6, 4, 7);
+        // ai/black turn
+        game.movePiece(2, 1, 3, 0);
+        // red turn
+        game.movePiece(5, 2, 4, 1);
+        //ai/black turn
+        const piece = game.getPiece(3, 0);
+        const [capturedPieces, wasPromoted] = game.simulateMove(3, 0, 5, 2);
+
+        game.undoSimulation(3, 0, 5, 2, capturedPieces, wasPromoted);
+        expect(game.board[5][2]).toBeNull();
+        expect(piece).toBe(game.board[3][0]);
+        expect(piece?.isKing).toBe(false);
+        expect(piece?.color).toBe(PieceColor.Black);
+        expect(game.board[4][1]).toBeInstanceOf(CheckersPiece);
+        expect(game.board[4][1]?.color).toBe(PieceColor.Red);
+    });
+    test('Undo: Chain Captures', () => {
+        game.movePiece(5, 6, 4, 5); //red turn
+        game.movePiece(2, 1, 3, 0); //black turn 
+        game.movePiece(4, 5, 3, 4); // red turn
+        game.movePiece(1, 0, 2, 1); //black turn 
+        // red turn
+        game.movePiece(6, 7, 5, 6);
+
+        const piece = game.getPiece(2, 3);
+        const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
+
+        game.undoSimulation(2, 3, 4, 5, capturedPieces, wasPromoted);
+        expect(game.board[2][3]).not.toBeNull();
+        expect(game.board[3][4]).not.toBeNull();
+        expect(game.board[4][5]).toBeNull();
+        expect(game.board[5][6]).not.toBeNull();
+        expect(game.board[6][7]).toBeNull();
     });
 });
