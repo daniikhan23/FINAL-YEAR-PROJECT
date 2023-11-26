@@ -78,9 +78,13 @@ describe('CheckersGame', () => {
     });
     test('Undo: Basic move without captures', () => {
         game.movePiece(5, 6, 4, 7);
+        const piece = game.getPiece(2, 1);
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 1, 3, 0);
         game.undoSimulation(2, 1, 3, 0, capturedPieces, wasPromoted);
         expect(game.board[3][0]).toBeNull();
+        expect(piece).toBe(game.board[2][1]);
+        expect(piece === null || piece === void 0 ? void 0 : piece.isKing).toBe(false);
+        expect(piece === null || piece === void 0 ? void 0 : piece.color).toBe(PieceColor.Black);
     });
 });
 //# sourceMappingURL=checkers-ai.test.js.map

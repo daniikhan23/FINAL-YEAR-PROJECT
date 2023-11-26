@@ -106,8 +106,13 @@ describe('CheckersGame', () => {
         // red turn
         game.movePiece(5, 6, 4, 7);
         // ai/black turn
+        const piece = game.getPiece(2, 1);
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 1, 3, 0);
+
         game.undoSimulation(2, 1, 3, 0, capturedPieces, wasPromoted);
         expect(game.board[3][0]).toBeNull();
+        expect(piece).toBe(game.board[2][1]);
+        expect(piece?.isKing).toBe(false);
+        expect(piece?.color).toBe(PieceColor.Black);
     });
 });

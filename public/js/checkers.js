@@ -363,15 +363,15 @@ export class CheckersGame {
                     }
                 }
                 else {
-                    canContinueCapture = false;
-                    this.board[startRow][startCol] = null;
-                    this.board[currentRow][currentCol] = piece;
+                    this.board[currentRow][currentCol] = null;
+                    this.board[moveRow][moveCol] = piece;
                     if (piece.isKing === false) {
                         if (this.promoteToKing(moveRow, moveCol) === true) {
                             piece.makeKing();
                             wasPromoted = true;
                         }
                     }
+                    canContinueCapture = false;
                 }
             }
         }
