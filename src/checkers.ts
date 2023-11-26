@@ -535,15 +535,17 @@ export class CheckersGame {
         this.players[1] = aiPlayer;
     }
 
-    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number): [{piece: CheckersPiece, row: number, col: number}[], boolean] {
+    public simulateMove(startRow: number, startCol: number, endRow: number, endCol: number):
+     [{piece: CheckersPiece, row: number, col: number}[], boolean, number, number] {
         const piece = this.getPiece(startRow, startCol);
         // keep track of all captured pieces or none if none are captured
         let capturedPieces: {piece: CheckersPiece, row: number, col: number} [] = [];
         let wasPromoted = false;
+        let currentRow = startRow, currentCol = startCol;
+        let moveRow = endRow, moveCol = endCol;
 
         if (piece && this.validateMove(startRow, startCol, endRow, endCol)) {
-            let currentRow = startRow, currentCol = startCol;
-            let moveRow = endRow, moveCol = endCol;
+            
             let canContinueCapture = true;
 
             while (canContinueCapture) {
@@ -582,6 +584,8 @@ export class CheckersGame {
                 else {
                     this.board[currentRow][currentCol] = null;
                     this.board[moveRow][moveCol] = piece;
+                    currentRow = moveRow;
+                    currentCol = moveCol;
 
                     if (piece.isKing === false) {
                         if (this.promoteToKing(moveRow, moveCol) === true) {
@@ -594,13 +598,14 @@ export class CheckersGame {
             }        
         }
         // Keep track of capturedPiece if there is one to reverse it in the game state after the simulation
-        return [capturedPieces, wasPromoted];
+        return [capturedPieces, wasPromoted, currentRow, currentCol];
     }
     
-    public undoSimulation(startRow: number, startCol: number, endRow: number, endCol: number, capturedPieces: {piece: CheckersPiece, row: number, col: number}[], wasPromoted: boolean): void {
+    public undoSimulation(startRow: number, startCol: number, finalRow: number, finalCol: number, 
+        capturedPieces: {piece: CheckersPiece, row: number, col: number}[], wasPromoted: boolean): void {
         // Reverse the position of the piece to what it was before the 'simulated move'
-        const piece = this.getPiece(endRow, endCol);
-        this.board[endRow][endCol] = null;
+        const piece = this.getPiece(finalRow, finalCol);
+        this.board[finalRow][finalCol] = null;
         this.board[startRow][startCol] = piece;
 
         capturedPieces.forEach((capturedPiece) => {

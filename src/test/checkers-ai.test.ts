@@ -160,11 +160,16 @@ describe('CheckersGame', () => {
         const piece = game.getPiece(2, 3);
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
 
-        game.undoSimulation(2, 3, 4, 5, capturedPieces, wasPromoted);
+        game.undoSimulation(2, 3, 6, 7, capturedPieces, wasPromoted);
         expect(game.board[2][3]).not.toBeNull();
         expect(game.board[3][4]).not.toBeNull();
         expect(game.board[4][5]).toBeNull();
         expect(game.board[5][6]).not.toBeNull();
         expect(game.board[6][7]).toBeNull();
+
+        expect(piece).toBe(game.board[2][3]);
+        expect(piece?.color).toBe(PieceColor.Black);
+        expect(game.board[3][4]?.color).toBe(PieceColor.Red);
+        expect(game.board[5][6]?.color).toBe(PieceColor.Red);
     });
 });

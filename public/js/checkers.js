@@ -332,9 +332,9 @@ export class CheckersGame {
         const piece = this.getPiece(startRow, startCol);
         let capturedPieces = [];
         let wasPromoted = false;
+        let currentRow = startRow, currentCol = startCol;
+        let moveRow = endRow, moveCol = endCol;
         if (piece && this.validateMove(startRow, startCol, endRow, endCol)) {
-            let currentRow = startRow, currentCol = startCol;
-            let moveRow = endRow, moveCol = endCol;
             let canContinueCapture = true;
             while (canContinueCapture) {
                 if (this.canCapture(currentRow, currentCol, moveRow, moveCol)) {
@@ -365,6 +365,8 @@ export class CheckersGame {
                 else {
                     this.board[currentRow][currentCol] = null;
                     this.board[moveRow][moveCol] = piece;
+                    currentRow = moveRow;
+                    currentCol = moveCol;
                     if (piece.isKing === false) {
                         if (this.promoteToKing(moveRow, moveCol) === true) {
                             piece.makeKing();
@@ -375,11 +377,11 @@ export class CheckersGame {
                 }
             }
         }
-        return [capturedPieces, wasPromoted];
+        return [capturedPieces, wasPromoted, currentRow, currentCol];
     }
-    undoSimulation(startRow, startCol, endRow, endCol, capturedPieces, wasPromoted) {
-        const piece = this.getPiece(endRow, endCol);
-        this.board[endRow][endCol] = null;
+    undoSimulation(startRow, startCol, finalRow, finalCol, capturedPieces, wasPromoted) {
+        const piece = this.getPiece(finalRow, finalCol);
+        this.board[finalRow][finalCol] = null;
         this.board[startRow][startCol] = piece;
         capturedPieces.forEach((capturedPiece) => {
             this.board[capturedPiece.row][capturedPiece.col] = capturedPiece.piece;

@@ -118,6 +118,7 @@ describe('CheckersGame', () => {
         expect((_a = game.board[4][1]) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
     });
     test('Undo: Chain Captures', () => {
+        var _a, _b;
         game.movePiece(5, 6, 4, 5);
         game.movePiece(2, 1, 3, 0);
         game.movePiece(4, 5, 3, 4);
@@ -125,12 +126,16 @@ describe('CheckersGame', () => {
         game.movePiece(6, 7, 5, 6);
         const piece = game.getPiece(2, 3);
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
-        game.undoSimulation(2, 3, 4, 5, capturedPieces, wasPromoted);
+        game.undoSimulation(2, 3, 6, 7, capturedPieces, wasPromoted);
         expect(game.board[2][3]).not.toBeNull();
         expect(game.board[3][4]).not.toBeNull();
         expect(game.board[4][5]).toBeNull();
         expect(game.board[5][6]).not.toBeNull();
         expect(game.board[6][7]).toBeNull();
+        expect(piece).toBe(game.board[2][3]);
+        expect(piece === null || piece === void 0 ? void 0 : piece.color).toBe(PieceColor.Black);
+        expect((_a = game.board[3][4]) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
+        expect((_b = game.board[5][6]) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
     });
 });
 //# sourceMappingURL=checkers-ai.test.js.map
