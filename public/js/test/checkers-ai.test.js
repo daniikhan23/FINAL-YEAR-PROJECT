@@ -9,7 +9,7 @@ describe('CheckersGame', () => {
         playerOne = new Player("Dani", PieceColor.Red);
         playerTwo = new Player("Khan", PieceColor.Black);
         game = new CheckersGame(playerOne, playerTwo);
-        ai = new CheckersAI('Zero', PieceColor.Black, game);
+        ai = new CheckersAI('Zero', PieceColor.Black, game, 1);
         game.setAI(ai);
     });
     test('Check if AI has been correctly initialised to player 2', () => {

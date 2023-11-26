@@ -4,11 +4,11 @@ export class CheckersAI extends Player{
     private game: CheckersGame;
     private depth: number
 
-    constructor(name: string, color: PieceColor, game: CheckersGame) {
+    constructor(name: string, color: PieceColor, game: CheckersGame, depth: number) {
         super(name, color);
         this.game = game;
         // for now the AI will only have search depth 1 for a simple AI
-        this.depth = 1;
+        this.depth = depth;
     }
 
     /**
@@ -46,5 +46,31 @@ export class CheckersAI extends Player{
         score += (aiKingCount - playerKingCount) * 2;
 
         return score;
+    }
+
+    public minimax(game: CheckersGame, depth: number, isMaximizingPlayer: boolean): [number, Moves | null] {
+
+        // Base case 
+        if (depth === 0 || game.currentState === State.gameFinished) {
+            return [this.evaluateState(game), null];
+        }
+
+        // Initialise checks
+        let bestEvalScore: number; 
+        let bestMove = null;
+        let checkColor: PieceColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
+
+        // For maximizing the score
+        if (game.currentPlayer === game.players[1]) {
+            isMaximizingPlayer = true;
+            bestEvalScore = -Infinity;
+        }
+        // For minimizing the score 
+        else {
+            isMaximizingPlayer = false;
+            bestEvalScore = Infinity;
+        }
+        
+        return [bestEvalScore, bestMove];
     }
 }

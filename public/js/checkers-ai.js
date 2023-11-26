@@ -1,9 +1,9 @@
-import { PieceColor, Player } from './checkers';
+import { PieceColor, State, Player } from './checkers';
 export class CheckersAI extends Player {
-    constructor(name, color, game) {
+    constructor(name, color, game, depth) {
         super(name, color);
         this.game = game;
-        this.depth = 1;
+        this.depth = depth;
     }
     evaluateState(game) {
         let score = 0;
@@ -31,6 +31,23 @@ export class CheckersAI extends Player {
         score += aiPieceCount - playerPieceCount;
         score += (aiKingCount - playerKingCount) * 2;
         return score;
+    }
+    minimax(game, depth, isMaximizingPlayer) {
+        if (depth === 0 || game.currentState === State.gameFinished) {
+            return [this.evaluateState(game), null];
+        }
+        let bestEvalScore;
+        let bestMove = null;
+        let checkColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
+        if (game.currentPlayer === game.players[1]) {
+            isMaximizingPlayer = true;
+            bestEvalScore = -Infinity;
+        }
+        else {
+            isMaximizingPlayer = false;
+            bestEvalScore = Infinity;
+        }
+        return [bestEvalScore, bestMove];
     }
 }
 //# sourceMappingURL=checkers-ai.js.map
