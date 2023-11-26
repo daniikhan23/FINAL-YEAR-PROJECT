@@ -7,44 +7,26 @@ export class CheckersAI extends Player {
     }
     evaluateState(game) {
         let score = 0;
-        let aiPieceCount = 0, playerPieceCount = 0;
-        let aiKingCount = 0, playerKingCount = 0;
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const piece = game.getPiece(row, col);
-                if (piece) {
-                    if (piece.color === PieceColor.Black) {
-                        aiPieceCount++;
-                        if (piece.isKing === true) {
-                            aiKingCount++;
-                        }
-                    }
-                    else {
-                        playerPieceCount++;
-                        if (piece.isKing === true) {
-                            playerKingCount++;
-                        }
-                    }
-                }
-            }
-        }
+        let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
+        let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
         score += aiPieceCount - playerPieceCount;
         score += (aiKingCount - playerKingCount) * 2;
         return score;
     }
     minimax(game, depth, isMaximizingPlayer) {
-        if (depth === 0 || game.currentState === State.gameFinished) {
-            return [this.evaluateState(game), null];
-        }
+        console.log(`Minimax called with depth: ${depth}, maximizing player: ${isMaximizingPlayer}`);
         let bestEvalScore;
         let bestMove = null;
         let checkColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
-        if (game.currentPlayer === game.players[1]) {
-            isMaximizingPlayer = true;
+        if (depth === 0 || game.currentState === State.gameFinished) {
+            let score = this.evaluateState(game);
+            console.log(`Base case reached with score: ${score}`);
+            return [score, null];
+        }
+        if (isMaximizingPlayer) {
             bestEvalScore = -Infinity;
         }
         else {
-            isMaximizingPlayer = false;
             bestEvalScore = Infinity;
         }
         for (let row = 0; row < 8; row++) {
@@ -53,20 +35,32 @@ export class CheckersAI extends Player {
                 if (piece && piece.color === checkColor) {
                     const moves = game.possibleMoves(row, col);
                     moves.forEach(move => {
-                        const [capturedPieces, wasPromoted, finalRow, finalCol] = game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
-                        const [evaluatedScore, evaluatedMove] = this.minimax(game, depth - 1, !isMaximizingPlayer);
-                        game.undoSimulation(move.startRow, move.endRow, finalRow, finalCol, capturedPieces, wasPromoted);
-                        if (isMaximizingPlayer && evaluatedScore > bestEvalScore) {
-                            bestEvalScore = evaluatedScore;
-                            bestMove = move;
-                        }
-                        else if (!isMaximizingPlayer && evaluatedScore < bestEvalScore) {
-                            bestEvalScore = evaluatedScore;
-                            bestMove = move;
+                        if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                            const [capturedPieces, wasPromoted, finalRow, finalCol] = game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
+                            console.log(`Evaluating move: Start(${move.startRow}, ${move.startCol}) to End(${move.endRow}, ${move.endCol})`);
+                            const [evaluatedScore] = this.minimax(game, depth - 1, !isMaximizingPlayer);
+                            console.log(`Evaluated move: Start(${move.startRow}, ${move.startCol}) to End(${move.endRow}, ${move.endCol}), Score: ${evaluatedScore}`);
+                            game.undoSimulation(move.startRow, move.endRow, finalRow, finalCol, capturedPieces, wasPromoted);
+                            if (isMaximizingPlayer && evaluatedScore > bestEvalScore) {
+                                console.log(`Updating best move: Start(${move.startRow}, ${move.startCol}) to End(${move.endRow}, ${move.endCol}), New Best Score: ${evaluatedScore}`);
+                                bestEvalScore = evaluatedScore;
+                                bestMove = move;
+                            }
+                            else if (!isMaximizingPlayer && evaluatedScore < bestEvalScore) {
+                                console.log(`Updating best move: Start(${move.startRow}, ${move.startCol}) to End(${move.endRow}, ${move.endCol}), New Best Score: ${evaluatedScore}`);
+                                bestEvalScore = evaluatedScore;
+                                bestMove = move;
+                            }
                         }
                     });
                 }
             }
+        }
+        if (bestMove) {
+            console.log(`Returning from minimax: Best Move: Start(${bestMove.startRow}, ${bestMove.startCol}) to End(${bestMove.endRow}, ${bestMove.endCol}), Score: ${bestEvalScore}`);
+        }
+        else {
+            console.log(`Returning from minimax: No best move found, Score: ${bestEvalScore}`);
         }
         return [bestEvalScore, bestMove];
     }

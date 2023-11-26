@@ -16,6 +16,8 @@ export class Player {
     public color: PieceColor;
     public score: number;
     public capturedPieces: number;
+    public numOfPieces: number;
+    public numOfKings: number;
 
      /**
      * Constructs a Player object.
@@ -27,6 +29,8 @@ export class Player {
         this.color = color;
         this.score = 0;
         this.capturedPieces = 0;
+        this.numOfPieces = 12;
+        this.numOfKings = 0;
     }
 
     /**
@@ -118,7 +122,7 @@ export class CheckersBoard {
      */
     constructor(){
         this.initializeBoard();
-        console.log(this.board);
+        // console.log(this.board);
     }
 
     /**
@@ -201,7 +205,7 @@ export class CheckersGame {
      * @param {number} endCol - The ending column of the move.
      * @returns {boolean} - True if the move is valid, false otherwise.
      */
-    private validateMove(startRow: number, startCol: number, endRow: number, endCol: number): boolean {
+    public validateMove(startRow: number, startCol: number, endRow: number, endCol: number): boolean {
         // check to see if attempted move will place piece outside board
         if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
             return false;
@@ -235,7 +239,7 @@ export class CheckersGame {
     }
 
     // method of validation for black pieces
-    private validateBlack(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null): boolean {
+    public validateBlack(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null): boolean {
         if (endRow - startRow === 1 && Math.abs(startCol - endCol) === 1) {
             if (destinationSquare !== null) {
                 return false;
@@ -249,7 +253,7 @@ export class CheckersGame {
     }
 
     // method of validation for red pieces
-    private validateRed(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null): boolean {
+    public validateRed(startRow: number, startCol: number, endRow: number, endCol: number, destinationSquare: CheckersPiece | null): boolean {
         if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
             if (destinationSquare !== null) {
                 return false;
@@ -379,6 +383,8 @@ export class CheckersGame {
 
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
+                    this.currentPlayer.numOfKings += 1;
+                    console.log(`Number of kings of ${this.currentPlayer.color} is ${this.currentPlayer.numOfKings}`);
                 }
 
                 const nextCaptures = this.chainCaptures(endRow, endCol);
@@ -408,6 +414,16 @@ export class CheckersGame {
         } else {
             this.currentPlayer.updateScore(1);
             this.currentPlayer.updateCapturedPieces(1);
+        }
+        if (this.currentPlayer === this.players[0]) {
+            this.players[1].numOfPieces -= 1;
+            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
+            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
+        }
+        else {
+            this.players[0].numOfPieces -= 1;
+            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
+            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
         }
     }
 

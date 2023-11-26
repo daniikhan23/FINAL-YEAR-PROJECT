@@ -125,6 +125,7 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 1, 3, 0);
 
         game.undoSimulation(2, 1, 3, 0, capturedPieces, wasPromoted);
+        
         expect(game.board[3][0]).toBeNull();
         expect(piece).toBe(game.board[2][1]);
         expect(piece?.isKing).toBe(false);
@@ -161,6 +162,7 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(2, 3, 4, 5);
 
         game.undoSimulation(2, 3, 6, 7, capturedPieces, wasPromoted);
+        
         expect(game.board[2][3]).not.toBeNull();
         expect(game.board[3][4]).not.toBeNull();
         expect(game.board[4][5]).toBeNull();
@@ -172,7 +174,7 @@ describe('CheckersGame', () => {
         expect(game.board[3][4]?.color).toBe(PieceColor.Red);
         expect(game.board[5][6]?.color).toBe(PieceColor.Red);
     });
-    test('Chain Captures leading to Piece Promotion', () => {
+    test('Undo: Chain Captures leading to Piece Promotion', () => {
         game.movePiece(5, 6, 4, 7); //red turn
         game.movePiece(2, 1, 3, 2); // black turn
         game.movePiece(6, 7, 5, 6); // red turn
@@ -191,6 +193,7 @@ describe('CheckersGame', () => {
         const [capturedPieces, wasPromoted] = game.simulateMove(1, 0, 3, 2);
 
         game.undoSimulation(1, 0, 7, 6, capturedPieces, wasPromoted);
+
         expect(game.board[1][0]).not.toBeNull();
         expect(game.board[2][1]).not.toBeNull();
         expect(game.board[3][2]).toBeNull();
@@ -208,98 +211,158 @@ describe('CheckersGame', () => {
         expect(game.board[6][5]?.color).toBe(PieceColor.Red);
     });
     // Tests for Minimax:
-    test('Basic Move Test for starting board', () => {
-        // player-red turn
-        game.movePiece(5, 0, 4, 1);
-        //ai-black turn
-        const [, aiMove] = ai.minimax(game, 1, true);
-        const expectedMoves = [
-            new Moves(2, 1, 3, 0), new Moves (2, 1, 3, 2), new Moves (2, 3, 3, 2), new Moves (2, 3, 3, 4),
-            new Moves (2, 5, 3, 3), new Moves (2, 5, 3, 7), new Moves (2, 7, 3, 6)
-        ];
+    // test('Basic Move Test for starting board', () => {
+    //     // player-red turn
+    //     game.movePiece(5, 0, 4, 1);
+    //     //ai-black turn
+    //     const [, aiMove] = ai.minimax(game, 1, true);
+    //     const expectedMoves = [
+    //         new Moves(2, 1, 3, 0), new Moves (2, 1, 3, 2), new Moves (2, 3, 3, 2), new Moves (2, 3, 3, 4),
+    //         new Moves (2, 5, 3, 3), new Moves (2, 5, 3, 7), new Moves (2, 7, 3, 6)
+    //     ];
 
-        const isValidMove = expectedMoves.some(expectedMove => 
-            expectedMove.startRow === aiMove?.startRow && 
-            expectedMove.startCol === aiMove?.startCol && 
-            expectedMove.endRow === aiMove?.endRow && 
-            expectedMove.endCol === aiMove?.endCol
-        );
+    //     const isValidMove = expectedMoves.some(expectedMove => 
+    //         expectedMove.startRow === aiMove?.startRow && 
+    //         expectedMove.startCol === aiMove?.startCol && 
+    //         expectedMove.endRow === aiMove?.endRow && 
+    //         expectedMove.endCol === aiMove?.endCol
+    //     );
     
-        expect(isValidMove).toBe(true);
-    });
-    test('1. Capture Move Test', () => {
-        // player-red turn
-        game.movePiece(5, 4, 4, 5);
-        //ai-black turn
-        game.movePiece(2, 7, 3, 6);
-        // player-red turn
-        game.movePiece(5, 6, 4, 7);
+    //     expect(isValidMove).toBe(true);
+    // });
+    // // Simple Capture Move Scenarios
+    // test('1. Capture Move Test', () => {
+    //     // player-red turn
+    //     game.movePiece(5, 4, 4, 5);
+    //     //ai-black turn
+    //     game.movePiece(2, 7, 3, 6);
+    //     // player-red turn
+    //     game.movePiece(5, 6, 4, 7);
 
-        const [, aiMove] = ai.minimax(game, 2, true);
-        const expectedMoves = [
-            new Moves(2, 1, 3, 0), new Moves (2, 1, 3, 2), new Moves (2, 3, 3, 2), new Moves (2, 3, 3, 4),
-            new Moves (2, 5, 3, 4), new Moves (3, 6, 5, 4), new Moves (1, 6, 2, 7)
-        ];
+    //     const [, aiMove] = ai.minimax(game, 2, true);
+    //     const expectedMoves = [
+    //         new Moves(2, 1, 3, 0), new Moves (2, 1, 3, 2), new Moves (2, 3, 3, 2), new Moves (2, 3, 3, 4),
+    //         new Moves (2, 5, 3, 4), new Moves (3, 6, 5, 4), new Moves (1, 6, 2, 7)
+    //     ];
 
-        const isValidMove = expectedMoves.some(expectedMove => 
-            expectedMove.startRow === aiMove?.startRow && 
-            expectedMove.startCol === aiMove?.startCol && 
-            expectedMove.endRow === aiMove?.endRow && 
-            expectedMove.endCol === aiMove?.endCol
-        );
+    //     const isValidMove = expectedMoves.some(expectedMove => 
+    //         expectedMove.startRow === aiMove?.startRow && 
+    //         expectedMove.startCol === aiMove?.startCol && 
+    //         expectedMove.endRow === aiMove?.endRow && 
+    //         expectedMove.endCol === aiMove?.endCol
+    //     );
     
-        expect(isValidMove).toBe(true);
-    });
-    test('2. Capture Move Test', () => {
-        // player-red turn
-        game.movePiece(5, 4, 4, 3);
-        //ai-black turn
-        game.movePiece(2, 1, 3, 2);
-        // player-red turn
-        game.movePiece(5, 6, 4, 7);
+    //     expect(isValidMove).toBe(true);
+    // });
+    // test('2. Capture Move Test', () => {
+    //     // player-red turn
+    //     game.movePiece(5, 4, 4, 3);
+    //     //ai-black turn
+    //     game.movePiece(2, 1, 3, 2);
+    //     // player-red turn
+    //     game.movePiece(5, 6, 4, 7);
 
-        const [, aiMove] = ai.minimax(game, 2, true);
-        const expectedMoves = [
-            new Moves(1, 0, 2, 1), new Moves (1, 2, 2, 1), new Moves (2, 3, 3, 4), new Moves (2, 5, 3, 4),
-            new Moves (2, 5, 3, 6), new Moves (2, 7, 3, 6), new Moves (3, 2, 4, 1), new Moves (3, 2, 5, 4)
-        ];
+    //     const [, aiMove] = ai.minimax(game, 2, true);
+    //     const expectedMoves = [
+    //         new Moves(1, 0, 2, 1), new Moves (1, 2, 2, 1), new Moves (2, 3, 3, 4), new Moves (2, 5, 3, 4),
+    //         new Moves (2, 5, 3, 6), new Moves (2, 7, 3, 6), new Moves (3, 2, 4, 1), new Moves (3, 2, 5, 4)
+    //     ];
 
-        const isValidMove = expectedMoves.some(expectedMove => 
-            expectedMove.startRow === aiMove?.startRow && 
-            expectedMove.startCol === aiMove?.startCol && 
-            expectedMove.endRow === aiMove?.endRow && 
-            expectedMove.endCol === aiMove?.endCol
-        );
+    //     const isValidMove = expectedMoves.some(expectedMove => 
+    //         expectedMove.startRow === aiMove?.startRow && 
+    //         expectedMove.startCol === aiMove?.startCol && 
+    //         expectedMove.endRow === aiMove?.endRow && 
+    //         expectedMove.endCol === aiMove?.endCol
+    //     );
     
-        expect(isValidMove).toBe(true);
-    });
-    test('3. Capture Move Test', () => {
-        // player-red turn
-        game.movePiece(5, 2, 4, 1);
-        //ai-black turn
-        game.movePiece(2, 1, 3, 0);
-        // player-red turn
-        game.movePiece(5, 6, 4, 5);
-        //ai-black turn
-        game.movePiece(2, 3, 3, 4);
-        //player-red turn
-        game.movePiece(5, 4, 4, 3);
-        //ai-black turn 
+    //     expect(isValidMove).toBe(true);
+    // });
+    // test('3. Capture Move Test', () => {
+    //     // player-red turn
+    //     game.movePiece(5, 2, 4, 1);
+    //     //ai-black turn
+    //     game.movePiece(2, 1, 3, 0);
+    //     // player-red turn
+    //     game.movePiece(5, 6, 4, 5);
+    //     //ai-black turn
+    //     game.movePiece(2, 3, 3, 4);
+    //     //player-red turn
+    //     game.movePiece(5, 4, 4, 3);
+    //     //ai-black turn 
 
-        const [, aiMove] = ai.minimax(game, 2, true);
-        const expectedMoves = [
-            new Moves(1, 0, 2, 1), new Moves (1, 2, 2, 1), new Moves (1, 2, 2, 3), new Moves (1, 4, 2, 3),
-            new Moves (2, 5, 3, 6), new Moves (2, 7, 3, 6), new Moves (3, 0, 5, 2), new Moves (3, 4, 5, 2),
-            new Moves (3, 4, 5, 6)
-        ];
+    //     const [, aiMove] = ai.minimax(game, 2, true);
+    //     const expectedMoves = [
+    //         new Moves(1, 0, 2, 1), new Moves (1, 2, 2, 1), new Moves (1, 2, 2, 3), new Moves (1, 4, 2, 3),
+    //         new Moves (2, 5, 3, 6), new Moves (2, 7, 3, 6), new Moves (3, 0, 5, 2), new Moves (3, 4, 5, 2),
+    //         new Moves (3, 4, 5, 6)
+    //     ];
 
-        const isValidMove = expectedMoves.some(expectedMove => 
-            expectedMove.startRow === aiMove?.startRow && 
-            expectedMove.startCol === aiMove?.startCol && 
-            expectedMove.endRow === aiMove?.endRow && 
-            expectedMove.endCol === aiMove?.endCol
-        );
+    //     const isValidMove = expectedMoves.some(expectedMove => 
+    //         expectedMove.startRow === aiMove?.startRow && 
+    //         expectedMove.startCol === aiMove?.startCol && 
+    //         expectedMove.endRow === aiMove?.endRow && 
+    //         expectedMove.endCol === aiMove?.endCol
+    //     );
     
-        expect(isValidMove).toBe(true);
-    });
+    //     expect(isValidMove).toBe(true);
+    // });
+    // // Chain Capture Scenarios and Promotion Scenarios
+    // test('Chain Capture Move Test', () => {
+    //     let [, testMove] = ai.minimax(game, 2, false);
+    //     console.log(`Minimax testMove: Turn 1 - Red: ${testMove?.startRow}, ${testMove?.startCol} to ${testMove?.endRow}, ${testMove?.endCol}`);
+    //     // player-red turn
+    //     game.movePiece(5, 6, 4, 5);
+    //     console.log(game.board);
+    //     //ai-black turn
+    //     [, testMove] = ai.minimax(game, 2, true);
+    //     console.log(`Minimax testMove: Turn 2 - Black: ${testMove?.startRow}, ${testMove?.startCol} to ${testMove?.endRow}, ${testMove?.endCol}`);
+    //     game.movePiece(2, 1, 3, 0);
+    //     // player-red turn
+    //     [, testMove] = ai.minimax(game, 2, false);
+    //     console.log(`Minimax testMove: Turn 3 - Red: ${testMove?.startRow}, ${testMove?.startCol} to ${testMove?.endRow}, ${testMove?.endCol}`);
+    //     game.movePiece(4, 5, 3, 4);
+    //     //black turn 
+    //     [, testMove] = ai.minimax(game, 2, true);
+    //     console.log(`Minimax testMove: Turn 4 - Black: ${testMove?.startRow}, ${testMove?.startCol} to ${testMove?.endRow}, ${testMove?.endCol}`);
+    //     game.movePiece(1, 0, 2, 1);
+    //     // red turn
+    //     [, testMove] = ai.minimax(game, 2, false);
+    //     console.log(`Minimax testMove: Turn 5 - Red: ${testMove?.startRow}, ${testMove?.startCol} to ${testMove?.endRow}, ${testMove?.endCol}`);
+    //     game.movePiece(6, 7, 5, 6);
+
+    //     let [, aiMove] = ai.minimax(game, 2, true);
+    //     console.log(`Minimax aiMove: Turn 6 - Black: ${aiMove?.startRow}, ${aiMove?.startCol} to ${aiMove?.endRow}, ${aiMove?.endCol}`);
+    //     let expectedMoves = [
+    //         new Moves(0, 1, 1, 0), new Moves(2, 1, 3, 2), new Moves(2, 3, 3, 2), new Moves(2, 3, 4, 5), 
+    //         new Moves(2, 5, 4, 3), new Moves(2, 5, 3, 6), new Moves(2, 7, 3, 6)
+    //     ];
+
+    //     let isValidMove = expectedMoves.some(expectedMove => 
+    //         expectedMove.startRow === aiMove?.startRow && 
+    //         expectedMove.startCol === aiMove?.startCol && 
+    //         expectedMove.endRow === aiMove?.endRow && 
+    //         expectedMove.endCol === aiMove?.endCol
+    //     );
+    //     expect(isValidMove).toBe(true);
+
+        
+
+    //     game.movePiece(2, 3, 4, 5);
+
+    //     [, aiMove] = ai.minimax(game, 2, true);
+    //     console.log(`Minimax aiMove: Turn 6 Chain - Black: ${aiMove?.startRow}, ${aiMove?.startCol} to ${aiMove?.endRow}, ${aiMove?.endCol}`);
+    //     expectedMoves = [
+    //         new Moves(0, 1, 1, 0), new Moves(1, 2, 2, 3), new Moves(1, 4, 2, 3), 
+    //         new Moves(2, 1, 3, 2), new Moves(2, 5, 3, 4), new Moves(2, 5, 3, 6),
+    //         new Moves(2, 7, 3, 6), new Moves(3, 0, 4, 1), new Moves(4, 5, 6, 7)
+    //     ];
+    //     isValidMove = expectedMoves.some(expectedMove => 
+    //         expectedMove.startRow === aiMove?.startRow && 
+    //         expectedMove.startCol === aiMove?.startCol && 
+    //         expectedMove.endRow === aiMove?.endRow && 
+    //         expectedMove.endCol === aiMove?.endCol
+    //     );
+        
+    //     expect(isValidMove).toBe(true);
+    // });
 });

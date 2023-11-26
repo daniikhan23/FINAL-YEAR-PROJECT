@@ -9,6 +9,8 @@ export class Player {
         this.color = color;
         this.score = 0;
         this.capturedPieces = 0;
+        this.numOfPieces = 12;
+        this.numOfKings = 0;
     }
     updateCapturedPieces(count) {
         this.capturedPieces += count;
@@ -43,7 +45,6 @@ export class CheckersBoard {
     constructor() {
         this.board = [];
         this.initializeBoard();
-        console.log(this.board);
     }
     initializeBoard() {
         for (let row = 0; row < 8; row++) {
@@ -209,6 +210,8 @@ export class CheckersGame {
                 this.board[endRow][endCol] = piece;
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
+                    this.currentPlayer.numOfKings += 1;
+                    console.log(`Number of kings of ${this.currentPlayer.color} is ${this.currentPlayer.numOfKings}`);
                 }
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
@@ -233,6 +236,16 @@ export class CheckersGame {
         else {
             this.currentPlayer.updateScore(1);
             this.currentPlayer.updateCapturedPieces(1);
+        }
+        if (this.currentPlayer === this.players[0]) {
+            this.players[1].numOfPieces -= 1;
+            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
+            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
+        }
+        else {
+            this.players[0].numOfPieces -= 1;
+            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
+            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
         }
     }
     promoteToKing(row, col) {
