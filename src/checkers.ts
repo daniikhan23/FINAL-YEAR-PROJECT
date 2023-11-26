@@ -481,19 +481,12 @@ export class CheckersGame {
      * @returns {boolean} - True if the player has no pieces left, false otherwise.
      */
     public noPiecesLeft(player: Player) : boolean {
-        let numPieces = 0;
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const piece = this.getPiece(row, col);
-                if (piece !== null && piece.color === player.color) {
-                    numPieces++;
-                }
-            }
-        }
-        if (numPieces === 0) {
+        if (player.numOfPieces === 0) {
             return true;
-        }
-        else {return false;}
+        } 
+        else {
+            return false;
+        } 
     }
 
     /**

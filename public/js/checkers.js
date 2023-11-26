@@ -281,16 +281,7 @@ export class CheckersGame {
         return false;
     }
     noPiecesLeft(player) {
-        let numPieces = 0;
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const piece = this.getPiece(row, col);
-                if (piece !== null && piece.color === player.color) {
-                    numPieces++;
-                }
-            }
-        }
-        if (numPieces === 0) {
+        if (player.numOfPieces === 0) {
             return true;
         }
         else {
