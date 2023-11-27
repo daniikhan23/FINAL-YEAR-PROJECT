@@ -2,8 +2,12 @@ import { PieceColor, State, Player, CheckersGame } from './checkers.js';
 import { CheckersAI } from './checkers-ai.js';
 const pieceEventListeners = new Map();
 let game;
-const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
-startGameBtn === null || startGameBtn === void 0 ? void 0 : startGameBtn.addEventListener('click', startGame);
+const startLocalGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
+startLocalGameBtn === null || startLocalGameBtn === void 0 ? void 0 : startLocalGameBtn.addEventListener('click', startLocalGame);
+const startAIGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startAIGameButton');
+startAIGameBtn === null || startAIGameBtn === void 0 ? void 0 : startAIGameBtn.addEventListener('click', startAIGame);
+const restartLocalGameButton = document.getElementById('restartLocalGameButton');
+const restartAIGameButton = document.getElementById('restartAIGameButton');
 const endOfGameSection = document.querySelector('.end-of-game-section');
 const winnerAnnouncement = document.getElementById('winnerAnnouncement');
 const playerOneFinalName = document.getElementById('playerOneFinalName');
@@ -12,7 +16,6 @@ const playerOneFinalCaptured = document.getElementById('playerOneFinalCaptured')
 const playerTwoFinalName = document.getElementById('playerTwoFinalName');
 const playerTwoFinalScore = document.getElementById('playerTwoFinalScore');
 const playerTwoFinalCaptured = document.getElementById('playerTwoFinalCaptured');
-const restartGameButton = document.getElementById('restartGameButton');
 const playerOneName = document.querySelector('.player-one .container .name');
 const playerOneScore = document.querySelector('.player-one .container .score');
 const playerOneCaptured = document.querySelector('.player-one .container .captured');
@@ -22,20 +25,31 @@ const playerTwoScore = document.querySelector('.player-two .container .score');
 const playerTwoCaptured = document.querySelector('.player-two .container .captured');
 const playerTwoTurn = document.querySelector('.player-two .container .turn');
 const rows = document.querySelectorAll('.board-container .container .row');
-function startGame() {
+function startLocalGame() {
     const playerOneName = document.getElementById('playerOneName').value || 'Player 1';
     const playerTwoName = document.getElementById('playerTwoName').value || 'Player 2';
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
     game = new CheckersGame(playerOne, playerTwo);
-    const ai = new CheckersAI("AI", PieceColor.Black, game, 3);
+    updateScoreCard();
+    document.querySelector('.initial-screen').style.display = 'none';
+    document.querySelector('.main').style.display = 'block';
+    populateBoard();
+}
+function startAIGame() {
+    const playerOneName = document.getElementById('playerOneName').value || 'Player 1';
+    const playerTwoName = document.getElementById('playerTwoName').value || 'Minimax-3';
+    const playerOne = new Player(playerOneName, PieceColor.Red);
+    const playerTwo = new Player(playerTwoName, PieceColor.Black);
+    game = new CheckersGame(playerOne, playerTwo);
+    const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 2);
     game.setAI(ai);
     updateScoreCard();
     document.querySelector('.initial-screen').style.display = 'none';
     document.querySelector('.main').style.display = 'block';
     populateBoard();
 }
-restartGameButton.addEventListener('click', () => {
+restartLocalGameButton.addEventListener('click', () => {
     endOfGameSection.style.display = 'none';
     clearHighlights();
     rows.forEach((row) => {
@@ -51,7 +65,25 @@ restartGameButton.addEventListener('click', () => {
             }
         });
     });
-    startGame();
+    startLocalGame();
+});
+restartAIGameButton.addEventListener('click', () => {
+    endOfGameSection.style.display = 'none';
+    clearHighlights();
+    rows.forEach((row) => {
+        row.querySelectorAll('.col').forEach((col) => {
+            if (col.firstChild) {
+                const pieceDiv = col.firstChild;
+                const existingListener = pieceEventListeners.get(pieceDiv);
+                if (existingListener) {
+                    pieceDiv.removeEventListener('click', existingListener);
+                    pieceEventListeners.delete(pieceDiv);
+                }
+                col.removeChild(col.firstChild);
+            }
+        });
+    });
+    startAIGame();
 });
 function populateBoard() {
     updateScoreCard();

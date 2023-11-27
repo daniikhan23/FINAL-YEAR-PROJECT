@@ -192,6 +192,12 @@ body {
   border-radius: 4px;
 }
 
+.initial-screen .initial-screen-container .container .name-entry .buttons {
+  display: flex;
+  gap: 2rem;
+}
+
+/* 2 Player */
 #startGameButton {
   display: block;
   margin: auto;
@@ -212,6 +218,32 @@ body {
 }
 
 #startGameButton:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  transition: all 0.1s ease-in;
+}
+
+/* AI Game */
+#startAIGameButton {
+  display: block;
+  margin: auto;
+  width: 60%;
+  padding: 0.7rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 2rem;
+  transition: background-color 0.2s;
+}
+
+#startAIGameButton:hover {
+  background-color: white;
+  color: black;
+}
+
+#startAIGameButton:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
   transition: all 0.1s ease-in;
@@ -428,23 +460,34 @@ Images from https://www.iconfinder.com/search?q=checkers
   text-align: left;
 }
 
-.end-of-game-section .end-of-game-container .container #restartGameButton {
+.end-of-game-section .end-of-game-container .container .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.end-of-game-section .end-of-game-container .container #restartLocalGameButton,
+.end-of-game-section .end-of-game-container .container #restartAIGameButton {
   background-color: #f0d9b5;
   color: #b58863;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
-.end-of-game-section .end-of-game-container .container #restartGameButton:hover {
+.end-of-game-section .end-of-game-container .container #restartLocalGameButton:hover,
+.end-of-game-section .end-of-game-container .container #restartAIGameButton:hover {
   background-color: black;
   color: red;
 }
 
-.end-of-game-section .end-of-game-container .container #restartGameButton:active {
+.end-of-game-section .end-of-game-container .container #restartLocalGameButton:active,
+.end-of-game-section .end-of-game-container .container #restartAIGameButton:active {
   transform: translateY(2px) !important;
 }
+
+/* AI GAME BUTTON */
 
 /* 
 light brown

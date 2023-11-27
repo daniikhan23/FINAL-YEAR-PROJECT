@@ -11,8 +11,15 @@ let game: CheckersGame;
 
 //Initial Screen replace with Game Board
 
-const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
-startGameBtn?.addEventListener('click', startGame);
+const startLocalGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
+startLocalGameBtn?.addEventListener('click', startLocalGame);
+
+const startAIGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startAIGameButton');
+startAIGameBtn?.addEventListener('click', startAIGame);
+
+const restartLocalGameButton = document.getElementById('restartLocalGameButton') as HTMLButtonElement;
+const restartAIGameButton = document.getElementById('restartAIGameButton') as HTMLButtonElement;
+
 
 // End of Game elements
 const endOfGameSection = document.querySelector('.end-of-game-section') as HTMLElement;
@@ -23,7 +30,6 @@ const playerOneFinalCaptured = document.getElementById('playerOneFinalCaptured')
 const playerTwoFinalName = document.getElementById('playerTwoFinalName') as HTMLDivElement;
 const playerTwoFinalScore = document.getElementById('playerTwoFinalScore') as HTMLDivElement;
 const playerTwoFinalCaptured = document.getElementById('playerTwoFinalCaptured') as HTMLDivElement;
-const restartGameButton = document.getElementById('restartGameButton') as HTMLButtonElement;
 
 // Player One
 const playerOneName = document.querySelector('.player-one .container .name') as HTMLDivElement;
@@ -40,9 +46,9 @@ const playerTwoTurn = document.querySelector('.player-two .container .turn') as 
 const rows = document.querySelectorAll('.board-container .container .row')!;
 
 /**
- * Starts the game on the DOM, by hiding the initial screen and showing the main game screen
+ * Starts the Local 2 player game on the DOM, by hiding the initial screen and showing the main game screen
  */
-function startGame() {
+function startLocalGame() {
     const playerOneName = (document.getElementById('playerOneName') as HTMLInputElement).value || 'Player 1';
     const playerTwoName = (document.getElementById('playerTwoName') as HTMLInputElement).value || 'Player 2';
 
@@ -50,8 +56,29 @@ function startGame() {
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
     game = new CheckersGame(playerOne, playerTwo)
 
+    // Update UI with player names
+    updateScoreCard();
+
+    (document.querySelector('.initial-screen') as HTMLElement).style.display = 'none';
+    (document.querySelector('.main') as HTMLElement).style.display = 'block';
+
+    populateBoard();
+}
+
+// AI GAME
+/**
+ * Starts the game against the AI on the DOM, by hiding the initial screen and showing the main game screen
+ */
+function startAIGame() {
+    const playerOneName = (document.getElementById('playerOneName') as HTMLInputElement).value || 'Player 1';
+    const playerTwoName = (document.getElementById('playerTwoName') as HTMLInputElement).value || 'Minimax-3';
+
+    const playerOne = new Player(playerOneName, PieceColor.Red);
+    const playerTwo = new Player(playerTwoName, PieceColor.Black);
+    game = new CheckersGame(playerOne, playerTwo)
+
     // Create the AI player and set it as player two
-    const ai = new CheckersAI("AI", PieceColor.Black, game, 3);
+    const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 2);
     game.setAI(ai);
 
     // Update UI with player names
@@ -66,7 +93,7 @@ function startGame() {
 /**
  * Restarts the Game to its start state
  */
-restartGameButton.addEventListener('click', () => {
+restartLocalGameButton.addEventListener('click', () => {
     endOfGameSection.style.display = 'none'; 
     clearHighlights();
     // iterate through the board
@@ -84,7 +111,31 @@ restartGameButton.addEventListener('click', () => {
             }
         });
     });
-    startGame();
+    startLocalGame();
+});
+
+/**
+ * Restarts the Game to its start state
+ */
+restartAIGameButton.addEventListener('click', () => {
+    endOfGameSection.style.display = 'none'; 
+    clearHighlights();
+    // iterate through the board
+    rows.forEach((row) => {
+        row.querySelectorAll('.col').forEach((col) => {
+            // remove all existing pieces and event listeners
+            if (col.firstChild) {
+                const pieceDiv = col.firstChild as HTMLDivElement;
+                const existingListener = pieceEventListeners.get(pieceDiv);
+                if (existingListener) {
+                    pieceDiv.removeEventListener('click', existingListener);
+                    pieceEventListeners.delete(pieceDiv);
+                }
+                col.removeChild(col.firstChild);
+            }
+        });
+    });
+    startAIGame();
 });
 
 /**
@@ -195,13 +246,13 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
 
-        // Ensure currentPlayer is AI before calling makeMove   
+        // Ensure currentPlayer is AI before calling makeMove
         while (game.currentPlayer === game.players[1]) {
             if (game.players[1] instanceof CheckersAI) {
                 game.players[1].makeMove();
                 updateBoardDOM();
             }
-        } 
+        }
 
         // Check if the start position is now empty and the end position has a piece, maybe remove this now
         const pieceAtEnd = game.getPiece(endRow, endCol);

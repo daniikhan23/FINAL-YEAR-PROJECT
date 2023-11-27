@@ -47,7 +47,10 @@
                     <label for="playerTwoName">Black Player Name:</label>
                     <input type="text" id="playerTwoName" placeholder="Enter Player 2 Name">
                     
-                    <button id="startGameButton">Start Game</button>
+                    <div class="buttons">
+                        <button id="startGameButton">Local Play</button>
+                        <button id="startAIGameButton">VS AI</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,7 +165,7 @@
     </div>
 
     <!-- End of Game Section -->
-    <div class="end-of-game-section" style="display: none;" >
+    <div class="end-of-game-section" style="display: none;">
         <div class="end-of-game-container">
             <div class="container">
                 <h2 id="winnerAnnouncement">Game Over</h2>
@@ -178,7 +181,10 @@
                         <p id="playerTwoFinalCaptured">Captured Pieces: </p>
                     </div>
                 </div>
-                <button id="restartGameButton">Restart Game</button>
+                <div class="buttons">
+                    <button id="restartLocalGameButton">Restart Local Game</button>
+                    <button id="restartAIGameButton">Restart AI Game</button>
+                </div>
             </div>
         </div>
     </div>
