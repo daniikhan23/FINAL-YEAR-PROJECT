@@ -352,7 +352,7 @@ export class CheckersGame {
      * @param {number} endCol - The column where the capture would end.
      * @returns {boolean} - True if a capture is possible, false otherwise.
      */
-    private canCapture(startRow:number, startCol:number, endRow:number, endCol: number): boolean {
+    public canCapture(startRow:number, startCol:number, endRow:number, endCol: number): boolean {
         if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
             const middleRow = (startRow + endRow) / 2;
             const middleCol = (startCol + endCol) / 2;

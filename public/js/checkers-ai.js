@@ -54,14 +54,20 @@ export class CheckersAI extends Player {
         return [bestScore, bestMove];
     }
     makeMove() {
-        const [score, move] = this.minimax(this.game, this.depth, true);
-        if (move) {
-            this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
-            console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
-            console.log(`Evaluated Score of move: ${score}`);
+        if (this.game.currentState === State.gameFinished) {
+            console.log("Game is finished. AI cannot make a move.");
+            this.game.changeTurn();
         }
         else {
-            console.log(`${this.game.players[1].name} has no valid moves!`);
+            const [score, move] = this.minimax(this.game, this.depth, true);
+            if (move) {
+                this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
+                console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
+                console.log(`Evaluated Score of move: ${score}`);
+            }
+            else {
+                console.log(`${this.game.players[1].name} has no valid moves!`);
+            }
         }
     }
 }

@@ -198,32 +198,7 @@ body {
 }
 
 /* 2 Player */
-#startGameButton {
-  display: block;
-  margin: auto;
-  width: 60%;
-  padding: 0.7rem;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 2rem;
-  transition: background-color 0.2s;
-}
-
-#startGameButton:hover {
-  background-color: white;
-  color: black;
-}
-
-#startGameButton:active {
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-  transition: all 0.1s ease-in;
-}
-
-/* AI Game */
+#startGameButton,
 #startAIGameButton {
   display: block;
   margin: auto;
@@ -238,18 +213,18 @@ body {
   transition: background-color 0.2s;
 }
 
+#startGameButton:hover,
 #startAIGameButton:hover {
   background-color: white;
   color: black;
 }
 
+#startGameButton:active,
 #startAIGameButton:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
   transition: all 0.1s ease-in;
 }
-
-
 
 /* Main Board Section*/
 
