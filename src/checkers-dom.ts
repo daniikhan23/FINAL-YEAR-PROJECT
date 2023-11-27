@@ -195,11 +195,13 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
 
-        // Ensure currentPlayer is AI before calling makeMove    
-        if (game.currentPlayer === game.players[1] && game.players[1] instanceof CheckersAI) {
-            game.players[1].makeMove();
-            updateBoardDOM();
-        }
+        // Ensure currentPlayer is AI before calling makeMove   
+        while (game.currentPlayer === game.players[1]) {
+            if (game.players[1] instanceof CheckersAI) {
+                game.players[1].makeMove();
+                updateBoardDOM();
+            }
+        } 
 
         // Check if the start position is now empty and the end position has a piece, maybe remove this now
         const pieceAtEnd = game.getPiece(endRow, endCol);
