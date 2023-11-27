@@ -86,8 +86,6 @@ body {
   background-color: wheat;
 }
 
-
-
 /* Navbar Section */
 
 .header .header-container {
@@ -182,14 +180,14 @@ body {
 
 .divider .divider-container .container .title {
   color: black;
-  font-size: 6rem;
+  font-size: 5rem;
   font-weight: 100;
   margin-bottom: 0;
 }
 
 .divider .divider-container .container .title-color {
   color: red;
-  font-size: 6rem;
+  font-size: 5rem;
   font-weight: 100;
 }
 
@@ -208,6 +206,65 @@ body {
   font-weight: 100;
 }
 
+/* Card Section */
+
+.cards .container {
+  margin: 10rem;
+}
+
+.cards .container .row .col .card .fa-solid {
+  font-size: 20rem;
+  text-align: center;
+  padding: 10rem;
+  margin: 1rem;
+}
+
+.cards .container .row .col .card .fa-brands {
+  font-size: 20rem;
+  text-align: center;
+  padding: 10.7rem;
+  margin: 1rem;
+}
+
+.cards .container .row .col .card .fa-regular {
+  font-size: 20rem;
+  text-align: center;
+  padding: 10rem;
+  margin: 1rem;
+}
+
+.cards .container .row .col .card .fa-regular .fa-chess {
+  font-size: 20rem;
+  text-align: center;
+  padding: 10rem;
+  margin: 1rem;
+}
+
+.cards .container .row .col .card .fa-bars-progress {
+  font-size: 20rem;
+  text-align: center;
+  padding: 10rem;
+  margin: 1rem;
+}
+
+.cards .card {
+  background-color: #eeeee4;
+  border-radius: 2%;
+}
+
+.cards h5 {
+  color: darkred;
+  font-size: 3rem;
+  text-align: center;
+  margin: 1rem;
+}
+
+.cards p {
+  color: darkred;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 1rem;
+}
 
 /* Footer Section */
 .footer-section {
