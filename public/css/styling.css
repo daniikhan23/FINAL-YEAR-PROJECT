@@ -83,7 +83,7 @@ button:hover {
 }
 
 body {
-  background-color: #363430;
+  background-color: wheat;
 }
 
 
@@ -106,7 +106,7 @@ body {
 }
 
 .header .header-container .container .home button a {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: red; 
 }
 
@@ -135,7 +135,7 @@ body {
 }
 
 .header .header-container .container .list li button a {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: red;
 }
 
@@ -156,6 +156,57 @@ body {
 }
 
 
+/* Intro Section */
+.intro .intro-container .container-fluid {
+  background-image: url(../resources/img/checkers-board.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 20rem 0rem;
+}
+
+.intro .intro-container .container-fluid h1 {
+  text-align: center;
+  color: black;
+  font-size: 5rem;
+}
+
+/* Divider Section */
+.divider .divider-container .container {
+  margin: 10rem;
+}
+
+.divider .divider-container .container .row {
+  text-align: center;
+}
+
+.divider .divider-container .container .title {
+  color: black;
+  font-size: 6rem;
+  font-weight: 100;
+  margin-bottom: 0;
+}
+
+.divider .divider-container .container .title-color {
+  color: red;
+  font-size: 6rem;
+  font-weight: 100;
+}
+
+.divider .border-start {
+  height: 15rem;
+  width: 0.2rem;
+  background-color: #000;
+  color: black;
+  display: inline-block;
+  margin-left: 10rem;
+}
+
+.divider .description {
+  color: #000000;
+  font-size: 2rem;
+  font-weight: 100;
+}
 
 
 /* Footer Section */
