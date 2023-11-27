@@ -40,6 +40,9 @@ export class CheckersAI extends Player {
                                 bestScore = evaluatedScore;
                                 bestMove = move;
                             }
+                            else if (bestMove === null) {
+                                bestMove = null;
+                            }
                         }
                     });
                 }

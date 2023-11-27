@@ -51,7 +51,7 @@ function startGame() {
     game = new CheckersGame(playerOne, playerTwo)
 
     // Create the AI player and set it as player two
-    const ai = new CheckersAI("AI", PieceColor.Black, game, 5);
+    const ai = new CheckersAI("AI", PieceColor.Black, game, 3);
     game.setAI(ai);
 
     // Update UI with player names

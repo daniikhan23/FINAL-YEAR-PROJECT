@@ -71,10 +71,16 @@ export class CheckersAI extends Player{
                             if (isMaximizingPlayer && evaluatedScore > bestScore) {
                                 bestScore = evaluatedScore;
                                 bestMove = move;
-                            } else if (!isMaximizingPlayer && evaluatedScore < bestScore) {
+                            }
+                            else if (!isMaximizingPlayer && evaluatedScore < bestScore) {
                                 bestScore = evaluatedScore;
                                 bestMove = move;
                             }
+                            // perhaps remove this once the evaluation function has been improved
+                            else if (bestMove === null) {
+                                bestMove = null;
+                            }
+                             
                         }
                     });
                 }
