@@ -247,8 +247,9 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
         updateBoardDOM();
 
         // Ensure currentPlayer is AI before calling makeMove
-        while (game.currentPlayer === game.players[1]) {
-            if (game.players[1] instanceof CheckersAI) {
+        if (game.players[1] instanceof CheckersAI) {
+            while (game.currentPlayer === game.players[1]) {
+            
                 game.players[1].makeMove();
                 updateBoardDOM();
             }

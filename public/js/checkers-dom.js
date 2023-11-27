@@ -152,8 +152,8 @@ function executeMove(startRow, startCol, endRow, endCol) {
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
-        while (game.currentPlayer === game.players[1]) {
-            if (game.players[1] instanceof CheckersAI) {
+        if (game.players[1] instanceof CheckersAI) {
+            while (game.currentPlayer === game.players[1]) {
                 game.players[1].makeMove();
                 updateBoardDOM();
             }
