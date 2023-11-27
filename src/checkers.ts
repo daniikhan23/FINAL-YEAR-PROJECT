@@ -637,7 +637,15 @@ export class CheckersGame {
         return [capturedPieces, wasPromoted, currentRow, currentCol];
     }
 
-    // test move method for AI:
+    /**
+     * The new 'simulateMove' function for the AI to use, to safely make moves on the board during minimax without 
+     * incorrectly altering the actual game state
+     * @param startRow - Starting row of the moving piece
+     * @param startCol - Starting column of the moving piece
+     * @param endRow - Ending row of the moving piece
+     * @param endCol - Ending column of the moving piece
+     * 
+     */
     public moveAI(startRow: number, startCol: number, endRow: number, endCol: number): void {
         const piece = this.getPiece(startRow, startCol);
         let capturedAlready = false;

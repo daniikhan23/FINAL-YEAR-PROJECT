@@ -186,3 +186,18 @@ positional values of the board, potential moves that could setup in the future s
 definitely, something to work on in the future. I also realised I did not really need to use the simulateMove and undoSimulation methods as the AI is now 
 operating on it's own version of the board which will not affect the actual game board. However, I, will leave these methods in case I decide to change 
 my approach in the future. The AI player class is also an extension of the regular Player class as it is important that it inherits those same properties.
+
+The AI is finally working and is now playable against on the DOM. Some issues at the beginning were the updated scores for the AI player were incorrect as 
+it was reporting captured pieces and it's score in the 100's which is simply not possible in a game of 12 pieces per player. This was because minimax used 
+the regular movePiece function which also handled piece captures and updated scores accordingly. I, then made the same movePiece function for the AI separately 
+but without the handlePieceCapture method and simply decremented the number of pieces for whichever player lost a piece in that particular turn. This resulted 
+in the correct scores being displayed. The second issue was that in endgame conditions, if the AI only had a single piece left and the player had multiple, if 
+it's final piece was in such a position that any move would result in it being catured and the game ending, it simply would not move. This is because in the minimax 
+function where best move and best score for a move is updated and returned, it was not meeting the condition of evaluatedScore < bestScore as the recursive calls 
+would always return -Infinity for the maximizing player in this situation. This is now fixed as if the minimax is not able to find the best move in such a situation 
+it simply, chooses a move and returns it. This can be improved when the evaluation function is improved. Current issues to note are:
+
+1. The AI sometimes does not chain capture if it can, the turn is not changed, but the user has to manually make the move for it so the turn is changed.
+2. The DOM updates are very jarring as a user, there's no smooth transition to piece placement since every time a move is made, the board is simply updated 
+with the new state. This is relatively 'okay' in local 2 player mode as each player knows exactly what move they and the other player are making but is not 
+a nice experience when there's no visual indication of what move the AI will be making. This can and should be improved for better clarity. 
