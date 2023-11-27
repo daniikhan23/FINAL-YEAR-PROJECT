@@ -48,8 +48,19 @@ export class Player {
     updateScore(score: number): void {
         this.score += score;
     }
-}
 
+    /**
+     * Method to create a copy of the Player instance to be used in minimax algorithm
+     * @returns {Player} - copy of the player instance
+     */
+    public deepCopyPlayer(): Player {
+        let copiedPlayer = new Player(this.name, this.color);
+        copiedPlayer.numOfPieces = this.numOfPieces;
+        copiedPlayer.numOfKings = this.numOfKings
+
+        return copiedPlayer;
+    }
+}
 
 /**
  * Enum for piece colors in the checkers game.
@@ -82,6 +93,16 @@ export class CheckersPiece {
     public makeKing(): void {
         this.isKing = true;
     }
+
+    /**
+     * Creates and returns a copy of the CheckersPiece instance
+     * @returns {CheckersPiece} - copy of the checkers piece
+     */
+    public deepCopyPiece(): CheckersPiece {
+        const copiedPiece = new CheckersPiece(this.color, this.isKing);
+        return copiedPiece;
+    }
+
 }
 
 /**
@@ -155,7 +176,6 @@ export class CheckersBoard {
         return this.board[row][col];
     }
 }
-
 
 /**
  * Manages the overall game state of a checkers game, including the board, players, turns, and game progress.
@@ -384,7 +404,6 @@ export class CheckersGame {
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
                     this.currentPlayer.numOfKings += 1;
-                    console.log(`Number of kings of ${this.currentPlayer.color} is ${this.currentPlayer.numOfKings}`);
                 }
 
                 const nextCaptures = this.chainCaptures(endRow, endCol);
@@ -417,13 +436,9 @@ export class CheckersGame {
         }
         if (this.currentPlayer === this.players[0]) {
             this.players[1].numOfPieces -= 1;
-            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
-            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
         }
         else {
             this.players[0].numOfPieces -= 1;
-            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
-            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
         }
     }
 
@@ -646,5 +661,24 @@ export class CheckersGame {
         if (wasPromoted && piece) {
             piece.isKing = false;
         }
+    }
+
+    /**
+     * Creates and returns a copy of the current game instance
+     * @returns {CheckersGame} - copy of game
+     */
+    public deepCopyGame(): CheckersGame {
+        const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer());
+    
+        // Copy the board
+        copiedGame.board = this.board.map(row => 
+            row.map(piece => piece ? piece.deepCopyPiece() : null)
+        );
+    
+        copiedGame.currentPlayer = this.currentPlayer;
+        copiedGame.currentState = this.currentState; 
+        copiedGame.winner = this.winner ? this.winner.deepCopyPlayer() : null;
+    
+        return copiedGame;
     }
 }

@@ -18,6 +18,12 @@ export class Player {
     updateScore(score) {
         this.score += score;
     }
+    deepCopyPlayer() {
+        let copiedPlayer = new Player(this.name, this.color);
+        copiedPlayer.numOfPieces = this.numOfPieces;
+        copiedPlayer.numOfKings = this.numOfKings;
+        return copiedPlayer;
+    }
 }
 export var PieceColor;
 (function (PieceColor) {
@@ -31,6 +37,10 @@ export class CheckersPiece {
     }
     makeKing() {
         this.isKing = true;
+    }
+    deepCopyPiece() {
+        const copiedPiece = new CheckersPiece(this.color, this.isKing);
+        return copiedPiece;
     }
 }
 export class Moves {
@@ -211,7 +221,6 @@ export class CheckersGame {
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
                     this.currentPlayer.numOfKings += 1;
-                    console.log(`Number of kings of ${this.currentPlayer.color} is ${this.currentPlayer.numOfKings}`);
                 }
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
@@ -239,13 +248,9 @@ export class CheckersGame {
         }
         if (this.currentPlayer === this.players[0]) {
             this.players[1].numOfPieces -= 1;
-            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
-            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
         }
         else {
             this.players[0].numOfPieces -= 1;
-            console.log(`Number of pieces of ${this.players[0].color} is ${this.players[0].numOfPieces}`);
-            console.log(`Number of pieces of ${this.players[1].color} is ${this.players[1].numOfPieces}`);
         }
     }
     promoteToKing(row, col) {
@@ -393,6 +398,14 @@ export class CheckersGame {
         if (wasPromoted && piece) {
             piece.isKing = false;
         }
+    }
+    deepCopyGame() {
+        const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer());
+        copiedGame.board = this.board.map(row => row.map(piece => piece ? piece.deepCopyPiece() : null));
+        copiedGame.currentPlayer = this.currentPlayer;
+        copiedGame.currentState = this.currentState;
+        copiedGame.winner = this.winner ? this.winner.deepCopyPlayer() : null;
+        return copiedGame;
     }
 }
 //# sourceMappingURL=checkers.js.map

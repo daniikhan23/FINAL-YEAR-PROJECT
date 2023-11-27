@@ -165,3 +165,24 @@ functions in the CheckersGame class to allow the AI to make moves (simulateMove 
 This was necessary as the movePiece() function would simply change the state of the board with no way of going back to the previous state, since it does 
 not allow for invalid moves or redos. Tested these two methods comprehensively. The next logical step, I believe to be the development of the minimax 
 algorithm. I hope to finish this by Sunday so I can flesh out the webpage to allow for local 2 player games and games against the AI. 
+
+Developed a minimax algorithm that went through a series of changes. Initially the minimax algorithm was passing tests until it failed for chain captures.
+Then I started checking to see the state of the board as well as whether simulateMove and undoSimulation moves were working correctly. After ensuring that 
+those work I started testing the state of the board and overall process that the algorithm was going through once called. There, I realised that the board 
+was left in an inconsistent state, the algorithm either kept on selecting the same moves or incorrect moves as well as returning the incorrect score if it 
+the AI player had more pieces than the user. I changed the evaluation function to simply use the number of pieces that each player have, properties that 
+I initialised in the Player class to keep track of it. The number of pieces and kings of each player are now updated every time there is a capture. I,
+then tested this to ensure that this is working correctly. The algorithm then seemed to 'improve' but was still giving the incorrect results, for example:
+If the AI could make a capture out of all the moves available to it in a turn, the evaluation score (based on AI pieces/kings - user pieces/kings) should 
+be 1, but it always returned 0. At this point, I was unsure of what to do and how to go about the AI's development. I tried initialising variables in 
+the minimax algorithm to hold copies of the game and act on that but it did not work as those variables simply contained the reference to the actual 
+game board, which should absolutely not be affected by minimax until it has made it's decision regarding a move. I, then decided to try making deep copies 
+of the game instance, the players and pieces and essentially have the AI, play it's own game during it's decision making process to asses which move is most 
+beneficial. This led to it returning the correct move as well as the correct score. I believe, however, that this way of using minimax is likely quite
+inefficient as it is creating multiple copies of the game every time it recursively calls itself. When I tried to test the function at depth 5, it was never 
+ending, otherwise at depth 1 or 2 it was taking about 1-3 seconds which, for now, is acceptable. I will have to refactor the way I have written the algorithm 
+in the future to make it more efficient and also more competitive. Even the evaluation function currently used is quite simple and does not take into account 
+positional values of the board, potential moves that could setup in the future single or multiple captures, be it to the AI itself or the player. This is 
+definitely, something to work on in the future. I also realised I did not really need to use the simulateMove and undoSimulation methods as the AI is now 
+operating on it's own version of the board which will not affect the actual game board. However, I, will leave these methods in case I decide to change 
+my approach in the future. The AI player class is also an extension of the regular Player class as it is important that it inherits those same properties.

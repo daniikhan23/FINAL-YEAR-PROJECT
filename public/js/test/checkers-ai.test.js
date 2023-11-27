@@ -1,4 +1,4 @@
-import { PieceColor, CheckersPiece, Player, CheckersGame } from "../checkers";
+import { Moves, PieceColor, CheckersPiece, Player, CheckersGame } from "../checkers";
 import { CheckersAI } from "../checkers-ai";
 describe('CheckersGame', () => {
     let game;
@@ -168,6 +168,116 @@ describe('CheckersGame', () => {
         expect((_a = game.board[2][1]) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Red);
         expect((_b = game.board[4][3]) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
         expect((_c = game.board[6][5]) === null || _c === void 0 ? void 0 : _c.color).toBe(PieceColor.Red);
+    });
+    test('Test game deep copy', () => {
+        const newGame = game.deepCopyGame();
+        expect(newGame.board).toStrictEqual(game.board);
+        expect(newGame.players[0].name).toBe(game.players[0].name);
+        expect(newGame.players[0].color).toBe(game.players[0].color);
+        expect(newGame.players[0].score).toBe(game.players[0].score);
+        expect(newGame.players[0].capturedPieces).toBe(game.players[0].capturedPieces);
+        expect(newGame.players[0].numOfPieces).toBe(game.players[0].numOfPieces);
+        expect(newGame.players[0].numOfKings).toBe(game.players[0].numOfKings);
+        expect(newGame.players[1].name).toBe(game.players[1].name);
+        expect(newGame.players[1].color).toBe(game.players[1].color);
+        expect(newGame.players[1].score).toBe(game.players[1].score);
+        expect(newGame.players[1].capturedPieces).toBe(game.players[1].capturedPieces);
+        expect(newGame.players[1].numOfPieces).toBe(game.players[1].numOfPieces);
+        expect(newGame.players[1].numOfKings).toBe(game.players[1].numOfKings);
+        expect(newGame.currentState).toBe(game.currentState);
+        expect(newGame.currentPlayer).toBe(game.currentPlayer);
+        expect(newGame.winner).toBe(game.winner);
+    });
+    test('Basic Move Test for starting board', () => {
+        game.movePiece(5, 0, 4, 1);
+        const [, aiMove] = ai.minimax(game, 1, true);
+        const expectedMoves = [
+            new Moves(2, 1, 3, 0), new Moves(2, 1, 3, 2), new Moves(2, 3, 3, 2), new Moves(2, 3, 3, 4),
+            new Moves(2, 5, 3, 3), new Moves(2, 5, 3, 7), new Moves(2, 7, 3, 6)
+        ];
+        const isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
+    });
+    test('1. Capture Move Test', () => {
+        game.movePiece(5, 4, 4, 5);
+        game.movePiece(2, 7, 3, 6);
+        game.movePiece(5, 6, 4, 7);
+        const [, aiMove] = ai.minimax(game, 1, true);
+        console.log(game.board);
+        const expectedMoves = [
+            new Moves(2, 1, 3, 0), new Moves(2, 1, 3, 2), new Moves(2, 3, 3, 2), new Moves(2, 3, 3, 4),
+            new Moves(2, 5, 3, 4), new Moves(3, 6, 5, 4), new Moves(1, 6, 2, 7)
+        ];
+        const isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
+    });
+    test('2. Capture Move Test', () => {
+        game.movePiece(5, 4, 4, 3);
+        game.movePiece(2, 1, 3, 2);
+        game.movePiece(5, 6, 4, 7);
+        const [, aiMove] = ai.minimax(game, 2, true);
+        const expectedMoves = [
+            new Moves(1, 0, 2, 1), new Moves(1, 2, 2, 1), new Moves(2, 3, 3, 4), new Moves(2, 5, 3, 4),
+            new Moves(2, 5, 3, 6), new Moves(2, 7, 3, 6), new Moves(3, 2, 4, 1), new Moves(3, 2, 5, 4)
+        ];
+        const isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
+    });
+    test('3. Capture Move Test', () => {
+        game.movePiece(5, 2, 4, 1);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(5, 6, 4, 5);
+        game.movePiece(2, 3, 3, 4);
+        game.movePiece(5, 4, 4, 3);
+        const [, aiMove] = ai.minimax(game, 2, true);
+        const expectedMoves = [
+            new Moves(1, 0, 2, 1), new Moves(1, 2, 2, 1), new Moves(1, 2, 2, 3), new Moves(1, 4, 2, 3),
+            new Moves(2, 5, 3, 6), new Moves(2, 7, 3, 6), new Moves(3, 0, 5, 2), new Moves(3, 4, 5, 2),
+            new Moves(3, 4, 5, 6)
+        ];
+        const isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
+    });
+    test('Chain Capture Move Test', () => {
+        game.movePiece(5, 6, 4, 5);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(4, 5, 3, 4);
+        game.movePiece(1, 0, 2, 1);
+        game.movePiece(6, 7, 5, 6);
+        let [, aiMove] = ai.minimax(game, 1, true);
+        let expectedMoves = [
+            new Moves(0, 1, 1, 0), new Moves(2, 1, 3, 2), new Moves(2, 3, 3, 2), new Moves(2, 3, 4, 5),
+            new Moves(2, 5, 4, 3), new Moves(2, 5, 3, 6), new Moves(2, 7, 3, 6)
+        ];
+        let isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
+        game.movePiece(2, 3, 4, 5);
+        [, aiMove] = ai.minimax(game, 2, true);
+        expectedMoves = [
+            new Moves(0, 1, 1, 0), new Moves(1, 2, 2, 3), new Moves(1, 4, 2, 3),
+            new Moves(2, 1, 3, 2), new Moves(2, 5, 3, 4), new Moves(2, 5, 3, 6),
+            new Moves(2, 7, 3, 6), new Moves(3, 0, 4, 1), new Moves(4, 5, 6, 7)
+        ];
+        isValidMove = expectedMoves.some(expectedMove => expectedMove.startRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startRow) &&
+            expectedMove.startCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.startCol) &&
+            expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
+            expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
+        expect(isValidMove).toBe(true);
     });
 });
 //# sourceMappingURL=checkers-ai.test.js.map
