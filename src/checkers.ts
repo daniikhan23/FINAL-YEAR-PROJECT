@@ -636,6 +636,53 @@ export class CheckersGame {
         // Keep track of capturedPiece if there is one to reverse it in the game state after the simulation
         return [capturedPieces, wasPromoted, currentRow, currentCol];
     }
+
+    // test move method for AI:
+    public moveAI(startRow: number, startCol: number, endRow: number, endCol: number): void {
+        const piece = this.getPiece(startRow, startCol);
+        let capturedAlready = false;
+        if (piece && piece.color === this.currentPlayer.color){
+            if (this.validateMove(startRow, startCol, endRow, endCol)) {
+                if (piece !== null) {
+                    const middleRow = Math.floor((startRow + endRow) / 2);
+                    const middleCol = Math.floor((startCol + endCol) / 2);
+                    if (this.canCapture(startRow, startCol, endRow, endCol)) {
+                        if (this.currentPlayer === this.players[0]) {
+                            this.players[1].numOfPieces -= 1;
+                        }
+                        else {
+                            this.players[0].numOfPieces -= 1;
+                        }
+                        this.board[middleRow][middleCol] = null;
+                        capturedAlready = true;
+                    }
+                    else {
+                        capturedAlready = false;
+                    }
+                }
+                this.board[startRow][startCol] = null;
+                this.board[endRow][endCol] = piece;
+
+                if (this.promoteToKing(endRow, endCol) === true) {
+                    piece.makeKing();
+                    this.currentPlayer.numOfKings += 1;
+                }
+
+                const nextCaptures = this.chainCaptures(endRow, endCol);
+                if (nextCaptures && capturedAlready === true) {
+                    if (nextCaptures.length > 0) {
+                        return;
+                    }
+                    else {
+                        this.changeTurn();
+                    }
+                }
+                else {
+                    this.changeTurn();
+                }
+            }
+        }
+    }
     
     /**
      * Bring the board back to it's initial state before the simulated move

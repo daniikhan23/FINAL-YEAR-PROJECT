@@ -30,7 +30,7 @@ export class CheckersAI extends Player {
                     moves.forEach(move => {
                         if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                             const gameCopy = game.deepCopyGame();
-                            gameCopy.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
+                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
                             const [evaluatedScore] = this.minimax(gameCopy, depth - 1, !isMaximizingPlayer);
                             if (isMaximizingPlayer && evaluatedScore > bestScore) {
                                 bestScore = evaluatedScore;
@@ -54,7 +54,7 @@ export class CheckersAI extends Player {
         const [score, move] = this.minimax(this.game, this.depth, true);
         if (move) {
             this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
-            console.log(`AI Moves: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}), (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
+            console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
             console.log(`Evaluated Score of move: ${score}`);
         }
         else {

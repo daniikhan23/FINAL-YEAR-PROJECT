@@ -64,7 +64,7 @@ export class CheckersAI extends Player{
 
                             // Create a deep copy of the game for simulating the move
                             const gameCopy = game.deepCopyGame();
-                            gameCopy.movePiece(move.startRow, move.startCol, move.endRow, move.endCol); 
+                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol); 
                             const [evaluatedScore] = this.minimax(gameCopy, depth - 1, !isMaximizingPlayer);
                             
                             // Assign scores depending on whether it's maximzing or minimizing turn
