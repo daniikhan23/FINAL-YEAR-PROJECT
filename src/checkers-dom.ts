@@ -1,4 +1,5 @@
 import { PieceColor, State, Player, CheckersGame } from './checkers.js';
+import { CheckersAI } from './checkers-ai.js';
 
 // DOM Manipulation
 
@@ -48,6 +49,10 @@ function startGame() {
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
     game = new CheckersGame(playerOne, playerTwo)
+
+    // Create the AI player and set it as player two
+    const ai = new CheckersAI("AI", PieceColor.Black, game, 5);
+    game.setAI(ai);
 
     // Update UI with player names
     updateScoreCard();
@@ -176,6 +181,7 @@ function selectPiece(rowIndex: number, colIndex: number, pieceDiv: HTMLDivElemen
 
 /**
  * Executes a move on the DOM based on the selected piece and its destination.
+ * Also handles AI moves on the DOM
  * @param {number} startRow - The starting row of the move.
  * @param {number} startCol - The starting column of the move.
  * @param {number} endRow - The ending row of the move.
@@ -188,6 +194,12 @@ function executeMove(startRow: number, startCol: number, endRow: number, endCol:
         // Move the piece and update the DOM
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
+
+        // Ensure currentPlayer is AI before calling makeMove    
+        if (game.currentPlayer === game.players[1] && game.players[1] instanceof CheckersAI) {
+            game.players[1].makeMove();
+            updateBoardDOM();
+        }
 
         // Check if the start position is now empty and the end position has a piece, maybe remove this now
         const pieceAtEnd = game.getPiece(endRow, endCol);

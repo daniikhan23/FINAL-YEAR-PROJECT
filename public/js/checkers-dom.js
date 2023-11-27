@@ -1,4 +1,5 @@
 import { PieceColor, State, Player, CheckersGame } from './checkers.js';
+import { CheckersAI } from './checkers-ai.js';
 const pieceEventListeners = new Map();
 let game;
 const startGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startGameButton');
@@ -27,6 +28,8 @@ function startGame() {
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
     game = new CheckersGame(playerOne, playerTwo);
+    const ai = new CheckersAI("AI", PieceColor.Black, game, 5);
+    game.setAI(ai);
     updateScoreCard();
     document.querySelector('.initial-screen').style.display = 'none';
     document.querySelector('.main').style.display = 'block';
@@ -117,6 +120,10 @@ function executeMove(startRow, startCol, endRow, endCol) {
     if (piece && piece.color === game.currentPlayer.color) {
         game.movePiece(startRow, startCol, endRow, endCol);
         updateBoardDOM();
+        if (game.currentPlayer === game.players[1] && game.players[1] instanceof CheckersAI) {
+            game.players[1].makeMove();
+            updateBoardDOM();
+        }
         const pieceAtEnd = game.getPiece(endRow, endCol);
         const pieceAtStart = game.getPiece(startRow, startCol);
         if (!pieceAtStart && pieceAtEnd) {

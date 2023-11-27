@@ -1,4 +1,4 @@
-import {Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame} from './checkers';
+import {Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame} from './checkers.js';
 
 export class CheckersAI extends Player{
     private game: CheckersGame;
