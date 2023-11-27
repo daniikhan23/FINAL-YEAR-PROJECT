@@ -2,20 +2,15 @@ import { Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, Checker
 import { CheckersAI } from "../checkers-ai";
 
 describe('CheckersGame', () => {
-    let game: CheckersGame;
-    let playerOne: Player;
-    let playerTwo: Player;
-    let ai: CheckersAI;
+    let game: CheckersGame, ai: CheckersAI;
 
     beforeEach(() => {
-        playerOne = new Player("Dani", PieceColor.Red);
-        playerTwo = new Player("Khan", PieceColor.Black);
-        game = new CheckersGame(playerOne, playerTwo);
-        ai = new CheckersAI('Zero', PieceColor.Black, game, 2);
+        game = new CheckersGame(new Player('Player 1', PieceColor.Red), new Player('AI', PieceColor.Black));
+        ai = new CheckersAI('Zero', PieceColor.Black, game, 1); // depth set to 1 for simplicity
         game.setAI(ai);
     });
 
-    // Tests for initialisation of AI player
+    // // Tests for initialisation of AI player
     test('Check if AI has been correctly initialised to player 2', () => {    
         expect(game.players[1]).toBeInstanceOf(CheckersAI);
         expect(game.players[1]).toBe(ai);
@@ -381,5 +376,42 @@ describe('CheckersGame', () => {
         );
         
         expect(isValidMove).toBe(true);
+    });
+    // makeMove() using minimax
+    test('AI should correctly make a simple move', () => {
+        // red turn
+        game.movePiece(5, 0, 4, 1);
+        //black/ai turn
+        ai.makeMove();
+        console.log(game.board);
+    });
+    test('AI should capture opposing piece', () => {
+        // red turn
+        game.movePiece(5, 6, 4, 7);
+        // ai/black turn
+        game.movePiece(2, 1, 3, 0);
+        // red turn
+        game.movePiece(5, 2, 4, 1);
+        //black/ai turn
+        ai.makeMove();
+        console.log(game.board);
+        expect(game.players[0].numOfPieces).toBe(11);
+    });
+    test('AI should chain capture', () => {
+       // player-red turn
+       game.movePiece(5, 6, 4, 5);
+       //ai-black turn
+       game.movePiece(2, 1, 3, 0);
+       // player-red turn
+       game.movePiece(4, 5, 3, 4);
+       //black turn 
+       game.movePiece(1, 0, 2, 1);
+       // red turn
+       game.movePiece(6, 7, 5, 6);
+        //black/ai turn
+        ai.makeMove();
+        ai.makeMove();
+        expect(game.players[0].numOfPieces).toBe(10);
+        expect(ai.evaluateState(game)).toBe(2);
     });
 });

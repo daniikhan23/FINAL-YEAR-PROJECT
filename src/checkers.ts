@@ -1,4 +1,4 @@
-import { CheckersAI } from "./checkers-ai";
+import { CheckersAI } from "./checkers-ai.js";
 
 /**
  * Enum representing the state of the checkers game.

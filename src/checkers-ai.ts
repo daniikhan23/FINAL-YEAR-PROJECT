@@ -85,4 +85,23 @@ export class CheckersAI extends Player{
         console.log(bestMove);
         return [bestScore, bestMove];
     }
+
+    /**
+     * Method for the AI to make a move using the minimax algorithm to get the 'best' move and using that.
+     */
+    public makeMove(): void {
+        // Call minimax to get move to make
+        const [score, move] = this.minimax(this.game, this.depth, true);
+
+        // Validate move first
+        if (move) {
+            // Then move the piece
+            this.game.movePiece(move?.startRow, move?.startCol, move?.endRow, move?.endCol);
+            console.log(`AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`);
+            console.log(`Evaluated Score of move: ${score}`);
+        }
+        else {
+            console.log( `${this.game.players[1].name} has no valid moves!`);
+        }
+    }
 }

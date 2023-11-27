@@ -1,15 +1,10 @@
 import { Moves, PieceColor, CheckersPiece, Player, CheckersGame } from "../checkers";
 import { CheckersAI } from "../checkers-ai";
 describe('CheckersGame', () => {
-    let game;
-    let playerOne;
-    let playerTwo;
-    let ai;
+    let game, ai;
     beforeEach(() => {
-        playerOne = new Player("Dani", PieceColor.Red);
-        playerTwo = new Player("Khan", PieceColor.Black);
-        game = new CheckersGame(playerOne, playerTwo);
-        ai = new CheckersAI('Zero', PieceColor.Black, game, 2);
+        game = new CheckersGame(new Player('Player 1', PieceColor.Red), new Player('AI', PieceColor.Black));
+        ai = new CheckersAI('Zero', PieceColor.Black, game, 1);
         game.setAI(ai);
     });
     test('Check if AI has been correctly initialised to player 2', () => {
@@ -278,6 +273,30 @@ describe('CheckersGame', () => {
             expectedMove.endRow === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endRow) &&
             expectedMove.endCol === (aiMove === null || aiMove === void 0 ? void 0 : aiMove.endCol));
         expect(isValidMove).toBe(true);
+    });
+    test('AI should correctly make a simple move', () => {
+        game.movePiece(5, 0, 4, 1);
+        ai.makeMove();
+        console.log(game.board);
+    });
+    test('AI should capture opposing piece', () => {
+        game.movePiece(5, 6, 4, 7);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(5, 2, 4, 1);
+        ai.makeMove();
+        console.log(game.board);
+        expect(game.players[0].numOfPieces).toBe(11);
+    });
+    test('AI should chain capture', () => {
+        game.movePiece(5, 6, 4, 5);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(4, 5, 3, 4);
+        game.movePiece(1, 0, 2, 1);
+        game.movePiece(6, 7, 5, 6);
+        ai.makeMove();
+        ai.makeMove();
+        expect(game.players[0].numOfPieces).toBe(10);
+        expect(ai.evaluateState(game)).toBe(2);
     });
 });
 //# sourceMappingURL=checkers-ai.test.js.map

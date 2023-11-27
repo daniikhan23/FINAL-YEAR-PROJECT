@@ -1,4 +1,4 @@
-import { PieceColor, State, Player } from './checkers';
+import { PieceColor, State, Player } from './checkers.js';
 export class CheckersAI extends Player {
     constructor(name, color, game, depth) {
         super(name, color);
@@ -49,6 +49,17 @@ export class CheckersAI extends Player {
         console.log(`Best Move:`);
         console.log(bestMove);
         return [bestScore, bestMove];
+    }
+    makeMove() {
+        const [score, move] = this.minimax(this.game, this.depth, true);
+        if (move) {
+            this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
+            console.log(`AI Moves: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}), (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
+            console.log(`Evaluated Score of move: ${score}`);
+        }
+        else {
+            console.log(`${this.game.players[1].name} has no valid moves!`);
+        }
     }
 }
 //# sourceMappingURL=checkers-ai.js.map
