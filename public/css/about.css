@@ -83,10 +83,8 @@ button:hover {
 }
 
 body {
-  background-color: #363430;
+  background-color: wheat;
 }
-
-
 
 /* Navbar Section */
 
@@ -155,6 +153,74 @@ body {
   align-items: center;
 }
 
+
+/* About Section */
+.about .about-container .container {
+  margin-top: 2rem;
+  padding: 5rem;
+}
+
+.about .about-container .container img{
+  height: 40rem;
+  width: 80rem;
+  border: black;
+  border-radius: 2%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5rem;
+}
+
+.about .about-container .container h3, h5{
+  margin: 2rem;
+}
+
+.about .about-container .container h3 {
+  color: black;
+  margin: 5rem;
+}
+
+.about .about-container .container h5 {
+  color: red;
+}
+
+.about .about-container .container h4 {
+  color: red;
+}
+
+.about .about-container .container .lists {
+  margin: 5rem;
+}
+
+.about .about-container .container li {
+  margin: 1rem;
+  font-size: 1.6rem;
+  list-style-type: disc;
+}
+
+/* About Me Section */
+.about-me .about-me-container .container {
+  padding: 5rem;
+}
+
+.about-me .about-me-container .container img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40rem;
+  width: 50rem;
+  border-radius: 2%;
+  margin-bottom: 10rem;
+}
+
+.about-me .about-me-container .container h4 {
+  margin: 2rem;
+  color: red;
+}
+
+.about-me .about-me-container .container p {
+  margin: 2rem;
+}
 
 
 
