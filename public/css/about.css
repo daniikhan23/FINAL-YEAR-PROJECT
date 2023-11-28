@@ -106,7 +106,7 @@ body {
 }
 
 .header .header-container .container .home button a {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: red; 
 }
 
@@ -135,7 +135,7 @@ body {
 }
 
 .header .header-container .container .list li button a {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: red;
 }
 

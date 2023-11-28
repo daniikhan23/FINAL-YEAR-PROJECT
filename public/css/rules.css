@@ -90,6 +90,8 @@ body {
 
 /* Navbar Section */
 
+/* Navbar Section */
+
 .header .header-container {
   background-color: black;
 }
@@ -106,7 +108,7 @@ body {
 }
 
 .header .header-container .container .home button a {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: red; 
 }
 
@@ -135,7 +137,7 @@ body {
 }
 
 .header .header-container .container .list li button a {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: red;
 }
 
@@ -156,7 +158,72 @@ body {
 }
 
 
+/* Intro Section */
 
+.intro .intro-container .container {
+  align-items: center;
+  margin-top: 5rem;
+  padding: 1rem;
+  margin-bottom: 5rem;
+}
+
+.intro .intro-container .container h1 {
+  text-align: center;
+  font-size: 5rem;
+  margin: 1rem;
+  color: red;
+}
+
+.intro .intro-container .container img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+/* Rules Section */
+.rules .rules-container .container {
+  padding: 5rem;
+  margin-bottom: 5rem;
+}
+
+.rules .rules-container .container .board,
+.rules .rules-container .container .movement {
+  margin: 5rem 0;
+}
+
+.rules .rules-container .container h3 {
+  text-align: center;
+  color: red;
+  margin-bottom: 5rem;
+}
+
+.rules .rules-container .container li {
+  list-style-type: circle;
+  color: white;
+  font-size: 1.5rem;
+  margin: 1rem;
+}
+
+.rules .rules-container .container .board .row .col img {
+  height: 40rem;
+  width: 50rem;
+}
+
+.rules .rules-container .container .movement .row .col .row-regular-pieces img,
+.rules .rules-container .container .movement .row .col .row-king-pieces img {
+  height: 15rem;
+  width: 15rem;
+  margin-left: 10rem;
+}
+
+.rules .rules-container .container .movement .row .col .row-king-pieces .red-king {
+  filter: drop-shadow(0 0 1.5rem rgb(72, 72, 72));
+}
+
+.rules .rules-container .container .movement .row .col .row-king-pieces .black-king {
+  filter: drop-shadow(0 0 1.5rem rgb(188, 1, 1));
+}
 
 /* Footer Section */
 .footer-section {
