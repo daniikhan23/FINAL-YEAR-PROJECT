@@ -83,12 +83,9 @@ button:hover {
 }
 
 body {
-  background-color: #363430;
+  background-color: wheat;
 }
 
-
-
-/* Navbar Section */
 
 /* Navbar Section */
 
@@ -164,7 +161,6 @@ body {
   align-items: center;
   margin-top: 5rem;
   padding: 1rem;
-  margin-bottom: 5rem;
 }
 
 .intro .intro-container .container h1 {
@@ -172,13 +168,6 @@ body {
   font-size: 5rem;
   margin: 1rem;
   color: red;
-}
-
-.intro .intro-container .container img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
 }
 
 /* Rules Section */
@@ -195,13 +184,14 @@ body {
 
 .rules .rules-container .container h3 {
   text-align: center;
-  color: red;
+  color: black;
   margin-bottom: 5rem;
 }
 
 .rules .rules-container .container li {
   list-style-type: circle;
-  color: white;
+  color: red;
+  font-weight: bold;
   font-size: 1.5rem;
   margin: 1rem;
 }
