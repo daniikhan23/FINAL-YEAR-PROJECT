@@ -188,7 +188,8 @@ body {
 }
 
 .rules .rules-container .container .board,
-.rules .rules-container .container .movement {
+.rules .rules-container .container .movement,
+.rules .rules-container .container .scores {
   margin: 5rem 0;
 }
 
@@ -223,6 +224,21 @@ body {
 
 .rules .rules-container .container .movement .row .col .row-king-pieces .black-king {
   filter: drop-shadow(0 0 1.5rem rgb(188, 1, 1));
+}
+
+.rules .rules-container .container .scores {
+  text-align: center;
+  list-style: none;
+}
+
+.rules .rules-container .container .scores .row .col li {
+  list-style: none;
+}
+
+.rules .rules-container .container .scores .row .col .captures,
+.rules .rules-container .container .scores .row .col .promotion {
+  height: 20rem;
+  width: 30rem;
 }
 
 /* Footer Section */
