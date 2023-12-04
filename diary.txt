@@ -201,3 +201,9 @@ it simply, chooses a move and returns it. This can be improved when the evaluati
 2. The DOM updates are very jarring as a user, there's no smooth transition to piece placement since every time a move is made, the board is simply updated 
 with the new state. This is relatively 'okay' in local 2 player mode as each player knows exactly what move they and the other player are making but is not 
 a nice experience when there's no visual indication of what move the AI will be making. This can and should be improved for better clarity. 
+
+The game is finally complete with a simple AI opponent functionality. This is going to improved in the future with a better heuristic as well as reworking the minimax 
+algorithm to be more efficient. The website is now complete with About, RUles and Home pages fully styled. The work that i had planned for the first term is now finally 
+complete, HOORAY!
+
+Much work will be done over the winter break, with the first step being to learn React and convert this project into React and then focus on the AI components. 
