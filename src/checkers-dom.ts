@@ -71,7 +71,7 @@ function startLocalGame() {
  */
 function startAIGame() {
     const playerOneName = (document.getElementById('playerOneName') as HTMLInputElement).value || 'Player 1';
-    const playerTwoName = (document.getElementById('playerTwoName') as HTMLInputElement).value || 'Minimax-3';
+    const playerTwoName = 'Minimax-2';
 
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);

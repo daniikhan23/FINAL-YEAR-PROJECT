@@ -1,5 +1,10 @@
 import {Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame} from './checkers.js';
 
+/**
+ * A class for the AI player extending the regular player class
+ * Has methods for a heuristic evaluation, the minimax algorithm and a method that makes the move
+ * returned by minimax
+ */
 export class CheckersAI extends Player{
     private game: CheckersGame;
     private depth: number

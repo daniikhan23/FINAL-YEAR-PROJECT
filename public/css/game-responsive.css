@@ -336,11 +336,11 @@
         }
     
         .header .header-container .container .list li {
-        margin: 0 0;
+        margin: 0 1rem;
         }
     
         .header .header-container .container .list li button a {
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
     
         /* Scorecards */
@@ -386,7 +386,7 @@
 }
   
 .header .header-container .container .home button a {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: red; 
 }
   
@@ -415,7 +415,7 @@
 }
   
   .header .header-container .container .list li button a {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: red;
   }
   
