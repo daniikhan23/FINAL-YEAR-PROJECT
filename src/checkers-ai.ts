@@ -97,6 +97,56 @@ export class CheckersAI extends Player{
         return [bestScore, bestMove];
     }
 
+    // new minimax experiment W.I.P
+    public minimaxTwo(game: CheckersGame, depth: number, maximizingPlayer: boolean): number{
+        if (depth == 0 || game.currentState === State.gameFinished) {
+            let score = this.evaluateState(game);
+            return score; 
+        }
+
+        let bestScore = maximizingPlayer ? -Infinity : Infinity;
+        let bestMove: Moves | null = null;
+
+        if (maximizingPlayer) {
+            bestScore = -Infinity;
+            for (let row = 0; row < 8; row ++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = game.getPiece(row, col);
+                    if (piece && piece.color === PieceColor.Black) {
+                        const moves = game.possibleMoves(row, col);
+                        moves.forEach(move => {
+                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
+                                bestScore = Math.max(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
+                                // need to create an undo move method that works here
+                                return bestScore;
+                            }
+                        });
+                    }
+                }
+            }
+        } else {
+            for (let row = 0; row < 8; row ++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = game.getPiece(row, col);
+                    if (piece && piece.color === PieceColor.Black) {
+                        const moves = game.possibleMoves(row, col);
+                        moves.forEach(move => {
+                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
+                                bestScore = Math.min(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
+                                // need to create an undo move method that works here
+                                return bestScore;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        return bestScore;
+    }
+
     /**
      * Method for the AI to make a move using the minimax algorithm to get the 'best' move and using that.
      */

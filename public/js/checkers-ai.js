@@ -53,6 +53,50 @@ export class CheckersAI extends Player {
         console.log(bestMove);
         return [bestScore, bestMove];
     }
+    minimaxTwo(game, depth, maximizingPlayer) {
+        if (depth == 0 || game.currentState === State.gameFinished) {
+            let score = this.evaluateState(game);
+            return score;
+        }
+        let bestScore = maximizingPlayer ? -Infinity : Infinity;
+        let bestMove = null;
+        if (maximizingPlayer) {
+            bestScore = -Infinity;
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = game.getPiece(row, col);
+                    if (piece && piece.color === PieceColor.Black) {
+                        const moves = game.possibleMoves(row, col);
+                        moves.forEach(move => {
+                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
+                                bestScore = Math.max(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
+                                return bestScore;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        else {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = game.getPiece(row, col);
+                    if (piece && piece.color === PieceColor.Black) {
+                        const moves = game.possibleMoves(row, col);
+                        moves.forEach(move => {
+                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
+                                bestScore = Math.min(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
+                                return bestScore;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        return bestScore;
+    }
     makeMove() {
         if (this.game.currentState === State.gameFinished) {
             console.log("Game is finished. AI cannot make a move.");
