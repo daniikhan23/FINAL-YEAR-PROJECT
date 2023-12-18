@@ -29,6 +29,16 @@ export class CheckersAI extends Player{
         score += aiPieceCount - playerPieceCount;
         score += (aiKingCount - playerKingCount) * 2;
 
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                let piece = game.getPiece(row, col);
+                if (piece) {
+                    if (col >= 2 && col <= 5 && row >= 2 && row <= 5) {
+                        score += (piece.color === PieceColor.Black ? 1 : -1);
+                    }
+                }
+            }
+        }
         return score;
     }
 
