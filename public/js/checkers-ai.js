@@ -13,13 +13,14 @@ export class CheckersAI extends Player {
         score += (aiKingCount - playerKingCount) * 2;
         return score;
     }
-    minimax(game, depth, isMaximizingPlayer) {
+    minimax(game, depth, alpha, beta, isMaximizingPlayer) {
         let bestScore;
         let bestMove = null;
         let checkColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
+        game.checkEndOfGame();
         if (depth === 0 || game.currentState === State.gameFinished) {
             let score = this.evaluateState(game);
-            console.log('Base case reached!');
+            console.log(`Base case reached! Score = ${score}`);
             return [score, null];
         }
         bestScore = isMaximizingPlayer ? -Infinity : Infinity;
@@ -28,26 +29,37 @@ export class CheckersAI extends Player {
                 const piece = game.getPiece(row, col);
                 if (piece && piece.color === checkColor) {
                     const moves = game.possibleMoves(row, col);
-                    moves.forEach(move => {
+                    for (const move of moves) {
                         if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                             console.log(move);
                             const gameCopy = game.deepCopyGame();
                             gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
                             console.log(`Recursive call - Maximizing player = ${isMaximizingPlayer}, depth = ${depth}`);
-                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, !isMaximizingPlayer);
-                            if (isMaximizingPlayer && evaluatedScore > bestScore) {
-                                bestScore = evaluatedScore;
-                                bestMove = move;
+                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, !isMaximizingPlayer);
+                            if (isMaximizingPlayer) {
+                                if (evaluatedScore > bestScore) {
+                                    bestScore = evaluatedScore;
+                                    bestMove = move;
+                                    alpha = Math.max(alpha, bestScore);
+                                    console.log(`alpha = ${alpha}`);
+                                }
                             }
-                            else if (!isMaximizingPlayer && evaluatedScore < bestScore) {
-                                bestScore = evaluatedScore;
-                                bestMove = move;
+                            else {
+                                if (evaluatedScore < bestScore) {
+                                    bestScore = evaluatedScore;
+                                    bestMove = move;
+                                    beta = Math.min(beta, bestScore);
+                                    console.log(`beta = ${beta}`);
+                                }
                             }
-                            else if (bestMove === null) {
-                                bestMove = null;
+                            if (beta <= alpha) {
+                                break;
                             }
                         }
-                    });
+                    }
+                }
+                if (beta <= alpha) {
+                    break;
                 }
             }
         }
@@ -62,7 +74,7 @@ export class CheckersAI extends Player {
             this.game.changeTurn();
         }
         else {
-            const [score, move] = this.minimax(this.game, this.depth, true);
+            const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
             if (move) {
                 this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
                 console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);

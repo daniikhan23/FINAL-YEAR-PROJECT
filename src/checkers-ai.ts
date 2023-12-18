@@ -31,6 +31,7 @@ export class CheckersAI extends Player{
 
         return score;
     }
+
     /**
      * Minimax Algorithm used in Checkers game to find best move.
      * 
@@ -43,15 +44,17 @@ export class CheckersAI extends Player{
      * @param {boolean} isMaximizingPlayer - The player maximizing, true for AI(Black player) and false for the user(Red)
      * @returns {[number, Moves | null]} Tuple that contains best evaluation score and best move
      */
-    public minimax(game: CheckersGame, depth: number, isMaximizingPlayer: boolean): [number, Moves | null] {
+    public minimax(game: CheckersGame, depth: number, alpha: number, beta: number, isMaximizingPlayer: boolean): [number, Moves | null] {
     
         let bestScore: number; 
         let bestMove: Moves | null = null;
         let checkColor: PieceColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
+
+        game.checkEndOfGame();
     
         if (depth === 0 || game.currentState === State.gameFinished) {
             let score = this.evaluateState(game);
-            console.log('Base case reached!');
+            console.log(`Base case reached! Score = ${score}`);
             return [score, null];
         }
     
@@ -64,7 +67,7 @@ export class CheckersAI extends Player{
                 const piece = game.getPiece(row, col);
                 if (piece && piece.color === checkColor) {
                     const moves = game.possibleMoves(row, col);
-                    moves.forEach(move => {
+                    for (const move of moves) {
                         if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
 
                             console.log(move);
@@ -75,23 +78,32 @@ export class CheckersAI extends Player{
                             
                             console.log(`Recursive call - Maximizing player = ${isMaximizingPlayer}, depth = ${depth}`);
                             
-                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, !isMaximizingPlayer);
+                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, !isMaximizingPlayer);
                             
                             // Assign scores depending on whether it's maximzing or minimizing turn
-                            if (isMaximizingPlayer && evaluatedScore > bestScore) {
-                                bestScore = evaluatedScore;
-                                bestMove = move;
+                            if (isMaximizingPlayer) {
+                                if (evaluatedScore > bestScore) {
+                                    bestScore = evaluatedScore;
+                                    bestMove = move;
+                                    alpha = Math.max(alpha, bestScore);
+                                    console.log(`alpha = ${alpha}`);
+                                }
+                            } else {
+                                if (evaluatedScore < bestScore) {
+                                    bestScore = evaluatedScore;
+                                    bestMove = move;
+                                    beta = Math.min(beta, bestScore);
+                                    console.log(`beta = ${beta}`);
+                                }
                             }
-                            else if (!isMaximizingPlayer && evaluatedScore < bestScore) {
-                                bestScore = evaluatedScore;
-                                bestMove = move;
-                            }
-                            // perhaps remove this once the evaluation function has been improved
-                            else if (bestMove === null) {
-                                bestMove = null;
+                            if (beta <= alpha) {
+                                break;
                             }
                         }
-                    });
+                    }
+                }
+                if (beta <= alpha) {
+                    break;
                 }
             }
         }
@@ -111,7 +123,7 @@ export class CheckersAI extends Player{
         }
         else {
             // Call minimax to get move to make
-            const [score, move] = this.minimax(this.game, this.depth, true);
+            const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
             // Validate move first
             if (move) {
                 // Then move the piece
