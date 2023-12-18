@@ -269,7 +269,9 @@ export class CheckersGame {
         else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
             return this.canCapture(startRow, startCol, endRow, endCol);
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     // method of validation for red pieces
@@ -283,7 +285,9 @@ export class CheckersGame {
         else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
             return this.canCapture(startRow, startCol, endRow, endCol);
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     /**

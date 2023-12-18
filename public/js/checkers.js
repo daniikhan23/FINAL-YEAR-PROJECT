@@ -125,7 +125,9 @@ export class CheckersGame {
         else if (endRow - startRow === 2 && Math.abs(startCol - endCol) === 2) {
             return this.canCapture(startRow, startCol, endRow, endCol);
         }
-        return false;
+        else {
+            return false;
+        }
     }
     validateRed(startRow, startCol, endRow, endCol, destinationSquare) {
         if (endRow - startRow === -1 && Math.abs(startCol - endCol) === 1) {
@@ -137,7 +139,9 @@ export class CheckersGame {
         else if (endRow - startRow === -2 && Math.abs(startCol - endCol) === 2) {
             return this.canCapture(startRow, startCol, endRow, endCol);
         }
-        return false;
+        else {
+            return false;
+        }
     }
     possibleMoves(row, col) {
         const piece = this.getPiece(row, col);

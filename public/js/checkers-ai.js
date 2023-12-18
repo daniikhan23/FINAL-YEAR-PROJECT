@@ -19,6 +19,7 @@ export class CheckersAI extends Player {
         let checkColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
         if (depth === 0 || game.currentState === State.gameFinished) {
             let score = this.evaluateState(game);
+            console.log('Base case reached!');
             return [score, null];
         }
         bestScore = isMaximizingPlayer ? -Infinity : Infinity;
@@ -29,8 +30,10 @@ export class CheckersAI extends Player {
                     const moves = game.possibleMoves(row, col);
                     moves.forEach(move => {
                         if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                            console.log(move);
                             const gameCopy = game.deepCopyGame();
                             gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+                            console.log(`Recursive call - Maximizing player = ${isMaximizingPlayer}, depth = ${depth}`);
                             const [evaluatedScore] = this.minimax(gameCopy, depth - 1, !isMaximizingPlayer);
                             if (isMaximizingPlayer && evaluatedScore > bestScore) {
                                 bestScore = evaluatedScore;
@@ -52,50 +55,6 @@ export class CheckersAI extends Player {
         console.log(`Best Move:`);
         console.log(bestMove);
         return [bestScore, bestMove];
-    }
-    minimaxTwo(game, depth, maximizingPlayer) {
-        if (depth == 0 || game.currentState === State.gameFinished) {
-            let score = this.evaluateState(game);
-            return score;
-        }
-        let bestScore = maximizingPlayer ? -Infinity : Infinity;
-        let bestMove = null;
-        if (maximizingPlayer) {
-            bestScore = -Infinity;
-            for (let row = 0; row < 8; row++) {
-                for (let col = 0; col < 8; col++) {
-                    const piece = game.getPiece(row, col);
-                    if (piece && piece.color === PieceColor.Black) {
-                        const moves = game.possibleMoves(row, col);
-                        moves.forEach(move => {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
-                                bestScore = Math.max(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
-                                return bestScore;
-                            }
-                        });
-                    }
-                }
-            }
-        }
-        else {
-            for (let row = 0; row < 8; row++) {
-                for (let col = 0; col < 8; col++) {
-                    const piece = game.getPiece(row, col);
-                    if (piece && piece.color === PieceColor.Black) {
-                        const moves = game.possibleMoves(row, col);
-                        moves.forEach(move => {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
-                                bestScore = Math.min(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
-                                return bestScore;
-                            }
-                        });
-                    }
-                }
-            }
-        }
-        return bestScore;
     }
     makeMove() {
         if (this.game.currentState === State.gameFinished) {

@@ -31,7 +31,6 @@ export class CheckersAI extends Player{
 
         return score;
     }
-
     /**
      * Minimax Algorithm used in Checkers game to find best move.
      * 
@@ -52,6 +51,7 @@ export class CheckersAI extends Player{
     
         if (depth === 0 || game.currentState === State.gameFinished) {
             let score = this.evaluateState(game);
+            console.log('Base case reached!');
             return [score, null];
         }
     
@@ -67,9 +67,14 @@ export class CheckersAI extends Player{
                     moves.forEach(move => {
                         if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
 
+                            console.log(move);
+
                             // Create a deep copy of the game for simulating the move
                             const gameCopy = game.deepCopyGame();
-                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol); 
+                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+                            
+                            console.log(`Recursive call - Maximizing player = ${isMaximizingPlayer}, depth = ${depth}`);
+                            
                             const [evaluatedScore] = this.minimax(gameCopy, depth - 1, !isMaximizingPlayer);
                             
                             // Assign scores depending on whether it's maximzing or minimizing turn
@@ -85,7 +90,6 @@ export class CheckersAI extends Player{
                             else if (bestMove === null) {
                                 bestMove = null;
                             }
-                             
                         }
                     });
                 }
@@ -95,56 +99,6 @@ export class CheckersAI extends Player{
         console.log(`Best Move:`);
         console.log(bestMove);
         return [bestScore, bestMove];
-    }
-
-    // new minimax experiment W.I.P
-    public minimaxTwo(game: CheckersGame, depth: number, maximizingPlayer: boolean): number{
-        if (depth == 0 || game.currentState === State.gameFinished) {
-            let score = this.evaluateState(game);
-            return score; 
-        }
-
-        let bestScore = maximizingPlayer ? -Infinity : Infinity;
-        let bestMove: Moves | null = null;
-
-        if (maximizingPlayer) {
-            bestScore = -Infinity;
-            for (let row = 0; row < 8; row ++) {
-                for (let col = 0; col < 8; col++) {
-                    const piece = game.getPiece(row, col);
-                    if (piece && piece.color === PieceColor.Black) {
-                        const moves = game.possibleMoves(row, col);
-                        moves.forEach(move => {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
-                                bestScore = Math.max(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
-                                // need to create an undo move method that works here
-                                return bestScore;
-                            }
-                        });
-                    }
-                }
-            }
-        } else {
-            for (let row = 0; row < 8; row ++) {
-                for (let col = 0; col < 8; col++) {
-                    const piece = game.getPiece(row, col);
-                    if (piece && piece.color === PieceColor.Black) {
-                        const moves = game.possibleMoves(row, col);
-                        moves.forEach(move => {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                game.simulateMove(move.startRow, move.startCol, move.endRow, move.endCol);
-                                bestScore = Math.min(bestScore, this.minimaxTwo(game, depth - 1, !maximizingPlayer));
-                                // need to create an undo move method that works here
-                                return bestScore;
-                            }
-                        });
-                    }
-                }
-            }
-        }
-
-        return bestScore;
     }
 
     /**
@@ -158,7 +112,6 @@ export class CheckersAI extends Player{
         else {
             // Call minimax to get move to make
             const [score, move] = this.minimax(this.game, this.depth, true);
-
             // Validate move first
             if (move) {
                 // Then move the piece
