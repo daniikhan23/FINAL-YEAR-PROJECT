@@ -12,7 +12,6 @@ export class CheckersAI extends Player{
     constructor(name: string, color: PieceColor, game: CheckersGame, depth: number) {
         super(name, color);
         this.game = game;
-        // for now the AI will only have search depth 1 for a simple AI
         this.depth = depth;
     }
 
@@ -55,16 +54,21 @@ export class CheckersAI extends Player{
      * @returns {[number, Moves | null]} Tuple that contains best evaluation score and best move
      */
     public minimax(game: CheckersGame, depth: number, alpha: number, beta: number, isMaximizingPlayer: boolean): [number, Moves | null] {
+
+        console.log(`Minimax called with depth: ${depth}, isMaximizingPlayer: ${isMaximizingPlayer}`);
     
         let bestScore: number; 
         let bestMove: Moves | null = null;
         let checkColor: PieceColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
 
         game.checkEndOfGame();
+
+        console.log(`After checkEndOfGame, current game state: ${game.currentState}`);
+
     
         if (depth === 0 || game.currentState === State.gameFinished) {
             let score = this.evaluateState(game);
-            console.log(`Base case reached! Score = ${score}`);
+            console.log(`Base case reached! Score = ${score}, Game State: ${game.currentState}`);
             return [score, null];
         }
     
@@ -79,14 +83,12 @@ export class CheckersAI extends Player{
                     const moves = game.possibleMoves(row, col);
                     for (const move of moves) {
                         if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-
-                            console.log(move);
-
                             // Create a deep copy of the game for simulating the move
                             const gameCopy = game.deepCopyGame();
+
                             gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                            
-                            console.log(`Recursive call - Maximizing player = ${isMaximizingPlayer}, depth = ${depth}`);
+
+                            console.log(`Considering move: (${move.startRow},${move.startCol}) to (${move.endRow},${move.endCol})`);
                             
                             const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, !isMaximizingPlayer);
                             
@@ -96,30 +98,95 @@ export class CheckersAI extends Player{
                                     bestScore = evaluatedScore;
                                     bestMove = move;
                                     alpha = Math.max(alpha, bestScore);
-                                    console.log(`alpha = ${alpha}`);
+                                    // console.log(`alpha = ${alpha}`);
                                 }
                             } else {
                                 if (evaluatedScore < bestScore) {
                                     bestScore = evaluatedScore;
                                     bestMove = move;
                                     beta = Math.min(beta, bestScore);
-                                    console.log(`beta = ${beta}`);
+                                    // console.log(`beta = ${beta}`);
                                 }
                             }
                             if (beta <= alpha) {
+                                console.log(`Inner - Pruning occurs at depth ${depth} with alpha: ${alpha} and beta: ${beta}`);
                                 break;
                             }
                         }
                     }
                 }
                 if (beta <= alpha) {
+                    console.log(`Outer - Pruning occurs at depth ${depth} with alpha: ${alpha} and beta: ${beta}`);
                     break;
                 }
             }
         }
-        console.log(`Score: ${bestScore}`);
-        console.log(`Best Move:`);
-        console.log(bestMove);
+        console.log(`Minimax decision at depth ${depth} - Best Score: ${bestScore}, Best Move: (${bestMove?.startRow}, ${bestMove?.startCol}) to (${bestMove?.endRow}, ${bestMove?.endCol})`);
+
+        return [bestScore, bestMove];
+    }
+
+    // new minimax experiment W.I.P
+    public minimaxTwo(game: CheckersGame, depth: number, maximizingPlayer: boolean): [number, Moves | null]{
+
+        game.checkEndOfGame();
+
+        if (depth == 0 || game.currentState === State.gameFinished) {
+            let score = this.evaluateState(game);
+            return [score, null]; 
+        }
+
+        let bestScore: number = maximizingPlayer ? -Infinity : Infinity;
+        let bestMove: Moves | null = null;
+
+        if (maximizingPlayer) {
+            for (let row = 0; row < 8; row ++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = game.getPiece(row, col);
+                    if (piece && piece.color === PieceColor.Black) {
+                        const moves = game.possibleMoves(row, col);
+                        for (const move of moves) {
+                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                                const gameCopy = game.deepCopyGame();
+
+                                gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+
+                                const [evaluatedScore] = this.minimaxTwo(gameCopy, depth - 1, false);
+
+                                if (evaluatedScore > bestScore) {
+                                    bestScore = evaluatedScore;
+                                    bestMove = move;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            for (let row = 0; row < 8; row ++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = game.getPiece(row, col);
+                    if (piece && piece.color === PieceColor.Red) {
+                        const moves = game.possibleMoves(row, col);
+                        for (const move of moves) {
+                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
+                                const gameCopy = game.deepCopyGame();
+
+                                gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+
+                                const [evaluatedScore] = this.minimaxTwo(gameCopy, depth - 1, false);
+
+                                if (evaluatedScore < bestScore) {
+                                    bestScore = evaluatedScore;
+                                    bestMove = move;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return [bestScore, bestMove];
     }
 
@@ -133,7 +200,7 @@ export class CheckersAI extends Player{
         }
         else {
             // Call minimax to get move to make
-            const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
+            const [score, move] = this.minimaxTwo(this.game, this.depth, true);
             // Validate move first
             if (move) {
                 // Then move the piece

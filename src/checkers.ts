@@ -555,6 +555,9 @@ export class CheckersGame {
                 this.winner = null;
             }
         }
+        else {
+            this.currentState = State.inProgress;
+        }
     }
 
     // AI Player Specific Methods:
