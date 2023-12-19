@@ -23,64 +23,11 @@ export class CheckersAI extends Player {
         }
         return score;
     }
-    minimax(game, depth, alpha, beta, isMaximizingPlayer) {
-        console.log(`Minimax called with depth: ${depth}, isMaximizingPlayer: ${isMaximizingPlayer}`);
-        let bestScore;
-        let bestMove = null;
-        let checkColor = isMaximizingPlayer ? PieceColor.Black : PieceColor.Red;
-        game.checkEndOfGame();
-        console.log(`After checkEndOfGame, current game state: ${game.currentState}`);
-        if (depth === 0 || game.currentState === State.gameFinished) {
-            let score = this.evaluateState(game);
-            console.log(`Base case reached! Score = ${score}, Game State: ${game.currentState}`);
-            return [score, null];
-        }
-        bestScore = isMaximizingPlayer ? -Infinity : Infinity;
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const piece = game.getPiece(row, col);
-                if (piece && piece.color === checkColor) {
-                    const moves = game.possibleMoves(row, col);
-                    for (const move of moves) {
-                        if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                            const gameCopy = game.deepCopyGame();
-                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                            console.log(`Considering move: (${move.startRow},${move.startCol}) to (${move.endRow},${move.endCol})`);
-                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, !isMaximizingPlayer);
-                            if (isMaximizingPlayer) {
-                                if (evaluatedScore > bestScore) {
-                                    bestScore = evaluatedScore;
-                                    bestMove = move;
-                                    alpha = Math.max(alpha, bestScore);
-                                }
-                            }
-                            else {
-                                if (evaluatedScore < bestScore) {
-                                    bestScore = evaluatedScore;
-                                    bestMove = move;
-                                    beta = Math.min(beta, bestScore);
-                                }
-                            }
-                            if (beta <= alpha) {
-                                console.log(`Inner - Pruning occurs at depth ${depth} with alpha: ${alpha} and beta: ${beta}`);
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (beta <= alpha) {
-                    console.log(`Outer - Pruning occurs at depth ${depth} with alpha: ${alpha} and beta: ${beta}`);
-                    break;
-                }
-            }
-        }
-        console.log(`Minimax decision at depth ${depth} - Best Score: ${bestScore}, Best Move: (${bestMove === null || bestMove === void 0 ? void 0 : bestMove.startRow}, ${bestMove === null || bestMove === void 0 ? void 0 : bestMove.startCol}) to (${bestMove === null || bestMove === void 0 ? void 0 : bestMove.endRow}, ${bestMove === null || bestMove === void 0 ? void 0 : bestMove.endCol})`);
-        return [bestScore, bestMove];
-    }
-    minimaxTwo(game, depth, maximizingPlayer) {
+    minimax(game, depth, alpha, beta, maximizingPlayer) {
         game.checkEndOfGame();
         if (depth == 0 || game.currentState === State.gameFinished) {
             let score = this.evaluateState(game);
+            console.log(`Base case reached, depth: ${depth}, score: ${score}`);
             return [score, null];
         }
         let bestScore = maximizingPlayer ? -Infinity : Infinity;
@@ -95,7 +42,8 @@ export class CheckersAI extends Player {
                             if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                                 const gameCopy = game.deepCopyGame();
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                                const [evaluatedScore] = this.minimaxTwo(gameCopy, depth - 1, false);
+                                console.log(`Maximizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
+                                const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
                                 if (evaluatedScore > bestScore) {
                                     bestScore = evaluatedScore;
                                     bestMove = move;
@@ -105,6 +53,7 @@ export class CheckersAI extends Player {
                     }
                 }
             }
+            return [bestScore, bestMove];
         }
         else {
             for (let row = 0; row < 8; row++) {
@@ -116,7 +65,13 @@ export class CheckersAI extends Player {
                             if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                                 const gameCopy = game.deepCopyGame();
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                                const [evaluatedScore] = this.minimaxTwo(gameCopy, depth - 1, false);
+                                console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
+                                const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
+                                beta = Math.min(beta, evaluatedScore);
+                                if (beta <= alpha) {
+                                    bestMove = move;
+                                    break;
+                                }
                                 if (evaluatedScore < bestScore) {
                                     bestScore = evaluatedScore;
                                     bestMove = move;
@@ -126,8 +81,8 @@ export class CheckersAI extends Player {
                     }
                 }
             }
+            return [bestScore, bestMove];
         }
-        return [bestScore, bestMove];
     }
     makeMove() {
         if (this.game.currentState === State.gameFinished) {
@@ -135,7 +90,7 @@ export class CheckersAI extends Player {
             this.game.changeTurn();
         }
         else {
-            const [score, move] = this.minimaxTwo(this.game, this.depth, true);
+            const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
             if (move) {
                 this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
                 console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
@@ -143,6 +98,7 @@ export class CheckersAI extends Player {
             }
             else {
                 console.log(`${this.game.players[1].name} has no valid moves!`);
+                this.game.changeTurn();
             }
         }
     }

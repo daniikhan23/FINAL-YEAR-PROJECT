@@ -42,7 +42,7 @@ function startAIGame() {
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
     game = new CheckersGame(playerOne, playerTwo);
-    const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 5);
+    const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 3);
     game.setAI(ai);
     updateScoreCard();
     document.querySelector('.initial-screen').style.display = 'none';
