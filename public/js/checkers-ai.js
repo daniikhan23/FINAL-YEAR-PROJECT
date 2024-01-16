@@ -9,14 +9,14 @@ export class CheckersAI extends Player {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-        score += aiPieceCount - playerPieceCount;
-        score += (aiKingCount - playerKingCount) * 2;
+        score += aiPieceCount * 25 - playerPieceCount * 25;
+        score += (aiKingCount * 50 - playerKingCount * 50);
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
                     if (col >= 2 && col <= 5 && row >= 2 && row <= 5) {
-                        score += (piece.color === PieceColor.Black ? 1 : -1);
+                        score += (piece.color === PieceColor.Black ? 10 : -10);
                     }
                 }
             }
