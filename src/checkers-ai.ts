@@ -82,14 +82,17 @@ export class CheckersAI extends Player{
 
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
 
+                                alpha = Math.max(alpha, evaluatedScore);
+                                if (beta <= alpha) {
+                                    bestMove = move;
+                                    bestScore = evaluatedScore;
+                                    break;
+                                }
+
                                 if (evaluatedScore > bestScore) {
                                     bestScore = evaluatedScore;
                                     bestMove = move;
-                                    // alpha = Math.max(alpha, evaluatedScore);
                                 }
-                                // if (beta <= alpha) {
-                                //     break;
-                                // }
                             }
                         }
                     }
@@ -112,20 +115,18 @@ export class CheckersAI extends Player{
 
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
 
-                                beta = Math.min (beta, evaluatedScore);
+                                beta = Math.min(beta, evaluatedScore);
+                                
                                 if (beta <= alpha) {
                                     bestMove = move;
+                                    bestScore = evaluatedScore;
                                     break;
                                 }
 
                                 if (evaluatedScore < bestScore) {
                                     bestScore = evaluatedScore;
                                     bestMove = move;
-                                    // beta = Math.min (beta, evaluatedScore);
                                 }
-                                // if (beta <= alpha) {
-                                //     break;
-                                // }
                             }
                         }
                     }

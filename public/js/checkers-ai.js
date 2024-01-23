@@ -44,6 +44,12 @@ export class CheckersAI extends Player {
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
                                 console.log(`Maximizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
+                                alpha = Math.max(alpha, evaluatedScore);
+                                if (beta <= alpha) {
+                                    bestMove = move;
+                                    bestScore = evaluatedScore;
+                                    break;
+                                }
                                 if (evaluatedScore > bestScore) {
                                     bestScore = evaluatedScore;
                                     bestMove = move;
@@ -70,6 +76,7 @@ export class CheckersAI extends Player {
                                 beta = Math.min(beta, evaluatedScore);
                                 if (beta <= alpha) {
                                     bestMove = move;
+                                    bestScore = evaluatedScore;
                                     break;
                                 }
                                 if (evaluatedScore < bestScore) {

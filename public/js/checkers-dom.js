@@ -38,11 +38,11 @@ function startLocalGame() {
 }
 function startAIGame() {
     const playerOneName = document.getElementById('playerOneName').value || 'Player 1';
-    const playerTwoName = 'Minimax-2';
+    const playerTwoName = 'Minimax-A/B';
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
     game = new CheckersGame(playerOne, playerTwo);
-    const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 3);
+    const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 5);
     game.setAI(ai);
     updateScoreCard();
     document.querySelector('.initial-screen').style.display = 'none';
