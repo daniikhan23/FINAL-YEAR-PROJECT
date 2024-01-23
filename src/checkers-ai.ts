@@ -35,8 +35,14 @@ export class CheckersAI extends Player{
                     if (col >= 2 && col <= 5 && row >= 2 && row <= 5) {
                         score += (piece.color === PieceColor.Black ? 10 : -10);
                     }
+                    if (game.chainCaptures(row, col)) {
+                        score += (piece.color === PieceColor.Black ? 200 : -200);
+                    }
                 }
             }
+        }
+        if (game.capturesPossible()) {
+            score -= 100;
         }
         return score;
     }
