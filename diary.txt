@@ -207,3 +207,8 @@ algorithm to be more efficient. The website is now complete with About, RUles an
 complete, HOORAY!
 
 Much work will be done over the winter break, with the first step being to learn React and convert this project into React and then focus on the AI components. 
+
+Week 11-12:
+Minimax is now correctly implemented and functions as expected. The heuristic is the focus for now to ensure the AI player is "smart" and provides a compeititve playing
+experience. A lot of experimentation and testing is done on this to check and see how the AI makes decisions during the game and whether or not they are successful in 
+games played
