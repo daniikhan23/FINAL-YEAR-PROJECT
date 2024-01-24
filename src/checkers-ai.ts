@@ -75,6 +75,218 @@ export class CheckersAI extends Player{
             new Moves(2, 5, 3, 6), // black or ai's move
             new Moves(7, 0, 6, 1) // red or players move
         ]);
+        openings.set("Alma", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(7, 2, 6, 1) // red or players move
+        ]);
+        openings.set("Centre", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(4, 3, 3, 4) // red or players move
+        ]);
+        openings.set("Glasgow", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(5, 2, 4, 1) // red or players move
+        ]);
+        openings.set("Laird and Lady", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(5, 6, 4, 7),
+            new Moves(3, 6, 4, 5),
+            new Moves(5, 4, 3, 6),
+            new Moves(2, 7, 4, 5)
+        ]);
+        openings.set("Black Doctor", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(5, 6, 4, 7),
+            new Moves(3, 6, 4, 5),
+            new Moves(5, 4, 3, 6),
+            new Moves(3, 2, 5, 4),
+            new Moves(6, 3, 4, 5)
+        ]);
+        openings.set("Laird and Lady Refused", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(5, 6, 4, 7),
+            new Moves(1, 6, 2, 5)
+        ]);
+        openings.set("Glasgow-Whilter", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(5, 6, 4, 5),
+            new Moves(1, 6, 2, 5),
+            new Moves(5, 2, 4, 1),
+            new Moves(1, 4, 2, 3)
+        ]);
+        openings.set("Nailor", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(1, 4, 2, 3), // black or ai's move
+        ]);
+        openings.set("Tillicoultry", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 4), // black or ai's move
+        ]);
+        openings.set("Will o' the Wisp", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(5, 6, 4, 7), // red or players move
+        ]);
+        openings.set("Defiance", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(5, 6, 4, 5), // red or players move
+            new Moves(1, 2, 2, 3), // black or ai's move
+        ]);
+        openings.set("Fife", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(5, 6, 4, 5), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(6, 7, 5, 6)
+        ]);
+        openings.set("Souter", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(5, 6, 4, 5), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(6, 5, 5, 6)
+        ]);
+        openings.set("Whilter-I", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(5, 6, 4, 5), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(6, 3, 5, 2)
+        ]);
+        openings.set("Whilter-II", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 3, 5, 2)
+        ]);
+        openings.set("Whilter-Exchange", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 3, 5, 2),
+            new Moves(2, 5, 3, 4)
+        ]);
+        openings.set("Maid of the Mill", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2),
+            new Moves(3, 6, 4, 7),
+            new Moves(4, 3, 3, 4)
+        ]);
+        openings.set("Douglas", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2),
+            new Moves(3, 6, 4, 7),
+            new Moves(7, 0, 6, 1),
+            new Moves(1, 6, 2, 5)
+        ]);
+        openings.set("Pioneer", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2),
+            new Moves(1, 6, 2, 5)
+        ]);
+        openings.set("White Dyke", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 5, 3, 6),
+            new Moves(6, 1, 5, 2),
+            new Moves(3, 6, 4 ,5)
+        ]);
+        openings.set("Wagram", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 5, 3, 6),
+            new Moves(5, 6, 4, 7),
+            new Moves(2, 1, 3, 0)
+        ]);
+        openings.set("Boston", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 5, 3, 6),
+            new Moves(5, 6, 4, 7),
+            new Moves(3, 6, 4, 5)
+        ]);
+        openings.set("Dyke", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 5, 3, 6),
+            new Moves(4, 3, 3, 2)
+        ]);
+        openings.set("Cross", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 3, 3, 4)
+        ]);
+        openings.set("Waterloo", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 3, 3, 4),
+            new Moves(6, 1, 5, 2),
+            new Moves(3, 4, 4, 5)
+        ]);
+        openings.set("Ayrshire Lassie", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 1, 3, 0),
+            new Moves(6, 1, 5, 2),
+            new Moves(1, 0, 2, 1)
+        ]);
+        openings.set("Switcher", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 7, 3, 6)
+        ]);
+        openings.set("Single Corner", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 5, 3, 4)
+        ]);
+        openings.set("Second Double Corner", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 1, 3, 2)
+        ]);
+        openings.set("Bristol", [
+            new Moves(5, 2, 4, 1),
+            new Moves(2, 1, 3, 0),
+            new Moves(4, 1, 3, 2)
+        ]);
+        openings.set("Paisley", [
+            new Moves(5, 2, 4, 1),
+            new Moves(2, 1, 3, 2)
+        ]);
+        openings.set("Bristol-Cross", [
+            new Moves(5, 2, 4, 1),
+            new Moves(2, 3, 3, 4)
+        ]);
+        openings.set("White Doctor", [
+            new Moves(5, 2, 4, 1),
+            new Moves(2, 5, 3, 4),
+            new Moves(5, 4, 4, 5),
+            new Moves(1, 6, 2, 5),
+            new Moves(6, 1, 5, 2),
+            new Moves(2, 1, 3, 0),
+            new Moves(4, 1, 3, 2),
+            new Moves(2, 3, 4, 1),
+            new Moves(4, 5, 2, 3),
+            new Moves(1, 4, 3, 2)
+        ]);
     
         return openings;
     }
