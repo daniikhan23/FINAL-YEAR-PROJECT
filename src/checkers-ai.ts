@@ -7,12 +7,14 @@ import {Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, Checkers
  */
 export class CheckersAI extends Player{
     private game: CheckersGame;
-    private depth: number
+    private depth: number;
+    private openingSequence: boolean;
 
     constructor(name: string, color: PieceColor, game: CheckersGame, depth: number) {
         super(name, color);
         this.game = game;
         this.depth = depth;
+        this.openingSequence = true;
     }
 
     /**
@@ -394,20 +396,27 @@ export class CheckersAI extends Player{
             console.log("Game is finished. AI cannot make a move.");
             this.game.changeTurn();
         }
+
+        if (this.openingSequence) {
+            // opening moves code
+        } else {
+            this.playMinimaxMove();
+        }
+    }
+
+    public playMinimaxMove(): void {
+        // Call minimax to get move to make
+        const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
+        // Validate move first
+        if (move) {
+            // Then move the piece
+            this.game.movePiece(move?.startRow, move?.startCol, move?.endRow, move?.endCol);
+            console.log(`AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`);
+            console.log(`Evaluated Score of move: ${score}`);
+        }
         else {
-            // Call minimax to get move to make
-            const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
-            // Validate move first
-            if (move) {
-                // Then move the piece
-                this.game.movePiece(move?.startRow, move?.startCol, move?.endRow, move?.endCol);
-                console.log(`AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`);
-                console.log(`Evaluated Score of move: ${score}`);
-            }
-            else {
-                console.log( `${this.game.players[1].name} has no valid moves!`);
-                this.game.changeTurn();
-            }
+            console.log( `${this.game.players[1].name} has no valid moves!`);
+            this.game.changeTurn();
         }
     }
 }

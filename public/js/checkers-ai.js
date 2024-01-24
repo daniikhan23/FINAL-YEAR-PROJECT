@@ -4,6 +4,7 @@ export class CheckersAI extends Player {
         super(name, color);
         this.game = game;
         this.depth = depth;
+        this.openingSequence = true;
     }
     evaluateState(game) {
         let score = 0;
@@ -334,17 +335,22 @@ export class CheckersAI extends Player {
             console.log("Game is finished. AI cannot make a move.");
             this.game.changeTurn();
         }
+        if (this.openingSequence) {
+        }
         else {
-            const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
-            if (move) {
-                this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
-                console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
-                console.log(`Evaluated Score of move: ${score}`);
-            }
-            else {
-                console.log(`${this.game.players[1].name} has no valid moves!`);
-                this.game.changeTurn();
-            }
+            this.playMinimaxMove();
+        }
+    }
+    playMinimaxMove() {
+        const [score, move] = this.minimax(this.game, this.depth, -Infinity, Infinity, true);
+        if (move) {
+            this.game.movePiece(move === null || move === void 0 ? void 0 : move.startRow, move === null || move === void 0 ? void 0 : move.startCol, move === null || move === void 0 ? void 0 : move.endRow, move === null || move === void 0 ? void 0 : move.endCol);
+            console.log(`AI moved from: (${move === null || move === void 0 ? void 0 : move.startRow}, ${move === null || move === void 0 ? void 0 : move.startCol}) to (${move === null || move === void 0 ? void 0 : move.endRow}, ${move === null || move === void 0 ? void 0 : move.endCol})`);
+            console.log(`Evaluated Score of move: ${score}`);
+        }
+        else {
+            console.log(`${this.game.players[1].name} has no valid moves!`);
+            this.game.changeTurn();
         }
     }
 }

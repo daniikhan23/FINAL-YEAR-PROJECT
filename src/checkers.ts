@@ -187,6 +187,8 @@ export class CheckersGame {
     public currentPlayer: Player;
     public winner: Player | null;
     public numOfTurns: number;
+    public playerOneMoves: Moves [];
+    public playerTwoMoves: Moves [];
 
     /**
      * Constructs a CheckersGame object.
@@ -200,6 +202,8 @@ export class CheckersGame {
         this.currentPlayer = playerOne;
         this.winner = null;
         this.numOfTurns = 0;
+        this.playerOneMoves = [];
+        this.playerTwoMoves = [];
     }
 
     /**
@@ -408,6 +412,12 @@ export class CheckersGame {
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
 
+                if (this.currentPlayer === this.players[0]) {
+                    this.playerOneMoves.push(new Moves(startRow, startCol, endRow, endCol));
+                } else {
+                    this.playerTwoMoves.push(new Moves(startRow, startCol, endRow, endCol));
+                }
+
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
                     this.currentPlayer.numOfKings += 1;
@@ -427,6 +437,8 @@ export class CheckersGame {
                 }
             }
         }
+        // console.log(this.playerOneMoves);
+        // console.log(this.playerTwoMoves);
     }
 
     /**

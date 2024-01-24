@@ -84,6 +84,8 @@ export class CheckersGame {
         this.currentPlayer = playerOne;
         this.winner = null;
         this.numOfTurns = 0;
+        this.playerOneMoves = [];
+        this.playerTwoMoves = [];
     }
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
@@ -224,6 +226,12 @@ export class CheckersGame {
                 }
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
+                if (this.currentPlayer === this.players[0]) {
+                    this.playerOneMoves.push(new Moves(startRow, startCol, endRow, endCol));
+                }
+                else {
+                    this.playerTwoMoves.push(new Moves(startRow, startCol, endRow, endCol));
+                }
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
                     this.currentPlayer.numOfKings += 1;
