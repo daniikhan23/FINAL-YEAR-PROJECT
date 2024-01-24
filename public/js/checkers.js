@@ -83,9 +83,11 @@ export class CheckersGame {
         this.currentState = State.inProgress;
         this.currentPlayer = playerOne;
         this.winner = null;
+        this.numOfTurns = 0;
     }
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
+        this.numOfTurns++;
     }
     getPiece(row, col) {
         return this.board[row][col];

@@ -212,3 +212,6 @@ Week 11-12:
 Minimax is now correctly implemented and functions as expected. The heuristic is the focus for now to ensure the AI player is "smart" and provides a compeititve playing
 experience. A lot of experimentation and testing is done on this to check and see how the AI makes decisions during the game and whether or not they are successful in 
 games played
+
+Working on a new branch to implement initially different optimal opening moves that the AI can make at the beginning of the game. The next task is to flesh out the AI's 
+early-game behaviour moving onto mid and endgame after that

@@ -186,6 +186,7 @@ export class CheckersGame {
     public currentState: State;
     public currentPlayer: Player;
     public winner: Player | null;
+    public numOfTurns: number;
 
     /**
      * Constructs a CheckersGame object.
@@ -198,6 +199,7 @@ export class CheckersGame {
         this.currentState = State.inProgress;
         this.currentPlayer = playerOne;
         this.winner = null;
+        this.numOfTurns = 0;
     }
 
     /**
@@ -205,6 +207,7 @@ export class CheckersGame {
      */
     public changeTurn(): void {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
+        this.numOfTurns++;
     }
 
     /**

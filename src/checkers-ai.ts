@@ -65,6 +65,20 @@ export class CheckersAI extends Player{
         return score;
     }
 
+    public openingSet(): Map<string, Moves[]> {
+        const openings = new Map<string, Moves[]>();
+
+        openings.set("Old Fourteenth", [
+            new Moves(5, 2, 4, 3), // red or players move
+            new Moves(2, 3, 3, 2), // black or ai's move
+            new Moves(6, 1, 5, 2), // red or players move
+            new Moves(2, 5, 3, 6), // black or ai's move
+            new Moves(7, 0, 6, 1) // red or players move
+        ]);
+    
+        return openings;
+    }
+
     /**
      * Minimax Algorithm used in Checkers game to find best move.
      * 

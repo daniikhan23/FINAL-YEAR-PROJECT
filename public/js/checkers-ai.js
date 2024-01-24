@@ -1,4 +1,4 @@
-import { PieceColor, State, Player } from './checkers.js';
+import { Moves, PieceColor, State, Player } from './checkers.js';
 export class CheckersAI extends Player {
     constructor(name, color, game, depth) {
         super(name, color);
@@ -37,6 +37,17 @@ export class CheckersAI extends Player {
             score += (game.currentPlayer.color === PieceColor.Black ? 150 : -150);
         }
         return score;
+    }
+    openingSet() {
+        const openings = new Map();
+        openings.set("Old Fourteenth", [
+            new Moves(5, 2, 4, 3),
+            new Moves(2, 3, 3, 2),
+            new Moves(6, 1, 5, 2),
+            new Moves(2, 5, 3, 6),
+            new Moves(7, 0, 6, 1)
+        ]);
+        return openings;
     }
     minimax(game, depth, alpha, beta, maximizingPlayer) {
         game.checkEndOfGame();
