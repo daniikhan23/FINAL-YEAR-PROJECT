@@ -24,25 +24,43 @@ export class CheckersAI extends Player{
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-
-        score += aiPieceCount * 25 - playerPieceCount * 25;
-        score += (aiKingCount * 50 - playerKingCount * 50);
-
+    
+        // Basic score based on piece count and kings
+        score += aiPieceCount * 500 - playerPieceCount * 500;
+        score += aiKingCount * 1000 - playerKingCount * 1000;
+    
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
+                    // Central control
                     if (col >= 2 && col <= 5 && row >= 2 && row <= 5) {
-                        score += (piece.color === PieceColor.Black ? 10 : -10);
+                        score += (piece.color === PieceColor.Black ? 30 : -30);
                     }
+    
+                    // Boundary safety
+                    if (col === 0 || col === 7) {
+                        score += (piece.color === PieceColor.Black ? 75 : -75);
+                    }
+    
+                    // Pieces close to being promoted
+                    if (piece.color === PieceColor.Black && row >= 3 && piece.isKing === false) {
+                        score += row * 20;
+                    } else if (piece.color === PieceColor.Red && row <= 3 && piece.isKing === false) {
+                        score -= (7 - row) * 20;
+                    }
+    
+                    // Chain capture moves 
                     if (game.chainCaptures(row, col)) {
-                        score += (piece.color === PieceColor.Black ? 200 : -200);
+                        score += (piece.color === PieceColor.Black ? 250 : -250);
                     }
                 }
             }
         }
+    
+        // Single capture
         if (game.capturesPossible()) {
-            score -= 100;
+            score += (game.currentPlayer.color === PieceColor.Black ? 150 : -150);
         }
         return score;
     }
