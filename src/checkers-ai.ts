@@ -30,43 +30,79 @@ export class CheckersAI extends Player{
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
     
         // Basic score based on piece count and kings
-        score += aiPieceCount * 500 - playerPieceCount * 500;
-        score += aiKingCount * 1000 - playerKingCount * 1000;
+        score += aiPieceCount * 300 - playerPieceCount * 300;
+        score += aiKingCount * 600 - playerKingCount * 600;
     
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
+
                     // Central control
-                    if (col >= 2 && col <= 5 && row >= 2 && row <= 5) {
-                        score += (piece.color === PieceColor.Black ? 30 : -30);
-                    }
-    
-                    // Boundary safety
-                    if (col === 0 || col === 7) {
+                    if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
                         score += (piece.color === PieceColor.Black ? 75 : -75);
                     }
     
+                    // Boundary safety
+                    // if (col === 0 || col === 7) {
+                    //     score += (piece.color === PieceColor.Black ? 15 : -15);
+                    // }
+    
                     // Pieces close to being promoted
                     if (piece.color === PieceColor.Black && row >= 3 && piece.isKing === false) {
-                        score += row * 20;
+                        score += row * 10;
                     } else if (piece.color === PieceColor.Red && row <= 3 && piece.isKing === false) {
-                        score -= (7 - row) * 20;
+                        score -= (7 - row) * 10;
                     }
+    
+                    // Mobility: Reward for more possible moves
+                    let moves = game.possibleMoves(row, col);
+                    score += (piece.color === PieceColor.Black ? 10 : -10) * moves.length;
     
                     // Chain capture moves 
                     if (game.chainCaptures(row, col)) {
-                        score += (piece.color === PieceColor.Black ? 250 : -250);
+                        score += (game.currentPlayer.color === PieceColor.Black ? 250 : -250);
+                    }
+    
+                    // Back Row Guard
+                    if (game.numOfTurns <= 10){
+                        if ((piece.color === PieceColor.Black && row === 0) || 
+                        (piece.color === PieceColor.Red && row === 7)) {
+                        score += (piece.color === PieceColor.Black ? 50 : -50);
+                        }
                     }
                 }
             }
+        }
+
+         // Adjust the score based on the potential captures available to the opponent
+        let opponentCaptures = this.countOpponentCapturesPossible(game);
+        if (game.currentPlayer.color === PieceColor.Black) {
+            score -= opponentCaptures * 150;
+        } else {
+            score += opponentCaptures * 150;
         }
     
         // Single capture
         if (game.capturesPossible()) {
             score += (game.currentPlayer.color === PieceColor.Black ? 150 : -150);
         }
+
         return score;
+    }
+    
+    private countOpponentCapturesPossible(game: CheckersGame): number {
+        let captureCount = 0;
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = game.getPiece(row, col);
+                if (piece && piece.color !== game.currentPlayer.color) {
+                    const moves = game.possibleMoves(row, col);
+                    captureCount += moves.filter(move => Math.abs(move.startRow - move.endRow) === 2).length;
+                }
+            }
+        }
+        return captureCount;
     }
 
     public openingSet(): Map<string, Moves[]> {

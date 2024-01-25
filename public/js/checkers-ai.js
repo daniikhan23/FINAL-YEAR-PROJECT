@@ -11,34 +11,59 @@ export class CheckersAI extends Player {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-        score += aiPieceCount * 500 - playerPieceCount * 500;
-        score += aiKingCount * 1000 - playerKingCount * 1000;
+        score += aiPieceCount * 300 - playerPieceCount * 300;
+        score += aiKingCount * 600 - playerKingCount * 600;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
-                    if (col >= 2 && col <= 5 && row >= 2 && row <= 5) {
-                        score += (piece.color === PieceColor.Black ? 30 : -30);
-                    }
-                    if (col === 0 || col === 7) {
+                    if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
                         score += (piece.color === PieceColor.Black ? 75 : -75);
                     }
                     if (piece.color === PieceColor.Black && row >= 3 && piece.isKing === false) {
-                        score += row * 20;
+                        score += row * 10;
                     }
                     else if (piece.color === PieceColor.Red && row <= 3 && piece.isKing === false) {
-                        score -= (7 - row) * 20;
+                        score -= (7 - row) * 10;
                     }
+                    let moves = game.possibleMoves(row, col);
+                    score += (piece.color === PieceColor.Black ? 10 : -10) * moves.length;
                     if (game.chainCaptures(row, col)) {
-                        score += (piece.color === PieceColor.Black ? 250 : -250);
+                        score += (game.currentPlayer.color === PieceColor.Black ? 250 : -250);
+                    }
+                    if (game.numOfTurns <= 10) {
+                        if ((piece.color === PieceColor.Black && row === 0) ||
+                            (piece.color === PieceColor.Red && row === 7)) {
+                            score += (piece.color === PieceColor.Black ? 50 : -50);
+                        }
                     }
                 }
             }
+        }
+        let opponentCaptures = this.countOpponentCapturesPossible(game);
+        if (game.currentPlayer.color === PieceColor.Black) {
+            score -= opponentCaptures * 150;
+        }
+        else {
+            score += opponentCaptures * 150;
         }
         if (game.capturesPossible()) {
             score += (game.currentPlayer.color === PieceColor.Black ? 150 : -150);
         }
         return score;
+    }
+    countOpponentCapturesPossible(game) {
+        let captureCount = 0;
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = game.getPiece(row, col);
+                if (piece && piece.color !== game.currentPlayer.color) {
+                    const moves = game.possibleMoves(row, col);
+                    captureCount += moves.filter(move => Math.abs(move.startRow - move.endRow) === 2).length;
+                }
+            }
+        }
+        return captureCount;
     }
     openingSet() {
         const openings = new Map();
