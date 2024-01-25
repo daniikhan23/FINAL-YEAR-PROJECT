@@ -214,4 +214,10 @@ experience. A lot of experimentation and testing is done on this to check and se
 games played
 
 Working on a new branch to implement initially different optimal opening moves that the AI can make at the beginning of the game. The next task is to flesh out the AI's 
-early-game behaviour moving onto mid and endgame after that
+early-game behaviour moving onto mid and endgame after that.
+
+Using the opening moves available on http://www.quadibloc.com/other/bo0102.htm, I've included all the opening moves as a map object for the AI to be able to access.
+Since the AI always goes second, it will have the correct "counter" to optimal opening moves. I then had to create a way for the AI to check whether the user is making 
+standard opening moves to start the game, and which move it should make in response to that. If the ongoing opening sequence is complete or the user plays a random move 
+then the AI simply uses the minimax algorithm for it's decision making. Using the minimax algorithm in the early stages of the game seemed a bit unnecessary as in 
+strategy games like Checkers, there are certain standard moves made to start the game and optimal moves made in response to them.

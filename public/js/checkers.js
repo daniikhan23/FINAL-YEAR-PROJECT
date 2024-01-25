@@ -50,6 +50,10 @@ export class Moves {
         this.endRow = endRow;
         this.endCol = endCol;
     }
+    equals(checkMove) {
+        return this.startRow === checkMove.startRow && this.startCol === checkMove.startCol &&
+            this.endRow === checkMove.endRow && this.endCol === checkMove.endCol;
+    }
 }
 export class CheckersBoard {
     constructor() {

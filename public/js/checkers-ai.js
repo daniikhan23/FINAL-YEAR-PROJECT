@@ -4,7 +4,8 @@ export class CheckersAI extends Player {
         super(name, color);
         this.game = game;
         this.depth = depth;
-        this.openingSequence = true;
+        this.openings = this.openingSet();
+        this.currentOpening = null;
     }
     evaluateState(game) {
         let score = 0;
@@ -248,19 +249,27 @@ export class CheckersAI extends Player {
             new Moves(5, 2, 4, 1),
             new Moves(2, 3, 3, 4)
         ]);
-        openings.set("White Doctor", [
-            new Moves(5, 2, 4, 1),
-            new Moves(2, 5, 3, 4),
-            new Moves(5, 4, 4, 5),
-            new Moves(1, 6, 2, 5),
-            new Moves(6, 1, 5, 2),
-            new Moves(2, 1, 3, 0),
-            new Moves(4, 1, 3, 2),
-            new Moves(2, 3, 4, 1),
-            new Moves(4, 5, 2, 3),
-            new Moves(1, 4, 3, 2)
-        ]);
         return openings;
+    }
+    identifyOpening() {
+        let foundOpening = false;
+        if (this.game.numOfTurns < Math.max(...Array.from(this.openings.values()).map(o => o.length))) {
+            for (const [name, moves] of this.openings) {
+                if (this.game.playerOneMoves.length <= moves.length / 2) {
+                    const sequenceMatch = this.game.playerOneMoves.every((move, index) => {
+                        return moves[index * 2].equals(move);
+                    });
+                    if (sequenceMatch) {
+                        this.currentOpening = name;
+                        foundOpening = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!foundOpening) {
+            this.currentOpening = null;
+        }
     }
     minimax(game, depth, alpha, beta, maximizingPlayer) {
         game.checkEndOfGame();
@@ -335,10 +344,20 @@ export class CheckersAI extends Player {
             console.log("Game is finished. AI cannot make a move.");
             this.game.changeTurn();
         }
-        if (this.openingSequence) {
-        }
         else {
-            this.playMinimaxMove();
+            this.identifyOpening();
+            if (this.currentOpening) {
+                const move = this.getOpeningMove();
+                if (move) {
+                    this.game.movePiece(move.startRow, move.startCol, move.endRow, move.endCol);
+                }
+                else {
+                    this.playMinimaxMove();
+                }
+            }
+            else {
+                this.playMinimaxMove();
+            }
         }
     }
     playMinimaxMove() {
@@ -352,6 +371,15 @@ export class CheckersAI extends Player {
             console.log(`${this.game.players[1].name} has no valid moves!`);
             this.game.changeTurn();
         }
+    }
+    getOpeningMove() {
+        if (this.currentOpening) {
+            const sequence = this.openings.get(this.currentOpening);
+            if (sequence && this.game.numOfTurns < sequence.length) {
+                return sequence[this.game.numOfTurns];
+            }
+        }
+        return null;
     }
 }
 //# sourceMappingURL=checkers-ai.js.map
