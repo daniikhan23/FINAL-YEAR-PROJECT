@@ -254,6 +254,7 @@ export class CheckersGame {
                 }
             }
         }
+        console.log(this.numOfTurns);
     }
     handlePieceCapture(piece) {
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {

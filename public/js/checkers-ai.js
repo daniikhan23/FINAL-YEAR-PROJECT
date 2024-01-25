@@ -31,10 +31,35 @@ export class CheckersAI extends Player {
                     if (game.chainCaptures(row, col)) {
                         score += (game.currentPlayer.color === PieceColor.Black ? 250 : -250);
                     }
-                    if (game.numOfTurns <= 10) {
-                        if ((piece.color === PieceColor.Black && row === 0) ||
-                            (piece.color === PieceColor.Red && row === 7)) {
-                            score += (piece.color === PieceColor.Black ? 50 : -50);
+                    if (game.numOfTurns < 15) {
+                        if (piece.color === PieceColor.Black && row === 0) {
+                            if (col === 1 || col === 5) {
+                                score += 150;
+                            }
+                        }
+                        else if (piece.color === PieceColor.Red && row === 7) {
+                            if (col === 2 || col === 6) {
+                                score -= 150;
+                            }
+                        }
+                    }
+                    if (game.numOfTurns < 10) {
+                        if (piece.color === PieceColor.Black) {
+                            if (row === 0) {
+                                if (col === 1 || col === 3 || col == 5) {
+                                    score += 75;
+                                }
+                            }
+                            if (row === 1) {
+                                if (col === 2 || col === 4) {
+                                    score += 75;
+                                }
+                            }
+                            if (row === 2) {
+                                if (col === 3) {
+                                    score += 150;
+                                }
+                            }
                         }
                     }
                 }
@@ -379,6 +404,15 @@ export class CheckersAI extends Player {
                 else {
                     this.playMinimaxMove();
                 }
+            }
+            else if (this.game.numOfTurns === 1 && this.game.getPiece(3, 4) === null) {
+                this.game.movePiece(2, 5, 3, 4);
+            }
+            else if (this.game.numOfTurns === 3 && this.game.getPiece(2, 5) === null) {
+                this.game.movePiece(1, 6, 2, 5);
+            }
+            else if (this.game.numOfTurns === 5 && this.game.getPiece(1, 6) === null) {
+                this.game.movePiece(0, 7, 1, 6);
             }
             else {
                 this.playMinimaxMove();

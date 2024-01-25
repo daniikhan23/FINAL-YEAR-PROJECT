@@ -442,6 +442,7 @@ export class CheckersGame {
                 }
             }
         }
+        console.log(this.numOfTurns);
         // console.log(this.playerOneMoves);
         // console.log(this.playerTwoMoves);
     }

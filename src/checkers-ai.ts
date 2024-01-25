@@ -43,11 +43,6 @@ export class CheckersAI extends Player{
                         score += (piece.color === PieceColor.Black ? 75 : -75);
                     }
     
-                    // Boundary safety
-                    // if (col === 0 || col === 7) {
-                    //     score += (piece.color === PieceColor.Black ? 15 : -15);
-                    // }
-    
                     // Pieces close to being promoted
                     if (piece.color === PieceColor.Black && row >= 3 && piece.isKing === false) {
                         score += row * 10;
@@ -65,11 +60,37 @@ export class CheckersAI extends Player{
                     }
     
                     // Back Row Guard
-                    if (game.numOfTurns <= 10){
-                        if ((piece.color === PieceColor.Black && row === 0) || 
-                        (piece.color === PieceColor.Red && row === 7)) {
-                        score += (piece.color === PieceColor.Black ? 50 : -50);
+                    if (game.numOfTurns < 15) {
+                        if (piece.color === PieceColor.Black && row === 0) {
+                            if (col === 1 || col === 5) {
+                                score += 150;
+                            }
+                        } else if (piece.color === PieceColor.Red && row === 7) {
+                            if (col === 2 || col === 6) {
+                                score -= 150;
+                            }
                         }
+                    }
+
+                    // Pyramid Formation
+                    if (game.numOfTurns < 10) {
+                        if (piece.color === PieceColor.Black) {
+                            if (row === 0) {
+                                if (col === 1 || col === 3 || col == 5) {
+                                    score += 75;
+                                }
+                            }
+                            if (row === 1) {
+                                if (col === 2 || col === 4) {
+                                    score += 75;
+                                }
+                            }
+                            if (row === 2) {
+                                if (col === 3) {
+                                    score += 150;
+                                }
+                            }
+                        }    
                     }
                 }
             }
@@ -315,18 +336,6 @@ export class CheckersAI extends Player{
             new Moves(5, 2, 4, 1),
             new Moves(2, 3, 3, 4)
         ]);
-        // openings.set("White Doctor", [
-        //     new Moves(5, 2, 4, 1),
-        //     new Moves(2, 5, 3, 4),
-        //     new Moves(5, 4, 4, 5),
-        //     new Moves(1, 6, 2, 5),
-        //     new Moves(6, 1, 5, 2),
-        //     new Moves(2, 1, 3, 0),
-        //     new Moves(4, 1, 3, 2),
-        //     new Moves(2, 3, 4, 1),
-        //     new Moves(4, 5, 2, 3),
-        //     new Moves(1, 4, 3, 2)
-        // ]);
     
         return openings;
     }
@@ -466,7 +475,15 @@ export class CheckersAI extends Player{
                 } else {
                     this.playMinimaxMove();
                 }
-            } else {
+            // Optimal Opening Alternative
+            } else if (this.game.numOfTurns === 1 && this.game.getPiece(3, 4) === null) {
+                this.game.movePiece(2, 5, 3, 4);
+            } else if (this.game.numOfTurns === 3 && this.game.getPiece(2, 5) === null) {
+                this.game.movePiece(1, 6, 2, 5); 
+            } else if (this.game.numOfTurns === 5 && this.game.getPiece(1, 6) === null) {
+                this.game.movePiece(0, 7, 1, 6);
+            }
+            else {
                 this.playMinimaxMove();
             }
         }
