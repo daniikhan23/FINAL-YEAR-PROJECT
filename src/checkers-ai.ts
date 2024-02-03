@@ -24,87 +24,103 @@ export class CheckersAI extends Player{
      * @param {CheckersGame} game - Current state of the game 
      * @returns {number} - The score calculated
      */
-    public evaluateState(game: CheckersGame): number {
+
+    public heuristic(game: CheckersGame): number {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
     
         // Basic score based on piece count and kings
-        score += aiPieceCount * 40 - playerPieceCount * 40;
-        score += aiKingCount * 80 - playerKingCount * 80;
+        score += aiPieceCount * 5 - playerPieceCount * 5;
+        score += aiKingCount * 7.75 - playerKingCount * 7.75;
 
-        // Adjust the score based on the potential captures available to the opponent
+        // Opponent Capture Count
         let opponentCaptures = this.countOpponentCapturesPossible(game);
         if (game.currentPlayer.color === PieceColor.Black) {
-            score -= opponentCaptures * 30;
+            score -= opponentCaptures * 3;
         } else {
-            score += opponentCaptures * 30;
+            score += opponentCaptures * 3;
         }
-    
-        // Single capture
-        if (game.capturesPossible()) {
-            score += (game.currentPlayer === game.players[1] ? 20 : -20);
-        }
-    
+
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
-
-                    // Central control
+                    // Central box
                     if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
-                        score += (piece.color === PieceColor.Black ? 15 : -15);
+                        score += (piece.color === PieceColor.Black ? 2.5 : -2.5);
                     }
-    
-                    // Mobility: Reward for more possible moves
-                    let moves = game.possibleMoves(row, col);
-                    score += (piece.color === PieceColor.Black ? 5 : -5) * moves.length;
-    
-                    // Chain capture moves 
-                    if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer === game.players[1] ? 100 : -100);
+                    // Central boundaries
+                    if (row >= 3 && row <= 4 && col < 2 && col > 5) {
+                        score += (piece.color === PieceColor.Black ? 0.5 : -0.5)
                     }
-    
                     // Back Row Guard
                     if (game.numOfTurns < 15) {
                         if (piece.color === PieceColor.Black && row === 0) {
                             if (col === 1 || col === 5) {
-                                score += 20;
+                                score += 4;
                             }
                         } else if (piece.color === PieceColor.Red && row === 7) {
                             if (col === 2 || col === 6) {
-                                score -= 20;
+                                score -= 4;
                             }
                         }
                     }
 
+                    // Basic Piece Protection
+                    if (row >= 1 && row <= 6 && col >= 1 && col <= 6) {
+                        let backwardRow = piece.color === PieceColor.Black ? row - 1 : row + 1;
+                        
+                        let leftProtectionPiece = game.getPiece(backwardRow, col - 1);
+                        let rightProtectionPiece = game.getPiece(backwardRow, col + 1);
+
+                        if (leftProtectionPiece && leftProtectionPiece.color === piece.color) {
+                            // Increase score because the piece is protected from the left
+                            score += (piece.color === PieceColor.Black ? 3 : -3);
+                        }
+                        if (rightProtectionPiece && rightProtectionPiece.color === piece.color) {
+                            // Increase score because the piece is protected from the right
+                            score += (piece.color === PieceColor.Black ? 3 : -3);
+                        }
+                    }
+
                     // Pyramid Formation
-                    if (game.numOfTurns < 10) {
+                    if (game.numOfTurns < 15) {
                         if (piece.color === PieceColor.Black) {
                             if (row === 0) {
                                 if (col === 1 || col === 3 || col == 5) {
-                                    score += 20;
+                                    score += 10;
                                 }
                             }
                             if (row === 1) {
                                 if (col === 2 || col === 4) {
-                                    score += 20;
+                                    score += 10;
                                 }
                             }
                             if (row === 2) {
                                 if (col === 3) {
-                                    score += 20;
+                                    score += 10;
                                 }
                             }
                         }    
                     }
+
+                    // Protect vulnerable pieces
+                    if (game.isVulnerable(row, col)) { 
+                        score += (piece.color === PieceColor.Black ? -3: 3);
+                    }
                 }
             }
         }
+        
         return score;
     }
 
-    
+    // public canProtect(move: Moves, row: number, col: number, game: CheckersGame): boolean {
+    //     if (game.isVulnerable(row, col)) {
+
+    //     }
+    // } 
     
     private countOpponentCapturesPossible(game: CheckersGame): number {
         let captureCount = 0;
@@ -374,7 +390,7 @@ export class CheckersAI extends Player{
         game.checkEndOfGame();
 
         if (depth == 0 || game.currentState === State.gameFinished) {
-            let score = this.evaluateState(game);
+            let score = this.heuristic(game);
             console.log(`Base case reached, depth: ${depth}, score: ${score}`);
             return [score, null]; 
         }

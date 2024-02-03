@@ -18,7 +18,7 @@ describe('CheckersGame', () => {
         expect(game.players[1].color).toBe(PieceColor.Black);
     });
     test('Evaluation of the initial game state should result in a score of 0', () => {
-        expect(ai.evaluateState(game)).toBe(0);
+        expect(ai.heuristic(game)).toBe(0);
     });
     test('AI should have greater number of pieces than the player', () => {
         // red turn
@@ -29,7 +29,7 @@ describe('CheckersGame', () => {
         game.movePiece(5, 6, 4, 7);
         // black turn
         game.movePiece(3, 0, 5, 2);
-        expect(ai.evaluateState(game)).toBe(1);
+        expect(ai.heuristic(game)).toBe(1);
     });
     test('Player should have maore pieces than the AI', () => {
         // red turn
@@ -38,7 +38,7 @@ describe('CheckersGame', () => {
         game.movePiece(2, 5, 3, 6);
         // red turn
         game.movePiece(4, 7, 2, 5)
-        expect(ai.evaluateState(game)).toBe(-1);
+        expect(ai.heuristic(game)).toBe(-1);
     });
 
     // Tests for Move Simulation:
@@ -412,6 +412,6 @@ describe('CheckersGame', () => {
         ai.makeMove();
         ai.makeMove();
         expect(game.players[0].numOfPieces).toBe(10);
-        expect(ai.evaluateState(game)).toBe(2);
+        expect(ai.heuristic(game)).toBe(2);
     });
 });

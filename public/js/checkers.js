@@ -314,13 +314,18 @@ export class CheckersGame {
             const opponentCol = col + dc;
             const landingRow = opponentRow + dr;
             const landingCol = opponentCol + dc;
-            const opponentPiece = this.getPiece(opponentRow, opponentCol);
-            const landingSpot = this.getPiece(landingRow, landingCol);
-            if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
-                return true;
+            if (this.isValidPosition(opponentRow, opponentCol) && this.isValidPosition(landingRow, landingCol)) {
+                const opponentPiece = this.getPiece(opponentRow, opponentCol);
+                const landingSpot = this.getPiece(landingRow, landingCol);
+                if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
+                    return true;
+                }
             }
         }
         return false;
+    }
+    isValidPosition(row, col) {
+        return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
     noPiecesLeft(player) {
         if (player.numOfPieces === 0) {

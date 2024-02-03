@@ -518,7 +518,7 @@ export class CheckersGame {
     public isVulnerable(row: number, col: number): boolean {
         const piece = this.getPiece(row, col);
         if (!piece) return false;
-
+    
         // Check diagonally in all directions for opponent pieces
         const directions = piece.color === PieceColor.Black ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]];
         for (let [dr, dc] of directions) {
@@ -526,17 +526,24 @@ export class CheckersGame {
             const opponentCol = col + dc;
             const landingRow = opponentRow + dr;
             const landingCol = opponentCol + dc;
-
-            const opponentPiece = this.getPiece(opponentRow, opponentCol);
-            const landingSpot = this.getPiece(landingRow, landingCol);
-
-            // If there is an opponent piece and the landing spot after capture is empty
-            if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
-                return true;
+    
+            // Check if the opponent and landing positions are on the board
+            if (this.isValidPosition(opponentRow, opponentCol) && this.isValidPosition(landingRow, landingCol)) {
+                const opponentPiece = this.getPiece(opponentRow, opponentCol);
+                const landingSpot = this.getPiece(landingRow, landingCol);
+    
+                // If there is an opponent piece and the landing spot after capture is empty
+                if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
+                    return true;
+                }
             }
         }
         return false;
     }
+    
+    private isValidPosition(row: number, col: number): boolean {
+        return row >= 0 && row < 8 && col >= 0 && col < 8;
+    }    
 
     /**
      * Determines if a player has run out of pieces on the board.
