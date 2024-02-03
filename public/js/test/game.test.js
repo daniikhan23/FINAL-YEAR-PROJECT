@@ -160,5 +160,12 @@ describe('CheckersGame', () => {
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
     });
+    test('isVulnerable should correctly determine a piece that can be captured', () => {
+        game.movePiece(5, 0, 4, 1);
+        game.movePiece(2, 3, 3, 2);
+        expect(game.isVulnerable(3, 2)).toBe(true);
+        expect(game.isVulnerable(5, 6)).toBe(false);
+        expect(game.isVulnerable(4, 1)).toBe(true);
+    });
 });
 //# sourceMappingURL=game.test.js.map

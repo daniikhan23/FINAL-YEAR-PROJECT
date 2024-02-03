@@ -304,6 +304,24 @@ export class CheckersGame {
         }
         return false;
     }
+    isVulnerable(row, col) {
+        const piece = this.getPiece(row, col);
+        if (!piece)
+            return false;
+        const directions = piece.color === PieceColor.Black ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]];
+        for (let [dr, dc] of directions) {
+            const opponentRow = row + dr;
+            const opponentCol = col + dc;
+            const landingRow = opponentRow + dr;
+            const landingCol = opponentCol + dc;
+            const opponentPiece = this.getPiece(opponentRow, opponentCol);
+            const landingSpot = this.getPiece(landingRow, landingCol);
+            if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
+                return true;
+            }
+        }
+        return false;
+    }
     noPiecesLeft(player) {
         if (player.numOfPieces === 0) {
             return true;

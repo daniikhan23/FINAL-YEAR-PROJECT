@@ -515,6 +515,29 @@ export class CheckersGame {
         return false;
     }
 
+    public isVulnerable(row: number, col: number): boolean {
+        const piece = this.getPiece(row, col);
+        if (!piece) return false;
+
+        // Check diagonally in all directions for opponent pieces
+        const directions = piece.color === PieceColor.Black ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]];
+        for (let [dr, dc] of directions) {
+            const opponentRow = row + dr;
+            const opponentCol = col + dc;
+            const landingRow = opponentRow + dr;
+            const landingCol = opponentCol + dc;
+
+            const opponentPiece = this.getPiece(opponentRow, opponentCol);
+            const landingSpot = this.getPiece(landingRow, landingCol);
+
+            // If there is an opponent piece and the landing spot after capture is empty
+            if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Determines if a player has run out of pieces on the board.
      * @param {Player} player - The player to check for remaining pieces.

@@ -11,35 +11,39 @@ export class CheckersAI extends Player {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-        score += aiPieceCount * 300 - playerPieceCount * 300;
-        score += aiKingCount * 600 - playerKingCount * 600;
+        score += aiPieceCount * 40 - playerPieceCount * 40;
+        score += aiKingCount * 80 - playerKingCount * 80;
+        let opponentCaptures = this.countOpponentCapturesPossible(game);
+        if (game.currentPlayer.color === PieceColor.Black) {
+            score -= opponentCaptures * 30;
+        }
+        else {
+            score += opponentCaptures * 30;
+        }
+        if (game.capturesPossible()) {
+            score += (game.currentPlayer === game.players[1] ? 20 : -20);
+        }
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
                     if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
-                        score += (piece.color === PieceColor.Black ? 75 : -75);
-                    }
-                    if (piece.color === PieceColor.Black && row >= 3 && piece.isKing === false) {
-                        score += row * 10;
-                    }
-                    else if (piece.color === PieceColor.Red && row <= 3 && piece.isKing === false) {
-                        score -= (7 - row) * 10;
+                        score += (piece.color === PieceColor.Black ? 15 : -15);
                     }
                     let moves = game.possibleMoves(row, col);
-                    score += (piece.color === PieceColor.Black ? 10 : -10) * moves.length;
+                    score += (piece.color === PieceColor.Black ? 5 : -5) * moves.length;
                     if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer.color === PieceColor.Black ? 250 : -250);
+                        score += (game.currentPlayer === game.players[1] ? 100 : -100);
                     }
                     if (game.numOfTurns < 15) {
                         if (piece.color === PieceColor.Black && row === 0) {
                             if (col === 1 || col === 5) {
-                                score += 150;
+                                score += 20;
                             }
                         }
                         else if (piece.color === PieceColor.Red && row === 7) {
                             if (col === 2 || col === 6) {
-                                score -= 150;
+                                score -= 20;
                             }
                         }
                     }
@@ -47,33 +51,23 @@ export class CheckersAI extends Player {
                         if (piece.color === PieceColor.Black) {
                             if (row === 0) {
                                 if (col === 1 || col === 3 || col == 5) {
-                                    score += 75;
+                                    score += 20;
                                 }
                             }
                             if (row === 1) {
                                 if (col === 2 || col === 4) {
-                                    score += 75;
+                                    score += 20;
                                 }
                             }
                             if (row === 2) {
                                 if (col === 3) {
-                                    score += 150;
+                                    score += 20;
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        let opponentCaptures = this.countOpponentCapturesPossible(game);
-        if (game.currentPlayer.color === PieceColor.Black) {
-            score -= opponentCaptures * 150;
-        }
-        else {
-            score += opponentCaptures * 150;
-        }
-        if (game.capturesPossible()) {
-            score += (game.currentPlayer.color === PieceColor.Black ? 150 : -150);
         }
         return score;
     }
