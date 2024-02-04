@@ -72,8 +72,11 @@ export class CheckersAI extends Player {
                             }
                         }
                     }
-                    if (game.isVulnerable(row, col)) {
+                    if (!game.isVulnerable(row, col)) {
                         score += (piece.color === PieceColor.Black ? -3 : 3);
+                    }
+                    if (game.chainCaptures(row, col)) {
+                        score += (game.currentPlayer === game.players[1] ? 50 : -50);
                     }
                 }
             }

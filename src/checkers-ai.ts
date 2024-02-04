@@ -106,8 +106,13 @@ export class CheckersAI extends Player{
                     }
 
                     // Protect vulnerable pieces
-                    if (game.isVulnerable(row, col)) { 
+                    if (!game.isVulnerable(row, col)) { 
                         score += (piece.color === PieceColor.Black ? -3: 3);
+                    }
+
+                    // Chain Captures
+                    if (game.chainCaptures(row, col)) {
+                        score += (game.currentPlayer === game.players[1] ? 50: -50);
                     }
                 }
             }
@@ -115,12 +120,6 @@ export class CheckersAI extends Player{
         
         return score;
     }
-
-    // public canProtect(move: Moves, row: number, col: number, game: CheckersGame): boolean {
-    //     if (game.isVulnerable(row, col)) {
-
-    //     }
-    // } 
     
     private countOpponentCapturesPossible(game: CheckersGame): number {
         let captureCount = 0;
