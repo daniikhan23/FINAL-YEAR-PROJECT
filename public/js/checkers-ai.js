@@ -11,8 +11,24 @@ export class CheckersAI extends Player {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-        score += aiPieceCount * 5 - playerPieceCount * 5;
-        score += aiKingCount * 7.75 - playerKingCount * 7.75;
+        if (aiPieceCount >= playerPieceCount) {
+            score += 100;
+        }
+        else if (aiPieceCount === playerPieceCount) {
+            score = 0;
+        }
+        else {
+            score -= 100;
+        }
+        if (aiKingCount >= playerKingCount) {
+            score += 300;
+        }
+        else if (aiKingCount === playerKingCount) {
+            score = 0;
+        }
+        else {
+            score -= 300;
+        }
         let opponentCaptures = this.countOpponentCapturesPossible(game);
         if (game.currentPlayer.color === PieceColor.Black) {
             score -= opponentCaptures * 3;

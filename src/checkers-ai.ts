@@ -31,8 +31,31 @@ export class CheckersAI extends Player{
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
     
         // Basic score based on piece count and kings
-        score += aiPieceCount * 5 - playerPieceCount * 5;
-        score += aiKingCount * 7.75 - playerKingCount * 7.75;
+        // score += aiPieceCount * 5 - playerPieceCount * 5;
+        // score += aiKingCount * 7.75 - playerKingCount * 7.75;
+
+        // Compare number of pieces
+        if (aiPieceCount >= playerPieceCount) {
+            score += 100;
+        }
+        else if (aiPieceCount === playerPieceCount) {
+            score = 0;
+        }
+        else {
+            score -= 100;
+        }
+
+        // Compare number of kings
+
+        if (aiKingCount >= playerKingCount) {
+            score += 300;
+        }
+        else if (aiKingCount === playerKingCount) {
+            score = 0;
+        }
+        else {
+            score -= 300;
+        }
 
         // Opponent Capture Count
         let opponentCaptures = this.countOpponentCapturesPossible(game);
