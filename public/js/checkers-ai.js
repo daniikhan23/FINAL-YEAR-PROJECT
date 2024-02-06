@@ -36,6 +36,9 @@ export class CheckersAI extends Player {
         else {
             score += opponentCaptures * 3;
         }
+        if (game.capturesPossible()) {
+            score += (game.currentPlayer.color === PieceColor.Black ? 25 : -25);
+        }
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
