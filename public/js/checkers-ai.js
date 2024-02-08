@@ -10,39 +10,19 @@ export class CheckersAI extends Player {
     heuristic(game) {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
-        let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-        if (aiPieceCount >= playerPieceCount) {
-            score += 50;
-        }
-        else if (aiPieceCount === playerPieceCount) {
-            score = 0;
-        }
-        else {
-            score -= 50;
-        }
-        if (aiKingCount >= playerKingCount) {
-            score += 75;
-        }
-        else if (aiKingCount === playerKingCount) {
-            score = 0;
-        }
-        else {
-            score -= 75;
-        }
-        let opponentCaptures = this.countOpponentCapturesPossible(game);
-        if (game.currentPlayer.color === PieceColor.Black) {
-            score -= opponentCaptures * 3;
-        }
-        else {
-            score += opponentCaptures * 3;
-        }
-        if (game.capturesPossible()) {
-            score += (game.currentPlayer.color === PieceColor.Black ? 12.5 : -12.5);
-        }
+        let aiKingCount = 0, playerKingCount = 0;
+        score += aiPieceCount * 7.5 - playerPieceCount * 7.5;
+        score -= this.countOpponentCapturesPossible(PieceColor.Red, game);
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
+                    if (piece.color === PieceColor.Black && piece.isKing === true) {
+                        aiKingCount++;
+                    }
+                    else if (piece.color === PieceColor.Red && piece.isKing === true) {
+                        playerKingCount++;
+                    }
                     if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
                         score += (piece.color === PieceColor.Black ? 2.5 : -2.5);
                     }
@@ -95,19 +75,20 @@ export class CheckersAI extends Player {
                         score += (piece.color === PieceColor.Black ? -3 : 3);
                     }
                     if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer === game.players[1] ? 25 : -25);
+                        score += (game.currentPlayer === game.players[1] ? 0 : -25);
                     }
                 }
             }
         }
+        score += aiKingCount * 10 - playerKingCount * 10;
         return score;
     }
-    countOpponentCapturesPossible(game) {
+    countOpponentCapturesPossible(color, game) {
         let captureCount = 0;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const piece = game.getPiece(row, col);
-                if (piece && piece.color !== game.currentPlayer.color) {
+                if (piece && piece.color === color) {
                     const moves = game.possibleMoves(row, col);
                     captureCount += moves.filter(move => Math.abs(move.startRow - move.endRow) === 2).length;
                 }
@@ -350,7 +331,6 @@ export class CheckersAI extends Player {
         game.checkEndOfGame();
         if (depth == 0 || game.currentState === State.gameFinished) {
             let score = this.heuristic(game);
-            console.log(`Base case reached, depth: ${depth}, score: ${score}`);
             return [score, null];
         }
         let bestScore = maximizingPlayer ? -Infinity : Infinity;
@@ -365,7 +345,6 @@ export class CheckersAI extends Player {
                             if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                                 const gameCopy = game.deepCopyGame();
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                                console.log(`Maximizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
                                 alpha = Math.max(alpha, evaluatedScore);
                                 if (beta <= alpha) {
@@ -394,7 +373,6 @@ export class CheckersAI extends Player {
                             if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                                 const gameCopy = game.deepCopyGame();
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                                console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
                                 beta = Math.min(beta, evaluatedScore);
                                 if (beta <= alpha) {

@@ -76,15 +76,17 @@ export enum PieceColor {
 export class CheckersPiece {
     public color: PieceColor;
     public isKing: boolean;
+    public captureStatus: boolean;
 
     /**
      * Constructs a CheckersPiece object.
      * @param {PieceColor} color - The color of the piece.
      * @param {boolean} isKing - Indicates if the piece is a king. Default is false.
      */
-    constructor(color: PieceColor, isKing:boolean = false){
+    constructor(color: PieceColor, isKing:boolean = false, captureStatus: boolean = false){
         this.color = color;
         this.isKing = isKing;
+        this.captureStatus = false;
     }
 
     /**
@@ -92,6 +94,10 @@ export class CheckersPiece {
      */
     public makeKing(): void {
         this.isKing = true;
+    }
+
+    public captureCheck() {
+        this.captureStatus = true;
     }
 
     /**
@@ -217,6 +223,7 @@ export class CheckersGame {
     public changeTurn(): void {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
         this.numOfTurns++;
+        this.capturesPossible();
     }
 
     /**
@@ -407,6 +414,13 @@ export class CheckersGame {
                     const enemyPiece = this.getPiece(middleRow, middleCol);
                     if (this.canCapture(startRow, startCol, endRow, endCol)) {
                         this.handlePieceCapture(enemyPiece);
+                        if (enemyPiece?.isKing === true) {
+                            if (this.currentPlayer === this.players[0]) {
+                                this.players[1].numOfKings -= 1;
+                            } else {
+                                this.players[0].numOfKings -= 1;
+                            }
+                        }
                         this.board[middleRow][middleCol] = null;
                         capturedAlready = true;
                     }
@@ -423,11 +437,13 @@ export class CheckersGame {
                     this.playerTwoMoves.push(new Moves(startRow, startCol, endRow, endCol));
                 }
 
-                if (this.promoteToKing(endRow, endCol) === true) {
-                    piece.makeKing();
-                    this.currentPlayer.numOfKings += 1;
+                if (piece.isKing === false) {
+                    if (this.promoteToKing(endRow, endCol) === true) {
+                        piece.makeKing();
+                        this.currentPlayer.numOfKings += 1;
+                    }
                 }
-
+                this.capturesPossible();
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
@@ -443,6 +459,8 @@ export class CheckersGame {
             }
         }
         console.log(this.numOfTurns);
+        console.log(`Number of Black Pieces: ${this.players[1].numOfPieces}, Kings: ${this.players[1].numOfKings}`);
+        console.log(`Number of Red Pieces: ${this.players[0].numOfPieces}, Kings: ${this.players[0].numOfKings}`);
     }
 
     /**
@@ -499,18 +517,22 @@ export class CheckersGame {
      * @returns {boolean} - True if there are possible captures, false otherwise.
      */
     public capturesPossible(): boolean {
+        let flag = false;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const piece = this.getPiece(row, col);
                 if (piece && piece.color === this.currentPlayer.color){
                     const moves = this.possibleMoves(row, col);
                     if (moves.some(move => Math.abs(move.startRow - move.endRow) === 2)) {
-                        return true;
+                        piece.captureCheck();
+                        flag = true;
+                    } else {
+                        piece.captureStatus = false;
                     }
                 }
             }
         }
-        return false;
+        return flag;
     }
 
     public isVulnerable(row: number, col: number): boolean {
@@ -729,7 +751,6 @@ export class CheckersGame {
 
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
-                    this.currentPlayer.numOfKings += 1;
                 }
 
                 const nextCaptures = this.chainCaptures(endRow, endCol);

@@ -28,48 +28,25 @@ export class CheckersAI extends Player{
     public heuristic(game: CheckersGame): number {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
-        let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
+        let aiKingCount = 0, playerKingCount = 0;
 
         // Compare number of pieces
-        if (aiPieceCount >= playerPieceCount) {
-            score += 50;
-        }
-        else if (aiPieceCount === playerPieceCount) {
-            score = 0;
-        }
-        else {
-            score -= 50;
-        }
-
-        // Compare number of kings
-        if (aiKingCount >= playerKingCount) {
-            score += 75;
-        }
-        else if (aiKingCount === playerKingCount) {
-            score = 0;
-        }
-        else {
-            score -= 75;
-        }
-
-        // Opponent Capture Count
-        let opponentCaptures = this.countOpponentCapturesPossible(game);
-        if (game.currentPlayer.color === PieceColor.Black) {
-            score -= opponentCaptures * 3;
-        } else {
-            score += opponentCaptures * 3;
-        }
+        score += aiPieceCount * 7.5 - playerPieceCount * 7.5;
 
         // Single capture
-        if (game.capturesPossible()) {
-            score += (game.currentPlayer.color === PieceColor.Black ? 12.5 : -12.5);
-        }
-
+        score -=  this.countOpponentCapturesPossible(PieceColor.Red, game);
 
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let piece = game.getPiece(row, col);
                 if (piece) {
+                    // Compare King Counts
+                    if (piece.color === PieceColor.Black && piece.isKing === true) {
+                        aiKingCount++;
+                    }
+                    else if (piece.color === PieceColor.Red && piece.isKing === true) {
+                        playerKingCount++;
+                    }
                     // Central box
                     if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
                         score += (piece.color === PieceColor.Black ? 2.5 : -2.5);
@@ -134,23 +111,25 @@ export class CheckersAI extends Player{
                         score += (piece.color === PieceColor.Black ? -3: 3);
                     }
 
-                    // Chain Captures
+                    // // Chain Captures
                     if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer === game.players[1] ? 25: -25);
+                        score += (game.currentPlayer === game.players[1] ? 0: -25);
                     }
                 }
             }
         }
+
+        score += aiKingCount * 10 - playerKingCount * 10;
         
         return score;
     }
     
-    private countOpponentCapturesPossible(game: CheckersGame): number {
+    private countOpponentCapturesPossible(color: PieceColor, game: CheckersGame): number {
         let captureCount = 0;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const piece = game.getPiece(row, col);
-                if (piece && piece.color !== game.currentPlayer.color) {
+                if (piece && piece.color === color) {
                     const moves = game.possibleMoves(row, col);
                     captureCount += moves.filter(move => Math.abs(move.startRow - move.endRow) === 2).length;
                 }
@@ -414,7 +393,7 @@ export class CheckersAI extends Player{
 
         if (depth == 0 || game.currentState === State.gameFinished) {
             let score = this.heuristic(game);
-            console.log(`Base case reached, depth: ${depth}, score: ${score}`);
+            // console.log(`Base case reached, depth: ${depth}, score: ${score}`);
             return [score, null]; 
         }
 
@@ -433,7 +412,7 @@ export class CheckersAI extends Player{
 
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
 
-                                console.log(`Maximizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
+                                // console.log(`Maximizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
 
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
 
@@ -466,7 +445,7 @@ export class CheckersAI extends Player{
 
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
 
-                                console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
+                                // console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
 
                                 const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
 

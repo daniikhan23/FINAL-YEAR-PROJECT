@@ -191,4 +191,54 @@ describe('CheckersGame', () => {
         expect(game.isVulnerable(5, 6)).toBe(false);
         expect(game.isVulnerable(4, 1)).toBe(true);
     });
+    test('Check if individual pieces capture status has changed', () => {
+
+        //Base Scenario
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = game.getPiece(row, col);
+                if (piece) {
+                    expect(piece.captureStatus).toBe(false);
+                }
+            }
+        }
+
+        // Random Scenario
+        // red turn
+        game.movePiece(5, 2, 4, 3);
+        // black turn
+        game.movePiece(2, 5, 3, 4);
+        expect(game.getPiece(4, 3)?.captureStatus).toBe(true);
+        // red turn
+        game.movePiece(5, 6, 4, 7);
+        expect(game.getPiece(3, 4)?.captureStatus).toBe(true);
+        expect(game.getPiece(0, 1)?.captureStatus).toBe(false);
+        // black turn
+        game.movePiece(2, 1, 3, 0);
+        // red turn
+        game.movePiece(4, 3, 2, 5);
+        expect(game.getPiece(2, 5)?.captureStatus).toBe(false);
+        expect(game.getPiece(1, 6)?.captureStatus).toBe(true);
+        expect(game.getPiece(1, 4)?.captureStatus).toBe(true);
+        expect(game.getPiece(4, 7)?.captureStatus).toBe(false);
+        expect(game.getPiece(0, 1)?.captureStatus).toBe(false);
+
+        // Chain capture scenarios
+        game = new CheckersGame(new Player("Khan", PieceColor.Red), new Player("Sudhan", PieceColor.Black));
+
+        game.movePiece(5, 6, 4, 7);
+        game.movePiece(2, 5, 3, 6);
+        game.movePiece(6, 5, 5, 6);
+        game.movePiece(2, 1, 3, 0);
+        game.movePiece(7, 4, 6, 5);
+        game.movePiece(1, 2, 2, 1);
+        game.movePiece(5, 4, 4, 3);
+        game.movePiece(0, 3, 1, 2);
+
+        expect(game.getPiece(4, 7)?.captureStatus).toBe(true);
+        game.movePiece(4, 7, 2, 5);
+        expect(game.getPiece(2, 5)?.captureStatus).toBe(true);
+        game.movePiece(2, 5, 0, 3);
+        expect(game.getPiece(0, 3)?.captureStatus).toBe(false);
+    });
 });

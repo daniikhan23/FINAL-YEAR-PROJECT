@@ -31,12 +31,16 @@ export var PieceColor;
     PieceColor["Red"] = "red";
 })(PieceColor || (PieceColor = {}));
 export class CheckersPiece {
-    constructor(color, isKing = false) {
+    constructor(color, isKing = false, captureStatus = false) {
         this.color = color;
         this.isKing = isKing;
+        this.captureStatus = false;
     }
     makeKing() {
         this.isKing = true;
+    }
+    captureCheck() {
+        this.captureStatus = true;
     }
     deepCopyPiece() {
         const copiedPiece = new CheckersPiece(this.color, this.isKing);
@@ -94,6 +98,7 @@ export class CheckersGame {
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
         this.numOfTurns++;
+        this.capturesPossible();
     }
     getPiece(row, col) {
         return this.board[row][col];
@@ -221,6 +226,14 @@ export class CheckersGame {
                     const enemyPiece = this.getPiece(middleRow, middleCol);
                     if (this.canCapture(startRow, startCol, endRow, endCol)) {
                         this.handlePieceCapture(enemyPiece);
+                        if ((enemyPiece === null || enemyPiece === void 0 ? void 0 : enemyPiece.isKing) === true) {
+                            if (this.currentPlayer === this.players[0]) {
+                                this.players[1].numOfKings -= 1;
+                            }
+                            else {
+                                this.players[0].numOfKings -= 1;
+                            }
+                        }
                         this.board[middleRow][middleCol] = null;
                         capturedAlready = true;
                     }
@@ -236,10 +249,13 @@ export class CheckersGame {
                 else {
                     this.playerTwoMoves.push(new Moves(startRow, startCol, endRow, endCol));
                 }
-                if (this.promoteToKing(endRow, endCol) === true) {
-                    piece.makeKing();
-                    this.currentPlayer.numOfKings += 1;
+                if (piece.isKing === false) {
+                    if (this.promoteToKing(endRow, endCol) === true) {
+                        piece.makeKing();
+                        this.currentPlayer.numOfKings += 1;
+                    }
                 }
+                this.capturesPossible();
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
@@ -255,6 +271,8 @@ export class CheckersGame {
             }
         }
         console.log(this.numOfTurns);
+        console.log(`Number of Black Pieces: ${this.players[1].numOfPieces}, Kings: ${this.players[1].numOfKings}`);
+        console.log(`Number of Red Pieces: ${this.players[0].numOfPieces}, Kings: ${this.players[0].numOfKings}`);
     }
     handlePieceCapture(piece) {
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
@@ -291,18 +309,23 @@ export class CheckersGame {
         return captureMoves.map(move => ({ endRow: move.endRow, endCol: move.endCol }));
     }
     capturesPossible() {
+        let flag = false;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const piece = this.getPiece(row, col);
                 if (piece && piece.color === this.currentPlayer.color) {
                     const moves = this.possibleMoves(row, col);
                     if (moves.some(move => Math.abs(move.startRow - move.endRow) === 2)) {
-                        return true;
+                        piece.captureCheck();
+                        flag = true;
+                    }
+                    else {
+                        piece.captureStatus = false;
                     }
                 }
             }
         }
-        return false;
+        return flag;
     }
     isVulnerable(row, col) {
         const piece = this.getPiece(row, col);
@@ -459,7 +482,6 @@ export class CheckersGame {
                 this.board[endRow][endCol] = piece;
                 if (this.promoteToKing(endRow, endCol) === true) {
                     piece.makeKing();
-                    this.currentPlayer.numOfKings += 1;
                 }
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
