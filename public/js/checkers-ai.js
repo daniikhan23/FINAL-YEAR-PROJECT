@@ -12,22 +12,22 @@ export class CheckersAI extends Player {
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
         if (aiPieceCount >= playerPieceCount) {
-            score += 100;
+            score += 50;
         }
         else if (aiPieceCount === playerPieceCount) {
             score = 0;
         }
         else {
-            score -= 100;
+            score -= 50;
         }
         if (aiKingCount >= playerKingCount) {
-            score += 300;
+            score += 75;
         }
         else if (aiKingCount === playerKingCount) {
             score = 0;
         }
         else {
-            score -= 300;
+            score -= 75;
         }
         let opponentCaptures = this.countOpponentCapturesPossible(game);
         if (game.currentPlayer.color === PieceColor.Black) {
@@ -37,7 +37,7 @@ export class CheckersAI extends Player {
             score += opponentCaptures * 3;
         }
         if (game.capturesPossible()) {
-            score += (game.currentPlayer.color === PieceColor.Black ? 25 : -25);
+            score += (game.currentPlayer.color === PieceColor.Black ? 12.5 : -12.5);
         }
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
@@ -95,7 +95,7 @@ export class CheckersAI extends Player {
                         score += (piece.color === PieceColor.Black ? -3 : 3);
                     }
                     if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer === game.players[1] ? 50 : -50);
+                        score += (game.currentPlayer === game.players[1] ? 25 : -25);
                     }
                 }
             }

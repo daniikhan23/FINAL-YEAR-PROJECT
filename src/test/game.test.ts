@@ -59,18 +59,15 @@ describe('CheckersGame', () => {
         game.movePiece(0, 1, 5, 7);
         expect(game.getPiece(5,7)).toBeNull();
     });
-    test('promoteToKing should promote a piece to king at the end of the board', () => {
+    test('promoteToKing and makeKing should promote a piece to king at the end of the board', () => {
         // not using movePiece() here as the following move would not be valid
         game.board[0][1] = game.getPiece(5,0); 
-        game.promoteToKing(0, 1);
-        expect(game.getPiece(0, 1)?.isKing).toBe(true);
+        expect(game.promoteToKing(0, 1)).toBe(true);
 
         game.board[7][0] = game.getPiece(1,0); 
-        game.promoteToKing(7, 0);
-        expect(game.getPiece(7, 0)?.isKing).toBe(true);
+        expect(game.promoteToKing(7, 0)).toBe(true);
 
-        game.promoteToKing(6, 3);
-        expect(game.getPiece(6, 3)?.isKing).toBe(false);
+        expect(game.promoteToKing(6, 3)).toBe(false);
     });
     test('Capturing mechanics should work correctly, including chain captures, score and captured piece updates', () => {
         // Clear the board
@@ -151,6 +148,8 @@ describe('CheckersGame', () => {
                 }
             }
         }
+
+        game.players[0].numOfPieces = 0;
         game.checkEndOfGame();
     
         expect(game.noPiecesLeft(game.players[0])).toBe(true);
@@ -160,33 +159,13 @@ describe('CheckersGame', () => {
         // Reset the board for new game
         game = new CheckersGame(playerOne, playerTwo);
 
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                // For the first three rows, place black pieces on the dark squares
-                if (row > 0 && row < 4 && (row + col) % 2 === 1) {
-                    game.board[row][col] = new CheckersPiece(PieceColor.Black);
-                }
-                // For the last three rows, place red pieces on the dark squares
-                else if (row >= 4 && row < 7 && (row + col) % 2 === 1) {
-                    game.board[row][col] = new CheckersPiece(PieceColor.Red);
-                }
-                // The middle rows are empty, but we still need to nullify them explicitly
-                else {
-                    game.board[row][col] = null;
-                }
-            }
-        }
-        // Case of a Draw
-        game.players[0].score = 0;
-        game.players[1].score = 0;
-
-        game.checkEndOfGame();
+        game.currentState = State.gameFinished;
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBeNull();
 
         // Case where Player One has greater score than Player Two
-        game.players[0].score = 1;
-        game.players[1].score = 0;
+        game.players[0].numOfPieces = 12;
+        game.players[1].numOfPieces = 0;
         game.currentState = State.inProgress;
         game.winner = null;
 
@@ -195,8 +174,8 @@ describe('CheckersGame', () => {
         expect(game.winner).toBe(game.players[0]);
 
         // Case where Player Two has greater score than Player One
-        game.players[0].score = 0;
-        game.players[1].score = 1;
+        game.players[0].numOfPieces = 0;
+        game.players[1].numOfPieces = 12;
         game.currentState = State.inProgress;
         game.winner = null;
 

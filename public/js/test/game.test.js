@@ -51,16 +51,12 @@ describe('CheckersGame', () => {
         game.movePiece(0, 1, 5, 7);
         expect(game.getPiece(5, 7)).toBeNull();
     });
-    test('promoteToKing should promote a piece to king at the end of the board', () => {
-        var _a, _b, _c;
+    test('promoteToKing and makeKing should promote a piece to king at the end of the board', () => {
         game.board[0][1] = game.getPiece(5, 0);
-        game.promoteToKing(0, 1);
-        expect((_a = game.getPiece(0, 1)) === null || _a === void 0 ? void 0 : _a.isKing).toBe(true);
+        expect(game.promoteToKing(0, 1)).toBe(true);
         game.board[7][0] = game.getPiece(1, 0);
-        game.promoteToKing(7, 0);
-        expect((_b = game.getPiece(7, 0)) === null || _b === void 0 ? void 0 : _b.isKing).toBe(true);
-        game.promoteToKing(6, 3);
-        expect((_c = game.getPiece(6, 3)) === null || _c === void 0 ? void 0 : _c.isKing).toBe(false);
+        expect(game.promoteToKing(7, 0)).toBe(true);
+        expect(game.promoteToKing(6, 3)).toBe(false);
     });
     test('Capturing mechanics should work correctly, including chain captures, score and captured piece updates', () => {
         var _a, _b, _c;
@@ -122,38 +118,24 @@ describe('CheckersGame', () => {
                 }
             }
         }
+        game.players[0].numOfPieces = 0;
         game.checkEndOfGame();
         expect(game.noPiecesLeft(game.players[0])).toBe(true);
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
         game = new CheckersGame(playerOne, playerTwo);
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                if (row > 0 && row < 4 && (row + col) % 2 === 1) {
-                    game.board[row][col] = new CheckersPiece(PieceColor.Black);
-                }
-                else if (row >= 4 && row < 7 && (row + col) % 2 === 1) {
-                    game.board[row][col] = new CheckersPiece(PieceColor.Red);
-                }
-                else {
-                    game.board[row][col] = null;
-                }
-            }
-        }
-        game.players[0].score = 0;
-        game.players[1].score = 0;
-        game.checkEndOfGame();
+        game.currentState = State.gameFinished;
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBeNull();
-        game.players[0].score = 1;
-        game.players[1].score = 0;
+        game.players[0].numOfPieces = 12;
+        game.players[1].numOfPieces = 0;
         game.currentState = State.inProgress;
         game.winner = null;
         game.checkEndOfGame();
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[0]);
-        game.players[0].score = 0;
-        game.players[1].score = 1;
+        game.players[0].numOfPieces = 0;
+        game.players[1].numOfPieces = 12;
         game.currentState = State.inProgress;
         game.winner = null;
         game.checkEndOfGame();

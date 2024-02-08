@@ -29,32 +29,27 @@ export class CheckersAI extends Player{
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = game.players[1].numOfKings, playerKingCount = game.players[0].numOfKings;
-    
-        // Basic score based on piece count and kings
-        // score += aiPieceCount * 5 - playerPieceCount * 5;
-        // score += aiKingCount * 7.75 - playerKingCount * 7.75;
 
         // Compare number of pieces
         if (aiPieceCount >= playerPieceCount) {
-            score += 100;
+            score += 50;
         }
         else if (aiPieceCount === playerPieceCount) {
             score = 0;
         }
         else {
-            score -= 100;
+            score -= 50;
         }
 
         // Compare number of kings
-
         if (aiKingCount >= playerKingCount) {
-            score += 300;
+            score += 75;
         }
         else if (aiKingCount === playerKingCount) {
             score = 0;
         }
         else {
-            score -= 300;
+            score -= 75;
         }
 
         // Opponent Capture Count
@@ -67,7 +62,7 @@ export class CheckersAI extends Player{
 
         // Single capture
         if (game.capturesPossible()) {
-            score += (game.currentPlayer.color === PieceColor.Black ? 25 : -25);
+            score += (game.currentPlayer.color === PieceColor.Black ? 12.5 : -12.5);
         }
 
 
@@ -141,7 +136,7 @@ export class CheckersAI extends Player{
 
                     // Chain Captures
                     if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer === game.players[1] ? 50: -50);
+                        score += (game.currentPlayer === game.players[1] ? 25: -25);
                     }
                 }
             }

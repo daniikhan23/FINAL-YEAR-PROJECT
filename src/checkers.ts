@@ -443,8 +443,6 @@ export class CheckersGame {
             }
         }
         console.log(this.numOfTurns);
-        // console.log(this.playerOneMoves);
-        // console.log(this.playerTwoMoves);
     }
 
     /**
@@ -586,11 +584,11 @@ export class CheckersGame {
      * Checks if the game has ended and determines the winner.
      */
     public checkEndOfGame(): void {
-        if (this.noPiecesLeft(this.players[0])) {
+        if (this.noPiecesLeft(this.players[0]) && this.players[1].numOfPieces >= 1) {
             this.currentState = State.gameFinished;
             this.winner = this.players[1];
         }
-        else if (this.noPiecesLeft(this.players[1])) {
+        else if (this.noPiecesLeft(this.players[1]) && this.players[0].numOfPieces >= 1) {
             this.currentState = State.gameFinished;
             this.winner = this.players[0];
         }
