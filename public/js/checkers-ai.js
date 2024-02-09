@@ -11,7 +11,7 @@ export class CheckersAI extends Player {
         let score = 0;
         let aiPieceCount = game.players[1].numOfPieces, playerPieceCount = game.players[0].numOfPieces;
         let aiKingCount = 0, playerKingCount = 0;
-        score += aiPieceCount * 7.5 - playerPieceCount * 7.5;
+        score += aiPieceCount * 15 - playerPieceCount * 15;
         score -= this.countOpponentCapturesPossible(PieceColor.Red, game);
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
@@ -32,12 +32,12 @@ export class CheckersAI extends Player {
                     if (game.numOfTurns < 15) {
                         if (piece.color === PieceColor.Black && row === 0) {
                             if (col === 1 || col === 5) {
-                                score += 4;
+                                score += 10;
                             }
                         }
                         else if (piece.color === PieceColor.Red && row === 7) {
                             if (col === 2 || col === 6) {
-                                score -= 4;
+                                score -= 10;
                             }
                         }
                     }
@@ -56,17 +56,17 @@ export class CheckersAI extends Player {
                         if (piece.color === PieceColor.Black) {
                             if (row === 0) {
                                 if (col === 1 || col === 3 || col == 5) {
-                                    score += 10;
+                                    score += 5;
                                 }
                             }
                             if (row === 1) {
                                 if (col === 2 || col === 4) {
-                                    score += 10;
+                                    score += 5;
                                 }
                             }
                             if (row === 2) {
                                 if (col === 3) {
-                                    score += 10;
+                                    score += 5;
                                 }
                             }
                         }
@@ -74,13 +74,10 @@ export class CheckersAI extends Player {
                     if (!game.isVulnerable(row, col)) {
                         score += (piece.color === PieceColor.Black ? -3 : 3);
                     }
-                    if (game.chainCaptures(row, col)) {
-                        score += (game.currentPlayer === game.players[1] ? 0 : -25);
-                    }
                 }
             }
         }
-        score += aiKingCount * 10 - playerKingCount * 10;
+        score += aiKingCount * 20 - playerKingCount * 20;
         return score;
     }
     countOpponentCapturesPossible(color, game) {

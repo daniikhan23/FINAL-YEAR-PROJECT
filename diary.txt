@@ -221,3 +221,10 @@ Since the AI always goes second, it will have the correct "counter" to optimal o
 standard opening moves to start the game, and which move it should make in response to that. If the ongoing opening sequence is complete or the user plays a random move 
 then the AI simply uses the minimax algorithm for it's decision making. Using the minimax algorithm in the early stages of the game seemed a bit unnecessary as in 
 strategy games like Checkers, there are certain standard moves made to start the game and optimal moves made in response to them.
+
+Week 13:
+A lot more work has been done on the heuristic. I felt like I had hit a brick wall with regards to it's development, I tried many different combinations within the 
+heuristic as well as looking online for optimal checkers strategy (google really wasn't much help). I persisted as there were a few factors I was sure could make a 
+difference. I took a deeper look at the internal game functions and found some bugs that were definitely causing an issue with the calculation of the evaluated score.
+I was also able to single out the heuristics that were contributing to abnormal scores. I am currently further testing the AI as well as making adjustments to the 
+heuristic and exploring further options to improve the AI.
