@@ -228,3 +228,15 @@ heuristic as well as looking online for optimal checkers strategy (google really
 difference. I took a deeper look at the internal game functions and found some bugs that were definitely causing an issue with the calculation of the evaluated score.
 I was also able to single out the heuristics that were contributing to abnormal scores. I am currently further testing the AI as well as making adjustments to the 
 heuristic and exploring further options to improve the AI.
+
+Week 14:
+I've completed the AI heuristics branch (for now) with changes to the heuristic, making it more compeititve also with the integration of standard opening moves and 
+counters. This still needs some work to make it more compeititve but I am for the moment satisfied with the performance of the AI. Further tweaking and testing will 
+result in further improvements, of course. For now this chapter is closed. I was also able to fix some of the bugs that had been in the game that negatively influenced 
+the score calculation in minimax. With fixes to that, it is also easier to see the valuation minimax gives to it's independent moves. Moving on, some things to implement
+will be forced captures, correct chain capture sequences and then full focus on Advanced Web Dev side of the project.
+
+To-do:
+1. Chain captures should follow the same sequence (same piece should continue the capture)
+2. Forced capture implementation
+3. Focus comes back on Advanced Web Dev
