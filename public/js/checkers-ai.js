@@ -29,7 +29,7 @@ export class CheckersAI extends Player {
                     if (row >= 3 && row <= 4 && col < 2 && col > 5) {
                         score += (piece.color === PieceColor.Black ? 0.5 : -0.5);
                     }
-                    if (game.numOfTurns < 15) {
+                    if (game.numOfTurns < 10) {
                         if (piece.color === PieceColor.Black && row === 0) {
                             if (col === 1 || col === 5) {
                                 score += 10;

@@ -56,7 +56,7 @@ export class CheckersAI extends Player{
                         score += (piece.color === PieceColor.Black ? 0.5 : -0.5)
                     }
                     // Back Row Guard
-                    if (game.numOfTurns < 15) {
+                    if (game.numOfTurns < 10) {
                         if (piece.color === PieceColor.Black && row === 0) {
                             if (col === 1 || col === 5) {
                                 score += 10;
@@ -111,11 +111,6 @@ export class CheckersAI extends Player{
                     if (!game.isVulnerable(row, col)) { 
                         score += (piece.color === PieceColor.Black ? -3: 3);
                     }
-
-                    // // Chain Captures
-                    // if (game.chainCaptures(row, col)) {
-                    //     score += (game.currentPlayer === game.players[1] ? 0: -25);
-                    // } this is destroying the score at the moment
                 }
             }
         }
