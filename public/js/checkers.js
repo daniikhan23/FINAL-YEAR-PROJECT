@@ -86,7 +86,7 @@ export class CheckersBoard {
     }
 }
 export class CheckersGame {
-    constructor(playerOne, playerTwo) {
+    constructor(playerOne, playerTwo, forcedJumps) {
         this.board = new CheckersBoard().board;
         this.players = [playerOne, playerTwo];
         this.currentState = State.inProgress;
@@ -95,15 +95,18 @@ export class CheckersGame {
         this.numOfTurns = 0;
         this.playerOneMoves = [];
         this.playerTwoMoves = [];
+        this.forcedJumps = forcedJumps;
     }
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
         this.numOfTurns++;
-        if (this.capturesPossible()) {
-            this.currentPlayer.capturesAvailable = true;
-        }
-        else {
-            this.currentPlayer.capturesAvailable = false;
+        if (this.forcedJumps) {
+            if (this.capturesPossible()) {
+                this.currentPlayer.capturesAvailable = true;
+            }
+            else {
+                this.currentPlayer.capturesAvailable = false;
+            }
         }
     }
     getPiece(row, col) {
@@ -202,8 +205,10 @@ export class CheckersGame {
                 }
             }
         }
-        if (this.currentPlayer.capturesAvailable) {
-            return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
+        if (this.forcedJumps) {
+            if (this.currentPlayer.capturesAvailable) {
+                return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
+            }
         }
         return moves;
     }
@@ -516,7 +521,7 @@ export class CheckersGame {
         }
     }
     deepCopyGame() {
-        const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer());
+        const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer(), this.forcedJumps);
         copiedGame.board = this.board.map(row => row.map(piece => piece ? piece.deepCopyPiece() : null));
         copiedGame.currentPlayer = this.currentPlayer;
         copiedGame.currentState = this.currentState;

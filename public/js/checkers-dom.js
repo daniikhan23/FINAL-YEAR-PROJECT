@@ -43,7 +43,7 @@ function startLocalGame() {
     const playerTwoName = document.getElementById('playerTwoName').value || 'Player 2';
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
-    game = new CheckersGame(playerOne, playerTwo);
+    game = new CheckersGame(playerOne, playerTwo, enforcedJumpCheck);
     updateScoreCard();
     document.querySelector('.initial-screen').style.display = 'none';
     document.querySelector('.main').style.display = 'block';
@@ -54,7 +54,7 @@ function startAIGame() {
     const playerTwoName = 'Minimax-A/B';
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
-    game = new CheckersGame(playerOne, playerTwo);
+    game = new CheckersGame(playerOne, playerTwo, enforcedJumpCheck);
     const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 5);
     game.setAI(ai);
     updateScoreCard();

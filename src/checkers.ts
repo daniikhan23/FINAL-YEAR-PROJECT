@@ -202,13 +202,14 @@ export class CheckersGame {
     public numOfTurns: number;
     public playerOneMoves: Moves [];
     public playerTwoMoves: Moves [];
+    public forcedJumps: boolean;
 
     /**
      * Constructs a CheckersGame object.
      * @param {Player} playerOne - The first player.
      * @param {Player} playerTwo - The second player.
      */
-    constructor(playerOne: Player, playerTwo: Player) {
+    constructor(playerOne: Player, playerTwo: Player, forcedJumps: boolean) {
         this.board = new CheckersBoard().board;
         this.players = [playerOne, playerTwo];
         this.currentState = State.inProgress;
@@ -217,6 +218,7 @@ export class CheckersGame {
         this.numOfTurns = 0;
         this.playerOneMoves = [];
         this.playerTwoMoves = [];
+        this.forcedJumps = forcedJumps;
     }
 
     /**
@@ -225,11 +227,13 @@ export class CheckersGame {
     public changeTurn(): void {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
         this.numOfTurns++;
-        if (this.capturesPossible()) {
-            this.currentPlayer.capturesAvailable = true;
-        }
-        else {
-            this.currentPlayer.capturesAvailable = false;
+        if (this.forcedJumps) {
+            if (this.capturesPossible()) {
+                this.currentPlayer.capturesAvailable = true;
+            }
+            else {
+                this.currentPlayer.capturesAvailable = false;
+            }
         }
     }
 
@@ -371,11 +375,11 @@ export class CheckersGame {
                 }
             }
         }
-
-        if (this.currentPlayer.capturesAvailable) {
-            return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
+        if (this.forcedJumps) {
+            if (this.currentPlayer.capturesAvailable) {
+                return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
+            }
         }
-        
         return moves;
     }
 
@@ -810,7 +814,7 @@ export class CheckersGame {
      * @returns {CheckersGame} - copy of game
      */
     public deepCopyGame(): CheckersGame {
-        const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer());
+        const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer(), this.forcedJumps);
     
         // Copy the board
         copiedGame.board = this.board.map(row => 

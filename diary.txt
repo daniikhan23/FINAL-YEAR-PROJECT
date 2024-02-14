@@ -236,7 +236,13 @@ result in further improvements, of course. For now this chapter is closed. I was
 the score calculation in minimax. With fixes to that, it is also easier to see the valuation minimax gives to it's independent moves. Moving on, some things to implement
 will be forced captures, correct chain capture sequences and then full focus on Advanced Web Dev side of the project.
 
+Forced captures have now been implemented in the game. There were a few conditions to look at within the possibleMoves and changeTurn methods as well as creating a variable 
+to track whether a player can make a capture in their turn or not. Additionally, users have the option to play versus each other or against the AI with the regular rules 
+or with forced captures on. The AI heuristic will have to be changed for the forced captures as the dynamic of the game changes. The AI also seems to "give up" almost when 
+it is in a position in a forced capture game where it has only one remaining piece which will be captured in the following turn. This needs testing and experimentation to 
+resolve. For now performance of the AI is meant to be "okay-ish" for the regular mode and not good/correctly functioning in the enforced mode. Next step is to implement 
+chain capture sequences and then I move onto more web dev stuff.
+
 To-do:
 1. Chain captures should follow the same sequence (same piece should continue the capture)
-2. Forced capture implementation
-3. Focus comes back on Advanced Web Dev
+2. Focus comes back on Advanced Web Dev

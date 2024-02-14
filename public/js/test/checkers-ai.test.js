@@ -3,7 +3,7 @@ import { CheckersAI } from "../checkers-ai";
 describe('CheckersGame', () => {
     let game, ai;
     beforeEach(() => {
-        game = new CheckersGame(new Player('Player 1', PieceColor.Red), new Player('AI', PieceColor.Black));
+        game = new CheckersGame(new Player('Player 1', PieceColor.Red), new Player('AI', PieceColor.Black), false);
         ai = new CheckersAI('Zero', PieceColor.Black, game, 1);
         game.setAI(ai);
     });

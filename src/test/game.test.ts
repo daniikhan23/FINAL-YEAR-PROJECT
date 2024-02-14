@@ -8,7 +8,7 @@ describe('CheckersGame', () => {
     beforeEach(() => {
         playerOne = new Player("Dani", PieceColor.Red);
         playerTwo = new Player("Khan", PieceColor.Black);
-        game = new CheckersGame(playerOne, playerTwo);
+        game = new CheckersGame(playerOne, playerTwo, false);
     });
 
     test('Game should be initialized correctly', () => {
@@ -157,7 +157,7 @@ describe('CheckersGame', () => {
         expect(game.winner).toBe(game.players[1]);
 
         // Reset the board for new game
-        game = new CheckersGame(playerOne, playerTwo);
+        game = new CheckersGame(playerOne, playerTwo, false);
 
         game.currentState = State.gameFinished;
         expect(game.currentState).toBe(State.gameFinished);
@@ -224,7 +224,7 @@ describe('CheckersGame', () => {
         expect(game.getPiece(0, 1)?.captureStatus).toBe(false);
 
         // Chain capture scenarios
-        game = new CheckersGame(new Player("Khan", PieceColor.Red), new Player("Sudhan", PieceColor.Black));
+        game = new CheckersGame(new Player("Khan", PieceColor.Red), new Player("Sudhan", PieceColor.Black), false);
 
         game.movePiece(5, 6, 4, 7);
         game.movePiece(2, 5, 3, 6);

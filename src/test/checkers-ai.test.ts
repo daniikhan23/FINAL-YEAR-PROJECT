@@ -5,7 +5,7 @@ describe('CheckersGame', () => {
     let game: CheckersGame, ai: CheckersAI;
 
     beforeEach(() => {
-        game = new CheckersGame(new Player('Player 1', PieceColor.Red), new Player('AI', PieceColor.Black));
+        game = new CheckersGame(new Player('Player 1', PieceColor.Red), new Player('AI', PieceColor.Black), false);
         ai = new CheckersAI('Zero', PieceColor.Black, game, 1); // depth set to 1 for simplicity
         game.setAI(ai);
     });

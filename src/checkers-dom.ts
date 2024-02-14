@@ -67,7 +67,7 @@ function startLocalGame() {
 
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
-    game = new CheckersGame(playerOne, playerTwo)
+    game = new CheckersGame(playerOne, playerTwo, enforcedJumpCheck);
 
     // Update UI with player names
     updateScoreCard();
@@ -88,7 +88,7 @@ function startAIGame() {
 
     const playerOne = new Player(playerOneName, PieceColor.Red);
     const playerTwo = new Player(playerTwoName, PieceColor.Black);
-    game = new CheckersGame(playerOne, playerTwo)
+    game = new CheckersGame(playerOne, playerTwo, enforcedJumpCheck);
 
     // Create the AI player and set it as player two
     const ai = new CheckersAI(playerTwoName, PieceColor.Black, game, 5);

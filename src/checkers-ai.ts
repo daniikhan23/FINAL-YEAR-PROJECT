@@ -78,11 +78,11 @@ export class CheckersAI extends Player{
 
                         if (leftProtectionPiece && leftProtectionPiece.color === piece.color) {
                             // Increase score because the piece is protected from the left
-                            score += (piece.color === PieceColor.Black ? 3 : -3);
+                            score += (piece.color === PieceColor.Black ? 6 : -6);
                         }
                         if (rightProtectionPiece && rightProtectionPiece.color === piece.color) {
                             // Increase score because the piece is protected from the right
-                            score += (piece.color === PieceColor.Black ? 3 : -3);
+                            score += (piece.color === PieceColor.Black ? 6 : -6);
                         }
                     }
 
@@ -109,7 +109,7 @@ export class CheckersAI extends Player{
 
                     // Protect vulnerable pieces
                     if (!game.isVulnerable(row, col)) { 
-                        score += (piece.color === PieceColor.Black ? -10: 10);
+                        score += (piece.color === PieceColor.Black ? -6: 6);
                     }
                 }
             }

@@ -46,10 +46,10 @@ export class CheckersAI extends Player {
                         let leftProtectionPiece = game.getPiece(backwardRow, col - 1);
                         let rightProtectionPiece = game.getPiece(backwardRow, col + 1);
                         if (leftProtectionPiece && leftProtectionPiece.color === piece.color) {
-                            score += (piece.color === PieceColor.Black ? 3 : -3);
+                            score += (piece.color === PieceColor.Black ? 6 : -6);
                         }
                         if (rightProtectionPiece && rightProtectionPiece.color === piece.color) {
-                            score += (piece.color === PieceColor.Black ? 3 : -3);
+                            score += (piece.color === PieceColor.Black ? 6 : -6);
                         }
                     }
                     if (game.numOfTurns < 15) {
@@ -72,7 +72,7 @@ export class CheckersAI extends Player {
                         }
                     }
                     if (!game.isVulnerable(row, col)) {
-                        score += (piece.color === PieceColor.Black ? -10 : 10);
+                        score += (piece.color === PieceColor.Black ? -6 : 6);
                     }
                 }
             }

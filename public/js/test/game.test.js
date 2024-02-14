@@ -6,7 +6,7 @@ describe('CheckersGame', () => {
     beforeEach(() => {
         playerOne = new Player("Dani", PieceColor.Red);
         playerTwo = new Player("Khan", PieceColor.Black);
-        game = new CheckersGame(playerOne, playerTwo);
+        game = new CheckersGame(playerOne, playerTwo, false);
     });
     test('Game should be initialized correctly', () => {
         expect(game.players[0]).toBe(playerOne);
@@ -123,7 +123,7 @@ describe('CheckersGame', () => {
         expect(game.noPiecesLeft(game.players[0])).toBe(true);
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
-        game = new CheckersGame(playerOne, playerTwo);
+        game = new CheckersGame(playerOne, playerTwo, false);
         game.currentState = State.gameFinished;
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBeNull();
@@ -172,7 +172,7 @@ describe('CheckersGame', () => {
         expect((_f = game.getPiece(1, 4)) === null || _f === void 0 ? void 0 : _f.captureStatus).toBe(true);
         expect((_g = game.getPiece(4, 7)) === null || _g === void 0 ? void 0 : _g.captureStatus).toBe(false);
         expect((_h = game.getPiece(0, 1)) === null || _h === void 0 ? void 0 : _h.captureStatus).toBe(false);
-        game = new CheckersGame(new Player("Khan", PieceColor.Red), new Player("Sudhan", PieceColor.Black));
+        game = new CheckersGame(new Player("Khan", PieceColor.Red), new Player("Sudhan", PieceColor.Black), false);
         game.movePiece(5, 6, 4, 7);
         game.movePiece(2, 5, 3, 6);
         game.movePiece(6, 5, 5, 6);
