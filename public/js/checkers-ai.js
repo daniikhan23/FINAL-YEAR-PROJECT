@@ -72,7 +72,7 @@ export class CheckersAI extends Player {
                         }
                     }
                     if (!game.isVulnerable(row, col)) {
-                        score += (piece.color === PieceColor.Black ? -3 : 3);
+                        score += (piece.color === PieceColor.Black ? -10 : 10);
                     }
                 }
             }
@@ -339,20 +339,18 @@ export class CheckersAI extends Player {
                     if (piece && piece.color === PieceColor.Black) {
                         const moves = game.possibleMoves(row, col);
                         for (const move of moves) {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                const gameCopy = game.deepCopyGame();
-                                gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                                const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
-                                alpha = Math.max(alpha, evaluatedScore);
-                                if (beta <= alpha) {
-                                    bestMove = move;
-                                    bestScore = evaluatedScore;
-                                    break;
-                                }
-                                if (evaluatedScore > bestScore) {
-                                    bestScore = evaluatedScore;
-                                    bestMove = move;
-                                }
+                            const gameCopy = game.deepCopyGame();
+                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, false);
+                            alpha = Math.max(alpha, evaluatedScore);
+                            if (beta <= alpha) {
+                                bestMove = move;
+                                bestScore = evaluatedScore;
+                                break;
+                            }
+                            if (evaluatedScore > bestScore) {
+                                bestScore = evaluatedScore;
+                                bestMove = move;
                             }
                         }
                     }
@@ -367,20 +365,18 @@ export class CheckersAI extends Player {
                     if (piece && piece.color === PieceColor.Red) {
                         const moves = game.possibleMoves(row, col);
                         for (const move of moves) {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                const gameCopy = game.deepCopyGame();
-                                gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
-                                const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
-                                beta = Math.min(beta, evaluatedScore);
-                                if (beta <= alpha) {
-                                    bestMove = move;
-                                    bestScore = evaluatedScore;
-                                    break;
-                                }
-                                if (evaluatedScore < bestScore) {
-                                    bestScore = evaluatedScore;
-                                    bestMove = move;
-                                }
+                            const gameCopy = game.deepCopyGame();
+                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
+                            beta = Math.min(beta, evaluatedScore);
+                            if (beta <= alpha) {
+                                bestMove = move;
+                                bestScore = evaluatedScore;
+                                break;
+                            }
+                            if (evaluatedScore < bestScore) {
+                                bestScore = evaluatedScore;
+                                bestMove = move;
                             }
                         }
                     }

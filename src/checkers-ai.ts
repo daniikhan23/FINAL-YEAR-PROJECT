@@ -109,7 +109,7 @@ export class CheckersAI extends Player{
 
                     // Protect vulnerable pieces
                     if (!game.isVulnerable(row, col)) { 
-                        score += (piece.color === PieceColor.Black ? -3: 3);
+                        score += (piece.color === PieceColor.Black ? -10: 10);
                     }
                 }
             }
@@ -403,7 +403,6 @@ export class CheckersAI extends Player{
                     if (piece && piece.color === PieceColor.Black) {
                         const moves = game.possibleMoves(row, col);
                         for (const move of moves) {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
                                 const gameCopy = game.deepCopyGame();
 
                                 gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
@@ -427,36 +426,34 @@ export class CheckersAI extends Player{
                         }
                     }
                 }
+                return [bestScore, bestMove];
             }
-            return [bestScore, bestMove];
-        } else {
+            else {
             for (let row = 0; row < 8; row ++) {
                 for (let col = 0; col < 8; col++) {
                     const piece = game.getPiece(row, col);
                     if (piece && piece.color === PieceColor.Red) {
                         const moves = game.possibleMoves(row, col);
                         for (const move of moves) {
-                            if (game.validateMove(move.startRow, move.startCol, move.endRow, move.endCol)) {
-                                const gameCopy = game.deepCopyGame();
+                            const gameCopy = game.deepCopyGame();
 
-                                gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
+                            gameCopy.moveAI(move.startRow, move.startCol, move.endRow, move.endCol);
 
-                                // console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
+                            // console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
 
-                                const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
+                            const [evaluatedScore] = this.minimax(gameCopy, depth - 1, alpha, beta, true);
 
-                                beta = Math.min(beta, evaluatedScore);
-                                
-                                if (beta <= alpha) {
-                                    bestMove = move;
-                                    bestScore = evaluatedScore;
-                                    break;
-                                }
+                            beta = Math.min(beta, evaluatedScore);
+                            
+                            if (beta <= alpha) {
+                                bestMove = move;
+                                bestScore = evaluatedScore;
+                                break;
+                            }
 
-                                if (evaluatedScore < bestScore) {
-                                    bestScore = evaluatedScore;
-                                    bestMove = move;
-                                }
+                            if (evaluatedScore < bestScore) {
+                                bestScore = evaluatedScore;
+                                bestMove = move;
                             }
                         }
                     }
