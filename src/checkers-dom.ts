@@ -17,6 +17,19 @@ startLocalGameBtn?.addEventListener('click', startLocalGame);
 const startAIGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startAIGameButton');
 startAIGameBtn?.addEventListener('click', startAIGame);
 
+let enforcedJumpCheck: boolean;
+const checkBox = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #enforcedJumps');
+checkBox?.addEventListener('change', (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.checked) {
+        enforcedJumpCheck = true;
+        console.log(`Jumps: ${enforcedJumpCheck}`);
+      } else {
+        enforcedJumpCheck = false;
+        console.log(`Jumps: ${enforcedJumpCheck}`);
+      }
+});
+
 const restartLocalGameButton = document.getElementById('restartLocalGameButton') as HTMLButtonElement;
 const restartAIGameButton = document.getElementById('restartAIGameButton') as HTMLButtonElement;
 

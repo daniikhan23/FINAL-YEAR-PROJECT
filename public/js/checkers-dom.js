@@ -6,6 +6,19 @@ const startLocalGameBtn = document.querySelector('.initial-screen .initial-scree
 startLocalGameBtn === null || startLocalGameBtn === void 0 ? void 0 : startLocalGameBtn.addEventListener('click', startLocalGame);
 const startAIGameBtn = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #startAIGameButton');
 startAIGameBtn === null || startAIGameBtn === void 0 ? void 0 : startAIGameBtn.addEventListener('click', startAIGame);
+let enforcedJumpCheck;
+const checkBox = document.querySelector('.initial-screen .initial-screen-container .container .name-entry #enforcedJumps');
+checkBox === null || checkBox === void 0 ? void 0 : checkBox.addEventListener('change', (event) => {
+    const target = event.target;
+    if (target.checked) {
+        enforcedJumpCheck = true;
+        console.log(`Jumps: ${enforcedJumpCheck}`);
+    }
+    else {
+        enforcedJumpCheck = false;
+        console.log(`Jumps: ${enforcedJumpCheck}`);
+    }
+});
 const restartLocalGameButton = document.getElementById('restartLocalGameButton');
 const restartAIGameButton = document.getElementById('restartAIGameButton');
 const endOfGameSection = document.querySelector('.end-of-game-section');
