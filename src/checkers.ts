@@ -18,6 +18,7 @@ export class Player {
     public capturedPieces: number;
     public numOfPieces: number;
     public numOfKings: number;
+    public capturesAvailable: boolean;
 
      /**
      * Constructs a Player object.
@@ -31,6 +32,7 @@ export class Player {
         this.capturedPieces = 0;
         this.numOfPieces = 12;
         this.numOfKings = 0;
+        this.capturesAvailable = false;
     }
 
     /**
@@ -223,7 +225,12 @@ export class CheckersGame {
     public changeTurn(): void {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1]: this.players[0];
         this.numOfTurns++;
-        this.capturesPossible();
+        if (this.capturesPossible()) {
+            this.currentPlayer.capturesAvailable = true;
+        }
+        else {
+            this.currentPlayer.capturesAvailable = false;
+        }
     }
 
     /**
@@ -364,6 +371,11 @@ export class CheckersGame {
                 }
             }
         }
+
+        if (this.currentPlayer.capturesAvailable) {
+            return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
+        }
+        
         return moves;
     }
 
@@ -526,8 +538,6 @@ export class CheckersGame {
                     if (moves.some(move => Math.abs(move.startRow - move.endRow) === 2)) {
                         piece.captureCheck();
                         flag = true;
-                    } else {
-                        piece.captureStatus = false;
                     }
                 }
             }

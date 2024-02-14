@@ -11,6 +11,7 @@ export class Player {
         this.capturedPieces = 0;
         this.numOfPieces = 12;
         this.numOfKings = 0;
+        this.capturesAvailable = false;
     }
     updateCapturedPieces(count) {
         this.capturedPieces += count;
@@ -98,7 +99,12 @@ export class CheckersGame {
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
         this.numOfTurns++;
-        this.capturesPossible();
+        if (this.capturesPossible()) {
+            this.currentPlayer.capturesAvailable = true;
+        }
+        else {
+            this.currentPlayer.capturesAvailable = false;
+        }
     }
     getPiece(row, col) {
         return this.board[row][col];
@@ -195,6 +201,9 @@ export class CheckersGame {
                     }
                 }
             }
+        }
+        if (this.currentPlayer.capturesAvailable) {
+            return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
         }
         return moves;
     }
@@ -318,9 +327,6 @@ export class CheckersGame {
                     if (moves.some(move => Math.abs(move.startRow - move.endRow) === 2)) {
                         piece.captureCheck();
                         flag = true;
-                    }
-                    else {
-                        piece.captureStatus = false;
                     }
                 }
             }
