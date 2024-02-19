@@ -96,6 +96,8 @@ export class CheckersGame {
         this.playerOneMoves = [];
         this.playerTwoMoves = [];
         this.forcedJumps = forcedJumps;
+        this.chainingRow = null;
+        this.chainingCol = null;
     }
     changeTurn() {
         this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
@@ -205,6 +207,14 @@ export class CheckersGame {
                 }
             }
         }
+        if (this.chainingRow !== null && this.chainingCol !== null) {
+            if (row !== this.chainingRow || col !== this.chainingCol) {
+                return [];
+            }
+            else {
+                return moves.filter(move => Math.abs(move.startRow - move.endRow) === 2);
+            }
+        }
         if (this.forcedJumps) {
             if (this.currentPlayer.capturesAvailable) {
                 return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
@@ -250,6 +260,8 @@ export class CheckersGame {
                         }
                         this.board[middleRow][middleCol] = null;
                         capturedAlready = true;
+                        this.chainingRow = endRow;
+                        this.chainingCol = endCol;
                     }
                     else {
                         capturedAlready = false;
@@ -273,13 +285,20 @@ export class CheckersGame {
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
+                        console.log(nextCaptures);
+                        this.chainingRow = endRow;
+                        this.chainingCol = endCol;
                         return;
                     }
                     else {
+                        this.chainingRow = null;
+                        this.chainingCol = null;
                         this.changeTurn();
                     }
                 }
                 else {
+                    this.chainingRow = null;
+                    this.chainingCol = null;
                     this.changeTurn();
                 }
             }

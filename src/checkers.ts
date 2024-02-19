@@ -203,6 +203,8 @@ export class CheckersGame {
     public playerOneMoves: Moves [];
     public playerTwoMoves: Moves [];
     public forcedJumps: boolean;
+    public chainingRow: number | null;
+    public chainingCol: number | null;
 
     /**
      * Constructs a CheckersGame object.
@@ -219,6 +221,8 @@ export class CheckersGame {
         this.playerOneMoves = [];
         this.playerTwoMoves = [];
         this.forcedJumps = forcedJumps;
+        this.chainingRow = null;
+        this.chainingCol = null;
     }
 
     /**
@@ -375,6 +379,17 @@ export class CheckersGame {
                 }
             }
         }
+        // Filter moves for chaining
+        if (this.chainingRow !== null && this.chainingCol !== null) {
+            if (row !== this.chainingRow || col !== this.chainingCol) {
+                // If it's not the chaining piece, it cannot move
+                return [];
+            } else {
+                // Return only capture moves for the chaining piece
+                return moves.filter(move => Math.abs(move.startRow - move.endRow) === 2);
+            }
+        }
+        // Conditional to ensure forced jumps
         if (this.forcedJumps) {
             if (this.currentPlayer.capturesAvailable) {
                 return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
@@ -439,11 +454,14 @@ export class CheckersGame {
                         }
                         this.board[middleRow][middleCol] = null;
                         capturedAlready = true;
+                        this.chainingRow = endRow;
+                        this.chainingCol = endCol;
                     }
                     else {
                         capturedAlready = false;
                     }
                 }
+
                 this.board[startRow][startCol] = null;
                 this.board[endRow][endCol] = piece;
 
@@ -459,17 +477,25 @@ export class CheckersGame {
                         this.currentPlayer.numOfKings += 1;
                     }
                 }
+
                 this.capturesPossible();
                 const nextCaptures = this.chainCaptures(endRow, endCol);
                 if (nextCaptures && capturedAlready === true) {
                     if (nextCaptures.length > 0) {
+                        console.log(nextCaptures);
+                        this.chainingRow = endRow;
+                        this.chainingCol = endCol;
                         return;
                     }
                     else {
+                        this.chainingRow = null;
+                        this.chainingCol = null;
                         this.changeTurn();
                     }
                 }
                 else {
+                    this.chainingRow = null;
+                    this.chainingCol = null;
                     this.changeTurn();
                 }
             }
