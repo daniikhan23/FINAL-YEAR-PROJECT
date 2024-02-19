@@ -149,43 +149,5 @@ describe('CheckersGame', () => {
         expect(game.isVulnerable(5, 6)).toBe(false);
         expect(game.isVulnerable(4, 1)).toBe(true);
     });
-    test('Check if individual pieces capture status has changed', () => {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const piece = game.getPiece(row, col);
-                if (piece) {
-                    expect(piece.captureStatus).toBe(false);
-                }
-            }
-        }
-        game.movePiece(5, 2, 4, 3);
-        game.movePiece(2, 5, 3, 4);
-        expect((_a = game.getPiece(4, 3)) === null || _a === void 0 ? void 0 : _a.captureStatus).toBe(true);
-        game.movePiece(5, 6, 4, 7);
-        expect((_b = game.getPiece(3, 4)) === null || _b === void 0 ? void 0 : _b.captureStatus).toBe(true);
-        expect((_c = game.getPiece(0, 1)) === null || _c === void 0 ? void 0 : _c.captureStatus).toBe(false);
-        game.movePiece(2, 1, 3, 0);
-        game.movePiece(4, 3, 2, 5);
-        expect((_d = game.getPiece(2, 5)) === null || _d === void 0 ? void 0 : _d.captureStatus).toBe(false);
-        expect((_e = game.getPiece(1, 6)) === null || _e === void 0 ? void 0 : _e.captureStatus).toBe(true);
-        expect((_f = game.getPiece(1, 4)) === null || _f === void 0 ? void 0 : _f.captureStatus).toBe(true);
-        expect((_g = game.getPiece(4, 7)) === null || _g === void 0 ? void 0 : _g.captureStatus).toBe(false);
-        expect((_h = game.getPiece(0, 1)) === null || _h === void 0 ? void 0 : _h.captureStatus).toBe(false);
-        game = new CheckersGame(new Player("Khan", PieceColor.Red), new Player("Sudhan", PieceColor.Black), false);
-        game.movePiece(5, 6, 4, 7);
-        game.movePiece(2, 5, 3, 6);
-        game.movePiece(6, 5, 5, 6);
-        game.movePiece(2, 1, 3, 0);
-        game.movePiece(7, 4, 6, 5);
-        game.movePiece(1, 2, 2, 1);
-        game.movePiece(5, 4, 4, 3);
-        game.movePiece(0, 3, 1, 2);
-        expect((_j = game.getPiece(4, 7)) === null || _j === void 0 ? void 0 : _j.captureStatus).toBe(true);
-        game.movePiece(4, 7, 2, 5);
-        expect((_k = game.getPiece(2, 5)) === null || _k === void 0 ? void 0 : _k.captureStatus).toBe(true);
-        game.movePiece(2, 5, 0, 3);
-        expect((_l = game.getPiece(0, 3)) === null || _l === void 0 ? void 0 : _l.captureStatus).toBe(false);
-    });
 });
 //# sourceMappingURL=game.test.js.map

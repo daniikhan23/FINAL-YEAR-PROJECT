@@ -243,6 +243,8 @@ it is in a position in a forced capture game where it has only one remaining pie
 resolve. For now performance of the AI is meant to be "okay-ish" for the regular mode and not good/correctly functioning in the enforced mode. Next step is to implement 
 chain capture sequences and then I move onto more web dev stuff.
 
+Successfully, chain captures have also been fixed. The game is now full functional and working as intended which is great progress. Now the focus of this project can go
+back to Advanced Web Dev.
+
 To-do:
-1. Chain captures should follow the same sequence (same piece should continue the capture)
-2. Focus comes back on Advanced Web Dev
+1. Focus comes back on Advanced Web Dev
