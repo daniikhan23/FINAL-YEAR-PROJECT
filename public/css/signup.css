@@ -84,25 +84,14 @@ button:hover {
 
 body {
     height: 100%;
+    background-color: wheat;
 }
-
-.background {
-  background-image: url(/public/resources/img/checkers-board.png);
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position:fixed;
-  width:100%;
-  height:64.6rem;
-  top:52px;
-  bottom: 10px;
-  left:0px;
-  z-index:1000;
-}
-
 
 /* Navbar Section */
+
+.header {
+  margin-bottom: 10rem;
+}
 
 .header .header-container {
   background-color: black;
@@ -169,20 +158,73 @@ body {
   align-items: center;
 }
 
-/* Intro Section */
-.intro .intro-container .container-fluid {
-  background-image: url(../resources/img/checkers-board.png);
-  background-repeat: no-repeat;
+/* Background Section */
+/* .background {
+  background-image: url(/public/resources/img/checkers-board.png);
+  height: 100%;
   background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
-  padding: 20rem 0rem;
+  position:absolute;
+  width:100%;
+  height:64.6rem;
+  top:52px;
+  bottom: 10px;
+  left:0px;
+  z-index:1000;
+} */
+
+/* Main Section */
+.main .main-container {
+  /* position:absolute;
+  z-index:1000; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.intro .intro-container .container-fluid h1 {
-  text-align: center;
-  color: black;
-  font-size: 5rem;
+.main .main-container .main-header {
+  margin-bottom: 2rem;
 }
+
+.main .main-container .main-central-img {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.main .main-container .main-central-img img{
+  height: 15rem;
+  width: 15rem;
+}
+
+.main .main-container .main-central-btn button{
+  background-color: black;
+  color: red;
+  font-size: 2.5rem;
+  border: 1px solid black;
+  border-radius: 3%;
+  padding: 0.5rem 15rem;
+}
+
+.main .main-container .main-central-btn button:hover {
+  color: white;
+}
+
+.main .main-container .main-central-btn button:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  transition: all 0.1s ease-in
+}
+
+.main .main-container .main-info-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+}
+
 
 /* Footer Section */
 .footer-section {
