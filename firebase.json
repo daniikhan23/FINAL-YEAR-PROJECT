@@ -4,7 +4,7 @@
   },
   "hosting": {
     "site": "checkersmate",
-    "public": "public/html",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
