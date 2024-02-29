@@ -1,4 +1,4 @@
-import { Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame } from "../checkers";
+import { Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame } from "../components/checkers";
 
 describe('CheckersGame', () => {
     let game: CheckersGame;
