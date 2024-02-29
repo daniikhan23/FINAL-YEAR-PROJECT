@@ -246,5 +246,6 @@ chain capture sequences and then I move onto more web dev stuff.
 Successfully, chain captures have also been fixed. The game is now full functional and working as intended which is great progress. Now the focus of this project can go
 back to Advanced Web Dev.
 
-To-do:
-1. Focus comes back on Advanced Web Dev
+The next step now is to study and understand Firebase as well as implement it as the backend service for this webapp. I will be implementing a login and signup 
+authentication for users to make accounts. Currently firebase has been setup in this project and theres a website deployed via firebase for a public domain to access. 
+A signup and login page has also been created to implement this feature soon. Since this is a new technology for me, I will have to take time to study and understand it.
