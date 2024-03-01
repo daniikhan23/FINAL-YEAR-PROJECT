@@ -79,12 +79,12 @@ button:hover {
 }
 
 * {
-  font-family: 'Black Ops One', cursive;
+  font-family: "Black Ops One", cursive;
 }
 
 body {
-    height: 100%;
-    background-color: wheat;
+  height: 100%;
+  background-color: wheat;
 }
 
 /* Navbar Section */
@@ -110,17 +110,17 @@ body {
 
 .header .header-container .container .home button a {
   font-size: 2rem;
-  color: red; 
+  color: red;
 }
 
-.header .header-container .container .home button a:hover{
+.header .header-container .container .home button a:hover {
   color: white;
 }
 
 .header .header-container .container .home button a:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
-  transition: all 0.1s ease-in
+  transition: all 0.1s ease-in;
 }
 
 .header .header-container .container ul {
@@ -149,7 +149,7 @@ body {
 .header .header-container .container .list li button a:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
-  transition: all 0.1s ease-in
+  transition: all 0.1s ease-in;
 }
 
 .header .header-container .container .list {
@@ -177,12 +177,12 @@ body {
   margin-bottom: 2rem;
 }
 
-.main .main-container .main-central-img img{
+.main .main-container .main-central-img img {
   height: 15rem;
   width: 15rem;
 }
 
-.main .main-container .main-central-btn button{
+.main .main-container .main-central-btn button {
   background-color: black;
   color: red;
   font-size: 2.5rem;
@@ -198,7 +198,7 @@ body {
 .main .main-container .main-central-btn button:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
-  transition: all 0.1s ease-in
+  transition: all 0.1s ease-in;
 }
 
 .main .main-container .main-info-forms {
@@ -209,16 +209,15 @@ body {
   margin-bottom: 3rem;
 }
 
-
 /* Footer Section */
 .footer-section {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    color: red;
-    background-color: black;
-    font-size: 1rem;
-    padding: 1.3rem;
-  }
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: red;
+  background-color: black;
+  font-size: 1rem;
+  padding: 1.3rem;
+}

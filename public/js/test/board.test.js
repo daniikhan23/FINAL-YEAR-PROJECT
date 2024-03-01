@@ -1,10 +1,10 @@
-import { CheckersBoard, CheckersPiece, PieceColor } from "../components/checkersGame";
-describe('CheckersBoard', () => {
+import { CheckersBoard, CheckersPiece, PieceColor, } from "../components/checkersGame";
+describe("CheckersBoard", () => {
     let checkersBoard;
     beforeEach(() => {
         checkersBoard = new CheckersBoard();
     });
-    test('Board should be correctly initialized', () => {
+    test("Board should be correctly initialized", () => {
         var _a, _b, _c, _d;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
@@ -24,11 +24,11 @@ describe('CheckersBoard', () => {
             }
         }
         expect(checkersBoard.board.length).toBe(8);
-        checkersBoard.board.forEach(row => {
+        checkersBoard.board.forEach((row) => {
             expect(row.length).toBe(8);
         });
     });
-    test('Ensure number of pieces is 12 and the same for Red and Black', () => {
+    test("Ensure number of pieces is 12 and the same for Red and Black", () => {
         let blackPieces = 0;
         let redPieces = 0;
         for (let row = 0; row < 8; row++) {
@@ -57,7 +57,7 @@ describe('CheckersBoard', () => {
         expect(blackPieces).toBe(12);
         expect(redPieces).toBe(12);
     });
-    test('Accessing out of bounds should be handled', () => {
+    test("Accessing out of bounds should be handled", () => {
         expect(checkersBoard.board[10]).toBeUndefined();
         expect(checkersBoard.board[0][19]).toBeUndefined();
         expect(checkersBoard.board[-1]).toBeUndefined();

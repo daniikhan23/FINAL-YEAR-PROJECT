@@ -56,8 +56,10 @@ export class Moves {
         this.endCol = endCol;
     }
     equals(checkMove) {
-        return this.startRow === checkMove.startRow && this.startCol === checkMove.startCol &&
-            this.endRow === checkMove.endRow && this.endCol === checkMove.endCol;
+        return (this.startRow === checkMove.startRow &&
+            this.startCol === checkMove.startCol &&
+            this.endRow === checkMove.endRow &&
+            this.endCol === checkMove.endCol);
     }
 }
 export class CheckersBoard {
@@ -100,7 +102,10 @@ export class CheckersGame {
         this.chainingCol = null;
     }
     changeTurn() {
-        this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
+        this.currentPlayer =
+            this.currentPlayer === this.players[0]
+                ? this.players[1]
+                : this.players[0];
         this.numOfTurns++;
         if (this.forcedJumps) {
             if (this.capturesPossible()) {
@@ -127,13 +132,15 @@ export class CheckersGame {
             return this.validateRed(startRow, startCol, endRow, endCol, destinationSquare);
         }
         if ((piece === null || piece === void 0 ? void 0 : piece.isKing) === true) {
-            if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 1) {
+            if (Math.abs(startRow - endRow) === 1 &&
+                Math.abs(startCol - endCol) === 1) {
                 if (destinationSquare !== null) {
                     return false;
                 }
                 return true;
             }
-            else if (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 2) {
+            else if (Math.abs(startRow - endRow) == 2 &&
+                Math.abs(startCol - endCol) == 2) {
                 return this.canCapture(startRow, startCol, endRow, endCol);
             }
         }
@@ -179,7 +186,7 @@ export class CheckersGame {
                     { endRow: startRow + direction, endCol: startCol - 1 },
                     { endRow: startRow + direction, endCol: startCol + 1 },
                     { endRow: startRow + 2 * direction, endCol: startCol - 2 },
-                    { endRow: startRow + 2 * direction, endCol: startCol + 2 }
+                    { endRow: startRow + 2 * direction, endCol: startCol + 2 },
                 ];
                 for (const move of potentialMovesArr) {
                     if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
@@ -198,7 +205,7 @@ export class CheckersGame {
                     { endRow: startRow + 2, endCol: startCol - 2 },
                     { endRow: startRow + 2, endCol: startCol + 2 },
                     { endRow: startRow - 2, endCol: startCol - 2 },
-                    { endRow: startRow - 2, endCol: startCol + 2 }
+                    { endRow: startRow - 2, endCol: startCol + 2 },
                 ];
                 for (const move of potentialMovesArr) {
                     if (this.validateMove(startRow, startCol, move.endRow, move.endCol)) {
@@ -212,12 +219,12 @@ export class CheckersGame {
                 return [];
             }
             else {
-                return moves.filter(move => Math.abs(move.startRow - move.endRow) === 2);
+                return moves.filter((move) => Math.abs(move.startRow - move.endRow) === 2);
             }
         }
         if (this.forcedJumps) {
             if (this.currentPlayer.capturesAvailable) {
-                return moves.filter(move => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
+                return moves.filter((move) => this.canCapture(move.startRow, move.startCol, move.endRow, move.endCol));
             }
         }
         return moves;
@@ -334,12 +341,14 @@ export class CheckersGame {
         else {
             return false;
         }
-        ;
     }
     chainCaptures(row, col) {
         const moves = this.possibleMoves(row, col);
-        const captureMoves = moves.filter(move => Math.abs(move.startRow - move.endRow) === 2);
-        return captureMoves.map(move => ({ endRow: move.endRow, endCol: move.endCol }));
+        const captureMoves = moves.filter((move) => Math.abs(move.startRow - move.endRow) === 2);
+        return captureMoves.map((move) => ({
+            endRow: move.endRow,
+            endCol: move.endCol,
+        }));
     }
     capturesPossible() {
         let flag = false;
@@ -348,7 +357,7 @@ export class CheckersGame {
                 const piece = this.getPiece(row, col);
                 if (piece && piece.color === this.currentPlayer.color) {
                     const moves = this.possibleMoves(row, col);
-                    if (moves.some(move => Math.abs(move.startRow - move.endRow) === 2)) {
+                    if (moves.some((move) => Math.abs(move.startRow - move.endRow) === 2)) {
                         piece.captureCheck();
                         flag = true;
                     }
@@ -361,16 +370,27 @@ export class CheckersGame {
         const piece = this.getPiece(row, col);
         if (!piece)
             return false;
-        const directions = piece.color === PieceColor.Black ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]];
+        const directions = piece.color === PieceColor.Black
+            ? [
+                [1, -1],
+                [1, 1],
+            ]
+            : [
+                [-1, -1],
+                [-1, 1],
+            ];
         for (let [dr, dc] of directions) {
             const opponentRow = row + dr;
             const opponentCol = col + dc;
             const landingRow = opponentRow + dr;
             const landingCol = opponentCol + dc;
-            if (this.isValidPosition(opponentRow, opponentCol) && this.isValidPosition(landingRow, landingCol)) {
+            if (this.isValidPosition(opponentRow, opponentCol) &&
+                this.isValidPosition(landingRow, landingCol)) {
                 const opponentPiece = this.getPiece(opponentRow, opponentCol);
                 const landingSpot = this.getPiece(landingRow, landingCol);
-                if (opponentPiece && opponentPiece.color !== piece.color && !landingSpot) {
+                if (opponentPiece &&
+                    opponentPiece.color !== piece.color &&
+                    !landingSpot) {
                     return true;
                 }
             }
@@ -408,11 +428,13 @@ export class CheckersGame {
         }
     }
     checkEndOfGame() {
-        if (this.noPiecesLeft(this.players[0]) && this.players[1].numOfPieces >= 1) {
+        if (this.noPiecesLeft(this.players[0]) &&
+            this.players[1].numOfPieces >= 1) {
             this.currentState = State.gameFinished;
             this.winner = this.players[1];
         }
-        else if (this.noPiecesLeft(this.players[1]) && this.players[0].numOfPieces >= 1) {
+        else if (this.noPiecesLeft(this.players[1]) &&
+            this.players[0].numOfPieces >= 1) {
             this.currentState = State.gameFinished;
             this.winner = this.players[0];
         }
@@ -449,7 +471,11 @@ export class CheckersGame {
                     const middleCol = Math.floor((currentCol + moveCol) / 2);
                     const capturedPiece = this.getPiece(middleRow, middleCol);
                     if (capturedPiece) {
-                        capturedPieces.push({ piece: capturedPiece, row: middleRow, col: middleCol });
+                        capturedPieces.push({
+                            piece: capturedPiece,
+                            row: middleRow,
+                            col: middleCol,
+                        });
                         this.board[middleRow][middleCol] = null;
                         this.board[currentRow][currentCol] = null;
                         this.board[moveRow][moveCol] = piece;
@@ -541,7 +567,7 @@ export class CheckersGame {
     }
     deepCopyGame() {
         const copiedGame = new CheckersGame(this.players[0].deepCopyPlayer(), this.players[1].deepCopyPlayer(), this.forcedJumps);
-        copiedGame.board = this.board.map(row => row.map(piece => piece ? piece.deepCopyPiece() : null));
+        copiedGame.board = this.board.map((row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null)));
         copiedGame.currentPlayer = this.currentPlayer;
         copiedGame.currentState = this.currentState;
         copiedGame.winner = this.winner ? this.winner.deepCopyPlayer() : null;

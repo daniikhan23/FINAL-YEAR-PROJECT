@@ -4,7 +4,8 @@ module.exports = {
   mode: 'development', // Use 'production' for production builds
   entry: {
     game: './src/pages/checkers-dom.ts',
-    signup: './src/pages/signup.ts'
+    signup: './src/pages/signup.ts',
+    login: './src/pages/login.ts'
   },
   output: {
     path: path.resolve(__dirname, 'public/js/pages/bundles'), // Output directory

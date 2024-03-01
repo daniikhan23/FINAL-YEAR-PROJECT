@@ -8,7 +8,7 @@ export const firebaseConfig = {
     storageBucket: "checkersmate.appspot.com",
     messagingSenderId: "791442223987",
     appId: "1:791442223987:web:2b89ba8deafed9ea5c0b06",
-    measurementId: "G-5XQ5K0FLK3"
+    measurementId: "G-5XQ5K0FLK3",
 };
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

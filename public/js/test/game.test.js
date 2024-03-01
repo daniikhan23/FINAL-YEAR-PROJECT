@@ -1,5 +1,5 @@
-import { PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame } from "../components/checkersGame";
-describe('CheckersGame', () => {
+import { PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame, } from "../components/checkersGame";
+describe("CheckersGame", () => {
     let game;
     let playerOne;
     let playerTwo;
@@ -8,7 +8,7 @@ describe('CheckersGame', () => {
         playerTwo = new Player("Khan", PieceColor.Black);
         game = new CheckersGame(playerOne, playerTwo, false);
     });
-    test('Game should be initialized correctly', () => {
+    test("Game should be initialized correctly", () => {
         expect(game.players[0]).toBe(playerOne);
         expect(game.players[1]).toBe(playerTwo);
         expect(game.currentState).toBe(State.inProgress);
@@ -16,16 +16,16 @@ describe('CheckersGame', () => {
         expect(game.board).toBeDefined();
         expect(game.board.length).toBe(8);
         expect(game.winner).toBeNull();
-        game.board.forEach(row => expect(row.length).toBe(8));
+        game.board.forEach((row) => expect(row.length).toBe(8));
     });
-    test('changeTurn() should always choose the correct player', () => {
+    test("changeTurn() should always choose the correct player", () => {
         expect(game.currentPlayer).toBe(playerOne);
         game.changeTurn();
         expect(game.currentPlayer).toBe(playerTwo);
         game.changeTurn();
         expect(game.currentPlayer).toBe(playerOne);
     });
-    test('getPiece() should return the correct piece at a given coordinate', () => {
+    test("getPiece() should return the correct piece at a given coordinate", () => {
         var _a, _b;
         expect(game.getPiece(0, 1)).toBeInstanceOf(CheckersPiece);
         expect((_a = game.getPiece(0, 1)) === null || _a === void 0 ? void 0 : _a.color).toBe(PieceColor.Black);
@@ -33,7 +33,7 @@ describe('CheckersGame', () => {
         expect((_b = game.getPiece(5, 0)) === null || _b === void 0 ? void 0 : _b.color).toBe(PieceColor.Red);
         expect(game.getPiece(3, 3)).toBeNull();
     });
-    test('Ensure pieces are king or not correctly', () => {
+    test("Ensure pieces are king or not correctly", () => {
         var _a, _b;
         expect((_a = game.getPiece(0, 1)) === null || _a === void 0 ? void 0 : _a.isKing).toBe(false);
         expect((_b = game.getPiece(5, 0)) === null || _b === void 0 ? void 0 : _b.isKing).toBe(false);
@@ -41,7 +41,7 @@ describe('CheckersGame', () => {
         piece.makeKing();
         expect(piece.isKing).toBe(true);
     });
-    test('movePiece should correctly handle valid and invalid moves', () => {
+    test("movePiece should correctly handle valid and invalid moves", () => {
         expect(() => game.movePiece(5, 0, 4, 1)).not.toThrow();
         expect(game.getPiece(4, 1)).toBeInstanceOf(CheckersPiece);
         game.board = new CheckersBoard().board;
@@ -51,14 +51,14 @@ describe('CheckersGame', () => {
         game.movePiece(0, 1, 5, 7);
         expect(game.getPiece(5, 7)).toBeNull();
     });
-    test('promoteToKing and makeKing should promote a piece to king at the end of the board', () => {
+    test("promoteToKing and makeKing should promote a piece to king at the end of the board", () => {
         game.board[0][1] = game.getPiece(5, 0);
         expect(game.promoteToKing(0, 1)).toBe(true);
         game.board[7][0] = game.getPiece(1, 0);
         expect(game.promoteToKing(7, 0)).toBe(true);
         expect(game.promoteToKing(6, 3)).toBe(false);
     });
-    test('Capturing mechanics should work correctly, including chain captures, score and captured piece updates', () => {
+    test("Capturing mechanics should work correctly, including chain captures, score and captured piece updates", () => {
         var _a, _b, _c;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
@@ -96,7 +96,7 @@ describe('CheckersGame', () => {
         expect(game.players[0].capturedPieces).toBe(3);
         expect(game.players[0].score).toBe(4);
     });
-    test('possibleMoves should return all valid moves for a piece or none if there are none', () => {
+    test("possibleMoves should return all valid moves for a piece or none if there are none", () => {
         let moves = game.possibleMoves(5, 0);
         expect(moves).toBeInstanceOf(Array);
         expect(moves.length).toBeGreaterThan(0);
@@ -109,7 +109,7 @@ describe('CheckersGame', () => {
         expect(moves.length).toBeGreaterThan(0);
         expect(moves.length).toBe(2);
     });
-    test('Endgame conditions should be correctly detected', () => {
+    test("Endgame conditions should be correctly detected", () => {
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const piece = game.getPiece(row, col);
@@ -142,7 +142,7 @@ describe('CheckersGame', () => {
         expect(game.currentState).toBe(State.gameFinished);
         expect(game.winner).toBe(game.players[1]);
     });
-    test('isVulnerable should correctly determine a piece that can be captured', () => {
+    test("isVulnerable should correctly determine a piece that can be captured", () => {
         game.movePiece(5, 0, 4, 1);
         game.movePiece(2, 3, 3, 2);
         expect(game.isVulnerable(3, 2)).toBe(true);

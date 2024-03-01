@@ -79,14 +79,12 @@ button:hover {
 }
 
 * {
-  font-family: 'Black Ops One', cursive;
+  font-family: "Black Ops One", cursive;
 }
 
 body {
   background-color: #363430;
 }
-
-
 
 /* Navbar Section */
 
@@ -107,17 +105,17 @@ body {
 
 .header .header-container .container .home button a {
   font-size: 2rem;
-  color: red; 
+  color: red;
 }
 
-.header .header-container .container .home button a:hover{
+.header .header-container .container .home button a:hover {
   color: white;
 }
 
 .header .header-container .container .home button a:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
-  transition: all 0.1s ease-in
+  transition: all 0.1s ease-in;
 }
 
 .header .header-container .container ul {
@@ -146,7 +144,7 @@ body {
 .header .header-container .container .list li button a:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
-  transition: all 0.1s ease-in
+  transition: all 0.1s ease-in;
 }
 
 .header .header-container .container .list {
@@ -154,8 +152,6 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
-
 
 /* Initial Screen Section  */
 .initial-screen {
@@ -198,34 +194,44 @@ body {
 }
 
 .initial-screen .initial-screen-container .container .buttons .checkbox {
-    display: inline-flex;
-    align-items: center;
-    font-size: 1.5rem;
-    color: #fff;
-    cursor: pointer;
-    margin-top: 1.5rem;
-    background-color: black;
-    border: 2px solid black;
-    border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  background-color: black;
+  border: 2px solid black;
+  border-radius: 0.5rem;
 }
 
-.initial-screen .initial-screen-container .container .buttons .checkbox input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 3rem;
-    height: 2rem;
-    border: 2px solid black;
-    background-color: white;
-    margin-right: 8px;
-    cursor: pointer;
+.initial-screen
+  .initial-screen-container
+  .container
+  .buttons
+  .checkbox
+  input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 3rem;
+  height: 2rem;
+  border: 2px solid black;
+  background-color: white;
+  margin-right: 8px;
+  cursor: pointer;
 }
 
-.initial-screen .initial-screen-container .container .buttons .checkbox input[type="checkbox"]:checked {
-    background-color: red;
+.initial-screen
+  .initial-screen-container
+  .container
+  .buttons
+  .checkbox
+  input[type="checkbox"]:checked {
+  background-color: red;
 }
 
 .initial-screen .initial-screen-container .container .buttons .checkbox-text {
-    user-select: none;
+  user-select: none;
 }
 
 /* 2 Player */
@@ -295,7 +301,7 @@ body {
   border: 0.2rem solid black;
 }
 
-.main .board-container .container .row{
+.main .board-container .container .row {
   justify-content: center;
 }
 
@@ -308,21 +314,19 @@ body {
   justify-content: center;
 }
 
-
 /*Light brown squares*/
 .board-container .container .row:nth-child(odd) .col:nth-child(odd),
 .board-container .container .row:nth-child(even) .col:nth-child(even) {
   background-color: #f0d9b5;
-  color: #b58863
+  color: #b58863;
 }
 
 /*Dark brown squares */
 .board-container .container .row:nth-child(odd) .col:nth-child(even),
 .board-container .row:nth-child(even) .col:nth-child(odd) {
   background-color: #b58863;
-  color: #f0d9b5
+  color: #f0d9b5;
 }
-
 
 /* 
 Images from https://www.iconfinder.com/search?q=checkers
@@ -330,11 +334,11 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for black piece */
 .main .board-container .container .col .black-piece {
-  background-image: url('../resources/img/blackBase.png'); 
+  background-image: url("../resources/img/blackBase.png");
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: 50%; 
+  border-radius: 50%;
   filter: drop-shadow(0 0 0.75rem rgb(72, 72, 72));
   height: 5.5rem;
   width: 5.5rem;
@@ -348,7 +352,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for king black piece */
 .main .board-container .container .col .black-piece-king {
-  background-image: url('../resources/img/blackKing.png'); 
+  background-image: url("../resources/img/blackKing.png");
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -366,7 +370,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for red piece */
 .main .board-container .container .col .red-piece {
-  background-image: url('../resources/img/redBase.png'); 
+  background-image: url("../resources/img/redBase.png");
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -384,7 +388,7 @@ Images from https://www.iconfinder.com/search?q=checkers
 
 /* Image for king red piece */
 .main .board-container .container .col .red-piece-king {
-  background-image: url('../resources/img/redKing.png'); 
+  background-image: url("../resources/img/redKing.png");
   background-size: 140% 140%;
   background-repeat: no-repeat;
   background-position: center;
@@ -422,8 +426,6 @@ Images from https://www.iconfinder.com/search?q=checkers
   transform: translateY(2px) !important;
 }
 
-
-
 /* End of Game Section */
 .end-of-game-section {
   position: absolute;
@@ -434,7 +436,7 @@ Images from https://www.iconfinder.com/search?q=checkers
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6); 
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .end-of-game-section .end-of-game-container .container {
@@ -457,8 +459,18 @@ Images from https://www.iconfinder.com/search?q=checkers
   margin-bottom: 20px;
 }
 
-.end-of-game-section .end-of-game-container .container .player-info .player-one-info #playerOneFinalName,
-.end-of-game-section .end-of-game-container .container .player-info .player-two-info #playerTwoFinalName{
+.end-of-game-section
+  .end-of-game-container
+  .container
+  .player-info
+  .player-one-info
+  #playerOneFinalName,
+.end-of-game-section
+  .end-of-game-container
+  .container
+  .player-info
+  .player-two-info
+  #playerTwoFinalName {
   font-size: 2rem;
 }
 
@@ -482,14 +494,26 @@ Images from https://www.iconfinder.com/search?q=checkers
   font-size: 1.5rem;
 }
 
-.end-of-game-section .end-of-game-container .container #restartLocalGameButton:hover,
-.end-of-game-section .end-of-game-container .container #restartAIGameButton:hover {
+.end-of-game-section
+  .end-of-game-container
+  .container
+  #restartLocalGameButton:hover,
+.end-of-game-section
+  .end-of-game-container
+  .container
+  #restartAIGameButton:hover {
   background-color: black;
   color: red;
 }
 
-.end-of-game-section .end-of-game-container .container #restartLocalGameButton:active,
-.end-of-game-section .end-of-game-container .container #restartAIGameButton:active {
+.end-of-game-section
+  .end-of-game-container
+  .container
+  #restartLocalGameButton:active,
+.end-of-game-section
+  .end-of-game-container
+  .container
+  #restartAIGameButton:active {
   transform: translateY(2px) !important;
 }
 
@@ -501,7 +525,6 @@ light brown
 dark brown
 #b58863
 */
-
 
 /* Footer Section */
 .footer-section {

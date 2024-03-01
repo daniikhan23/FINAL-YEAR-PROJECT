@@ -1,4 +1,4 @@
-import { Moves, PieceColor, State, Player } from './checkersGame';
+import { Moves, PieceColor, State, Player, } from "./checkersGame";
 export class CheckersAI extends Player {
     constructor(name, color, game, depth) {
         super(name, color);
@@ -24,10 +24,10 @@ export class CheckersAI extends Player {
                         playerKingCount++;
                     }
                     if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
-                        score += (piece.color === PieceColor.Black ? 2.5 : -2.5);
+                        score += piece.color === PieceColor.Black ? 2.5 : -2.5;
                     }
                     if (row >= 3 && row <= 4 && col < 2 && col > 5) {
-                        score += (piece.color === PieceColor.Black ? 0.5 : -0.5);
+                        score += piece.color === PieceColor.Black ? 0.5 : -0.5;
                     }
                     if (game.numOfTurns < 10) {
                         if (piece.color === PieceColor.Black && row === 0) {
@@ -45,11 +45,13 @@ export class CheckersAI extends Player {
                         let backwardRow = piece.color === PieceColor.Black ? row - 1 : row + 1;
                         let leftProtectionPiece = game.getPiece(backwardRow, col - 1);
                         let rightProtectionPiece = game.getPiece(backwardRow, col + 1);
-                        if (leftProtectionPiece && leftProtectionPiece.color === piece.color) {
-                            score += (piece.color === PieceColor.Black ? 6 : -6);
+                        if (leftProtectionPiece &&
+                            leftProtectionPiece.color === piece.color) {
+                            score += piece.color === PieceColor.Black ? 6 : -6;
                         }
-                        if (rightProtectionPiece && rightProtectionPiece.color === piece.color) {
-                            score += (piece.color === PieceColor.Black ? 6 : -6);
+                        if (rightProtectionPiece &&
+                            rightProtectionPiece.color === piece.color) {
+                            score += piece.color === PieceColor.Black ? 6 : -6;
                         }
                     }
                     if (game.numOfTurns < 15) {
@@ -72,7 +74,7 @@ export class CheckersAI extends Player {
                         }
                     }
                     if (!game.isVulnerable(row, col)) {
-                        score += (piece.color === PieceColor.Black ? -6 : 6);
+                        score += piece.color === PieceColor.Black ? -6 : 6;
                     }
                 }
             }
@@ -87,7 +89,7 @@ export class CheckersAI extends Player {
                 const piece = game.getPiece(row, col);
                 if (piece && piece.color === color) {
                     const moves = game.possibleMoves(row, col);
-                    captureCount += moves.filter(move => Math.abs(move.startRow - move.endRow) === 2).length;
+                    captureCount += moves.filter((move) => Math.abs(move.startRow - move.endRow) === 2).length;
                 }
             }
         }
@@ -100,28 +102,28 @@ export class CheckersAI extends Player {
             new Moves(2, 3, 3, 2),
             new Moves(6, 1, 5, 2),
             new Moves(2, 5, 3, 6),
-            new Moves(7, 0, 6, 1)
+            new Moves(7, 0, 6, 1),
         ]);
         openings.set("Alma", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(6, 1, 5, 2),
             new Moves(2, 5, 3, 6),
-            new Moves(7, 2, 6, 1)
+            new Moves(7, 2, 6, 1),
         ]);
         openings.set("Centre", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(6, 1, 5, 2),
             new Moves(2, 5, 3, 6),
-            new Moves(4, 3, 3, 4)
+            new Moves(4, 3, 3, 4),
         ]);
         openings.set("Glasgow", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(6, 1, 5, 2),
             new Moves(2, 5, 3, 6),
-            new Moves(5, 2, 4, 1)
+            new Moves(5, 2, 4, 1),
         ]);
         openings.set("Laird and Lady", [
             new Moves(5, 2, 4, 3),
@@ -131,7 +133,7 @@ export class CheckersAI extends Player {
             new Moves(5, 6, 4, 7),
             new Moves(3, 6, 4, 5),
             new Moves(5, 4, 3, 6),
-            new Moves(2, 7, 4, 5)
+            new Moves(2, 7, 4, 5),
         ]);
         openings.set("Black Doctor", [
             new Moves(5, 2, 4, 3),
@@ -142,7 +144,7 @@ export class CheckersAI extends Player {
             new Moves(3, 6, 4, 5),
             new Moves(5, 4, 3, 6),
             new Moves(3, 2, 5, 4),
-            new Moves(6, 3, 4, 5)
+            new Moves(6, 3, 4, 5),
         ]);
         openings.set("Laird and Lady Refused", [
             new Moves(5, 2, 4, 3),
@@ -150,7 +152,7 @@ export class CheckersAI extends Player {
             new Moves(6, 1, 5, 2),
             new Moves(2, 5, 3, 6),
             new Moves(5, 6, 4, 7),
-            new Moves(1, 6, 2, 5)
+            new Moves(1, 6, 2, 5),
         ]);
         openings.set("Glasgow-Whilter", [
             new Moves(5, 2, 4, 3),
@@ -160,7 +162,7 @@ export class CheckersAI extends Player {
             new Moves(5, 6, 4, 5),
             new Moves(1, 6, 2, 5),
             new Moves(5, 2, 4, 1),
-            new Moves(1, 4, 2, 3)
+            new Moves(1, 4, 2, 3),
         ]);
         openings.set("Nailor", [
             new Moves(5, 2, 4, 3),
@@ -190,39 +192,39 @@ export class CheckersAI extends Player {
             new Moves(2, 3, 3, 2),
             new Moves(5, 6, 4, 5),
             new Moves(2, 5, 3, 6),
-            new Moves(6, 7, 5, 6)
+            new Moves(6, 7, 5, 6),
         ]);
         openings.set("Souter", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(5, 6, 4, 5),
             new Moves(2, 5, 3, 6),
-            new Moves(6, 5, 5, 6)
+            new Moves(6, 5, 5, 6),
         ]);
         openings.set("Whilter-I", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(5, 6, 4, 5),
             new Moves(2, 5, 3, 6),
-            new Moves(6, 3, 5, 2)
+            new Moves(6, 3, 5, 2),
         ]);
         openings.set("Whilter-II", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
-            new Moves(6, 3, 5, 2)
+            new Moves(6, 3, 5, 2),
         ]);
         openings.set("Whilter-Exchange", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(6, 3, 5, 2),
-            new Moves(2, 5, 3, 4)
+            new Moves(2, 5, 3, 4),
         ]);
         openings.set("Maid of the Mill", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(6, 1, 5, 2),
             new Moves(3, 6, 4, 7),
-            new Moves(4, 3, 3, 4)
+            new Moves(4, 3, 3, 4),
         ]);
         openings.set("Douglas", [
             new Moves(5, 2, 4, 3),
@@ -230,83 +232,75 @@ export class CheckersAI extends Player {
             new Moves(6, 1, 5, 2),
             new Moves(3, 6, 4, 7),
             new Moves(7, 0, 6, 1),
-            new Moves(1, 6, 2, 5)
+            new Moves(1, 6, 2, 5),
         ]);
         openings.set("Pioneer", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 2),
             new Moves(6, 1, 5, 2),
-            new Moves(1, 6, 2, 5)
+            new Moves(1, 6, 2, 5),
         ]);
         openings.set("White Dyke", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 5, 3, 6),
             new Moves(6, 1, 5, 2),
-            new Moves(3, 6, 4, 5)
+            new Moves(3, 6, 4, 5),
         ]);
         openings.set("Wagram", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 5, 3, 6),
             new Moves(5, 6, 4, 7),
-            new Moves(2, 1, 3, 0)
+            new Moves(2, 1, 3, 0),
         ]);
         openings.set("Boston", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 5, 3, 6),
             new Moves(5, 6, 4, 7),
-            new Moves(3, 6, 4, 5)
+            new Moves(3, 6, 4, 5),
         ]);
         openings.set("Dyke", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 5, 3, 6),
-            new Moves(4, 3, 3, 2)
+            new Moves(4, 3, 3, 2),
         ]);
-        openings.set("Cross", [
-            new Moves(5, 2, 4, 3),
-            new Moves(2, 3, 3, 4)
-        ]);
+        openings.set("Cross", [new Moves(5, 2, 4, 3), new Moves(2, 3, 3, 4)]);
         openings.set("Waterloo", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 3, 3, 4),
             new Moves(6, 1, 5, 2),
-            new Moves(3, 4, 4, 5)
+            new Moves(3, 4, 4, 5),
         ]);
         openings.set("Ayrshire Lassie", [
             new Moves(5, 2, 4, 3),
             new Moves(2, 1, 3, 0),
             new Moves(6, 1, 5, 2),
-            new Moves(1, 0, 2, 1)
+            new Moves(1, 0, 2, 1),
         ]);
-        openings.set("Switcher", [
-            new Moves(5, 2, 4, 3),
-            new Moves(2, 7, 3, 6)
-        ]);
+        openings.set("Switcher", [new Moves(5, 2, 4, 3), new Moves(2, 7, 3, 6)]);
         openings.set("Single Corner", [
             new Moves(5, 2, 4, 3),
-            new Moves(2, 5, 3, 4)
+            new Moves(2, 5, 3, 4),
         ]);
         openings.set("Second Double Corner", [
             new Moves(5, 2, 4, 3),
-            new Moves(2, 1, 3, 2)
+            new Moves(2, 1, 3, 2),
         ]);
         openings.set("Bristol", [
             new Moves(5, 2, 4, 1),
             new Moves(2, 1, 3, 0),
-            new Moves(4, 1, 3, 2)
+            new Moves(4, 1, 3, 2),
         ]);
-        openings.set("Paisley", [
-            new Moves(5, 2, 4, 1),
-            new Moves(2, 1, 3, 2)
-        ]);
+        openings.set("Paisley", [new Moves(5, 2, 4, 1), new Moves(2, 1, 3, 2)]);
         openings.set("Bristol-Cross", [
             new Moves(5, 2, 4, 1),
-            new Moves(2, 3, 3, 4)
+            new Moves(2, 3, 3, 4),
         ]);
         return openings;
     }
     identifyOpening() {
         let foundOpening = false;
-        if (this.game.numOfTurns < Math.max(...Array.from(this.openings.values()).map(o => o.length))) {
+        if (this.game.numOfTurns <
+            Math.max(...Array.from(this.openings.values()).map((o) => o.length))) {
             for (const [name, moves] of this.openings) {
                 if (this.game.playerOneMoves.length <= moves.length / 2) {
                     const sequenceMatch = this.game.playerOneMoves.every((move, index) => {
@@ -401,13 +395,16 @@ export class CheckersAI extends Player {
                     this.playMinimaxMove();
                 }
             }
-            else if (this.game.numOfTurns === 1 && this.game.getPiece(3, 4) === null) {
+            else if (this.game.numOfTurns === 1 &&
+                this.game.getPiece(3, 4) === null) {
                 this.game.movePiece(2, 5, 3, 4);
             }
-            else if (this.game.numOfTurns === 3 && this.game.getPiece(2, 5) === null) {
+            else if (this.game.numOfTurns === 3 &&
+                this.game.getPiece(2, 5) === null) {
                 this.game.movePiece(1, 6, 2, 5);
             }
-            else if (this.game.numOfTurns === 5 && this.game.getPiece(1, 6) === null) {
+            else if (this.game.numOfTurns === 5 &&
+                this.game.getPiece(1, 6) === null) {
                 this.game.movePiece(0, 7, 1, 6);
             }
             else {
