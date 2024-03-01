@@ -1,4 +1,4 @@
-import { Moves, PieceColor, State, Player } from './checkers.js';
+import { Moves, PieceColor, State, Player } from './checkersGame';
 export class CheckersAI extends Player {
     constructor(name, color, game, depth) {
         super(name, color);
@@ -437,4 +437,4 @@ export class CheckersAI extends Player {
         return null;
     }
 }
-//# sourceMappingURL=checkers-ai.js.map
+//# sourceMappingURL=checkersAI.js.map

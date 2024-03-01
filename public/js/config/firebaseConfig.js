@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyD3V84zQ95-MVOBE9LNdevIiZQJV2zJVBc",
     authDomain: "checkersmate.firebaseapp.com",
     databaseURL: "https://checkersmate-default-rtdb.europe-west1.firebasedatabase.app",

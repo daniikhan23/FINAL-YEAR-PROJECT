@@ -1,4 +1,4 @@
-import {Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame} from './checkers.js';
+import {Moves, PieceColor, CheckersPiece, CheckersBoard, State, Player, CheckersGame} from './checkersGame';
 
 /**
  * A class for the AI player extending the regular player class

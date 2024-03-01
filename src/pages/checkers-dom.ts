@@ -1,5 +1,5 @@
-import { PieceColor, State, Player, CheckersGame } from '../components/checkers.js';
-import { CheckersAI } from '../components/checkers-ai.js';
+import { PieceColor, State, Player, CheckersGame } from '../components/checkersGame';
+import { CheckersAI } from '../components/checkersAI';
 
 // DOM Manipulation
 

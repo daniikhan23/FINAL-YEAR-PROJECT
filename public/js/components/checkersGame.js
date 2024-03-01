@@ -548,4 +548,4 @@ export class CheckersGame {
         return copiedGame;
     }
 }
-//# sourceMappingURL=checkers.js.map
+//# sourceMappingURL=checkersGame.js.map

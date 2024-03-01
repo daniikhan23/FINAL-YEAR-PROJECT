@@ -111,6 +111,8 @@
   "exclude": [
     "docs",
     "public",
-    "jest.config.js"
+    "jest.config.js",
+    "webpack.config.js",
+    "node_modules"
   ]
 }
