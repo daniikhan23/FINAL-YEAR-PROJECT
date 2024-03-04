@@ -1,21 +1,21 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development', // Use 'production' for production builds
+  mode: 'development',
   entry: {
     game: './src/pages/checkers-dom.ts',
     signup: './src/pages/signup.ts',
     login: './src/pages/login.ts'
   },
   output: {
-    path: path.resolve(__dirname, 'public/js/pages/bundles'), // Output directory
-    filename: '[name].bundle.js' // Output file
+    path: path.resolve(__dirname, 'public/js/pages/bundles'),
+    filename: '[name].bundle.js'
   },
-  devtool: 'inline-source-map', // Source maps support
+  // devtool: 'inline-source-map', 
   module: {
     rules: [
       {
-        test: /\.tsx?$/, // .ts and .tsx files
+        test: /\.tsx?$/, 
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -26,13 +26,13 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'], // Resolve these extensions
+    extensions: ['.tsx', '.ts', '.js'],
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'), // Serve files from here
+      directory: path.join(__dirname, 'public'),
     },
     compress: true,
-    port: 9000, // Adjust the port as necessary
+    port: 9000,
   },
 };
