@@ -1,0 +1,73 @@
+* {
+  font-family: "Black Ops One", cursive;
+}
+
+body {
+  background-color: wheat;
+}
+
+/* Navbar Section */
+.navbar .navbar-container {
+  background-color: black;
+}
+
+.navbar .navbar-container .container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.navbar .navbar-container .container .home button {
+  border: 1rem solid black;
+  background-color: black;
+}
+
+.navbar .navbar-container .container .home button a {
+  font-size: 2rem;
+  color: red;
+}
+
+.navbar .navbar-container .container .home button a:hover {
+  color: white;
+}
+
+.navbar .navbar-container .container .home button a:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  transition: all 0.1s ease-in;
+}
+
+.navbar .navbar-container .container ul {
+  list-style: none;
+}
+
+.navbar .navbar-container .container .list li {
+  margin: 0rem 1rem;
+}
+
+.navbar .navbar-container .container .list li button {
+  background-color: black;
+  border: 1rem solid black;
+  border-radius: 5%;
+}
+
+.navbar .navbar-container .container .list li button a {
+  font-size: 1.5rem;
+  color: red;
+}
+
+.navbar .navbar-container .container .list li button a:hover {
+  color: white;
+}
+
+.navbar .navbar-container .container .list li button a:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  transition: all 0.1s ease-in;
+}
+
+.navbar .navbar-container .container .list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
