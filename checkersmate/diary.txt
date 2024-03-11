@@ -259,4 +259,12 @@ and their results and perhaps further information. A lot more work to be done!
 Week 22-23: 
 Converting project to React now to further its development and make the website and project architecture overall more modern. Previously I was also using webpack bundler
 which I've decided to get rid of and instead look into creating a vite js project. Currently studying and understanding both vite js tooling as well as React to be able 
-to make a smooth transition
+to make a smooth transition.
+
+First steps of the React conversion are now underway. Currently the existing home, rules and about pages have been converted. The signup is now also done with the logic 
+of the signup page and it's UI representation now handled by React. Also included Toast for better user feedback when a user tries to sign up. Next steps will be the 
+login page and then finally the game page. The designs for these pages are currently the same with perhaps some changes being considered for the game page but ultimately 
+how much these designs will change by the end of the term are dependent on time constraints. A further consideration for the future could be the use of another CSS 
+framework like ChakraUI as it would allow me to make the pages responsive to mobile sizes more easily. It is, howver, more important at the moment to add and refine 
+further functionality and keeping the visuals as the final tasks to consider. Once all this is done, I will be looking further into what more can be done with user 
+accounts. 
