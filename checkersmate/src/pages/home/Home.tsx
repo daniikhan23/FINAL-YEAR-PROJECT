@@ -19,7 +19,7 @@ const Home = () => {
       <div className="intro">
         <div className="intro-container">
           <div className="container-fluid">
-            <h1>Welcome to CheckersMate</h1>
+            <h1>Welcome to CheckersMate!</h1>
           </div>
         </div>
       </div>

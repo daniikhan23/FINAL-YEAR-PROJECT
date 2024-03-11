@@ -5,7 +5,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
-// import Rules from './pages/Rules';
+import Rules from "./pages/rules/Rules";
 import Game from "./pages/game/Game";
 // import About from './pages/About';
 // import SignUp from './pages/SignUp';
@@ -19,7 +19,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/rules" element={<Rules />} /> */}
+          <Route path="/rules" element={<Rules />} />
           <Route path="/game" element={<Game />} />
           {/* <Route path="/about" element={<About />} />
           <Route path="/signup" element={<SignUp />} />
