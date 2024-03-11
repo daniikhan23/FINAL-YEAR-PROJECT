@@ -10,8 +10,8 @@ import Game from "./pages/game/Game";
 // import About from './pages/About';
 // import SignUp from './pages/SignUp';
 // import Login from './pages/Login';
-import TicTacToe from "./pages/experiment/TicTacToe";
-import TSTut from "./pages/experiment/TSTut";
+// import TicTacToe from "./pages/experiment/TicTacToe";
+// import TSTut from "./pages/experiment/TSTut";
 
 function App() {
   return (
@@ -24,8 +24,8 @@ function App() {
           {/* <Route path="/about" element={<About />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} /> */}
-          <Route path="/tic-tac-toe" element={<TicTacToe />} />
-          <Route path="/tstut" element={<TSTut />} />
+          {/* <Route path="/tic-tac-toe" element={<TicTacToe />} />
+          <Route path="/tstut" element={<TSTut />} /> */}
         </Routes>
       </Router>
     </>

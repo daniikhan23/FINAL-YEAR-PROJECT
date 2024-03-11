@@ -1,0 +1,194 @@
+html,
+body {
+  font-size: 10px;
+  font-weight: 400;
+  scroll-behavior: smooth;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 9rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 4.7rem;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: capitalize;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+
+h3 {
+  font-size: 3.1rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h4 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+h5 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+a,
+a:active,
+a:focus,
+a:hover,
+button {
+  text-decoration: none;
+  outline: 0;
+}
+
+a:hover,
+button:hover {
+  --webkit-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+
+* {
+  font-family: "Black Ops One", cursive;
+}
+
+body {
+  background-color: wheat;
+}
+
+/* Intro Section */
+.intro .intro-container .container-fluid {
+  background-image: url(../assets/img/checkers-board.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 20rem 0rem;
+}
+
+.intro .intro-container .container-fluid h1 {
+  text-align: center;
+  color: black;
+  font-size: 5rem;
+}
+
+.divider .container {
+  margin: 100px;
+  margin-left: 190px;
+}
+
+.divider .container .row {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.divider .container .row .col .title {
+  color: #000;
+  font-size: 50px;
+  font-weight: 100;
+  margin-bottom: 0;
+}
+
+.divider .container .row .col .col .title-color {
+  color: red;
+  font-size: 50px;
+  font-weight: 100;
+}
+
+.divider .container .row .col .border-center .border-start {
+  height: 150px;
+  width: 2px;
+  background-color: #000;
+  color: #000;
+  display: inline-block;
+  margin-left: 200px;
+  margin-right: 150px;
+}
+
+.divider .container .row .col .description {
+  color: #000;
+  font-size: 20px;
+  font-weight: 100;
+  width: 400px;
+  word-break: normal;
+}
+
+/* Card Section */
+
+.cards .container {
+  margin: 10rem 15rem;
+}
+
+.cards .container .row {
+  display: flex;
+}
+
+.cards .card {
+  background-color: #eeeee4;
+  border-radius: 2%;
+}
+
+.cards .container .row .col .card {
+  text-align: center;
+  word-break: normal;
+  margin: 10px;
+  padding: 10px;
+  width: 600px;
+  height: 350px;
+}
+
+.cards h5 {
+  color: darkred;
+  font-size: 3rem;
+  text-align: center;
+}
+
+.cards p {
+  color: darkred;
+  font-size: 1.5rem;
+  text-align: center;
+  /* margin: 1rem; */
+}
+
+/* Footer Section */
+.footer-section {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: red;
+  background-color: black;
+  font-size: 1rem;
+  padding: 1.3rem;
+}
