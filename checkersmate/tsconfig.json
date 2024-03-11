@@ -18,9 +18,15 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "exclude": ["docs", "public", "jest.config.js","node_modules", "firebaseConfig.ts"]
+  "exclude": [
+    "docs",
+    "public",
+    "jest.config.js",
+    "node_modules",
+    "config/firebaseConfig.ts"
+  ]
 }
