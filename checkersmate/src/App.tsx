@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Rules from "./pages/rules/Rules";
 import Game from "./pages/game/Game";
-// import About from './pages/About';
+import About from "./pages/about/About";
 // import SignUp from './pages/SignUp';
 // import Login from './pages/Login';
 // import TicTacToe from "./pages/experiment/TicTacToe";
@@ -21,8 +21,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/game" element={<Game />} />
-          {/* <Route path="/about" element={<About />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/about" element={<About />} />
+          {/* <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} /> */}
           {/* <Route path="/tic-tac-toe" element={<TicTacToe />} />
           <Route path="/tstut" element={<TSTut />} /> */}

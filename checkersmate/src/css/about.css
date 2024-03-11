@@ -1,0 +1,170 @@
+html,
+body {
+  font-size: 10px;
+  font-weight: 400;
+  scroll-behavior: smooth;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 9rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 4.7rem;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: capitalize;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+
+h3 {
+  font-size: 3.1rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h4 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+h5 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+a,
+a:active,
+a:focus,
+a:hover,
+button {
+  text-decoration: none;
+  outline: 0;
+}
+
+a:hover,
+button:hover {
+  --webkit-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+
+* {
+  font-family: "Black Ops One", cursive;
+}
+
+body {
+  background-color: wheat;
+}
+
+/* About Section */
+.about .about-container .container {
+  margin-top: 2rem;
+  padding: 5rem;
+  margin-left: 50px;
+}
+
+.about .about-container .container img {
+  height: 40rem;
+  width: 80rem;
+  border: black;
+  border-radius: 2%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5rem;
+}
+
+.about .about-container .container h3,
+h5 {
+  margin: 2rem;
+}
+
+.about .about-container .container h3 {
+  color: black;
+  margin: 5rem;
+}
+
+.about .about-container .container h5 {
+  color: red;
+}
+
+.about .about-container .container h4 {
+  color: red;
+}
+
+.about .about-container .container .lists {
+  margin: 5rem;
+}
+
+.about .about-container .container li {
+  margin: 1rem;
+  font-size: 1.6rem;
+  list-style-type: disc;
+}
+
+/* About Me Section */
+.about-me .about-me-container .container {
+  padding: 5rem;
+}
+
+.about-me .about-me-container .container img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40rem;
+  width: 50rem;
+  border-radius: 2%;
+  margin-bottom: 10rem;
+}
+
+.about-me .about-me-container .container h4 {
+  margin: 2rem;
+  color: red;
+}
+
+.about-me .about-me-container .container p {
+  margin: 2rem;
+}
+
+/* Footer Section */
+.footer-section {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: red;
+  background-color: black;
+  font-size: 1rem;
+  padding: 1.3rem;
+}
