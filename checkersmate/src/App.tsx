@@ -9,9 +9,7 @@ import Rules from "./pages/rules/Rules";
 import Game from "./pages/game/Game";
 import About from "./pages/about/About";
 import SignUp from "./pages/signup/SignUp";
-// import Login from './pages/Login';
-// import TicTacToe from "./pages/experiment/TicTacToe";
-// import TSTut from "./pages/experiment/TSTut";
+import Login from "./pages/login/Login";
 
 function App() {
   return (
@@ -23,9 +21,7 @@ function App() {
           <Route path="/game" element={<Game />} />
           <Route path="/about" element={<About />} />
           <Route path="/signup" element={<SignUp />} />
-          {/* <Route path="/login" element={<Login />} /> */}
-          {/* <Route path="/tic-tac-toe" element={<TicTacToe />} />
-          <Route path="/tstut" element={<TSTut />} /> */}
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </>

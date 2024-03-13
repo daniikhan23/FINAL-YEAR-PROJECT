@@ -52,7 +52,7 @@ const Signup = () => {
           }}
         >
           <div className="main-header">
-            <h3>Create your CheckersMate account</h3>
+            <h3>Create your CheckersMate account.</h3>
           </div>
           <div className="main-central-img">
             <img src={RedKing} alt="" className="red" />
