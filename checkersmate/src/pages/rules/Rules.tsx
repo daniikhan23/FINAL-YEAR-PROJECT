@@ -13,7 +13,6 @@ import KingPromotion from "../../assets/img/king-promotion.png";
 export default function Rules() {
   return (
     <>
-      <Navbar />
       {/* Intro Section */}
       <div className="intro">
         <div className="intro-container">

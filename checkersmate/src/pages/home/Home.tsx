@@ -13,8 +13,6 @@ import { faBarsProgress } from "@fortawesome/free-solid-svg-icons";
 const Home = () => {
   return (
     <>
-      {/*Header Section*/}
-      <Navbar />
       {/* Intro Section */}
       <div className="intro">
         <div className="intro-container">

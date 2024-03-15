@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { User } from "firebase/auth";
 import "../../css/navbar-styling.css";
 
 const Navbar = () => {
@@ -26,16 +27,6 @@ const Navbar = () => {
             <li>
               <button>
                 <Link to="/about">About</Link>
-              </button>
-            </li>
-            <li>
-              <button>
-                <Link to="/signup">Register</Link>
-              </button>
-            </li>
-            <li>
-              <button>
-                <Link to="/login">Login</Link>
               </button>
             </li>
           </ul>

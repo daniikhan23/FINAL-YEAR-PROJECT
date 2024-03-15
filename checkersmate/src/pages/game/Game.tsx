@@ -3,11 +3,7 @@ import "../../css/game-styling.css";
 import Navbar from "../../components/navbar/Navbar";
 
 const Game = () => {
-  return (
-    <>
-      <Navbar />
-    </>
-  );
+  return <></>;
 };
 
 export default Game;

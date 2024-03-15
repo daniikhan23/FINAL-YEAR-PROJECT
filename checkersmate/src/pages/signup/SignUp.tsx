@@ -40,7 +40,6 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar />
       <ToastContainer />
       {/* Main Signup Form */}
       <div className="main">

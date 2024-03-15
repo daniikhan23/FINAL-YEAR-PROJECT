@@ -182,13 +182,22 @@ body {
   width: 15rem;
 }
 
+.main .main-container .flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
 .main .main-container .main-central-btn button {
   background-color: black;
   color: red;
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   border: 1px solid black;
   border-radius: 3%;
-  padding: 0.5rem 15rem;
+  padding: 0.5rem 9.5rem;
+  cursor: pointer;
 }
 
 .main .main-container .main-central-btn button:hover {
@@ -196,6 +205,30 @@ body {
 }
 
 .main .main-container .main-central-btn button:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  transition: all 0.1s ease-in;
+}
+
+.main .signup-btn button {
+  background-color: black;
+  color: red;
+  font-size: 1.5rem;
+  border: 1px solid black;
+  border-radius: 3%;
+  padding: 0.5rem 2.5rem;
+  cursor: pointer;
+}
+
+.main .signup-btn .signup-link {
+  color: red;
+}
+
+.main .signup-btn button:hover {
+  color: white;
+}
+
+.main .signup-btn button:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
   transition: all 0.1s ease-in;

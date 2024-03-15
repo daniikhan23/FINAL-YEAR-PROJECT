@@ -8,8 +8,6 @@ import Picture from "../../assets/img/pix-mate.jpg";
 export default function About() {
   return (
     <>
-      {/* Navbar */}
-      <Navbar />
       {/* About Section */}
       <div className="about">
         <div className="about-container">
