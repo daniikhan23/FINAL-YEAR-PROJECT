@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../../components/navbar/Navbar";
+import { Link } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from "../../config/firebaseConfig";
@@ -97,8 +97,17 @@ const Signup = () => {
               onChange={(e) => setPasswordRepeat(e.target.value)}
             />
           </div>
-          <div className="main-central-btn">
-            <button type="submit">Sign Up</button>
+          <div className="flex-container">
+            <div className="main-central-btn">
+              <button type="submit">Sign Up</button>
+            </div>
+            <div className="login-btn">
+              <button>
+                <Link className="login-link" to="/login">
+                  Login instead
+                </Link>
+              </button>
+            </div>
           </div>
         </form>
       </div>
