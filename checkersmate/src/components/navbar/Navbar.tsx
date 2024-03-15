@@ -1,9 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { User } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
+import { toast, ToastContainer } from "react-toastify";
 import "../../css/navbar-styling.css";
 
 const Navbar = () => {
+  const auth = getAuth();
+
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("Logged out successful");
+      })
+      .catch((error) => {
+        toast.error(`Logout failed: ${error.message}`);
+      });
+  };
   return (
     <div className="navbar">
       <div className="navbar-container">
@@ -27,6 +40,11 @@ const Navbar = () => {
             <li>
               <button>
                 <Link to="/about">About</Link>
+              </button>
+            </li>
+            <li>
+              <button onClick={logout}>
+                <Link to="#">Log Out</Link>
               </button>
             </li>
           </ul>
