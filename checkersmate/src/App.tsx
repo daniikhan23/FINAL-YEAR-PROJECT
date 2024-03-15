@@ -8,7 +8,7 @@ import Game from "./pages/game/Game";
 import About from "./pages/about/About";
 import SignUp from "./pages/signup/SignUp";
 import Login from "./pages/login/Login";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth"; // Ensure User is imported
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 const auth = getAuth();
 

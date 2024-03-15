@@ -10,12 +10,16 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../css/signup.css";
 import RedKing from "../../assets/img/redKing.png";
 import BlackKing from "../../assets/img/blackKing.png";
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 const Signup = ({ currentUser }: { currentUser: User | null }) => {
   const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const navigate = useNavigate();
@@ -27,25 +31,35 @@ const Signup = ({ currentUser }: { currentUser: User | null }) => {
     }
   }, [currentUser]);
 
-  const signUpUser = () => {
-    if (password === passwordRepeat) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          toast.success(`User created successfully with email: ${user.email}`);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          if (errorCode === "auth/email-already-in-use") {
-            toast.error("Error signing up: Email already in use.");
-          } else {
-            toast.error(`Error signing up: ${errorMessage}`);
-          }
-        });
-    } else {
-      toast.error("Passwords do not match.");
+  const signUpUser = async () => {
+    if (password !== passwordRepeat) {
+      toast.error("Passwords do not match!");
+      return;
     }
+
+    const usernameRef = doc(db, "usernames", username);
+    const docSnap = await getDoc(usernameRef);
+    if (docSnap.exists()) {
+      toast.error("Username already taken");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        await setDoc(doc(db, "users", user.uid), {
+          fullName,
+          username,
+          email: user.email,
+        });
+
+        await setDoc(doc(db, "usernames", username), { userId: user.uid });
+        toast.success(`User created successfully with email: ${user.email}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        toast.error(`Error signing up: ${error.message}`);
+      });
   };
 
   return (
@@ -73,7 +87,7 @@ const Signup = ({ currentUser }: { currentUser: User | null }) => {
             </label>
             <input
               id="email"
-              type="text"
+              type="email"
               placeholder="Enter Email"
               name="email"
               required
@@ -84,25 +98,25 @@ const Signup = ({ currentUser }: { currentUser: User | null }) => {
               <b>Full Name</b>
             </label>
             <input
-              id="email"
+              id="full-name"
               type="text"
               placeholder="Enter Full Name"
-              name="email"
+              name="fullName"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
             />
             <label htmlFor="username">
               <b>Username</b>
             </label>
             <input
-              id="email"
+              id="username"
               type="text"
               placeholder="Enter Username"
-              name="email"
+              name="username"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <label htmlFor="password">
               <b>Password</b>
