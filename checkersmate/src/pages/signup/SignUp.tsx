@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from "../../config/firebaseConfig";
+import { User } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../css/signup.css";
@@ -12,10 +14,18 @@ import BlackKing from "../../assets/img/blackKing.png";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const Signup = () => {
+const Signup = ({ currentUser }: { currentUser: User | null }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      toast.info("You are already logged in!");
+      navigate("/");
+    }
+  }, [currentUser]);
 
   const signUpUser = () => {
     if (password === passwordRepeat) {

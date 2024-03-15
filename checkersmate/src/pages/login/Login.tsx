@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { firebaseConfig } from "../../config/firebaseConfig";
