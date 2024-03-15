@@ -160,8 +160,7 @@ body {
 
 /* Main Section */
 .main .main-container {
-  /* position:absolute;
-  z-index:1000; */
+  /* margin-top: 125px; */
   display: flex;
   flex-direction: column;
   justify-content: center;

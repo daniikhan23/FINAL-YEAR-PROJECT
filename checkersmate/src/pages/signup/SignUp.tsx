@@ -80,7 +80,30 @@ const Signup = ({ currentUser }: { currentUser: User | null }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-
+            <label htmlFor="full-name">
+              <b>Full Name</b>
+            </label>
+            <input
+              id="email"
+              type="text"
+              placeholder="Enter Full Name"
+              name="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label htmlFor="username">
+              <b>Username</b>
+            </label>
+            <input
+              id="email"
+              type="text"
+              placeholder="Enter Username"
+              name="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <label htmlFor="password">
               <b>Password</b>
             </label>
