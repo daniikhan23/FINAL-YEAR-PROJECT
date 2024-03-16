@@ -21,17 +21,25 @@ import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 const auth = getAuth();
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 const PublicRoute = ({ children }: { children: ReactNode }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (currentUser) {
     return <Navigate to="/" />;
