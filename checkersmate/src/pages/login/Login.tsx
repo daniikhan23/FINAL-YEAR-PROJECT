@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useRef } from "react";
-import Navbar from "../../components/navbar/Navbar";
+import { useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { User } from "firebase/auth";
 import { useAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { firebaseConfig } from "../../config/firebaseConfig";

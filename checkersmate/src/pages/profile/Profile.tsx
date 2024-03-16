@@ -15,14 +15,12 @@ const Profile = () => {
             <h5>Username</h5>
             <h5>Full Name</h5>
             <h5>Email Address</h5>
-            <h5>Location</h5>
             <h5>Country</h5>
             <h5>Language</h5>
             <h5>Record (W/L/D)</h5>
             <h5>Rating</h5>
           </div>
           <div className="info">
-            <h5>random</h5>
             <h5>random</h5>
             <h5>random</h5>
             <h5>random</h5>

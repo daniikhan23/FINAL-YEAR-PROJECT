@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Select from "react-select";
+import { countries } from "countries-list";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from "../../config/firebaseConfig";
-import { User } from "firebase/auth";
 import { useAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,21 +18,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const countryOptions = Object.entries(countries).map(([code, country]) => ({
+  code,
+  name: country.name,
+}));
+
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
+  const [country, setCountry] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     toast.info("You are already logged in!");
-  //     navigate("/");
-  //   }
-  // }, [currentUser]);
 
   const signUpUser = async () => {
     if (password !== passwordRepeat) {
@@ -53,6 +53,7 @@ const Signup = () => {
           fullName,
           username,
           email: user.email,
+          country,
         });
 
         await setDoc(doc(db, "usernames", username), { userId: user.uid });
@@ -121,6 +122,23 @@ const Signup = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
+            <label htmlFor="country">
+              <b>Country</b>
+            </label>
+            <select
+              id="country"
+              name="country"
+              required
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            >
+              <option value="">Select a country</option>
+              {countryOptions.map(({ code, name }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
             <label htmlFor="password">
               <b>Password</b>
             </label>
