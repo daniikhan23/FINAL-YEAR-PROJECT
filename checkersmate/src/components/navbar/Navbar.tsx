@@ -43,6 +43,11 @@ const Navbar = () => {
               </button>
             </li>
             <li>
+              <button>
+                <Link to="/profile">Profile</Link>
+              </button>
+            </li>
+            <li>
               <button onClick={logout}>
                 <Link to="#">Log Out</Link>
               </button>

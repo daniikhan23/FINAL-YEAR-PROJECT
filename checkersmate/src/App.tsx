@@ -15,6 +15,7 @@ import Game from "./pages/game/Game";
 import About from "./pages/about/About";
 import SignUp from "./pages/signup/SignUp";
 import Login from "./pages/login/Login";
+import Profile from "./pages/profile/Profile";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 const auth = getAuth();
@@ -93,6 +94,14 @@ function App() {
               <PublicRoute>
                 <Login />
               </PublicRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
             }
           />
         </Routes>
