@@ -15,10 +15,11 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 2px;
 }
 
 .navbar .navbar-container .container .home button {
-  border: 1rem solid black;
+  border: 0 solid black;
   background-color: black;
 }
 
@@ -47,8 +48,11 @@ body {
 
 .navbar .navbar-container .container .list li button {
   background-color: black;
-  border: 1rem solid black;
+  border: 0px solid black;
   border-radius: 5%;
+  font-size: 1.5rem;
+  color: red;
+  cursor: pointer;
 }
 
 .navbar .navbar-container .container .list li button a {
@@ -56,11 +60,11 @@ body {
   color: red;
 }
 
-.navbar .navbar-container .container .list li button a:hover {
+.navbar .navbar-container .container .list li button :hover {
   color: white;
 }
 
-.navbar .navbar-container .container .list li button a:active {
+.navbar .navbar-container .container .list li button :active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
   transition: all 0.1s ease-in;
@@ -70,4 +74,28 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.navbar .navbar-container .container .list .menu {
+  margin-top: 0.5rem;
+}
+
+.navbar .navbar-container .container .list .dropdown-menu {
+  padding: 10px;
+  color: red;
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 5%;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.navbar .navbar-container .container .list .dropdown-menu :hover {
+  color: white;
+}
+
+.navbar .navbar-container .container .list .dropdown-menu :active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  transition: all 0.1s ease-in;
 }

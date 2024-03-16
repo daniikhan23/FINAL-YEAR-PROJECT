@@ -1,12 +1,16 @@
-import React from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { User } from "firebase/auth";
 import { getAuth, signOut } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoMdMenu } from "react-icons/io";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import "../../css/navbar-styling.css";
 
 const Navbar = () => {
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const logout = () => {
     signOut(auth)
@@ -17,6 +21,7 @@ const Navbar = () => {
         toast.error(`Logout failed: ${error.message}`);
       });
   };
+
   return (
     <div className="navbar">
       <div className="navbar-container">
@@ -43,14 +48,24 @@ const Navbar = () => {
               </button>
             </li>
             <li>
-              <button>
-                <Link to="/profile">Profile</Link>
-              </button>
-            </li>
-            <li>
-              <button onClick={logout}>
-                <Link to="#">Log Out</Link>
-              </button>
+              <DropdownMenuPrimitive.Root>
+                <DropdownMenuPrimitive.Trigger asChild>
+                  <button className="menu">
+                    <IoMdMenu fontSize={25} />
+                  </button>
+                </DropdownMenuPrimitive.Trigger>
+
+                <DropdownMenuPrimitive.Content className="dropdown-menu">
+                  <DropdownMenuPrimitive.Item
+                    onSelect={() => navigate("/profile")}
+                  >
+                    Profile
+                  </DropdownMenuPrimitive.Item>
+                  <DropdownMenuPrimitive.Item onSelect={logout}>
+                    Log Out
+                  </DropdownMenuPrimitive.Item>
+                </DropdownMenuPrimitive.Content>
+              </DropdownMenuPrimitive.Root>
             </li>
           </ul>
         </div>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { useAuth } from "../../context/UserAuthContext";
-import randomImage from "../../assets/react.svg";
+import randomImage from "../../assets/img/redKing.png";
 import "../../css/profile.css";
 import { ToastContainer, toast } from "react-toastify";
 import ReactCountryFlag from "react-country-flag";
+import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
 
 interface ProfileData {
   username: string;
@@ -91,7 +92,7 @@ const Profile = () => {
               <h5>Email Address</h5>
               <h5>Country</h5>
               <h5>Record (W/L/D)</h5>
-              <h5>Rating</h5>
+              <h5>Rating (N/EJ)</h5>
             </div>
             <div className="info">
               <h5>{profileData.username}</h5>
