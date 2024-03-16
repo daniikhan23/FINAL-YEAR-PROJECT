@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from "../../config/firebaseConfig";
 import { User } from "firebase/auth";
+import { useAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,20 +17,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const Signup = ({ currentUser }: { currentUser: User | null }) => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
-  useEffect(() => {
-    if (currentUser) {
-      toast.info("You are already logged in!");
-      navigate("/");
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     toast.info("You are already logged in!");
+  //     navigate("/");
+  //   }
+  // }, [currentUser]);
 
   const signUpUser = async () => {
     if (password !== passwordRepeat) {
@@ -55,6 +57,7 @@ const Signup = ({ currentUser }: { currentUser: User | null }) => {
 
         await setDoc(doc(db, "usernames", username), { userId: user.uid });
         toast.success(`User created successfully with email: ${user.email}`);
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;

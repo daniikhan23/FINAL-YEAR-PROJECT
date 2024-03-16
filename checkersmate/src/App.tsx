@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactNode } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  Navigate,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import { AuthProvider } from "./context/UserAuthContext";
+import { useAuth } from "./context/UserAuthContext";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home";
 import Rules from "./pages/rules/Rules";
@@ -12,35 +19,82 @@ import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 const auth = getAuth();
 
-function App() {
-  const [user, setUser] = useState<User | null>(null);
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const { currentUser } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
-      if (userAuth) {
-        setUser(userAuth);
-        console.log(userAuth);
-      } else {
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+const PublicRoute = ({ children }: { children: ReactNode }) => {
+  const { currentUser } = useAuth();
+
+  if (currentUser) {
+    return <Navigate to="/" />;
+  }
+
+  return <>{children}</>;
+};
+
+function App() {
+  const { currentUser } = useAuth();
 
   return (
     <>
       <Router>
-        {user && <Navbar />}
+        {currentUser && <Navbar />}
         <Routes>
           <Route
             path="/"
-            element={user ? <Home /> : <Login currentUser={user} />}
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/rules" element={<Rules />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/signup" element={<SignUp currentUser={user} />} />
-          <Route path="/login" element={<Login currentUser={user} />} />
+          <Route
+            path="/rules"
+            element={
+              <ProtectedRoute>
+                <Rules />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game"
+            element={
+              <ProtectedRoute>
+                <Game />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <ProtectedRoute>
+                <About />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <SignUp />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
         </Routes>
       </Router>
     </>

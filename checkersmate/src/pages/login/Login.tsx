@@ -4,6 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { User } from "firebase/auth";
+import { useAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { firebaseConfig } from "../../config/firebaseConfig";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,23 +17,25 @@ import { Link } from "react-router-dom";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const Login = ({ currentUser }: { currentUser: User | null }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (currentUser) {
-      toast.info("You are already logged in!");
-      navigate("/");
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     toast.info("You are already logged in!");
+  //     navigate("/");
+  //   }
+  // }, [currentUser]);
 
   const loginUser = () => {
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           toast.success("User logged in successfully!");
+          navigate("/");
         })
         .catch((error) => {
           const errorCode = error.code;
