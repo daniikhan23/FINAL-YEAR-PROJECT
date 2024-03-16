@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { useAuth } from "../../context/UserAuthContext";
 import randomImage from "../../assets/react.svg";
 import "../../css/profile.css";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import ReactCountryFlag from "react-country-flag";
 
 interface ProfileData {
@@ -11,6 +11,7 @@ interface ProfileData {
   fullName: string;
   email: string;
   country: string;
+  aboutMe?: string;
 }
 
 const Profile = () => {
@@ -20,8 +21,28 @@ const Profile = () => {
     email: "",
     country: "",
   });
+  const [aboutMe, setAboutMe] = useState("");
   const { currentUser } = useAuth();
   const db = getFirestore();
+
+  const handleAboutMeChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setAboutMe(event.target.value);
+  };
+
+  const handleSaveAboutMe = async () => {
+    if (currentUser) {
+      try {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        await setDoc(userDocRef, { aboutMe }, { merge: true });
+        toast.success("Profile updated successfully!");
+      } catch (error) {
+        const e = error as Error;
+        toast.error(`Failed to update profile: ${e.message}`);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -30,7 +51,9 @@ const Profile = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setProfileData(docSnap.data() as ProfileData);
+          const userData = docSnap.data() as ProfileData;
+          setProfileData(userData);
+          setAboutMe(userData.aboutMe || "");
         } else {
           toast.error(
             "No profile related data found! Contact support to fix the issue."
@@ -42,49 +65,58 @@ const Profile = () => {
   }, [currentUser, db]);
 
   return (
-    <div className="profile">
-      <div className="profile-header">
-        <img src={randomImage} alt="" />
-        <h5>{profileData.username}</h5>
-        {profileData.country && (
-          <ReactCountryFlag
-            countryCode={profileData.country}
-            svg
-            style={{
-              width: "2em",
-              height: "2em",
-            }}
-            title={profileData.country}
-          />
-        )}
-      </div>
-      <div className="profile-body">
-        <div className="data">
-          <div className="fields">
-            <h5>Username</h5>
-            <h5>Full Name</h5>
-            <h5>Email Address</h5>
-            <h5>Country</h5>
-            <h5>Record (W/L/D)</h5>
-            <h5>Rating</h5>
+    <>
+      <ToastContainer />
+      <div className="profile">
+        <div className="profile-header">
+          <img src={randomImage} alt="" />
+          <h5>{profileData.username}</h5>
+          {profileData.country && (
+            <ReactCountryFlag
+              countryCode={profileData.country}
+              svg
+              style={{
+                width: "2em",
+                height: "2em",
+              }}
+              title={profileData.country}
+            />
+          )}
+        </div>
+        <div className="profile-body">
+          <div className="data">
+            <div className="fields">
+              <h5>Username</h5>
+              <h5>Full Name</h5>
+              <h5>Email Address</h5>
+              <h5>Country</h5>
+              <h5>Record (W/L/D)</h5>
+              <h5>Rating</h5>
+            </div>
+            <div className="info">
+              <h5>{profileData.username}</h5>
+              <h5>{profileData.fullName}</h5>
+              <h5>{profileData.email}</h5>
+              <h5>{profileData.country}</h5>
+              <h5>Coming Soon</h5>
+              <h5>Coming Soon</h5>
+            </div>
           </div>
-          <div className="info">
-            <h5>{profileData.username}</h5>
-            <h5>{profileData.fullName}</h5>
-            <h5>{profileData.email}</h5>
-            <h5>{profileData.country}</h5>
-            <h5>Coming Soon</h5>
-            <h5>Coming Soon</h5>
+          <div className="about">
+            <h5>About me</h5>
+            <textarea
+              id="aboutme"
+              name="aboutme"
+              placeholder="Tell us about yourself..."
+              value={aboutMe}
+              onChange={handleAboutMeChange}
+            />
+            <button onClick={handleSaveAboutMe}>Save</button>
           </div>
         </div>
-        <div className="about">
-          <h5>About me</h5>
-          <input id="aboutme" type="aboutme" placeholder="" name="aboutme" />
-          <button>Save</button>
-        </div>
+        <div className="footer-section">Made by Daniyal Ashraf Khan</div>
       </div>
-      <div className="footer-section">Made by Daniyal Ashraf Khan</div>
-    </div>
+    </>
   );
 };
 
