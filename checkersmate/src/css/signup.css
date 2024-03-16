@@ -173,6 +173,10 @@ body {
   font-size: 1.5rem;
 }
 
+.main .main-container .main-info-forms .country-select {
+  font-size: 1rem;
+}
+
 /* Footer Section */
 .footer-section {
   position: fixed;

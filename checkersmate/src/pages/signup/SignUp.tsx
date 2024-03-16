@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { countries } from "countries-list";
+import ReactCountryFlag from "react-country-flag";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from "../../config/firebaseConfig";
@@ -21,6 +22,20 @@ const db = getFirestore(app);
 const countryOptions = Object.entries(countries).map(([code, country]) => ({
   code,
   name: country.name,
+}));
+
+const selectCountryOptions = countryOptions.map(({ code, name }) => ({
+  value: code,
+  label: (
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <ReactCountryFlag
+        countryCode={code}
+        svg
+        style={{ marginRight: "10px" }}
+      />
+      {name}
+    </div>
+  ),
 }));
 
 const Signup = () => {
@@ -125,20 +140,19 @@ const Signup = () => {
             <label htmlFor="country">
               <b>Country</b>
             </label>
-            <select
-              id="country"
-              name="country"
-              required
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            >
-              <option value="">Select a country</option>
-              {countryOptions.map(({ code, name }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
+            <Select
+              options={selectCountryOptions}
+              onChange={(selectedOption) => {
+                if (selectedOption !== null) {
+                  setCountry(selectedOption.value);
+                } else {
+                  setCountry("");
+                }
+              }}
+              className="country-select"
+              isClearable={true}
+              isSearchable={true}
+            />
             <label htmlFor="password">
               <b>Password</b>
             </label>
