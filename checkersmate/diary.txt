@@ -268,3 +268,14 @@ how much these designs will change by the end of the term are dependent on time 
 framework like ChakraUI as it would allow me to make the pages responsive to mobile sizes more easily. It is, howver, more important at the moment to add and refine 
 further functionality and keeping the visuals as the final tasks to consider. Once all this is done, I will be looking further into what more can be done with user 
 accounts. 
+
+Week 24-26:
+Currently most of the website has been converted to React as well as some new functionality. Signup and login pages have been remade and there's also a page to reset 
+user password which sends users an email to reset their password. There's also now a profile page which when a user is logged in fetches from the Firestore database 
+relevant details and updates on the page to show the user. The website routing is also handled by keeping track of the users authentication context. If a user is logged in 
+they can access all the pages on the website except signup/login and vice versa for when a user is not logged in. The only page avaialble despite login status is the reset 
+password page. Styling for login, signup, reset passsword and profile pages is slightly different as I have a styling related component that sets the background of those
+pages separate from the rest as I'd like them to have an image as a background. There's minor visual updates to the page currently but I will take a look at them again 
+towards the end of the project. Not planning any major overhauls at the moment. The next and most exciting step will be remaking the game page with some updated 
+functionality. This will be quite exciting and will mark the 'tentative end' to the project. Any newer features that I implement will be dependent on the time left to the 
+submission date. 
