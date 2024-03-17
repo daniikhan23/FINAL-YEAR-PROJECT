@@ -1,3 +1,9 @@
+/* body {
+  background-image: url("https://t4.ftcdn.net/jpg/03/01/15/31/360_F_301153137_tQ3LWLbIduOkLWsssWIhQHu2BG99kRRU.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
 .profile {
   display: flex;
   flex-direction: column;
@@ -15,7 +21,7 @@
   box-shadow: #b58863;
   border-radius: 2%;
   padding: 1.5rem;
-  background-color: #030303;
+  background-color: black;
   color: red;
   margin: 5rem 0;
   margin-top: 2.5rem;

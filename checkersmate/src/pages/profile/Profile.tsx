@@ -6,6 +6,7 @@ import "../../css/profile.css";
 import { ToastContainer, toast } from "react-toastify";
 import ReactCountryFlag from "react-country-flag";
 import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
+import { useStyle } from "../../context/StyleContext";
 
 interface ProfileData {
   username: string;
@@ -25,6 +26,15 @@ const Profile = () => {
   const [aboutMe, setAboutMe] = useState("");
   const { currentUser } = useAuth();
   const db = getFirestore();
+
+  const { changeBodyBackground } = useStyle();
+
+  useEffect(() => {
+    changeBodyBackground(
+      "https://t4.ftcdn.net/jpg/03/01/15/31/360_F_301153137_tQ3LWLbIduOkLWsssWIhQHu2BG99kRRU.jpg"
+    );
+    return () => changeBodyBackground("wheat");
+  }, [changeBodyBackground]);
 
   const handleAboutMeChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>

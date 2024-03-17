@@ -7,6 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import { AuthProvider } from "./context/UserAuthContext";
+import { StyleProvider } from "./context/StyleContext";
 import { useAuth } from "./context/UserAuthContext";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home";
@@ -17,6 +18,7 @@ import SignUp from "./pages/signup/SignUp";
 import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import ResetPassword from "./pages/reset-password/ResetPassword";
 
 const auth = getAuth();
 
@@ -52,69 +54,72 @@ function App() {
   const { currentUser } = useAuth();
 
   return (
-    <>
-      <Router>
-        {currentUser && <Navbar />}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/rules"
-            element={
-              <ProtectedRoute>
-                <Rules />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/game"
-            element={
-              <ProtectedRoute>
-                <Game />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <ProtectedRoute>
-                <About />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <PublicRoute>
-                <SignUp />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </Router>
-    </>
+    <StyleProvider>
+      <>
+        <Router>
+          {currentUser && <Navbar />}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/rules"
+              element={
+                <ProtectedRoute>
+                  <Rules />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/game"
+              element={
+                <ProtectedRoute>
+                  <Game />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <ProtectedRoute>
+                  <About />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Routes>
+        </Router>
+      </>
+    </StyleProvider>
   );
 }
 

@@ -5,19 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { firebaseConfig } from "../../config/firebaseConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../css/login.css";
+import "../../css/reset-password.css";
+import { useStyle } from "../../context/StyleContext";
 import RedKing from "../../assets/img/redKing.png";
 import BlackKing from "../../assets/img/blackKing.png";
 import { Link } from "react-router-dom";
-import { useStyle } from "../../context/StyleContext";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const Login = () => {
+const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   const { changeBodyBackground } = useStyle();
 
   useEffect(() => {
@@ -49,14 +50,14 @@ const Login = () => {
       <ToastContainer />
       <div className="main">
         <form
-          className="main-login-container"
+          className="main-container"
           onSubmit={(e) => {
             e.preventDefault();
             loginUser();
           }}
         >
           <div className="main-header">
-            <h3>Login to your CheckersMate account!</h3>
+            <h3>Reset Password</h3>
           </div>
           <div className="main-central-img">
             <img src={BlackKing} alt="" className="black" />
@@ -88,6 +89,18 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <label htmlFor="password-repeat">
+              <b>Repeat Password</b>
+            </label>
+            <input
+              id="password-repeat"
+              type="password"
+              placeholder="Repeat Password"
+              name="password-repeat"
+              required
+              // value={passwordRepeat}
+              // onChange={(e) => setPasswordRepeat(e.target.value)}
+            />
           </div>
           <div className="flex-container">
             <div className="main-central-btn">
@@ -109,4 +122,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

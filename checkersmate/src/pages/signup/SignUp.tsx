@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { countries } from "countries-list";
@@ -14,6 +14,7 @@ import "../../css/signup.css";
 import RedKing from "../../assets/img/redKing.png";
 import BlackKing from "../../assets/img/blackKing.png";
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { useStyle } from "../../context/StyleContext";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -47,6 +48,15 @@ const Signup = () => {
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+
+  const { changeBodyBackground } = useStyle();
+
+  useEffect(() => {
+    changeBodyBackground(
+      "https://t4.ftcdn.net/jpg/03/01/15/31/360_F_301153137_tQ3LWLbIduOkLWsssWIhQHu2BG99kRRU.jpg"
+    );
+    return () => changeBodyBackground("wheat");
+  }, [changeBodyBackground]);
 
   const signUpUser = async () => {
     if (password !== passwordRepeat) {

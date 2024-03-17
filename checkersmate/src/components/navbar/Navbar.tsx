@@ -61,6 +61,11 @@ const Navbar = () => {
                   >
                     Profile
                   </DropdownMenuPrimitive.Item>
+                  <DropdownMenuPrimitive.Item
+                    onSelect={() => navigate("/reset-password")}
+                  >
+                    Reset Password
+                  </DropdownMenuPrimitive.Item>
                   <DropdownMenuPrimitive.Item onSelect={logout}>
                     Log Out
                   </DropdownMenuPrimitive.Item>
