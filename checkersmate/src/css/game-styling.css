@@ -1,8 +1,9 @@
 .game .game-container {
   display: flex;
   justify-content: center;
-  gap: 300px;
-  margin-top: 100px;
+  /* align-items: center; */
+  gap: 200px;
+  margin-top: 10px;
 }
 
 .game .game-container .main .board {
@@ -10,7 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  border: 1px solid black;
 }
 
 .game .game-container .main .board .board-row {
@@ -18,12 +19,15 @@
 }
 
 .game .game-container .main .board .board-row .board-col {
-  border: 1px solid black;
-  padding: 10px;
-  height: 20px;
-  width: 20px;
+  height: 70px;
+  width: 70px;
 }
 
+.game .game-container .main .board .board-row .board-col {
+  text-align: right;
+}
+
+/* Light brown squares */
 .main .board .board-row:nth-child(odd) .board-col:nth-child(odd),
 .main .board .board-row:nth-child(even) .board-col:nth-child(even) {
   background-color: #f0d9b5;
