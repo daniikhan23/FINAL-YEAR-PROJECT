@@ -1,6 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { firebaseConfig } from "../../config/firebaseConfig";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,7 +20,6 @@ const auth = getAuth(app);
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const { changeBodyBackground } = useStyle();
@@ -28,21 +31,22 @@ const ResetPassword = () => {
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
-  const loginUser = () => {
-    if (email && password) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          toast.success("User logged in successfully!");
-          navigate("/");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          toast.error(`Error logging in: ${errorCode} - ${errorMessage}`);
-        });
-    } else {
-      toast.error("Please enter a valid email and password!");
+  const handleResetPassword = (e: FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address!");
+      return;
     }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success(
+          "Password reset email sent successfully. Please check your inbox."
+        );
+      })
+      .catch((error) => {
+        toast.error(`Error sending password reset email: ${error.message}`);
+      });
   };
 
   return (
@@ -53,7 +57,7 @@ const ResetPassword = () => {
           className="main-reset-container"
           onSubmit={(e) => {
             e.preventDefault();
-            loginUser();
+            handleResetPassword(e);
           }}
         >
           <div className="main-header">
@@ -69,43 +73,21 @@ const ResetPassword = () => {
             </label>
             <input
               id="email"
-              type="text"
+              type="email"
               placeholder="Enter Email"
               name="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-
-            <label htmlFor="password">
-              <b>Password</b>
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter Password"
-              name="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label htmlFor="password-repeat">
-              <b>Repeat Password</b>
-            </label>
-            <input
-              id="password-repeat"
-              type="password"
-              placeholder="Repeat Password"
-              name="password-repeat"
-              required
-              // value={passwordRepeat}
-              // onChange={(e) => setPasswordRepeat(e.target.value)}
-            />
           </div>
           <div className="flex-container">
             <div className="main-central-btn">
-              <button type="submit">Login</button>
+              <button type="submit">Reset</button>
             </div>
+            <button className="main-login-btn">
+              <Link to="/">Login instead</Link>
+            </button>
           </div>
         </form>
       </div>

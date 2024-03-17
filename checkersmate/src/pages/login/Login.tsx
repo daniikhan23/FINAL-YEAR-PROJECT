@@ -99,6 +99,11 @@ const Login = () => {
                   Don't have an account?
                 </Link>
               </button>
+              <button>
+                <Link className="signup-link" to="/reset-password">
+                  Reset Password
+                </Link>
+              </button>
             </div>
           </div>
         </form>
