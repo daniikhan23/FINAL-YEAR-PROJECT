@@ -50,7 +50,7 @@ const ResetPassword = () => {
       <ToastContainer />
       <div className="main">
         <form
-          className="main-container"
+          className="main-reset-container"
           onSubmit={(e) => {
             e.preventDefault();
             loginUser();
@@ -105,13 +105,6 @@ const ResetPassword = () => {
           <div className="flex-container">
             <div className="main-central-btn">
               <button type="submit">Login</button>
-            </div>
-            <div className="signup-btn">
-              <button>
-                <Link className="signup-link" to="/signup">
-                  Don't have an account?
-                </Link>
-              </button>
             </div>
           </div>
         </form>

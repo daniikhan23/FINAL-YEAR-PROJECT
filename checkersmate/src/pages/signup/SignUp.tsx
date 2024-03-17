@@ -97,7 +97,7 @@ const Signup = () => {
       {/* Main Signup Form */}
       <div className="main">
         <form
-          className="main-container"
+          className="main-signup-container"
           onSubmit={(e) => {
             e.preventDefault();
             signUpUser();
