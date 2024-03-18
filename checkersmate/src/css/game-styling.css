@@ -24,8 +24,9 @@
 }
 
 .game .game-container .main .board .board-row .board-col {
-  /* text-align: right; */
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Light brown squares */
@@ -42,12 +43,26 @@
   color: #f0d9b5;
 }
 
-.game .game-container .main .board .board-row .piece-black img {
-  height: 70px;
-  width: 70px;
+.game .game-container .main .board .board-row .board-col .piece-black {
+  background-image: url("../assets/img/blackBase.png");
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
 }
 
-.game .game-container .main .board .board-row .piece-red img {
-  height: 70px;
-  width: 70px;
+.game .game-container .main .board .board-row .board-col .piece-red {
+  background-image: url("../assets/img/redBase.png");
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+}
+
+.game .game-container .main .board .board-row .piece-selected .piece-red {
+  border: 2px solid gold;
 }

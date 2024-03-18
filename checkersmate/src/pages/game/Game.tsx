@@ -13,6 +13,7 @@ import regularRed from "../../assets/img/redBase.png";
 
 const Game = () => {
   const [gameStatus, setGameStatus] = useState("");
+  const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
   const playerOne = new Player("Player 1", PieceColor.Red);
   const playerTwo = new Player("Player 2", PieceColor.Black);
   const [checkersGame, setCheckersGame] = useState(
@@ -28,16 +29,21 @@ const Game = () => {
   const renderBoard = () => {
     return checkersGame.board.map((row, rowIndex) => (
       <div key={rowIndex} className="board-row">
-        {row.map((cell, cellIndex) => (
-          <div key={cellIndex} className={`board-col ${cell && "-occupied"}`}>
-            {cell && (
-              <div className={`piece-${cell.color}`}>
-                {cell.color === "black" ? (
-                  <img src={`${regularBlack}`} alt="" />
-                ) : (
-                  <img src={`${regularRed}`} alt="" />
-                )}
-              </div>
+        {row.map((col, colIndex) => (
+          <div
+            key={colIndex}
+            className={`board-col ${col ? "-occupied" : ""} 
+          ${
+            selectedPiece.row === rowIndex && selectedPiece.col === colIndex
+              ? "piece-selected"
+              : ""
+          }`}
+          >
+            {col && (
+              <div
+                className={`piece-${col.color}`}
+                onClick={() => handleCellClick(rowIndex, colIndex)}
+              ></div>
             )}
           </div>
         ))}
@@ -46,7 +52,16 @@ const Game = () => {
   };
 
   const handleCellClick = (rowIndex: number, cellIndex: number) => {
-    console.log(`Clicked on cell at row ${rowIndex}, column ${cellIndex}`);
+    const piece = checkersGame.getPiece(rowIndex, cellIndex);
+    if (selectedPiece.row === rowIndex && selectedPiece.col === cellIndex) {
+      setSelectedPiece({ row: -1, col: -1 });
+    } else if (piece && piece.color === checkersGame.currentPlayer.color) {
+      setSelectedPiece({ row: rowIndex, col: cellIndex });
+      const possibleMoves = checkersGame.possibleMoves(rowIndex, cellIndex);
+      console.log(possibleMoves);
+    } else {
+      console.log("It's not your turn or invalid selection.");
+    }
   };
 
   return (
