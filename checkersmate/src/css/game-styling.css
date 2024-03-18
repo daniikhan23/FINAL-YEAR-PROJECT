@@ -51,6 +51,16 @@
   border-radius: 50%;
   height: 55px;
   width: 55px;
+  cursor: pointer;
+}
+
+.game .game-container .main .board .board-row .board-col .piece-black:hover {
+  height: 60px;
+  width: 60px;
+}
+
+.game .game-container .main .board .board-row .board-col .piece-black:active {
+  transform: translateY(4px);
 }
 
 .game .game-container .main .board .board-row .board-col .piece-red {
@@ -61,8 +71,26 @@
   border-radius: 50%;
   height: 55px;
   width: 55px;
+  cursor: pointer;
 }
 
-.game .game-container .main .board .board-row .piece-selected .piece-red {
-  border: 2px solid gold;
+.game .game-container .main .board .board-row .board-col .piece-red:hover {
+  height: 60px;
+  width: 60px;
+}
+
+.game .game-container .main .board .board-row .board-col .piece-red:active {
+  transform: translateY(4px);
+}
+
+.game .game-container .main .board .board-row .piece-selected {
+  border: 3px solid gold;
+}
+
+.game .game-container .main .board .board-row .possible-move {
+  background-color: rgb(65, 105, 93) !important;
+}
+
+.game .game-container .main .board .board-row .possible-move:hover {
+  background-color: rgb(98, 145, 131) !important;
 }

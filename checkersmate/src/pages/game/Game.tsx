@@ -6,6 +6,7 @@ import {
   State,
   Player,
   CheckersGame,
+  Moves,
 } from "../../components/game/checkersGame";
 import { CheckersAI } from "../../components/game/checkersAI";
 import regularBlack from "../../assets/img/blackBase.png";
@@ -13,6 +14,7 @@ import regularRed from "../../assets/img/redBase.png";
 
 const Game = () => {
   const [gameStatus, setGameStatus] = useState("");
+  const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
   const playerOne = new Player("Player 1", PieceColor.Red);
   const playerTwo = new Player("Player 2", PieceColor.Black);
@@ -29,38 +31,48 @@ const Game = () => {
   const renderBoard = () => {
     return checkersGame.board.map((row, rowIndex) => (
       <div key={rowIndex} className="board-row">
-        {row.map((col, colIndex) => (
-          <div
-            key={colIndex}
-            className={`board-col ${col ? "-occupied" : ""} 
-          ${
-            selectedPiece.row === rowIndex && selectedPiece.col === colIndex
-              ? "piece-selected"
-              : ""
-          }`}
-          >
-            {col && (
-              <div
-                className={`piece-${col.color}`}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
-              ></div>
-            )}
-          </div>
-        ))}
+        {row.map((col, colIndex) => {
+          const isPossibleMove = possibleMoves.some(
+            (move) => move.endRow === rowIndex && move.endCol === colIndex
+          );
+          return (
+            <div
+              key={colIndex}
+              className={`board-col ${col ? "-occupied" : ""} ${
+                isPossibleMove ? "possible-move" : ""
+              }`}
+              onClick={() => handleCellClick(rowIndex, colIndex)}
+            >
+              {col && (
+                <div
+                  className={`piece-${col.color} ${
+                    selectedPiece.row === rowIndex &&
+                    selectedPiece.col === colIndex
+                      ? "piece-selected"
+                      : ""
+                  }`}
+                ></div>
+              )}
+            </div>
+          );
+        })}
       </div>
     ));
   };
 
   const handleCellClick = (rowIndex: number, cellIndex: number) => {
     const piece = checkersGame.getPiece(rowIndex, cellIndex);
+
     if (selectedPiece.row === rowIndex && selectedPiece.col === cellIndex) {
       setSelectedPiece({ row: -1, col: -1 });
+      setPossibleMoves([]); // Clear possible moves when deselecting
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
       setSelectedPiece({ row: rowIndex, col: cellIndex });
-      const possibleMoves = checkersGame.possibleMoves(rowIndex, cellIndex);
-      console.log(possibleMoves);
+      const moves = checkersGame.possibleMoves(rowIndex, cellIndex);
+      setPossibleMoves(moves); // Set possible moves for the selected piece
     } else {
       console.log("It's not your turn or invalid selection.");
+      setPossibleMoves([]); // Clear possible moves when invalid selection
     }
   };
 
