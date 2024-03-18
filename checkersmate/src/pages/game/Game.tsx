@@ -1,13 +1,53 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStyle } from "../../context/StyleContext";
 import "../../css/game-styling.css";
+import {
+  PieceColor,
+  State,
+  Player,
+  CheckersGame,
+} from "../../components/game/checkersGame";
+import { CheckersAI } from "../../components/game/checkersAI";
+import regularBlack from "../../assets/img/blackBase.png";
+import regularRed from "../../assets/img/redBase.png";
 
 const Game = () => {
+  const [gameStatus, setGameStatus] = useState("");
+  const playerOne = new Player("Player 1", PieceColor.Red);
+  const playerTwo = new Player("Player 2", PieceColor.Black);
+  const [checkersGame, setCheckersGame] = useState(
+    new CheckersGame(playerOne, playerTwo, false)
+  );
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
+    // set background
     changeBodyBackground("#363430");
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
+
+  const renderBoard = () => {
+    return checkersGame.board.map((row, rowIndex) => (
+      <div key={rowIndex} className="board-row">
+        {row.map((cell, cellIndex) => (
+          <div key={cellIndex} className={`board-col ${cell && "-occupied"}`}>
+            {cell && (
+              <div className={`piece-${cell.color}`}>
+                {cell.color === "black" ? (
+                  <img src={`${regularBlack}`} alt="" />
+                ) : (
+                  <img src={`${regularRed}`} alt="" />
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    ));
+  };
+
+  const handleCellClick = (rowIndex: number, cellIndex: number) => {
+    console.log(`Clicked on cell at row ${rowIndex}, column ${cellIndex}`);
+  };
 
   return (
     <>
@@ -21,7 +61,8 @@ const Game = () => {
               <h3>Opponent</h3>
             </div>
             <div className="board">
-              <div className="board-row">
+              {renderBoard()}
+              {/* <div className="board-row">
                 <div className="board-col"></div>
                 <div className="board-col">1</div>
                 <div className="board-col"></div>
@@ -100,7 +141,7 @@ const Game = () => {
                 <div className="board-col"></div>
                 <div className="board-col">32</div>
                 <div className="board-col"></div>
-              </div>
+              </div> */}
             </div>
             <div className="player-card">
               <h3>Player</h3>

@@ -2,7 +2,7 @@ import {
   CheckersBoard,
   CheckersPiece,
   PieceColor,
-} from "../pages/game/checkersGame";
+} from "../components/game/checkersGame";
 
 describe("CheckersBoard", () => {
   let checkersBoard: CheckersBoard;

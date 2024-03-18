@@ -5,7 +5,7 @@ import {
   State,
   Player,
   CheckersGame,
-} from "../pages/game/checkersGame";
+} from "../components/game/checkersGame";
 
 describe("CheckersGame", () => {
   let game: CheckersGame;

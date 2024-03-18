@@ -4,8 +4,8 @@ import {
   CheckersPiece,
   Player,
   CheckersGame,
-} from "../pages/game/checkersGame";
-import { CheckersAI } from "../pages/game/checkersAI";
+} from "../components/game/checkersGame";
+import { CheckersAI } from "../components/game/checkersAI";
 
 describe("CheckersGame", () => {
   let game: CheckersGame, ai: CheckersAI;

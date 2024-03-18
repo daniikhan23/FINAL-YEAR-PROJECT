@@ -24,7 +24,8 @@
 }
 
 .game .game-container .main .board .board-row .board-col {
-  text-align: right;
+  /* text-align: right; */
+  text-align: center;
 }
 
 /* Light brown squares */
@@ -39,4 +40,14 @@
 .main .board .board-row:nth-child(even) .board-col:nth-child(odd) {
   background-color: #b58863;
   color: #f0d9b5;
+}
+
+.game .game-container .main .board .board-row .piece-black img {
+  height: 70px;
+  width: 70px;
+}
+
+.game .game-container .main .board .board-row .piece-red img {
+  height: 70px;
+  width: 70px;
 }
