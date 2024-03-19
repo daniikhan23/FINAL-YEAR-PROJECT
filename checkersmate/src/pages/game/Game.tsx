@@ -67,21 +67,28 @@ const Game = () => {
 
   // Handle selection of pieces, highlight potential moves and move pieces
   const handleCellClick = (rowIndex: number, colIndex: number) => {
-    const piece = checkersGame.getPiece(rowIndex, colIndex);
+    // Deselect if the same piece is clicked again
+    if (selectedPiece.row === rowIndex && selectedPiece.col === colIndex) {
+      setSelectedPiece({ row: -1, col: -1 });
+      setPossibleMoves([]);
+      return;
+    }
 
-    if (selectedPiece.row !== -1 && isMovePossible(rowIndex, colIndex)) {
+    const piece = checkersGame.getPiece(rowIndex, colIndex);
+    const isPossibleMove = isMovePossible(rowIndex, colIndex);
+
+    // Execute the move if a piece is selected and the target is a possible move
+    if (selectedPiece.row !== -1 && isPossibleMove) {
       checkersGame.movePiece(
         selectedPiece.row,
         selectedPiece.col,
         rowIndex,
         colIndex
       );
-
+      // Refresh the state to reflect the move
       setSelectedPiece({ row: -1, col: -1 });
       setPossibleMoves([]);
-
       const newGame = checkersGame.deepCopyGame();
-
       setCheckersGame((checkersGame) => checkersGame);
       setHistory((currentHistory) => {
         const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
@@ -90,11 +97,12 @@ const Game = () => {
         return [...currentHistory, newBoardState] as (CheckersPiece | null)[][];
       });
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
+      // Select the piece and show possible moves
       setSelectedPiece({ row: rowIndex, col: colIndex });
-      const moves = checkersGame.possibleMoves(rowIndex, colIndex);
-      setPossibleMoves(moves);
+      setPossibleMoves(checkersGame.possibleMoves(rowIndex, colIndex));
     } else {
-      console.log("It's not your turn or invalid selection.");
+      // Invalid selection or not the player's turn
+      setSelectedPiece({ row: -1, col: -1 });
       setPossibleMoves([]);
     }
   };
