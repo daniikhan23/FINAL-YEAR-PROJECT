@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useStyle } from "../../context/StyleContext";
 import "../../css/game-styling.css";
 import {
+  CheckersPiece,
   PieceColor,
   State,
   Player,
@@ -13,14 +14,18 @@ import regularBlack from "../../assets/img/blackBase.png";
 import regularRed from "../../assets/img/redBase.png";
 
 const Game = () => {
-  const [gameStatus, setGameStatus] = useState("");
-  const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
-  const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
   const playerOne = new Player("Player 1", PieceColor.Red);
   const playerTwo = new Player("Player 2", PieceColor.Black);
   const [checkersGame, setCheckersGame] = useState(
     new CheckersGame(playerOne, playerTwo, false)
   );
+  const [history, setHistory] = useState<(CheckersPiece | null)[][]>(
+    checkersGame.board
+  );
+  const [gameStatus, setGameStatus] = useState("");
+  const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
+  const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
+
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
     // set background
@@ -60,20 +65,44 @@ const Game = () => {
     ));
   };
 
-  const handleCellClick = (rowIndex: number, cellIndex: number) => {
-    const piece = checkersGame.getPiece(rowIndex, cellIndex);
+  // Handle selection of pieces, highlight potential moves and move pieces
+  const handleCellClick = (rowIndex: number, colIndex: number) => {
+    const piece = checkersGame.getPiece(rowIndex, colIndex);
 
-    if (selectedPiece.row === rowIndex && selectedPiece.col === cellIndex) {
+    if (selectedPiece.row !== -1 && isMovePossible(rowIndex, colIndex)) {
+      checkersGame.movePiece(
+        selectedPiece.row,
+        selectedPiece.col,
+        rowIndex,
+        colIndex
+      );
+
       setSelectedPiece({ row: -1, col: -1 });
-      setPossibleMoves([]); // Clear possible moves when deselecting
+      setPossibleMoves([]);
+
+      const newGame = checkersGame.deepCopyGame();
+
+      setCheckersGame((checkersGame) => checkersGame);
+      setHistory((currentHistory) => {
+        const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
+          (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+        );
+        return [...currentHistory, newBoardState] as (CheckersPiece | null)[][];
+      });
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
-      setSelectedPiece({ row: rowIndex, col: cellIndex });
-      const moves = checkersGame.possibleMoves(rowIndex, cellIndex);
-      setPossibleMoves(moves); // Set possible moves for the selected piece
+      setSelectedPiece({ row: rowIndex, col: colIndex });
+      const moves = checkersGame.possibleMoves(rowIndex, colIndex);
+      setPossibleMoves(moves);
     } else {
       console.log("It's not your turn or invalid selection.");
-      setPossibleMoves([]); // Clear possible moves when invalid selection
+      setPossibleMoves([]);
     }
+  };
+
+  const isMovePossible = (rowIndex: number, colIndex: number) => {
+    return possibleMoves.some(
+      (move) => move.endRow === rowIndex && move.endCol === colIndex
+    );
   };
 
   return (
@@ -87,89 +116,7 @@ const Game = () => {
             <div className="opponent-card">
               <h3>Opponent</h3>
             </div>
-            <div className="board">
-              {renderBoard()}
-              {/* <div className="board-row">
-                <div className="board-col"></div>
-                <div className="board-col">1</div>
-                <div className="board-col"></div>
-                <div className="board-col">2</div>
-                <div className="board-col"></div>
-                <div className="board-col">3</div>
-                <div className="board-col"></div>
-                <div className="board-col">4</div>
-              </div>
-              <div className="board-row">
-                <div className="board-col">5</div>
-                <div className="board-col"></div>
-                <div className="board-col">6</div>
-                <div className="board-col"></div>
-                <div className="board-col">7</div>
-                <div className="board-col"></div>
-                <div className="board-col">8</div>
-                <div className="board-col"></div>
-              </div>
-              <div className="board-row">
-                <div className="board-col"></div>
-                <div className="board-col">9</div>
-                <div className="board-col"></div>
-                <div className="board-col">10</div>
-                <div className="board-col"></div>
-                <div className="board-col">11</div>
-                <div className="board-col"></div>
-                <div className="board-col">12</div>
-              </div>
-              <div className="board-row">
-                <div className="board-col">13</div>
-                <div className="board-col"></div>
-                <div className="board-col">14</div>
-                <div className="board-col"></div>
-                <div className="board-col">15</div>
-                <div className="board-col"></div>
-                <div className="board-col">16</div>
-                <div className="board-col"></div>
-              </div>
-              <div className="board-row">
-                <div className="board-col"></div>
-                <div className="board-col">17</div>
-                <div className="board-col"></div>
-                <div className="board-col">18</div>
-                <div className="board-col"></div>
-                <div className="board-col">19</div>
-                <div className="board-col"></div>
-                <div className="board-col">20</div>
-              </div>
-              <div className="board-row">
-                <div className="board-col">21</div>
-                <div className="board-col"></div>
-                <div className="board-col">22</div>
-                <div className="board-col"></div>
-                <div className="board-col">23</div>
-                <div className="board-col"></div>
-                <div className="board-col">24</div>
-                <div className="board-col"></div>
-              </div>
-              <div className="board-row">
-                <div className="board-col"></div>
-                <div className="board-col">25</div>
-                <div className="board-col"></div>
-                <div className="board-col">26</div>
-                <div className="board-col"></div>
-                <div className="board-col">27</div>
-                <div className="board-col"></div>
-                <div className="board-col">28</div>
-              </div>
-              <div className="board-row">
-                <div className="board-col">29</div>
-                <div className="board-col"></div>
-                <div className="board-col">30</div>
-                <div className="board-col"></div>
-                <div className="board-col">31</div>
-                <div className="board-col"></div>
-                <div className="board-col">32</div>
-                <div className="board-col"></div>
-              </div> */}
-            </div>
+            <div className="board">{renderBoard()}</div>
             <div className="player-card">
               <h3>Player</h3>
             </div>

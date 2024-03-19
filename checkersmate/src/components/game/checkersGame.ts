@@ -111,7 +111,11 @@ export class CheckersPiece {
    * @returns {CheckersPiece} - copy of the checkers piece
    */
   public deepCopyPiece(): CheckersPiece {
-    const copiedPiece = new CheckersPiece(this.color, this.isKing);
+    const copiedPiece = new CheckersPiece(
+      this.color,
+      this.isKing,
+      this.captureStatus
+    );
     return copiedPiece;
   }
 }
@@ -959,9 +963,16 @@ export class CheckersGame {
       row.map((piece) => (piece ? piece.deepCopyPiece() : null))
     );
 
-    copiedGame.currentPlayer = this.currentPlayer;
+    // Copy rest of the properties
     copiedGame.currentState = this.currentState;
+    copiedGame.currentPlayer = this.currentPlayer;
     copiedGame.winner = this.winner ? this.winner.deepCopyPlayer() : null;
+    copiedGame.numOfTurns = this.numOfTurns;
+    copiedGame.playerOneMoves = this.playerOneMoves;
+    copiedGame.playerTwoMoves = this.playerTwoMoves;
+    copiedGame.forcedJumps = this.forcedJumps;
+    copiedGame.chainingRow = this.chainingRow;
+    copiedGame.chainingCol = this.chainingCol;
 
     return copiedGame;
   }
