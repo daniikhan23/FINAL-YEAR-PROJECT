@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useStyle } from "../../context/StyleContext";
 import "../../css/game-styling.css";
 import {
@@ -12,6 +12,88 @@ import {
 import { CheckersAI } from "../../components/game/checkersAI";
 import regularBlack from "../../assets/img/blackBase.png";
 import regularRed from "../../assets/img/redBase.png";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+const useForceUpdate = () => {
+  const [, setTick] = useState(0);
+  const update = useCallback(() => {
+    setTick((tick) => tick + 1);
+  }, []);
+  return update;
+};
+
+interface PieceProps {
+  color: PieceColor;
+  position: { row: number; col: number };
+  isSelected: boolean;
+}
+
+const Piece: React.FC<PieceProps> = ({ color, position, isSelected }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "piece",
+    item: { color, position },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drag}
+      className={`piece-${color} ${isSelected ? "piece-selected" : ""}`}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+      }}
+    ></div>
+  );
+};
+
+interface SquareProps {
+  position: { row: number; col: number };
+  onPieceDropped: (
+    item: { color: PieceColor; position: { row: number; col: number } },
+    position: { row: number; col: number }
+  ) => void;
+  onClick?: () => void;
+  isPossibleMove?: boolean;
+  children?: React.ReactNode;
+}
+
+const Square: React.FC<SquareProps> = ({
+  position,
+  onPieceDropped,
+  onClick,
+  isPossibleMove,
+  children,
+}) => {
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "piece",
+    drop: (item: any, monitor) => {
+      const typedItem = item as {
+        color: PieceColor;
+        position: { row: number; col: number };
+      };
+      onPieceDropped(typedItem, position);
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drop}
+      onClick={onClick}
+      className={`board-col ${isPossibleMove ? "possible-move" : ""}`}
+      style={{
+        backgroundColor: isOver ? "#e3f7cd" : "",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const Game = () => {
   const playerOne = new Player("Player 1", PieceColor.Red);
@@ -25,6 +107,32 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState("");
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
+  const forceUpdate = useForceUpdate();
+
+  const onPieceDropped = (
+    item: { color: PieceColor; position: { row: number; col: number } },
+    newPosition: { row: number; col: number }
+  ) => {
+    // Check move validity
+    const isValidMove = checkersGame.validateMove(
+      item.position.row,
+      item.position.col,
+      newPosition.row,
+      newPosition.col
+    );
+
+    if (isValidMove) {
+      // Make the move
+      checkersGame.movePiece(
+        item.position.row,
+        item.position.col,
+        newPosition.row,
+        newPosition.col
+      );
+      setCheckersGame(checkersGame);
+      forceUpdate();
+    }
+  };
 
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
@@ -32,46 +140,6 @@ const Game = () => {
     changeBodyBackground("#363430");
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
-
-  const handleDragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    rowIndex: number,
-    colIndex: number
-  ) => {
-    const piece = checkersGame.getPiece(rowIndex, colIndex);
-    if (piece && piece.color === checkersGame.currentPlayer.color) {
-      setSelectedPiece({ row: rowIndex, col: colIndex });
-      const moves = checkersGame.possibleMoves(rowIndex, colIndex);
-      setPossibleMoves(moves);
-    }
-  };
-
-  const handleDragOver = (
-    e: React.DragEvent<HTMLDivElement>,
-    rowIndex: number,
-    colIndex: number
-  ) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (
-    e: React.DragEvent<HTMLDivElement>,
-    rowIndex: number,
-    colIndex: number
-  ) => {
-    e.preventDefault();
-    if (isMovePossible(rowIndex, colIndex)) {
-      checkersGame.movePiece(
-        selectedPiece.row,
-        selectedPiece.col,
-        rowIndex,
-        colIndex
-      );
-      setSelectedPiece({ row: -1, col: -1 });
-      setPossibleMoves([]);
-      setCheckersGame((checkersGame) => checkersGame);
-    }
-  };
 
   const renderBoard = () => {
     return checkersGame.board.map((row, rowIndex) => (
@@ -81,26 +149,24 @@ const Game = () => {
             (move) => move.endRow === rowIndex && move.endCol === colIndex
           );
           return (
-            <div
+            <Square
               key={colIndex}
-              className={`board-col ${col ? "-occupied" : ""} ${
-                isPossibleMove ? "possible-move" : ""
-              }`}
+              position={{ row: rowIndex, col: colIndex }}
+              onPieceDropped={onPieceDropped}
+              isPossibleMove={isPossibleMove}
               onClick={() => handleCellClick(rowIndex, colIndex)}
-              onDragOver={(e) => handleDragOver(e, rowIndex, colIndex)}
-              onDrop={(e) => handleDrop(e, rowIndex, colIndex)}
             >
               {col && (
-                <div
-                  className={`piece-${col.color} ${
+                <Piece
+                  color={col.color}
+                  position={{ row: rowIndex, col: colIndex }}
+                  isSelected={
                     selectedPiece.row === rowIndex &&
                     selectedPiece.col === colIndex
-                      ? "piece-selected"
-                      : ""
-                  }`}
-                ></div>
+                  }
+                />
               )}
-            </div>
+            </Square>
           );
         })}
       </div>
@@ -166,7 +232,9 @@ const Game = () => {
             <div className="opponent-card">
               <h3>Opponent</h3>
             </div>
-            <div className="board">{renderBoard()}</div>
+            <DndProvider backend={HTML5Backend}>
+              <div className="board">{renderBoard()}</div>
+            </DndProvider>
             <div className="player-card">
               <h3>Player</h3>
             </div>
