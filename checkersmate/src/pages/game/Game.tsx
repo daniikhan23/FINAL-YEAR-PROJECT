@@ -33,6 +33,46 @@ const Game = () => {
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  const handleDragStart = (
+    e: React.DragEvent<HTMLDivElement>,
+    rowIndex: number,
+    colIndex: number
+  ) => {
+    const piece = checkersGame.getPiece(rowIndex, colIndex);
+    if (piece && piece.color === checkersGame.currentPlayer.color) {
+      setSelectedPiece({ row: rowIndex, col: colIndex });
+      const moves = checkersGame.possibleMoves(rowIndex, colIndex);
+      setPossibleMoves(moves);
+    }
+  };
+
+  const handleDragOver = (
+    e: React.DragEvent<HTMLDivElement>,
+    rowIndex: number,
+    colIndex: number
+  ) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (
+    e: React.DragEvent<HTMLDivElement>,
+    rowIndex: number,
+    colIndex: number
+  ) => {
+    e.preventDefault();
+    if (isMovePossible(rowIndex, colIndex)) {
+      checkersGame.movePiece(
+        selectedPiece.row,
+        selectedPiece.col,
+        rowIndex,
+        colIndex
+      );
+      setSelectedPiece({ row: -1, col: -1 });
+      setPossibleMoves([]);
+      setCheckersGame((checkersGame) => checkersGame);
+    }
+  };
+
   const renderBoard = () => {
     return checkersGame.board.map((row, rowIndex) => (
       <div key={rowIndex} className="board-row">
@@ -47,6 +87,8 @@ const Game = () => {
                 isPossibleMove ? "possible-move" : ""
               }`}
               onClick={() => handleCellClick(rowIndex, colIndex)}
+              onDragOver={(e) => handleDragOver(e, rowIndex, colIndex)}
+              onDrop={(e) => handleDrop(e, rowIndex, colIndex)}
             >
               {col && (
                 <div
