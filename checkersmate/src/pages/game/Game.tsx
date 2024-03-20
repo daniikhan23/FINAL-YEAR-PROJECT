@@ -28,9 +28,15 @@ interface PieceProps {
   color: PieceColor;
   position: { row: number; col: number };
   isSelected: boolean;
+  isKing: boolean;
 }
 
-const Piece: React.FC<PieceProps> = ({ color, position, isSelected }) => {
+const Piece: React.FC<PieceProps> = ({
+  color,
+  position,
+  isSelected,
+  isKing,
+}) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "piece",
     item: { color, position },
@@ -42,7 +48,9 @@ const Piece: React.FC<PieceProps> = ({ color, position, isSelected }) => {
   return (
     <div
       ref={drag}
-      className={`piece-${color} ${isSelected ? "piece-selected" : ""}`}
+      className={`piece-${color}${isKing ? "-king" : ""}${
+        isSelected ? " -selected" : ""
+      }`}
       style={{
         opacity: isDragging ? 0.5 : 1,
       }}
@@ -110,52 +118,6 @@ const Game = () => {
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
   const forceUpdate = useForceUpdate();
 
-  const onPieceDropped = (
-    item: { color: PieceColor; position: { row: number; col: number } },
-    newPosition: { row: number; col: number }
-  ) => {
-    if (checkersGame.currentPlayer.color === item.color) {
-      const startRow = item.position.row;
-      const startCol = item.position.col;
-      const endRow = newPosition.row;
-      const endCol = newPosition.col;
-      const piece = checkersGame.getPiece(startRow, startCol);
-      setSelectedPiece({ row: startRow, col: startCol });
-      const isPossibleMove = checkersGame.possibleMoves(startRow, startCol);
-      setPossibleMoves(checkersGame.possibleMoves(startRow, startCol));
-
-      const isValidMove = isPossibleMove.some(
-        (move) =>
-          move.startRow === startRow &&
-          move.startCol === startCol &&
-          move.endRow === endRow &&
-          move.endCol === endCol
-      );
-
-      if (piece && isValidMove) {
-        checkersGame.movePiece(startRow, startCol, endRow, endCol);
-        setSelectedPiece({ row: -1, col: -1 });
-        setPossibleMoves([]);
-        const newGame = checkersGame.deepCopyGame();
-        setCheckersGame((checkersGame) => checkersGame);
-        setHistory((currentHistory) => {
-          const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
-            (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-          );
-          return [
-            ...currentHistory,
-            newBoardState,
-          ] as (CheckersPiece | null)[][];
-        });
-        forceUpdate();
-      } else {
-        console.log("invalid turn");
-      }
-    } else {
-      console.log("Its not your turn");
-    }
-  };
-
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
     // set background
@@ -186,6 +148,7 @@ const Game = () => {
                     selectedPiece.row === rowIndex &&
                     selectedPiece.col === colIndex
                   }
+                  isKing={col.isKing}
                 />
               )}
             </Square>
@@ -234,6 +197,53 @@ const Game = () => {
       // Invalid selection or not the player's turn
       setSelectedPiece({ row: -1, col: -1 });
       setPossibleMoves([]);
+    }
+  };
+
+  // Handles drag and drop of pieces to make moves
+  const onPieceDropped = (
+    item: { color: PieceColor; position: { row: number; col: number } },
+    newPosition: { row: number; col: number }
+  ) => {
+    if (checkersGame.currentPlayer.color === item.color) {
+      const startRow = item.position.row;
+      const startCol = item.position.col;
+      const endRow = newPosition.row;
+      const endCol = newPosition.col;
+      const piece = checkersGame.getPiece(startRow, startCol);
+      setSelectedPiece({ row: startRow, col: startCol });
+      const isPossibleMove = checkersGame.possibleMoves(startRow, startCol);
+      setPossibleMoves(checkersGame.possibleMoves(startRow, startCol));
+
+      const isValidMove = isPossibleMove.some(
+        (move) =>
+          move.startRow === startRow &&
+          move.startCol === startCol &&
+          move.endRow === endRow &&
+          move.endCol === endCol
+      );
+
+      if (piece && isValidMove) {
+        checkersGame.movePiece(startRow, startCol, endRow, endCol);
+        setSelectedPiece({ row: -1, col: -1 });
+        setPossibleMoves([]);
+        const newGame = checkersGame.deepCopyGame();
+        setCheckersGame((checkersGame) => checkersGame);
+        setHistory((currentHistory) => {
+          const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
+            (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+          );
+          return [
+            ...currentHistory,
+            newBoardState,
+          ] as (CheckersPiece | null)[][];
+        });
+        forceUpdate();
+      } else {
+        console.log("invalid turn");
+      }
+    } else {
+      console.log("Its not your turn");
     }
   };
 

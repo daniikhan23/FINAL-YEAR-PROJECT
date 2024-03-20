@@ -63,6 +63,38 @@
   transform: translateY(4px);
 }
 
+.game .game-container .main .board .board-row .board-col .piece-black-king {
+  background-image: url("../assets/img/blackKing.png");
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+  cursor: pointer;
+}
+
+.game
+  .game-container
+  .main
+  .board
+  .board-row
+  .board-col
+  .piece-black-king:hover {
+  height: 60px;
+  width: 60px;
+}
+
+.game
+  .game-container
+  .main
+  .board
+  .board-row
+  .board-col
+  .piece-black-king:active {
+  transform: translateY(4px);
+}
+
 .game .game-container .main .board .board-row .board-col .piece-red {
   background-image: url("../assets/img/redBase.png");
   background-size: 140% 140%;
@@ -83,7 +115,33 @@
   transform: translateY(4px);
 }
 
-.game .game-container .main .board .board-row .piece-selected {
+.game .game-container .main .board .board-row .board-col .piece-red-king {
+  background-image: url("../assets/img/redKing.png");
+  background-size: 140% 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+  cursor: pointer;
+}
+
+.game .game-container .main .board .board-row .board-col .piece-red-king:hover {
+  height: 60px;
+  width: 60px;
+}
+
+.game
+  .game-container
+  .main
+  .board
+  .board-row
+  .board-col
+  .piece-red-king:active {
+  transform: translateY(4px);
+}
+
+.game .game-container .main .board .board-row .-selected {
   border: 3px solid gold;
 }
 
