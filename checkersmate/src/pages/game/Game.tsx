@@ -15,6 +15,7 @@ import regularRed from "../../assets/img/redBase.png";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ToastContainer, toast } from "react-toastify";
+import backgroundImage from "../../assets/img/background.png";
 
 const useForceUpdate = () => {
   const [, setTick] = useState(0);
@@ -125,9 +126,8 @@ const Game = () => {
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
     // set background
-    changeBodyBackground(
-      "https://www.transparenttextures.com/patterns/wood-pattern.png"
-    );
+    changeBodyBackground(backgroundImage);
+
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 

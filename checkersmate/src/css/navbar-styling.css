@@ -2,13 +2,15 @@
   font-family: "Black Ops One", cursive;
 }
 
-body {
-  background-color: wheat;
-}
-
 /* Navbar Section */
+/* .navbar .navbar-container {
+  background-color: rgba(57, 40, 33, 0.5);
+  border-bottom: 1px solid rgba(57, 40, 33, 0.3);
+} */
+
 .navbar .navbar-container {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .navbar .navbar-container .container {
@@ -20,16 +22,16 @@ body {
 
 .navbar .navbar-container .container .home button {
   border: 0 solid black;
-  background-color: black;
+  background-color: transparent;
 }
 
 .navbar .navbar-container .container .home button a {
   font-size: 2rem;
-  color: red;
+  color: white;
 }
 
 .navbar .navbar-container .container .home button a:hover {
-  color: white;
+  color: #f5ac8e;
 }
 
 .navbar .navbar-container .container .home button a:active {
@@ -47,21 +49,20 @@ body {
 }
 
 .navbar .navbar-container .container .list li button {
-  background-color: black;
-  border: 0px solid black;
-  border-radius: 5%;
+  border: 0 solid black;
+  background-color: transparent;
   font-size: 1.5rem;
-  color: red;
+  color: white;
   cursor: pointer;
 }
 
 .navbar .navbar-container .container .list li button a {
   font-size: 1.5rem;
-  color: red;
+  color: white;
 }
 
 .navbar .navbar-container .container .list li button :hover {
-  color: white;
+  color: #f5ac8e;
 }
 
 .navbar .navbar-container .container .list li button :active {
