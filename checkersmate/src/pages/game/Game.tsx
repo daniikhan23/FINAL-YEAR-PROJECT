@@ -14,6 +14,7 @@ import regularBlack from "../../assets/img/blackBase.png";
 import regularRed from "../../assets/img/redBase.png";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { ToastContainer, toast } from "react-toastify";
 
 const useForceUpdate = () => {
   const [, setTick] = useState(0);
@@ -113,24 +114,47 @@ const Game = () => {
     item: { color: PieceColor; position: { row: number; col: number } },
     newPosition: { row: number; col: number }
   ) => {
-    // Check move validity
-    const isValidMove = checkersGame.validateMove(
-      item.position.row,
-      item.position.col,
-      newPosition.row,
-      newPosition.col
-    );
+    if (checkersGame.currentPlayer.color === item.color) {
+      const startRow = item.position.row;
+      const startCol = item.position.col;
+      const endRow = newPosition.row;
+      const endCol = newPosition.col;
+      setSelectedPiece({ row: startRow, col: startCol });
+      const piece = checkersGame.getPiece(startRow, startCol);
+      setPossibleMoves(checkersGame.possibleMoves(startRow, startCol));
+      const isPossibleMove = checkersGame.possibleMoves(startRow, startCol);
 
-    if (isValidMove) {
-      // Make the move
-      checkersGame.movePiece(
-        item.position.row,
-        item.position.col,
-        newPosition.row,
-        newPosition.col
+      console.log(`Piece: `);
+      console.log(piece);
+
+      console.log(`isPossibleMove: `);
+      console.log(isPossibleMove);
+
+      console.log(`Possible Moves state: `);
+      console.log(possibleMoves);
+
+      const isValidMove = isPossibleMove.some(
+        (move) =>
+          move.startRow === item.position.row &&
+          move.startCol === item.position.col &&
+          move.endRow === newPosition.row &&
+          move.endCol === newPosition.col
       );
-      setCheckersGame(checkersGame);
-      forceUpdate();
+
+      console.log(`isValidMove`);
+      console.log(isValidMove);
+
+      if (piece && isValidMove) {
+        checkersGame.movePiece(startRow, startCol, endRow, endCol);
+        setSelectedPiece({ row: -1, col: -1 });
+        setPossibleMoves([]);
+        setCheckersGame(checkersGame);
+        forceUpdate();
+      } else {
+        console.log("invalid turn");
+      }
+    } else {
+      console.log("Its not your turn");
     }
   };
 
