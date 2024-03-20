@@ -119,36 +119,34 @@ const Game = () => {
       const startCol = item.position.col;
       const endRow = newPosition.row;
       const endCol = newPosition.col;
-      setSelectedPiece({ row: startRow, col: startCol });
       const piece = checkersGame.getPiece(startRow, startCol);
-      setPossibleMoves(checkersGame.possibleMoves(startRow, startCol));
+      setSelectedPiece({ row: startRow, col: startCol });
       const isPossibleMove = checkersGame.possibleMoves(startRow, startCol);
-
-      console.log(`Piece: `);
-      console.log(piece);
-
-      console.log(`isPossibleMove: `);
-      console.log(isPossibleMove);
-
-      console.log(`Possible Moves state: `);
-      console.log(possibleMoves);
+      setPossibleMoves(checkersGame.possibleMoves(startRow, startCol));
 
       const isValidMove = isPossibleMove.some(
         (move) =>
-          move.startRow === item.position.row &&
-          move.startCol === item.position.col &&
-          move.endRow === newPosition.row &&
-          move.endCol === newPosition.col
+          move.startRow === startRow &&
+          move.startCol === startCol &&
+          move.endRow === endRow &&
+          move.endCol === endCol
       );
-
-      console.log(`isValidMove`);
-      console.log(isValidMove);
 
       if (piece && isValidMove) {
         checkersGame.movePiece(startRow, startCol, endRow, endCol);
         setSelectedPiece({ row: -1, col: -1 });
         setPossibleMoves([]);
-        setCheckersGame(checkersGame);
+        const newGame = checkersGame.deepCopyGame();
+        setCheckersGame((checkersGame) => checkersGame);
+        setHistory((currentHistory) => {
+          const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
+            (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+          );
+          return [
+            ...currentHistory,
+            newBoardState,
+          ] as (CheckersPiece | null)[][];
+        });
         forceUpdate();
       } else {
         console.log("invalid turn");
