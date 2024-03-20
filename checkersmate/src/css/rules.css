@@ -154,7 +154,7 @@ button:hover {
   .col
   .row-king-pieces
   .black-king {
-  filter: drop-shadow(0 0 1.5rem rgb(188, 1, 1));
+  filter: drop-shadow(0 0 1.5rem gold);
 }
 
 .rules .rules-container .container .scores {
