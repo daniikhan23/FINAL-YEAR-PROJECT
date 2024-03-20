@@ -144,11 +144,13 @@
 }
 
 .game .game-container .main .board .board-row .possible-move {
-  background-color: rgb(65, 105, 93) !important;
+  /* background-color: rgb(65, 105, 93) !important; */
+  background-color: #d9992e !important;
 }
 
 .game .game-container .main .board .board-row .possible-move:hover {
-  background-color: rgb(98, 145, 131) !important;
+  /* background-color: rgb(98, 145, 131) !important; */
+  background-color: #dead59 !important;
 }
 
 .game .game-container .main .board .board-row .selected {

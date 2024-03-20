@@ -101,7 +101,7 @@ const Square: React.FC<SquareProps> = ({
         isSelected ? "selected" : ""
       }`}
       style={{
-        backgroundColor: isOver ? "#e3f7cd" : "",
+        backgroundColor: isOver ? "#d9992e" : "",
       }}
     >
       {children}
