@@ -32,15 +32,17 @@
 /* Light brown squares */
 .main .board .board-row:nth-child(odd) .board-col:nth-child(odd),
 .main .board .board-row:nth-child(even) .board-col:nth-child(even) {
+  /* background-color: #f0d9b5;
+  color: #b58863; */
   background-color: #f0d9b5;
-  color: #b58863;
 }
 
 /*Dark brown squares */
 .main .board .board-row:nth-child(odd) .board-col:nth-child(even),
 .main .board .board-row:nth-child(even) .board-col:nth-child(odd) {
+  /* background-color: #b58863;
+  color: #f0d9b5; */
   background-color: #b58863;
-  color: #f0d9b5;
 }
 
 .game .game-container .main .board .board-row .board-col .piece-black {
@@ -60,7 +62,7 @@
 }
 
 .game .game-container .main .board .board-row .board-col .piece-black:active {
-  transform: translateY(4px);
+  transform: translateY(8px);
 }
 
 .game .game-container .main .board .board-row .board-col .piece-black-king {
@@ -92,7 +94,7 @@
   .board-row
   .board-col
   .piece-black-king:active {
-  transform: translateY(4px);
+  transform: translateY(8px);
 }
 
 .game .game-container .main .board .board-row .board-col .piece-red {
@@ -112,7 +114,7 @@
 }
 
 .game .game-container .main .board .board-row .board-col .piece-red:active {
-  transform: translateY(4px);
+  transform: translateY(8px);
 }
 
 .game .game-container .main .board .board-row .board-col .piece-red-king {
@@ -138,11 +140,11 @@
   .board-row
   .board-col
   .piece-red-king:active {
-  transform: translateY(4px);
+  transform: translateY(8px);
 }
 
 .game .game-container .main .board .board-row .-selected {
-  border: 3px solid gold;
+  opacity: 10;
 }
 
 .game .game-container .main .board .board-row .possible-move {
@@ -151,4 +153,8 @@
 
 .game .game-container .main .board .board-row .possible-move:hover {
   background-color: rgb(98, 145, 131) !important;
+}
+
+.game .game-container .main .board .board-row .selected {
+  background-color: #8f6442;
 }

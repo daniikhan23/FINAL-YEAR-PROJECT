@@ -67,6 +67,7 @@ interface SquareProps {
   onClick?: () => void;
   isPossibleMove?: boolean;
   children?: React.ReactNode;
+  isSelected?: boolean;
 }
 
 const Square: React.FC<SquareProps> = ({
@@ -74,6 +75,7 @@ const Square: React.FC<SquareProps> = ({
   onPieceDropped,
   onClick,
   isPossibleMove,
+  isSelected,
   children,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
@@ -94,7 +96,9 @@ const Square: React.FC<SquareProps> = ({
     <div
       ref={drop}
       onClick={onClick}
-      className={`board-col ${isPossibleMove ? "possible-move" : ""}`}
+      className={`board-col ${isPossibleMove ? "possible-move" : ""} ${
+        isSelected ? "selected" : ""
+      }`}
       style={{
         backgroundColor: isOver ? "#e3f7cd" : "",
       }}
@@ -121,7 +125,9 @@ const Game = () => {
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
     // set background
-    changeBodyBackground("#363430");
+    changeBodyBackground(
+      "https://www.transparenttextures.com/patterns/wood-pattern.png"
+    );
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
@@ -139,6 +145,9 @@ const Game = () => {
               onPieceDropped={onPieceDropped}
               isPossibleMove={isPossibleMove}
               onClick={() => handleCellClick(rowIndex, colIndex)}
+              isSelected={
+                selectedPiece.row === rowIndex && selectedPiece.col === colIndex
+              }
             >
               {col && (
                 <Piece
