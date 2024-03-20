@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect } from "react";
+import { useStyle } from "../../context/StyleContext.tsx";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar.tsx";
 import "../../css/rules.css";
@@ -9,8 +10,16 @@ import RedKing from "../../assets/img/redKing.png";
 import BlackKing from "../../assets/img/blackKing.png";
 import ChainCaptures from "../../assets/img/chain-captures.png";
 import KingPromotion from "../../assets/img/king-promotion.png";
+import backgroundImage from "../../assets/img/background.png";
 
 export default function Rules() {
+  const { changeBodyBackground } = useStyle();
+  useEffect(() => {
+    // set background
+    changeBodyBackground(backgroundImage);
+
+    return () => changeBodyBackground("wheat");
+  }, [changeBodyBackground]);
   return (
     <>
       {/* Intro Section */}

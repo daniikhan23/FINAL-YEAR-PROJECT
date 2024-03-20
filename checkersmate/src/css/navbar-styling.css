@@ -2,12 +2,6 @@
   font-family: "Black Ops One", cursive;
 }
 
-/* Navbar Section */
-/* .navbar .navbar-container {
-  background-color: rgba(57, 40, 33, 0.5);
-  border-bottom: 1px solid rgba(57, 40, 33, 0.3);
-} */
-
 .navbar .navbar-container {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);

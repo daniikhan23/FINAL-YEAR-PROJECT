@@ -110,16 +110,16 @@ h5 {
 }
 
 .about .about-container .container h3 {
-  color: black;
+  color: #f5ac8e;
   margin: 5rem;
 }
 
 .about .about-container .container h5 {
-  color: red;
+  color: #f5ac8e;
 }
 
 .about .about-container .container h4 {
-  color: red;
+  color: #f5ac8e;
 }
 
 .about .about-container .container .lists {
@@ -130,6 +130,11 @@ h5 {
   margin: 1rem;
   font-size: 1.6rem;
   list-style-type: disc;
+  color: #f5ac8e;
+}
+
+p {
+  color: #f5ac8e;
 }
 
 /* About Me Section */
@@ -149,7 +154,7 @@ h5 {
 
 .about-me .about-me-container .container h4 {
   margin: 2rem;
-  color: red;
+  color: #f5ac8e;
 }
 
 .about-me .about-me-container .container p {
@@ -163,7 +168,7 @@ h5 {
   bottom: 0;
   width: 100%;
   text-align: center;
-  color: red;
+  color: #f5ac8e;
   background-color: black;
   font-size: 1rem;
   padding: 1.3rem;

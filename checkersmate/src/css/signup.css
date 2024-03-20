@@ -94,7 +94,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: red;
+  color: #f5ac8e;
 }
 
 .main .main-signup-container .main-header {
@@ -109,6 +109,7 @@ body {
 .main .main-signup-container .main-central-img img {
   height: 15rem;
   width: 15rem;
+  filter: drop-shadow(0 0 1.5rem #f5ac8e);
 }
 
 .main .main-signup-container .flex-container {
@@ -120,8 +121,10 @@ body {
 }
 
 .main .main-signup-container .main-central-btn button {
-  background-color: black;
-  color: red;
+  /* background-color: black; */
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  color: #f5ac8e;
   font-size: 1.5rem;
   border: 1px solid black;
   border-radius: 3%;
@@ -139,8 +142,10 @@ body {
 }
 
 .main .login-btn button {
-  background-color: black;
-  color: red;
+  /* background-color: black; */
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  color: #f5ac8e;
   font-size: 1.5rem;
   border: 1px solid black;
   border-radius: 3%;
@@ -149,7 +154,7 @@ body {
 }
 
 .main .login-btn .login-link {
-  color: red;
+  color: #f5ac8e;
 }
 
 .main .login-btn button:hover {

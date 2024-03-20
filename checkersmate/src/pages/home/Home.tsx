@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar.tsx";
 import "../../css/home-styling.css";
@@ -9,8 +9,17 @@ import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { faAndroid } from "@fortawesome/free-brands-svg-icons";
 import { faChessKing } from "@fortawesome/free-regular-svg-icons";
 import { faBarsProgress } from "@fortawesome/free-solid-svg-icons";
+import { useStyle } from "../../context/StyleContext.tsx";
+import backgroundImage from "../../assets/img/background.png";
 
 const Home = () => {
+  const { changeBodyBackground } = useStyle();
+  useEffect(() => {
+    // set background
+    changeBodyBackground(backgroundImage);
+
+    return () => changeBodyBackground("wheat");
+  }, [changeBodyBackground]);
   return (
     <>
       {/* Intro Section */}
@@ -54,7 +63,7 @@ const Home = () => {
                   icon={faUserGroup}
                   fontSize="200px"
                   style={{
-                    color: "black",
+                    color: "#f5ac8e",
                     margin: "10px",
                     marginBottom: "30px",
                   }}
@@ -74,7 +83,7 @@ const Home = () => {
                   icon={faAndroid}
                   fontSize="200px"
                   style={{
-                    color: "black",
+                    color: "#f5ac8e",
                     margin: "10px",
                     marginBottom: "30px",
                   }}
@@ -95,7 +104,7 @@ const Home = () => {
                   icon={faChessKing}
                   fontSize="200px"
                   style={{
-                    color: "black",
+                    color: "#f5ac8e",
                     margin: "10px",
                     marginBottom: "30px",
                   }}
@@ -115,7 +124,7 @@ const Home = () => {
                   icon={faBars}
                   fontSize="200px"
                   style={{
-                    color: "black",
+                    color: "#f5ac8e",
                     margin: "10px",
                     marginBottom: "30px",
                   }}

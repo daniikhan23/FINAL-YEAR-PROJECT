@@ -113,14 +113,14 @@ body {
 }
 
 .divider .container .row .col .title {
-  color: #000;
+  color: white;
   font-size: 50px;
   font-weight: 100;
   margin-bottom: 0;
 }
 
 .divider .container .row .col .col .title-color {
-  color: red;
+  color: #f5ac8e;
   font-size: 50px;
   font-weight: 100;
 }
@@ -136,7 +136,7 @@ body {
 }
 
 .divider .container .row .col .description {
-  color: #000;
+  color: #f5ac8e;
   font-size: 20px;
   font-weight: 100;
   width: 400px;
@@ -154,7 +154,9 @@ body {
 }
 
 .cards .card {
-  background-color: #eeeee4;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  /* background-color: #eeeee4; */
   border-radius: 2%;
 }
 
@@ -168,13 +170,13 @@ body {
 }
 
 .cards h5 {
-  color: darkred;
+  color: white;
   font-size: 3rem;
   text-align: center;
 }
 
 .cards p {
-  color: darkred;
+  color: #f5ac8e;
   font-size: 1.5rem;
   text-align: center;
   /* margin: 1rem; */

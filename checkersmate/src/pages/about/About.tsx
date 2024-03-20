@@ -1,11 +1,20 @@
-import React from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar.tsx";
 import "../../css/about.css";
 import CheckersCoolBoard from "../../assets/img/checkers-cool-board.jpg";
 import Picture from "../../assets/img/pix-mate.jpg";
+import backgroundImage from "../../assets/img/background.png";
+import { useStyle } from "../../context/StyleContext.tsx";
 
 export default function About() {
+  const { changeBodyBackground } = useStyle();
+  useEffect(() => {
+    // set background
+    changeBodyBackground(backgroundImage);
+
+    return () => changeBodyBackground("wheat");
+  }, [changeBodyBackground]);
   return (
     <>
       {/* About Section */}

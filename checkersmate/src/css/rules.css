@@ -82,10 +82,6 @@ button:hover {
   font-family: "Black Ops One", cursive;
 }
 
-body {
-  background-color: wheat;
-}
-
 /* Intro Section */
 
 .intro .intro-container .container {
@@ -98,7 +94,7 @@ body {
   text-align: center;
   font-size: 5rem;
   margin: 1rem;
-  color: red;
+  color: #f5ac8e;
 }
 
 /* Rules Section */
@@ -115,13 +111,13 @@ body {
 
 .rules .rules-container .container h3 {
   text-align: center;
-  color: black;
+  color: white;
   margin-bottom: 5rem;
 }
 
 .rules .rules-container .container li {
   list-style-type: circle;
-  color: red;
+  color: #f5ac8e;
   font-weight: bold;
   font-size: 1.5rem;
   margin: 1rem;

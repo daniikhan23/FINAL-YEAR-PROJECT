@@ -14,6 +14,7 @@ import { useStyle } from "../../context/StyleContext";
 import RedKing from "../../assets/img/redKing.png";
 import BlackKing from "../../assets/img/blackKing.png";
 import { Link } from "react-router-dom";
+import backgroundImage from "../../assets/img/background.png";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -25,9 +26,7 @@ const ResetPassword = () => {
   const { changeBodyBackground } = useStyle();
 
   useEffect(() => {
-    changeBodyBackground(
-      "https://t4.ftcdn.net/jpg/03/01/15/31/360_F_301153137_tQ3LWLbIduOkLWsssWIhQHu2BG99kRRU.jpg"
-    );
+    changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
