@@ -32,17 +32,17 @@
 /* Light brown squares */
 .main .board .board-row:nth-child(odd) .board-col:nth-child(odd),
 .main .board .board-row:nth-child(even) .board-col:nth-child(even) {
-  /* background-color: #f0d9b5;
-  color: #b58863; */
-  background-color: #f0d9b5;
+  color: #b58863;
+  /* background-color: #f0d9b5; */
+  background-color: #f2cfa7;
 }
 
 /*Dark brown squares */
 .main .board .board-row:nth-child(odd) .board-col:nth-child(even),
 .main .board .board-row:nth-child(even) .board-col:nth-child(odd) {
-  /* background-color: #b58863;
-  color: #f0d9b5; */
-  background-color: #b58863;
+  color: #f0d9b5;
+  /* background-color: #b58863; */
+  background-color: #c36c37;
 }
 
 .game .game-container .main .board .board-row .board-col .piece-black {
@@ -143,10 +143,6 @@
   transform: translateY(8px);
 }
 
-.game .game-container .main .board .board-row .-selected {
-  opacity: 10;
-}
-
 .game .game-container .main .board .board-row .possible-move {
   background-color: rgb(65, 105, 93) !important;
 }
@@ -156,7 +152,7 @@
 }
 
 .game .game-container .main .board .board-row .selected {
-  background-color: #8f6442;
+  background-color: #d9992e;
 }
 
 .footer-section {
