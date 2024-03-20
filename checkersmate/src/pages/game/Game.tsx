@@ -32,33 +32,6 @@ interface PieceProps {
   isKing: boolean;
 }
 
-const Piece: React.FC<PieceProps> = ({
-  color,
-  position,
-  isSelected,
-  isKing,
-}) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: "piece",
-    item: { color, position },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
-
-  return (
-    <div
-      ref={drag}
-      className={`piece-${color}${isKing ? "-king" : ""}${
-        isSelected ? " -selected" : ""
-      }`}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-      }}
-    ></div>
-  );
-};
-
 interface SquareProps {
   position: { row: number; col: number };
   onPieceDropped: (
@@ -122,6 +95,37 @@ const Game = () => {
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
   const forceUpdate = useForceUpdate();
+
+  const isCurrentPlayer = (color: PieceColor) => {
+    return checkersGame.currentPlayer.color === color;
+  };
+
+  const Piece: React.FC<PieceProps> = ({
+    color,
+    position,
+    isSelected,
+    isKing,
+  }) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+      type: "piece",
+      item: { color, position },
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
+    }));
+
+    return (
+      <div
+        ref={drag}
+        className={`piece-${color}${isKing ? "-king" : ""} ${
+          isSelected ? "-selected" : ""
+        } ${isCurrentPlayer(color) ? "-turn" : ""}`}
+        style={{
+          opacity: isDragging ? 0.5 : 1,
+        }}
+      ></div>
+    );
+  };
 
   const { changeBodyBackground } = useStyle();
   useEffect(() => {

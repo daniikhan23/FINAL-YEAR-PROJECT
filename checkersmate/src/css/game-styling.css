@@ -157,6 +157,20 @@
   background-color: #d9992e;
 }
 
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 0 0.5rem red);
+  }
+  to {
+    filter: drop-shadow(0 0 0.5rem black);
+  }
+}
+
+.game .game-container .main .board .board-row .board-col .-turn {
+  animation: glow 1.5s infinite alternate;
+  filter: drop-shadow(0 0 0.5rem gold);
+}
+
 .footer-section {
   border: 0 solid black;
   background-color: rgba(0, 0, 0, 0.5);
