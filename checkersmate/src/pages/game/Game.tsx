@@ -42,6 +42,8 @@ interface SquareProps {
   isPossibleMove?: boolean;
   children?: React.ReactNode;
   isSelected?: boolean;
+  isLastMoveStart?: boolean;
+  isLastMoveEnd?: boolean;
 }
 
 const Square: React.FC<SquareProps> = ({
@@ -51,6 +53,8 @@ const Square: React.FC<SquareProps> = ({
   isPossibleMove,
   isSelected,
   children,
+  isLastMoveStart,
+  isLastMoveEnd,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "piece",
@@ -66,6 +70,21 @@ const Square: React.FC<SquareProps> = ({
     }),
   }));
 
+  let backgroundColor = "";
+  if (isOver) {
+    backgroundColor = "#dead59";
+  } else if (isLastMoveStart) {
+    // backgroundColor = "#dead59";
+    backgroundColor = "#579669";
+  } else if (isLastMoveEnd) {
+    // backgroundColor = "#dead59";
+    backgroundColor = "#579669";
+  }
+
+  const squareStyle = {
+    backgroundColor: backgroundColor,
+  };
+
   return (
     <div
       ref={drop}
@@ -73,9 +92,7 @@ const Square: React.FC<SquareProps> = ({
       className={`board-col ${isPossibleMove ? "possible-move" : ""} ${
         isSelected ? "selected" : ""
       }`}
-      style={{
-        backgroundColor: isOver ? "#d9992e" : "",
-      }}
+      style={squareStyle}
     >
       {children}
     </div>
@@ -94,6 +111,10 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState("");
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
+  const [lastMove, setLastMove] = useState({
+    from: { row: -1, col: -1 },
+    to: { row: -1, col: -1 },
+  });
   const forceUpdate = useForceUpdate();
 
   const isCurrentPlayer = (color: PieceColor) => {
@@ -142,6 +163,8 @@ const Game = () => {
           const isPossibleMove = possibleMoves.some(
             (move) => move.endRow === rowIndex && move.endCol === colIndex
           );
+          const isLastMoveEnd =
+            lastMove.to.row === rowIndex && lastMove.to.col === colIndex;
           return (
             <Square
               key={colIndex}
@@ -152,6 +175,10 @@ const Game = () => {
               isSelected={
                 selectedPiece.row === rowIndex && selectedPiece.col === colIndex
               }
+              isLastMoveStart={
+                lastMove.from.row === rowIndex && lastMove.from.col === colIndex
+              }
+              isLastMoveEnd={isLastMoveEnd}
             >
               {col && (
                 <Piece
@@ -191,6 +218,10 @@ const Game = () => {
         rowIndex,
         colIndex
       );
+      setLastMove({
+        from: { row: selectedPiece.row, col: selectedPiece.col },
+        to: { row: rowIndex, col: colIndex },
+      });
       // Refresh the state to reflect the move
       setSelectedPiece({ row: -1, col: -1 });
       setPossibleMoves([]);
@@ -238,6 +269,10 @@ const Game = () => {
 
       if (piece && isValidMove) {
         checkersGame.movePiece(startRow, startCol, endRow, endCol);
+        setLastMove({
+          from: { row: startRow, col: startCol },
+          to: { row: endRow, col: endCol },
+        });
         setSelectedPiece({ row: -1, col: -1 });
         setPossibleMoves([]);
         const newGame = checkersGame.deepCopyGame();

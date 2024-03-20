@@ -154,7 +154,8 @@
 }
 
 .game .game-container .main .board .board-row .selected {
-  background-color: #d9992e;
+  /* background-color: #80bf72; */
+  background-color: #dead59;
 }
 
 @keyframes glow {
