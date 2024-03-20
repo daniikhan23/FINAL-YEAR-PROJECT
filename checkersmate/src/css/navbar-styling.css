@@ -27,11 +27,13 @@
 
 .navbar .navbar-container .container .home button a {
   font-size: 2rem;
-  color: white;
+  /* color: white; */
+  color: #f5ac8e;
 }
 
 .navbar .navbar-container .container .home button a:hover {
-  color: #f5ac8e;
+  /* color: #f5ac8e; */
+  color: white;
 }
 
 .navbar .navbar-container .container .home button a:active {
@@ -52,17 +54,20 @@
   border: 0 solid black;
   background-color: transparent;
   font-size: 1.5rem;
-  color: white;
+  /* color: white; */
+  color: #f5ac8e;
   cursor: pointer;
 }
 
 .navbar .navbar-container .container .list li button a {
   font-size: 1.5rem;
-  color: white;
+  /* color: white; */
+  color: #f5ac8e;
 }
 
 .navbar .navbar-container .container .list li button :hover {
-  color: #f5ac8e;
+  /* color: #f5ac8e; */
+  color: white;
 }
 
 .navbar .navbar-container .container .list li button :active {
