@@ -48,3 +48,39 @@
 h4 {
   color: #f5ac8e;
 }
+
+.game-start .game-start-container .main select {
+  border: 1px solid black;
+  border-radius: 2%;
+  height: 25px;
+  font-size: 15px;
+  text-align: center;
+  background-color: #f5ac8e;
+}
+
+.game-start .game-start-container .main input {
+  border: 1px solid black;
+  border-radius: 4%;
+  height: 25px;
+  font-size: 15px;
+  text-align: center;
+  background-color: #f5ac8e;
+}
+
+.game-start .game-start-container .main button {
+  border: 1px solid black;
+  border-radius: 4%;
+  height: 25px;
+  font-size: 15px;
+  text-align: center;
+  background-color: #f5ac8e;
+  cursor: pointer;
+}
+
+.game-start .game-start-container .main button:hover {
+  filter: drop-shadow(0 0 1.5rem #f5ac8e);
+}
+
+.game-start .game-start-container .main button:active {
+  transform: translateY(4px);
+}

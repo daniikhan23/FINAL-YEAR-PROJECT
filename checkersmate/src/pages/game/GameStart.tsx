@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import "../../css/game-start.css";
 import { useStyle } from "../../context/StyleContext";
@@ -32,6 +32,14 @@ const GameStart = () => {
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  const handleGameModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setGameMode(event.target.value !== "Normal");
+  };
+
+  const handlePlayerTwoName = (event: ChangeEvent<HTMLInputElement>) => {
+    setPlayerTwoUser(event.target.value);
+  };
+
   return (
     <>
       <div className="game-start">
@@ -42,11 +50,22 @@ const GameStart = () => {
           </div>
           <div className="main">
             <h4>Choose Game Mode:</h4>
-            <h5>place a dropdown here</h5>
+            <select
+              value={gameMode ? "Forced Captures" : "Normal"}
+              onChange={handleGameModeChange}
+            >
+              <option value="Normal">Normal</option>
+              <option value="Forced Captures">Forced Captures</option>
+            </select>
             <h4 className="player1">Player 1:</h4>
             <h5>{playerOneUser}</h5>
             <h4 className="player2">Player 2:</h4>
-            <h5>opponent name</h5>
+            <input
+              type="text"
+              value={playerTwoUser}
+              onChange={handlePlayerTwoName}
+              placeholder="Enter name"
+            />
             <button>Local Play</button>
             <button>Play vs AI</button>
           </div>
