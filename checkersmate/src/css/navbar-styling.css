@@ -4,7 +4,6 @@
 
 .navbar .navbar-container {
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
 }
 
 .navbar .navbar-container .container {
