@@ -77,6 +77,7 @@ const GameStart = () => {
               value={playerTwoUser}
               onChange={handlePlayerTwoName}
               placeholder="Enter name"
+              required
             />
             <button onClick={() => startGame(false)}>Local Play</button>
             <button onClick={() => startGame(true)}>Play vs AI</button>

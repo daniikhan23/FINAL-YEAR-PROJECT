@@ -107,6 +107,7 @@ const Game = () => {
     playerTwoUser: string;
     gameMode: boolean;
   };
+  const AI = state.playerTwoUser === "AI";
   const playerOne = new Player(state.playerOneUser, PieceColor.Red);
   const playerTwo = new Player(state.playerTwoUser, PieceColor.Black);
   const [checkersGame, setCheckersGame] = useState(
@@ -123,6 +124,29 @@ const Game = () => {
     to: { row: -1, col: -1 },
   });
   const forceUpdate = useForceUpdate();
+
+  // Ensuring AI initialisation into the game
+  useEffect(() => {
+    if (!(checkersGame.players[1] instanceof CheckersAI)) {
+      if (AI) {
+        const aiPlayer = new CheckersAI(
+          "AI",
+          PieceColor.Black,
+          checkersGame,
+          5
+        );
+        checkersGame.setAI(aiPlayer);
+      }
+    }
+    if (checkersGame.players[1] instanceof CheckersAI) {
+      while (checkersGame.currentPlayer === checkersGame.players[1]) {
+        checkersGame.players[1].makeMove();
+
+        setCheckersGame((checkersGame) => checkersGame);
+        forceUpdate();
+      }
+    }
+  }, [AI, playerOne, state.gameMode]);
 
   const isCurrentPlayer = (color: PieceColor) => {
     return checkersGame.currentPlayer.color === color;
