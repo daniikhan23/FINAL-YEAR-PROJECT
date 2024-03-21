@@ -522,12 +522,12 @@ export class CheckersAI extends Player {
       if (this.currentOpening) {
         const move = this.getOpeningMove();
         if (move) {
-          this.game.movePiece(
-            move.startRow,
-            move.startCol,
-            move.endRow,
-            move.endCol
-          );
+          // this.game.movePiece(
+          //   move.startRow,
+          //   move.startCol,
+          //   move.endRow,
+          //   move.endCol
+          // );
           return move;
         } else {
           return this.playMinimaxMove();
@@ -538,21 +538,21 @@ export class CheckersAI extends Player {
         this.game.getPiece(3, 4) === null
       ) {
         const move: Moves = new Moves(2, 5, 3, 4);
-        this.game.movePiece(2, 5, 3, 4);
+        // this.game.movePiece(2, 5, 3, 4);
         return move;
       } else if (
         this.game.numOfTurns === 3 &&
         this.game.getPiece(2, 5) === null
       ) {
         const move: Moves = new Moves(1, 6, 2, 5);
-        this.game.movePiece(1, 6, 2, 5);
+        // this.game.movePiece(1, 6, 2, 5);
         return move;
       } else if (
         this.game.numOfTurns === 5 &&
         this.game.getPiece(1, 6) === null
       ) {
         const move: Moves = new Moves(0, 7, 1, 6);
-        this.game.movePiece(0, 7, 1, 6);
+        // this.game.movePiece(0, 7, 1, 6);
         return move;
       } else {
         return this.playMinimaxMove();

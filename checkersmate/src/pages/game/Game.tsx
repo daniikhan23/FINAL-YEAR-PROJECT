@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState, useCallback } from "react";
 import { useStyle } from "../../context/StyleContext";
 import { useLocation } from "react-router-dom";
@@ -17,6 +18,48 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ToastContainer, toast } from "react-toastify";
 import backgroundImage from "../../assets/img/background.png";
+
+interface Position {
+  row: number;
+  col: number;
+}
+
+// will have to change this when making responsive
+const SQUARE_SIZE = 70;
+
+const animateAIMove = (
+  startPosition: Position,
+  endPosition: Position,
+  callback: () => void
+) => {
+  const pieceElement = document.querySelector(
+    `.piece-selector-for-${startPosition.row}-${startPosition.col}`
+  ) as HTMLElement | null;
+
+  if (!pieceElement) return;
+
+  const deltaX = (endPosition.col - startPosition.col) * SQUARE_SIZE;
+  const deltaY = (endPosition.row - startPosition.row) * SQUARE_SIZE;
+
+  // setting css variables for animation
+  pieceElement.style.setProperty("--endX", `${deltaX}px`);
+  pieceElement.style.setProperty("--endY", `${deltaY}px`);
+
+  // add animation class
+  pieceElement.classList.add("piece-animation");
+
+  // ensure piece is visually moved to its new location after the aniamation ends
+  pieceElement.addEventListener(
+    "animationend",
+    () => {
+      pieceElement.classList.remove("piece-animation");
+      pieceElement.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
+      callback();
+    },
+    { once: true }
+  );
+};
 
 const useForceUpdate = () => {
   const [, setTick] = useState(0);
@@ -125,24 +168,29 @@ const Game = () => {
   });
   const forceUpdate = useForceUpdate();
 
-  // Ensuring AI initialisation into the game
-  useEffect(() => {
-    // Check if it's AI's turn and the current player is an instance of CheckersAI
-    if (!(checkersGame.players[1] instanceof CheckersAI)) {
-      if (AI) {
-        const aiPlayer = new CheckersAI(
-          "AI",
-          PieceColor.Black,
-          checkersGame,
-          5
-        );
-        checkersGame.setAI(aiPlayer);
-      }
-    }
+  // handling AI move and animation asynchronously
+  async function handleAIMove() {
     if (checkersGame.players[1] instanceof CheckersAI) {
       while (checkersGame.currentPlayer === checkersGame.players[1]) {
-        const aiMove = checkersGame.players[1].makeMove();
+        const aiMove = await checkersGame.players[1].makeMove();
+        console.log(aiMove);
+
         if (aiMove) {
+          await new Promise<void>((resolve) => {
+            animateAIMove(
+              { row: aiMove.startRow, col: aiMove.startCol },
+              { row: aiMove.endRow, col: aiMove.endCol },
+              () => resolve()
+            );
+          });
+          console.log(aiMove);
+
+          checkersGame.movePiece(
+            aiMove.startRow,
+            aiMove.startCol,
+            aiMove.endRow,
+            aiMove.endCol
+          );
           setLastMove({
             from: { row: aiMove.startRow, col: aiMove.startCol },
             to: { row: aiMove.endRow, col: aiMove.endCol },
@@ -159,10 +207,26 @@ const Game = () => {
               newBoardState,
             ] as (CheckersPiece | null)[][];
           });
-          forceUpdate();
         }
       }
     }
+  }
+
+  // Ensuring AI initialisation into the game
+  useEffect(() => {
+    // Check if it's AI's turn and the current player is an instance of CheckersAI
+    if (!(checkersGame.players[1] instanceof CheckersAI)) {
+      if (AI) {
+        const aiPlayer = new CheckersAI(
+          "AI",
+          PieceColor.Black,
+          checkersGame,
+          5
+        );
+        checkersGame.setAI(aiPlayer);
+      }
+    }
+    handleAIMove();
   }, [AI, playerOne, state.gameMode]);
 
   const isCurrentPlayer = (color: PieceColor) => {
@@ -188,7 +252,9 @@ const Game = () => {
         ref={drag}
         className={`piece-${color}${isKing ? "-king" : ""} ${
           isSelected ? "-selected" : ""
-        } ${isCurrentPlayer(color) ? "-turn" : ""}`}
+        } ${isCurrentPlayer(color) ? "-turn" : ""}
+        piece-selector-for-${position.row}-${position.col}
+        `}
         style={{
           opacity: isDragging ? 0.5 : 1,
         }}

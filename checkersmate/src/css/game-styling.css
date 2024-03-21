@@ -3,7 +3,7 @@
   justify-content: center;
   /* align-items: center; */
   gap: 200px;
-  margin-top: 10px;
+  margin-top: 25px;
 }
 
 .game .game-container .main .board {
@@ -172,6 +172,22 @@
   filter: drop-shadow(0 0 0.5rem gold);
 }
 
+/* new test for animation */
+
+@keyframes slidePiece {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(var(--endX), var(--endY));
+  }
+}
+
+.game .game-container .main .board .board-row .board-col .piece-animation {
+  animation: slidePiece 0.75s ease-out forwards;
+}
+
+/* Footer Section */
 .footer-section {
   border: 0 solid black;
   background-color: rgba(0, 0, 0, 0.5);
