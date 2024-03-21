@@ -127,6 +127,7 @@ const Game = () => {
 
   // Ensuring AI initialisation into the game
   useEffect(() => {
+    // Check if it's AI's turn and the current player is an instance of CheckersAI
     if (!(checkersGame.players[1] instanceof CheckersAI)) {
       if (AI) {
         const aiPlayer = new CheckersAI(
@@ -140,10 +141,27 @@ const Game = () => {
     }
     if (checkersGame.players[1] instanceof CheckersAI) {
       while (checkersGame.currentPlayer === checkersGame.players[1]) {
-        checkersGame.players[1].makeMove();
+        const aiMove = checkersGame.players[1].makeMove();
 
-        setCheckersGame((checkersGame) => checkersGame);
-        forceUpdate();
+        if (aiMove) {
+          setLastMove({
+            from: { row: aiMove.startRow, col: aiMove.startCol },
+            to: { row: aiMove.endRow, col: aiMove.endCol },
+          });
+          const newGame = checkersGame.deepCopyGame();
+          setCheckersGame((checkersGame) => checkersGame);
+          setHistory((currentHistory) => {
+            const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
+              (row) =>
+                row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+            );
+            return [
+              ...currentHistory,
+              newBoardState,
+            ] as (CheckersPiece | null)[][];
+          });
+          forceUpdate();
+        }
       }
     }
   }, [AI, playerOne, state.gameMode]);

@@ -512,10 +512,11 @@ export class CheckersAI extends Player {
   /**
    * Method for the AI to make a move using the minimax algorithm to get the 'best' move and using that.
    */
-  public makeMove(): void {
+  public makeMove(): Moves | null {
     if (this.game.currentState === State.gameFinished) {
       console.log("Game is finished. AI cannot make a move.");
       this.game.changeTurn();
+      return null;
     } else {
       this.identifyOpening();
       if (this.currentOpening) {
@@ -527,32 +528,39 @@ export class CheckersAI extends Player {
             move.endRow,
             move.endCol
           );
+          return move;
         } else {
-          this.playMinimaxMove();
+          return this.playMinimaxMove();
         }
         // Optimal Opening Alternative
       } else if (
         this.game.numOfTurns === 1 &&
         this.game.getPiece(3, 4) === null
       ) {
+        const move: Moves = new Moves(2, 5, 3, 4);
         this.game.movePiece(2, 5, 3, 4);
+        return move;
       } else if (
         this.game.numOfTurns === 3 &&
         this.game.getPiece(2, 5) === null
       ) {
+        const move: Moves = new Moves(1, 6, 2, 5);
         this.game.movePiece(1, 6, 2, 5);
+        return move;
       } else if (
         this.game.numOfTurns === 5 &&
         this.game.getPiece(1, 6) === null
       ) {
+        const move: Moves = new Moves(0, 7, 1, 6);
         this.game.movePiece(0, 7, 1, 6);
+        return move;
       } else {
-        this.playMinimaxMove();
+        return this.playMinimaxMove();
       }
     }
   }
 
-  public playMinimaxMove(): void {
+  public playMinimaxMove(): Moves | null {
     const [score, move] = this.minimax(
       this.game,
       this.depth,
@@ -571,9 +579,11 @@ export class CheckersAI extends Player {
         `AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`
       );
       console.log(`Evaluated Score of move: ${score}`);
+      return move;
     } else {
       console.log(`${this.game.players[1].name} has no valid moves!`);
       this.game.changeTurn();
+      return null;
     }
   }
 
