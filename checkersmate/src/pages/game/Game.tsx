@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useStyle } from "../../context/StyleContext";
+import { useLocation } from "react-router-dom";
 import "../../css/game-styling.css";
 import {
   CheckersPiece,
@@ -100,10 +101,16 @@ const Square: React.FC<SquareProps> = ({
 };
 
 const Game = () => {
-  const playerOne = new Player("Player 1", PieceColor.Red);
-  const playerTwo = new Player("Player 2", PieceColor.Black);
+  const location = useLocation();
+  const state = location.state as {
+    playerOneUser: string;
+    playerTwoUser: string;
+    gameMode: boolean;
+  };
+  const playerOne = new Player(state.playerOneUser, PieceColor.Red);
+  const playerTwo = new Player(state.playerTwoUser, PieceColor.Black);
   const [checkersGame, setCheckersGame] = useState(
-    new CheckersGame(playerOne, playerTwo, false)
+    new CheckersGame(playerOne, playerTwo, state.gameMode)
   );
   const [history, setHistory] = useState<(CheckersPiece | null)[][]>(
     checkersGame.board
@@ -310,13 +317,13 @@ const Game = () => {
           </div>
           <div className="main">
             <div className="opponent-card">
-              <h3>Opponent</h3>
+              <h5>{state.playerTwoUser}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>
               <div className="board">{renderBoard()}</div>
             </DndProvider>
             <div className="player-card">
-              <h3>Player</h3>
+              <h5>{state.playerOneUser}</h5>
             </div>
           </div>
           <div className="history">

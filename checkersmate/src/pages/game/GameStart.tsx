@@ -6,6 +6,7 @@ import backgroundImage from "../../assets/img/background.png";
 import redKing from "../../assets/img/redKing.png";
 import blackKing from "../../assets/img/blackKing.png";
 import { useAuth } from "../../context/UserAuthContext";
+import { useNavigate } from "react-router-dom";
 
 const GameStart = () => {
   const [playerOneUser, setPlayerOneUser] = useState("");
@@ -14,6 +15,7 @@ const GameStart = () => {
   const { currentUser } = useAuth();
   const db = getFirestore();
   const { changeBodyBackground } = useStyle();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPlayer1Username = async () => {
       if (currentUser) {
@@ -31,6 +33,16 @@ const GameStart = () => {
 
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
+
+  const startGame = (vsAI: boolean) => {
+    navigate("/game", {
+      state: {
+        playerOneUser,
+        playerTwoUser: vsAI ? "AI" : playerTwoUser,
+        gameMode,
+      },
+    });
+  };
 
   const handleGameModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setGameMode(event.target.value !== "Normal");
@@ -66,8 +78,8 @@ const GameStart = () => {
               onChange={handlePlayerTwoName}
               placeholder="Enter name"
             />
-            <button>Local Play</button>
-            <button>Play vs AI</button>
+            <button onClick={() => startGame(false)}>Local Play</button>
+            <button onClick={() => startGame(true)}>Play vs AI</button>
           </div>
         </div>
       </div>
