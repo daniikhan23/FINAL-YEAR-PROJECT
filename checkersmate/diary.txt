@@ -279,3 +279,18 @@ pages separate from the rest as I'd like them to have an image as a background. 
 towards the end of the project. Not planning any major overhauls at the moment. The next and most exciting step will be remaking the game page with some updated 
 functionality. This will be quite exciting and will mark the 'tentative end' to the project. Any newer features that I implement will be dependent on the time left to the 
 submission date. 
+
+A lot more progress has been made. First and foremost there's been stylistic updates to the all the pages across the board in terms of the overall theme. To play the game 
+now follows a different path than previously. Now clicking on game users are taken to a page where they select their choice of game mode (normal or forced jumps), the user 
+name is selected by default by taking it from the firestore database, users can select the name for their opponent and then finally users can click local or AI play to
+take them to their game page. All the choices on this page are saved for the game to be initialised in the way that the user wants using location from the react-router 
+tool. Finally the AI has also been setup for users to play against. This time the board is also styled differently as well as the user experience being different. There's 
+more user feedback while selecting pieces, showing possible moves as well as visually indicating where the piece moved from and where it moved to. Additionally, users can 
+also drag and drop to make moves. This time the visual indication of piece movement on the board is also shown which helps in understanding the moves the AI made. Next step 
+will be to adding animation to the AI's moves to give it a more fluid look. Playing the game ultimately is a more intuitive experience. Turns are also indicated by all pieces
+of the player whose turn it is glowing. Next steps:
+
+AI move animation 
+History of moves section 
+AI analysis 
+Player cards above and below the board 

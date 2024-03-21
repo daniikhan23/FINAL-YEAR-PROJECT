@@ -142,7 +142,6 @@ const Game = () => {
     if (checkersGame.players[1] instanceof CheckersAI) {
       while (checkersGame.currentPlayer === checkersGame.players[1]) {
         const aiMove = checkersGame.players[1].makeMove();
-
         if (aiMove) {
           setLastMove({
             from: { row: aiMove.startRow, col: aiMove.startCol },
