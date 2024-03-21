@@ -1,0 +1,23 @@
+.game-start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-start .game-start-container img {
+  height: 150px;
+  width: 150px;
+  filter: drop-shadow(0 0 1.5rem #f5ac8e);
+}
+
+.game-start .game-start-container img:hover {
+  filter: drop-shadow(0 0 1.5rem gold);
+}
+
+.game-start .game-start-container .redking:active {
+  transform: translateY(8px);
+}
+
+.game-start .game-start-container .blackking:active {
+  transform: translateY(8px);
+}

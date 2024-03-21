@@ -39,7 +39,7 @@ const Navbar = () => {
             </li>
             <li>
               <button>
-                <Link to="/game">Game</Link>
+                <Link to="/game-start">Game</Link>
               </button>
             </li>
             <li>

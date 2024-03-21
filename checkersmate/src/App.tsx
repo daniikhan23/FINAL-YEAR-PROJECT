@@ -12,6 +12,7 @@ import { useAuth } from "./context/UserAuthContext";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home";
 import Rules from "./pages/rules/Rules";
+import GameStart from "./pages/game/GameStart";
 import Game from "./pages/game/Game";
 import About from "./pages/about/About";
 import SignUp from "./pages/signup/SignUp";
@@ -80,6 +81,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Game />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/game-start"
+              element={
+                <ProtectedRoute>
+                  <GameStart />
                 </ProtectedRoute>
               }
             />
