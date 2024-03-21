@@ -17,8 +17,20 @@ const GameStart = () => {
     <>
       <div className="game-start">
         <div className="game-start-container">
-          <img src={redKing} alt="" className="redking" />
-          <img src={blackKing} alt="" className="blackking" />
+          <div className="img-header">
+            <img src={redKing} alt="" className="redking" />
+            <img src={blackKing} alt="" className="blackking" />
+          </div>
+          <div className="main">
+            <h5>Choose Game Mode:</h5>
+            <h5>place a dropdown here</h5>
+            <h5 className="player1">Player 1:</h5>
+            <h5>username</h5>
+            <h5 className="player2">Player 2:</h5>
+            <h5>opponent name</h5>
+            <button>Local Play</button>
+            <button>Play vs AI</button>
+          </div>
         </div>
       </div>
       {/* Footer Section */}
