@@ -20,12 +20,10 @@
 
 .navbar .navbar-container .container .home button a {
   font-size: 2rem;
-  /* color: white; */
   color: #f5ac8e;
 }
 
 .navbar .navbar-container .container .home button a:hover {
-  /* color: #f5ac8e; */
   color: white;
 }
 
@@ -47,19 +45,16 @@
   border: 0 solid black;
   background-color: transparent;
   font-size: 1.5rem;
-  /* color: white; */
   color: #f5ac8e;
   cursor: pointer;
 }
 
 .navbar .navbar-container .container .list li button a {
   font-size: 1.5rem;
-  /* color: white; */
   color: #f5ac8e;
 }
 
 .navbar .navbar-container .container .list li button :hover {
-  /* color: #f5ac8e; */
   color: white;
 }
 
@@ -81,7 +76,6 @@
 
 .navbar .navbar-container .container .list .dropdown-menu {
   color: #f5ac8e;
-  /* background-color: black; */
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid #f5ac8e;
   border-radius: 5%;

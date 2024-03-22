@@ -467,8 +467,73 @@ const Game = () => {
 
   return (
     <>
+      {/* End of game scorecard */}
+      {gameStatus === State.gameFinished ? (
+        <>
+          <div className="game-backdrop"></div>
+          <div className="game-finished">
+            <img
+              className="winner"
+              src={
+                checkersGame.winner === checkersGame.players[0]
+                  ? redKing
+                  : blackKing
+              }
+              alt=""
+            />
+            <h3>Winner: {checkersGame.winner?.name}</h3>
+            <div className="player-names">
+              <h4>
+                {userCountry && (
+                  <ReactCountryFlag
+                    countryCode={userCountry}
+                    svg
+                    style={{
+                      width: "45px",
+                      height: "45px",
+                      marginRight: "10px",
+                    }}
+                    title={userCountry}
+                  />
+                )}
+                {checkersGame.players[0].name}
+              </h4>
+              <div className="row-player-two">
+                {checkersGame.players[1] instanceof CheckersAI ? (
+                  <GiArtificialIntelligence />
+                ) : (
+                  <img
+                    className="flag-world"
+                    src={flagWorld}
+                    alt=""
+                    height={"45px"}
+                    width={"45px"}
+                  />
+                )}
+                <h4>{checkersGame.players[1].name}</h4>
+              </div>
+            </div>
+            <div className="player-scores">
+              <h4>Score: {checkersGame.players[0].score}</h4>
+              <h4>Score: {checkersGame.players[1].score}</h4>
+            </div>
+            <div className="captured-pieces">
+              <h4>Pieces Captured: {checkersGame.players[0].capturedPieces}</h4>
+              <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
+            </div>
+            <div className="replay-buttons">
+              <h4>One more game?</h4>
+              <button className="mp-btn">Local MP</button>
+              <button className="ai-btn">VS AI</button>
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
       <div className="game">
         <div className="game-container">
+          {/* AI Analysis conditional section */}
           {checkersGame.players[1] instanceof CheckersAI ? (
             <div className="ai-analysis">
               <h5>AI analysis</h5>
@@ -476,7 +541,6 @@ const Game = () => {
           ) : (
             ""
           )}
-
           <div className="main">
             <div className="opponent-card">
               <div className="first-col">
@@ -530,7 +594,6 @@ const Game = () => {
                   </div>
                 </div>
               </div>
-
               <h5 className="score">Score: {playerOneScore}</h5>
             </div>
           </div>
