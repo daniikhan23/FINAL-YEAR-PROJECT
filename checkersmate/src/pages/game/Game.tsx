@@ -22,9 +22,29 @@ import blackKing from "../../assets/img/blackKingCustom.png";
 import redKing from "../../assets/img/redKingCustom.png";
 import flagWorld from "../../assets/img/flagOfTheWorld.jpg";
 import { GiArtificialIntelligence } from "react-icons/gi";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useAuth } from "../../context/UserAuthContext";
 import ReactCountryFlag from "react-country-flag";
+
+interface ProfileData {
+  username: string;
+  country: string;
+  record: {
+    wins: number;
+    losses: number;
+    draws: number;
+  };
+  rating: {
+    normal: number;
+    enforcedJumps: number;
+  };
+}
 
 interface Position {
   row: number;
@@ -182,6 +202,19 @@ const Game = () => {
   const [playerTwoScore, setPlayerTwoScore] = useState(
     checkersGame.players[1].score
   );
+  const [profileData, setProfileData] = useState<ProfileData>({
+    username: "",
+    country: "",
+    record: {
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    },
+    rating: {
+      normal: 0,
+      enforcedJumps: 0,
+    },
+  });
 
   const [userCountry, setUserCountry] = useState("");
   const navigate = useNavigate();
@@ -208,6 +241,21 @@ const Game = () => {
     changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (currentUser) {
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const userData = docSnap.data() as ProfileData;
+          setProfileData(userData);
+        }
+      }
+    };
+    fetchProfileData();
+  }, [currentUser, db]);
 
   const isCurrentPlayer = (color: PieceColor) => {
     return checkersGame.currentPlayer.color === color;
@@ -326,8 +374,10 @@ const Game = () => {
             ] as (CheckersPiece | null)[][];
           });
           checkersGame.checkEndOfGame();
-          if (checkersGame.currentState === State.gameFinished)
+          if (checkersGame.currentState === State.gameFinished) {
             setGameStatus(State.gameFinished);
+            handleRatingChange();
+          }
         }
       }
     }
@@ -390,8 +440,10 @@ const Game = () => {
         return [...currentHistory, newBoardState] as (CheckersPiece | null)[][];
       });
       checkersGame.checkEndOfGame();
-      if (checkersGame.currentState === State.gameFinished)
+      if (checkersGame.currentState === State.gameFinished) {
         setGameStatus(State.gameFinished);
+        handleRatingChange();
+      }
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
       // Select the piece and show possible moves
       setSelectedPiece({ row: rowIndex, col: colIndex });
@@ -450,8 +502,10 @@ const Game = () => {
           ] as (CheckersPiece | null)[][];
         });
         checkersGame.checkEndOfGame();
-        if (checkersGame.currentState === State.gameFinished)
+        if (checkersGame.currentState === State.gameFinished) {
           setGameStatus(State.gameFinished);
+          handleRatingChange();
+        }
         forceUpdate();
       } else {
         console.log("invalid turn");
@@ -473,6 +527,60 @@ const Game = () => {
 
   const differentMode = () => {
     navigate("/game-start");
+  };
+
+  const handleRatingChange = async () => {
+    console.log(currentUser);
+    let updates = {};
+
+    if (checkersGame.forcedJumps === false) {
+      if (checkersGame.winner === checkersGame.players[0]) {
+        updates = {
+          "record.wins": profileData.record.wins + 1,
+          "rating.normal":
+            profileData.rating.normal + checkersGame.players[0].score * 10,
+        };
+      } else if (checkersGame.winner === checkersGame.players[1]) {
+        updates = {
+          "record.losses": profileData.record.losses + 1,
+          "rating.normal": Math.max(
+            0,
+            profileData.rating.normal - checkersGame.players[0].score * 10
+          ),
+        };
+      }
+    } else {
+      if (checkersGame.winner === checkersGame.players[0]) {
+        updates = {
+          "record.wins": profileData.record.wins + 1,
+          "rating.enforcedJumps":
+            profileData.rating.enforcedJumps +
+            checkersGame.players[0].score * 10,
+        };
+      } else if (checkersGame.winner === checkersGame.players[1]) {
+        updates = {
+          "record.losses": profileData.record.losses + 1,
+          "rating.enforcedJumps": Math.max(
+            0,
+            profileData.rating.enforcedJumps -
+              checkersGame.players[0].score * 10
+          ),
+        };
+      }
+    }
+
+    if (currentUser && Object.keys(updates).length > 0) {
+      const userDocRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userDocRef, updates)
+        .then(() => {
+          console.log("Profile updated successfully!");
+        })
+        .catch((error) => {
+          console.log(`Failed to update profile: ${error.message}`);
+        });
+    }
+    console.log("handleRatingChange called");
+    console.log(updates);
   };
 
   return (
@@ -612,7 +720,10 @@ const Game = () => {
                 )}
                 <div className="row">
                   <div className="column">
-                    <h5>{state.playerOneUser}</h5>
+                    <h5>
+                      {`${state.playerOneUser} 
+                          (${profileData.rating.normal}/${profileData.rating.enforcedJumps})`}
+                    </h5>
                   </div>
                   <div className="column-captures">
                     <img className="black-captured" src={blackKing} alt="" />
