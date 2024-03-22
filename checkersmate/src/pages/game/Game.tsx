@@ -465,41 +465,59 @@ const Game = () => {
           </div>
           <div className="main">
             <div className="opponent-card">
-              {checkersGame.players[1] instanceof CheckersAI ? (
-                <GiArtificialIntelligence />
-              ) : (
-                <img
-                  className="flag-world"
-                  src={flagWorld}
-                  alt=""
-                  height={"35px"}
-                  width={"45px"}
-                />
-              )}
-              <h5>{state.playerTwoUser}</h5>
-              <img className="red-captured" src={redKing} alt="" />
-              <h5>{`+ ${capturedRed}`}</h5>
-              <h5>Score: {playerTwoScore}</h5>
+              <div className="first-col">
+                {checkersGame.players[1] instanceof CheckersAI ? (
+                  <GiArtificialIntelligence />
+                ) : (
+                  <img
+                    className="flag-world"
+                    src={flagWorld}
+                    alt=""
+                    height={"35px"}
+                    width={"45px"}
+                  />
+                )}
+                <div className="row">
+                  <div className="column">
+                    <h5>{state.playerTwoUser}</h5>
+                  </div>
+                  <div className="column-captures">
+                    <img className="red-captured" src={redKing} alt="" />
+                    <h5>{`+ ${capturedRed}`}</h5>
+                  </div>
+                </div>
+              </div>
+
+              <h5 className="score">Score: {playerTwoScore}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>
               <div className="board">{renderBoard()}</div>
             </DndProvider>
             <div className="player-card">
-              {userCountry && (
-                <ReactCountryFlag
-                  countryCode={userCountry}
-                  svg
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                  }}
-                  title={userCountry}
-                />
-              )}
-              <h5>{state.playerOneUser}</h5>
-              <img className="black-captured" src={blackKing} alt="" />
-              <h5>{`+${capturedBlack}`}</h5>
-              <h5>Score: {playerOneScore}</h5>
+              <div className="first-col">
+                {userCountry && (
+                  <ReactCountryFlag
+                    countryCode={userCountry}
+                    svg
+                    style={{
+                      width: "45px",
+                      height: "45px",
+                    }}
+                    title={userCountry}
+                  />
+                )}
+                <div className="row">
+                  <div className="column">
+                    <h5>{state.playerOneUser}</h5>
+                  </div>
+                  <div className="column-captures">
+                    <img className="black-captured" src={blackKing} alt="" />
+                    <h5>{`+${capturedBlack}`}</h5>
+                  </div>
+                </div>
+              </div>
+
+              <h5 className="score">Score: {playerOneScore}</h5>
             </div>
           </div>
           <div className="history">
