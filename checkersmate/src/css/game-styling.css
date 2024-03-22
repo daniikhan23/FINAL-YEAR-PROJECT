@@ -3,7 +3,7 @@
   justify-content: center;
   /* align-items: center; */
   gap: 200px;
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .game .game-container .main .board {
@@ -21,9 +21,6 @@
 .game .game-container .main .board .board-row .board-col {
   height: 70px;
   width: 70px;
-}
-
-.game .game-container .main .board .board-row .board-col {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +30,6 @@
 .main .board .board-row:nth-child(odd) .board-col:nth-child(odd),
 .main .board .board-row:nth-child(even) .board-col:nth-child(even) {
   color: #b58863;
-  /* background-color: #f0d9b5; */
   background-color: #f2cfa7;
 }
 
@@ -41,7 +37,6 @@
 .main .board .board-row:nth-child(odd) .board-col:nth-child(even),
 .main .board .board-row:nth-child(even) .board-col:nth-child(odd) {
   color: #f0d9b5;
-  /* background-color: #b58863; */
   background-color: #c36c37;
 }
 
@@ -144,17 +139,14 @@
 }
 
 .game .game-container .main .board .board-row .possible-move {
-  /* background-color: rgb(65, 105, 93) !important; */
   background-color: #d9992e !important;
 }
 
 .game .game-container .main .board .board-row .possible-move:hover {
-  /* background-color: rgb(98, 145, 131) !important; */
   background-color: #dead59 !important;
 }
 
 .game .game-container .main .board .board-row .selected {
-  /* background-color: #80bf72; */
   background-color: #dead59;
 }
 
@@ -185,6 +177,35 @@
 
 .game .game-container .main .board .board-row .board-col .piece-animation {
   animation: slidePiece 0.75s ease-out forwards;
+}
+
+.game .game-container .main .opponent-card {
+  margin-bottom: 10px;
+}
+
+.game .game-container .main .player-card {
+  margin-top: 10px;
+}
+
+.game .game-container .main .opponent-card,
+.game .game-container .main .player-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.game .game-container .main .opponent-card img,
+.game .game-container .main .player-card img,
+.game .game-container .main .opponent-card svg {
+  height: 30px;
+  width: 30px;
+  filter: drop-shadow(0 0 1.5rem gold);
+}
+
+.game .game-container .main .opponent-card h5,
+.game .game-container .main .player-card h5 {
+  color: #f5ac8e;
+  font-size: 1.5rem;
 }
 
 /* Footer Section */

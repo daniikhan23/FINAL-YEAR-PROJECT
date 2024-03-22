@@ -18,6 +18,9 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ToastContainer, toast } from "react-toastify";
 import backgroundImage from "../../assets/img/background.png";
+import blackKing from "../../assets/img/blackKingCustom.png";
+import redKing from "../../assets/img/redKingCustom.png";
+import { GiArtificialIntelligence } from "react-icons/gi";
 
 interface Position {
   row: number;
@@ -159,13 +162,19 @@ const Game = () => {
   const [history, setHistory] = useState<(CheckersPiece | null)[][]>(
     checkersGame.board
   );
-  const [gameStatus, setGameStatus] = useState("");
+  const [gameStatus, setGameStatus] = useState(checkersGame.currentState);
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
   const [lastMove, setLastMove] = useState({
     from: { row: -1, col: -1 },
     to: { row: -1, col: -1 },
   });
+  const [blackPieces, setBlackPieces] = useState(
+    12 - checkersGame.players[1].numOfPieces
+  );
+  const [redPieces, setRedPieces] = useState(
+    12 - checkersGame.players[0].numOfPieces
+  );
   const forceUpdate = useForceUpdate();
 
   // handling AI move and animation asynchronously
@@ -191,6 +200,8 @@ const Game = () => {
             aiMove.endRow,
             aiMove.endCol
           );
+          setBlackPieces(12 - checkersGame.players[1].numOfPieces);
+          setRedPieces(12 - checkersGame.players[0].numOfPieces);
           setLastMove({
             from: { row: aiMove.startRow, col: aiMove.startCol },
             to: { row: aiMove.endRow, col: aiMove.endCol },
@@ -332,6 +343,8 @@ const Game = () => {
         rowIndex,
         colIndex
       );
+      setBlackPieces(12 - checkersGame.players[1].numOfPieces);
+      setRedPieces(12 - checkersGame.players[0].numOfPieces);
       setLastMove({
         from: { row: selectedPiece.row, col: selectedPiece.col },
         to: { row: rowIndex, col: colIndex },
@@ -383,6 +396,8 @@ const Game = () => {
 
       if (piece && isValidMove) {
         checkersGame.movePiece(startRow, startCol, endRow, endCol);
+        setBlackPieces(12 - checkersGame.players[1].numOfPieces);
+        setRedPieces(12 - checkersGame.players[0].numOfPieces);
         setLastMove({
           from: { row: startRow, col: startCol },
           to: { row: endRow, col: endCol },
@@ -424,13 +439,24 @@ const Game = () => {
           </div>
           <div className="main">
             <div className="opponent-card">
+              {checkersGame.players[1] instanceof CheckersAI ? (
+                <GiArtificialIntelligence />
+              ) : (
+                <img src={blackKing} alt="" />
+              )}
+              {/* <img src={blackKing} alt="" /> */}
               <h5>{state.playerTwoUser}</h5>
+              <img src={redKing} alt="" />
+              <h5>{`+ ${redPieces}`}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>
               <div className="board">{renderBoard()}</div>
             </DndProvider>
             <div className="player-card">
+              <img src={redKing} alt="" />
               <h5>{state.playerOneUser}</h5>
+              <img src={blackKing} alt="" />
+              <h5>{`+${blackPieces}`}</h5>
             </div>
           </div>
           <div className="history">
