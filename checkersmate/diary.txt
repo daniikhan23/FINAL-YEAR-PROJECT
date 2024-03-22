@@ -294,3 +294,7 @@ AI move animation
 History of moves section 
 AI analysis 
 Player cards above and below the board 
+
+AI move animations, player cards and end of game screens have all been succesfully implemented. FINALLY. I've merged the react-conversion branch now back into main as a 
+significant portion of the work that was planned is now done. Animations and overall user experience of playing the game feels super smooth and fluid. Next steps are now 
+to implement the history and AI analysis section. To be continued.
