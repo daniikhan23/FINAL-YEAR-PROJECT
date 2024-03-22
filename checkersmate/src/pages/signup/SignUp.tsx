@@ -78,6 +78,8 @@ const Signup = () => {
           username,
           email: user.email,
           country,
+          record: { wins: 0, losses: 0, draws: 0 },
+          rating: { normal: 0, enforcedJumps: 0 },
         });
 
         await setDoc(doc(db, "usernames", username), { userId: user.uid });

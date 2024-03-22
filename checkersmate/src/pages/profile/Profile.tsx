@@ -14,6 +14,15 @@ interface ProfileData {
   fullName: string;
   email: string;
   country: string;
+  record: {
+    wins: number;
+    losses: number;
+    draws: number;
+  };
+  rating: {
+    normal: number;
+    enforcedJumps: number;
+  };
   aboutMe?: string;
 }
 
@@ -23,6 +32,15 @@ const Profile = () => {
     fullName: "",
     email: "",
     country: "",
+    record: {
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    },
+    rating: {
+      normal: 0,
+      enforcedJumps: 0,
+    },
   });
   const [aboutMe, setAboutMe] = useState("");
   const { currentUser } = useAuth();
@@ -108,8 +126,8 @@ const Profile = () => {
               <h5>{profileData.fullName}</h5>
               <h5>{profileData.email}</h5>
               <h5>{profileData.country}</h5>
-              <h5>Coming Soon</h5>
-              <h5>Coming Soon</h5>
+              <h5>{`${profileData.record.wins}-${profileData.record.losses}-${profileData.record.draws}`}</h5>
+              <h5>{`${profileData.rating.normal}-${profileData.rating.enforcedJumps}`}</h5>
             </div>
           </div>
           <div className="about">
