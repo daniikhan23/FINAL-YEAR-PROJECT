@@ -194,9 +194,14 @@
   gap: 10px;
 }
 
-.game .game-container .main .opponent-card img,
-.game .game-container .main .player-card img,
 .game .game-container .main .opponent-card svg {
+  height: 30px;
+  width: 30px;
+  filter: drop-shadow(0 0 1.5rem gold);
+}
+
+.game .game-container .main .opponent-card .red-captured,
+.game .game-container .main .player-card .black-captured {
   height: 30px;
   width: 30px;
   filter: drop-shadow(0 0 1.5rem gold);

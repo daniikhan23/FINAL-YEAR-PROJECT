@@ -173,12 +173,9 @@ const Game = () => {
     from: { row: -1, col: -1 },
     to: { row: -1, col: -1 },
   });
-  const [blackPieces, setBlackPieces] = useState(
-    12 - checkersGame.players[1].numOfPieces
-  );
-  const [redPieces, setRedPieces] = useState(
-    12 - checkersGame.players[0].numOfPieces
-  );
+  const [blackPieces, setBlackPieces] = useState(0);
+  const [redPieces, setRedPieces] = useState(0);
+  const [playerOneScore, setPlayerOneScore] = useState(checkersGame);
 
   const [userCountry, setUserCountry] = useState("");
 
@@ -204,69 +201,6 @@ const Game = () => {
     changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
-
-  // handling AI move and animation asynchronously
-  async function handleAIMove() {
-    if (checkersGame.players[1] instanceof CheckersAI) {
-      while (checkersGame.currentPlayer === checkersGame.players[1]) {
-        const aiMove = await checkersGame.players[1].makeMove();
-        console.log(aiMove);
-
-        if (aiMove) {
-          await new Promise<void>((resolve) => {
-            animateAIMove(
-              { row: aiMove.startRow, col: aiMove.startCol },
-              { row: aiMove.endRow, col: aiMove.endCol },
-              () => resolve()
-            );
-          });
-          console.log(aiMove);
-
-          checkersGame.movePiece(
-            aiMove.startRow,
-            aiMove.startCol,
-            aiMove.endRow,
-            aiMove.endCol
-          );
-          setBlackPieces(12 - checkersGame.players[1].numOfPieces);
-          setRedPieces(12 - checkersGame.players[0].numOfPieces);
-          setLastMove({
-            from: { row: aiMove.startRow, col: aiMove.startCol },
-            to: { row: aiMove.endRow, col: aiMove.endCol },
-          });
-          const newGame = checkersGame.deepCopyGame();
-          setCheckersGame((checkersGame) => checkersGame);
-          setHistory((currentHistory) => {
-            const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
-              (row) =>
-                row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-            );
-            return [
-              ...currentHistory,
-              newBoardState,
-            ] as (CheckersPiece | null)[][];
-          });
-        }
-      }
-    }
-  }
-
-  // Ensuring AI initialisation into the game
-  useEffect(() => {
-    // Check if it's AI's turn and the current player is an instance of CheckersAI
-    if (!(checkersGame.players[1] instanceof CheckersAI)) {
-      if (AI) {
-        const aiPlayer = new CheckersAI(
-          "AI",
-          PieceColor.Black,
-          checkersGame,
-          5
-        );
-        checkersGame.setAI(aiPlayer);
-      }
-    }
-    handleAIMove();
-  }, [AI, playerOne, state.gameMode]);
 
   const isCurrentPlayer = (color: PieceColor) => {
     return checkersGame.currentPlayer.color === color;
@@ -342,6 +276,69 @@ const Game = () => {
       </div>
     ));
   };
+
+  // handling AI move and animation asynchronously
+  async function handleAIMove() {
+    if (checkersGame.players[1] instanceof CheckersAI) {
+      while (checkersGame.currentPlayer === checkersGame.players[1]) {
+        const aiMove = await checkersGame.players[1].makeMove();
+        console.log(aiMove);
+
+        if (aiMove) {
+          await new Promise<void>((resolve) => {
+            animateAIMove(
+              { row: aiMove.startRow, col: aiMove.startCol },
+              { row: aiMove.endRow, col: aiMove.endCol },
+              () => resolve()
+            );
+          });
+          console.log(aiMove);
+
+          checkersGame.movePiece(
+            aiMove.startRow,
+            aiMove.startCol,
+            aiMove.endRow,
+            aiMove.endCol
+          );
+          setBlackPieces(checkersGame.players[1].capturedPieces);
+          setRedPieces(checkersGame.players[1].capturedPieces);
+          setLastMove({
+            from: { row: aiMove.startRow, col: aiMove.startCol },
+            to: { row: aiMove.endRow, col: aiMove.endCol },
+          });
+          const newGame = checkersGame.deepCopyGame();
+          setCheckersGame((checkersGame) => checkersGame);
+          setHistory((currentHistory) => {
+            const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
+              (row) =>
+                row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+            );
+            return [
+              ...currentHistory,
+              newBoardState,
+            ] as (CheckersPiece | null)[][];
+          });
+        }
+      }
+    }
+  }
+
+  // Ensuring AI initialisation into the game
+  useEffect(() => {
+    // Check if it's AI's turn and the current player is an instance of CheckersAI
+    if (!(checkersGame.players[1] instanceof CheckersAI)) {
+      if (AI) {
+        const aiPlayer = new CheckersAI(
+          "AI",
+          PieceColor.Black,
+          checkersGame,
+          5
+        );
+        checkersGame.setAI(aiPlayer);
+      }
+    }
+    handleAIMove();
+  }, [AI, playerOne, state.gameMode]);
 
   // Handle selection of pieces, highlight potential moves and move pieces
   const handleCellClick = (rowIndex: number, colIndex: number) => {
@@ -462,10 +459,16 @@ const Game = () => {
               {checkersGame.players[1] instanceof CheckersAI ? (
                 <GiArtificialIntelligence />
               ) : (
-                <img src={flagWorld} alt="" height={"35px"} width={"45px"} />
+                <img
+                  className="flag-world"
+                  src={flagWorld}
+                  alt=""
+                  height={"35px"}
+                  width={"45px"}
+                />
               )}
               <h5>{state.playerTwoUser}</h5>
-              <img src={redKing} alt="" />
+              <img className="red-captured" src={redKing} alt="" />
               <h5>{`+ ${redPieces}`}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>
@@ -484,7 +487,7 @@ const Game = () => {
                 />
               )}
               <h5>{state.playerOneUser}</h5>
-              <img src={blackKing} alt="" />
+              <img className="black-captured" src={blackKing} alt="" />
               <h5>{`+${blackPieces}`}</h5>
             </div>
           </div>
