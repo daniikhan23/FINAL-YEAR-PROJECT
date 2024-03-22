@@ -173,9 +173,14 @@ const Game = () => {
     from: { row: -1, col: -1 },
     to: { row: -1, col: -1 },
   });
-  const [blackPieces, setBlackPieces] = useState(0);
-  const [redPieces, setRedPieces] = useState(0);
-  const [playerOneScore, setPlayerOneScore] = useState(checkersGame);
+  const [capturedBlack, setCapturedBlack] = useState(0);
+  const [capturedRed, setCapturedRed] = useState(0);
+  const [playerOneScore, setPlayerOneScore] = useState(
+    checkersGame.players[0].score
+  );
+  const [playerTwoScore, setPlayerTwoScore] = useState(
+    checkersGame.players[1].score
+  );
 
   const [userCountry, setUserCountry] = useState("");
 
@@ -300,8 +305,8 @@ const Game = () => {
             aiMove.endRow,
             aiMove.endCol
           );
-          setBlackPieces(checkersGame.players[1].capturedPieces);
-          setRedPieces(checkersGame.players[1].capturedPieces);
+          setCapturedRed(checkersGame.players[1].capturedPieces);
+          setPlayerTwoScore(checkersGame.players[1].score);
           setLastMove({
             from: { row: aiMove.startRow, col: aiMove.startCol },
             to: { row: aiMove.endRow, col: aiMove.endCol },
@@ -360,8 +365,10 @@ const Game = () => {
         rowIndex,
         colIndex
       );
-      setBlackPieces(12 - checkersGame.players[1].numOfPieces);
-      setRedPieces(12 - checkersGame.players[0].numOfPieces);
+      setCapturedBlack(checkersGame.players[0].capturedPieces);
+      setCapturedRed(checkersGame.players[1].capturedPieces);
+      setPlayerOneScore(checkersGame.players[0].score);
+      setPlayerTwoScore(checkersGame.players[1].score);
       setLastMove({
         from: { row: selectedPiece.row, col: selectedPiece.col },
         to: { row: rowIndex, col: colIndex },
@@ -413,8 +420,10 @@ const Game = () => {
 
       if (piece && isValidMove) {
         checkersGame.movePiece(startRow, startCol, endRow, endCol);
-        setBlackPieces(12 - checkersGame.players[1].numOfPieces);
-        setRedPieces(12 - checkersGame.players[0].numOfPieces);
+        setCapturedBlack(checkersGame.players[0].capturedPieces);
+        setCapturedRed(checkersGame.players[1].capturedPieces);
+        setPlayerOneScore(checkersGame.players[0].score);
+        setPlayerTwoScore(checkersGame.players[1].score);
         setLastMove({
           from: { row: startRow, col: startCol },
           to: { row: endRow, col: endCol },
@@ -469,7 +478,8 @@ const Game = () => {
               )}
               <h5>{state.playerTwoUser}</h5>
               <img className="red-captured" src={redKing} alt="" />
-              <h5>{`+ ${redPieces}`}</h5>
+              <h5>{`+ ${capturedRed}`}</h5>
+              <h5>Score: {playerTwoScore}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>
               <div className="board">{renderBoard()}</div>
@@ -488,7 +498,8 @@ const Game = () => {
               )}
               <h5>{state.playerOneUser}</h5>
               <img className="black-captured" src={blackKing} alt="" />
-              <h5>{`+${blackPieces}`}</h5>
+              <h5>{`+${capturedBlack}`}</h5>
+              <h5>Score: {playerOneScore}</h5>
             </div>
           </div>
           <div className="history">
