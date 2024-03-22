@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useStyle } from "../../context/StyleContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../css/game-styling.css";
@@ -428,6 +428,7 @@ const Game = () => {
         from: { row: selectedPiece.row, col: selectedPiece.col },
         to: { row: rowIndex, col: colIndex },
       });
+
       // Refresh the state to reflect the move
       setSelectedPiece({ row: -1, col: -1 });
       setPossibleMoves([]);
@@ -501,7 +502,6 @@ const Game = () => {
             newBoardState,
           ] as (CheckersPiece | null)[][];
         });
-        checkersGame.checkEndOfGame();
         if (checkersGame.currentState === State.gameFinished) {
           setGameStatus(State.gameFinished);
           handleRatingChange();
@@ -734,8 +734,14 @@ const Game = () => {
               <h5 className="score">Score: {playerOneScore}</h5>
             </div>
           </div>
-          <div className="history">
+          <div className="game-info">
             <h5>History</h5>
+            <h5>Turns: {checkersGame.numOfTurns}</h5>
+            <h5>History of Moves:</h5>
+            <h5>
+              Turn {checkersGame.numOfTurns}:{" "}
+              {`${lastMove.from.row}, ${lastMove.from.col} to ${lastMove.to.row}, ${lastMove.to.col}`}
+            </h5>
           </div>
         </div>
       </div>

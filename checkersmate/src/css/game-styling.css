@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  gap: 200px;
+  gap: 25px;
   margin-top: 5px;
 }
 
@@ -352,6 +352,15 @@
 
 .game-finished .replay-buttons .ai-btn {
   margin-left: 10px;
+}
+
+/* Game Info Section */
+.game .game-container .game-info {
+  width: 300px;
+  height: 560px;
+  border: 1px solid black;
+  margin-top: 45px;
+  color: #f5ac8e;
 }
 
 /* Footer Section */
