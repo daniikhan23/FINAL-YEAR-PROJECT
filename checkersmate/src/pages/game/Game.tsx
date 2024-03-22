@@ -469,9 +469,14 @@ const Game = () => {
     <>
       <div className="game">
         <div className="game-container">
-          <div className="ai-analysis">
-            <h5>AI analysis</h5>
-          </div>
+          {checkersGame.players[1] instanceof CheckersAI ? (
+            <div className="ai-analysis">
+              <h5>AI analysis</h5>
+            </div>
+          ) : (
+            ""
+          )}
+
           <div className="main">
             <div className="opponent-card">
               <div className="first-col">
