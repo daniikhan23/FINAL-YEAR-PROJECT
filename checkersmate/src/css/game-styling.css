@@ -282,6 +282,7 @@
 .game-finished .flag-world {
   height: 45px;
   width: 55px;
+  margin-right: 10px;
 }
 
 .game-finished .winner {
@@ -326,6 +327,7 @@
   font-size: 20px;
   margin-top: 10px;
   text-align: center;
+  cursor: pointer;
 }
 
 .game-finished .replay-buttons button:hover {

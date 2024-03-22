@@ -38,7 +38,7 @@ const GameStart = () => {
     navigate("/game", {
       state: {
         playerOneUser,
-        playerTwoUser: vsAI ? "AI" : playerTwoUser,
+        playerTwoUser: vsAI ? "Minimax A/B 5" : playerTwoUser,
         gameMode,
       },
     });

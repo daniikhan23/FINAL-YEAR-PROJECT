@@ -157,7 +157,8 @@ const Game = () => {
     playerTwoUser: string;
     gameMode: boolean;
   };
-  const AI = state.playerTwoUser === "AI";
+  const AI = state.playerTwoUser === "Minimax A/B 5";
+  const playerTwoName = "Player two";
   const playerOne = new Player(state.playerOneUser, PieceColor.Red);
   const playerTwo = new Player(state.playerTwoUser, PieceColor.Black);
   const [checkersGame, setCheckersGame] = useState(
@@ -338,7 +339,7 @@ const Game = () => {
     if (!(checkersGame.players[1] instanceof CheckersAI)) {
       if (AI) {
         const aiPlayer = new CheckersAI(
-          "AI",
+          "Minimax A/B 5",
           PieceColor.Black,
           checkersGame,
           5
@@ -519,7 +520,11 @@ const Game = () => {
                     width={"45px"}
                   />
                 )}
-                <h4>{checkersGame.players[1].name}</h4>
+                <h4>
+                  {state.playerTwoUser === ""
+                    ? "Player Two"
+                    : state.playerTwoUser}
+                </h4>
               </div>
             </div>
             <div className="player-scores">
@@ -570,7 +575,11 @@ const Game = () => {
                 )}
                 <div className="row">
                   <div className="column">
-                    <h5>{state.playerTwoUser}</h5>
+                    <h5>
+                      {state.playerTwoUser === ""
+                        ? "Player Two"
+                        : state.playerTwoUser}
+                    </h5>
                   </div>
                   <div className="column-captures">
                     <img className="red-captured" src={redKing} alt="" />
