@@ -492,6 +492,10 @@ const Game = () => {
               alt=""
             />
             <h3>Winner: {checkersGame.winner?.name}</h3>
+            <h3>
+              Game Mode:{" "}
+              {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
+            </h3>
             <div className="player-names">
               <h4>
                 {userCountry && (
