@@ -20,7 +20,11 @@ import { ToastContainer, toast } from "react-toastify";
 import backgroundImage from "../../assets/img/background.png";
 import blackKing from "../../assets/img/blackKingCustom.png";
 import redKing from "../../assets/img/redKingCustom.png";
+import flagWorld from "../../assets/img/flagOfTheWorld.jpg";
 import { GiArtificialIntelligence } from "react-icons/gi";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { useAuth } from "../../context/UserAuthContext";
+import ReactCountryFlag from "react-country-flag";
 
 interface Position {
   row: number;
@@ -175,7 +179,31 @@ const Game = () => {
   const [redPieces, setRedPieces] = useState(
     12 - checkersGame.players[0].numOfPieces
   );
+
+  const [userCountry, setUserCountry] = useState("");
+
+  const { currentUser } = useAuth();
+  const db = getFirestore();
   const forceUpdate = useForceUpdate();
+
+  const { changeBodyBackground } = useStyle();
+  useEffect(() => {
+    const fetchPlayer1Country = async () => {
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          setUserCountry(userData.country);
+          console.log(userCountry);
+        }
+      }
+    };
+    fetchPlayer1Country();
+    // set background
+    changeBodyBackground(backgroundImage);
+    return () => changeBodyBackground("wheat");
+  }, [changeBodyBackground]);
 
   // handling AI move and animation asynchronously
   async function handleAIMove() {
@@ -272,14 +300,6 @@ const Game = () => {
       ></div>
     );
   };
-
-  const { changeBodyBackground } = useStyle();
-  useEffect(() => {
-    // set background
-    changeBodyBackground(backgroundImage);
-
-    return () => changeBodyBackground("wheat");
-  }, [changeBodyBackground]);
 
   const renderBoard = () => {
     return checkersGame.board.map((row, rowIndex) => (
@@ -442,9 +462,8 @@ const Game = () => {
               {checkersGame.players[1] instanceof CheckersAI ? (
                 <GiArtificialIntelligence />
               ) : (
-                <img src={blackKing} alt="" />
+                <img src={flagWorld} alt="" height={"35px"} width={"45px"} />
               )}
-              {/* <img src={blackKing} alt="" /> */}
               <h5>{state.playerTwoUser}</h5>
               <img src={redKing} alt="" />
               <h5>{`+ ${redPieces}`}</h5>
@@ -453,7 +472,17 @@ const Game = () => {
               <div className="board">{renderBoard()}</div>
             </DndProvider>
             <div className="player-card">
-              <img src={redKing} alt="" />
+              {userCountry && (
+                <ReactCountryFlag
+                  countryCode={userCountry}
+                  svg
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                  }}
+                  title={userCountry}
+                />
+              )}
               <h5>{state.playerOneUser}</h5>
               <img src={blackKing} alt="" />
               <h5>{`+${blackPieces}`}</h5>
