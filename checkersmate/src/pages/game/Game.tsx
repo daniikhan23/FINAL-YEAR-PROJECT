@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useCallback } from "react";
 import { useStyle } from "../../context/StyleContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../../css/game-styling.css";
 import {
   CheckersPiece,
@@ -183,6 +183,7 @@ const Game = () => {
   );
 
   const [userCountry, setUserCountry] = useState("");
+  const navigate = useNavigate();
 
   const { currentUser } = useAuth();
   const db = getFirestore();
@@ -465,6 +466,14 @@ const Game = () => {
     );
   };
 
+  const replayAI = () => {
+    window.location.reload();
+  };
+
+  const differentMode = () => {
+    navigate("/game-start");
+  };
+
   return (
     <>
       {/* End of game scorecard */}
@@ -522,9 +531,13 @@ const Game = () => {
               <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
             </div>
             <div className="replay-buttons">
-              <h4>One more game?</h4>
-              <button className="mp-btn">Local MP</button>
-              <button className="ai-btn">VS AI</button>
+              <h4>Would you like to play again?</h4>
+              <button className="mp-btn" onClick={replayAI}>
+                Replay Match
+              </button>
+              <button className="ai-btn" onClick={differentMode}>
+                Try a different mode?
+              </button>
             </div>
           </div>
         </>

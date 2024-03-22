@@ -176,7 +176,7 @@
 }
 
 .game .game-container .main .board .board-row .board-col .piece-animation {
-  animation: slidePiece 0.75s ease-out forwards;
+  animation: slidePiece 0.5s ease-out forwards;
 }
 
 /* Player scorecards section */
@@ -279,6 +279,11 @@
   border-radius: 10px;
 }
 
+.game-finished .flag-world {
+  height: 45px;
+  width: 55px;
+}
+
 .game-finished .winner {
   margin-bottom: 15px;
 }
@@ -307,6 +312,10 @@
 
 .game-finished .replay-buttons {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .game-finished .replay-buttons button {
