@@ -323,6 +323,9 @@ const Game = () => {
               newBoardState,
             ] as (CheckersPiece | null)[][];
           });
+          checkersGame.checkEndOfGame();
+          if (checkersGame.currentState === State.gameFinished)
+            setGameStatus(State.gameFinished);
         }
       }
     }
@@ -384,6 +387,9 @@ const Game = () => {
         );
         return [...currentHistory, newBoardState] as (CheckersPiece | null)[][];
       });
+      checkersGame.checkEndOfGame();
+      if (checkersGame.currentState === State.gameFinished)
+        setGameStatus(State.gameFinished);
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
       // Select the piece and show possible moves
       setSelectedPiece({ row: rowIndex, col: colIndex });
@@ -441,6 +447,9 @@ const Game = () => {
             newBoardState,
           ] as (CheckersPiece | null)[][];
         });
+        checkersGame.checkEndOfGame();
+        if (checkersGame.currentState === State.gameFinished)
+          setGameStatus(State.gameFinished);
         forceUpdate();
       } else {
         console.log("invalid turn");
