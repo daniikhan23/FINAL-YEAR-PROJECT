@@ -209,10 +209,7 @@ const Game = () => {
       ),
     ]
   );
-  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(
-    // history.length
-    0
-  );
+  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [gameStatus, setGameStatus] = useState(checkersGame.currentState);
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
   const [selectedPiece, setSelectedPiece] = useState({ row: -1, col: -1 });
@@ -366,7 +363,7 @@ const Game = () => {
         const aiMove = await checkersGame.players[1].makeMove();
         console.log(aiMove);
 
-        if (aiMove) {
+        if (aiMove && currentHistoryIndex >= history.length - 1) {
           await new Promise<void>((resolve) => {
             animateAIMove(
               { row: aiMove.startRow, col: aiMove.startCol },
@@ -445,7 +442,11 @@ const Game = () => {
     const isPossibleMove = isMovePossible(rowIndex, colIndex);
 
     // Execute the move if a piece is selected and the target is a possible move
-    if (selectedPiece.row !== -1 && isPossibleMove) {
+    if (
+      selectedPiece.row !== -1 &&
+      isPossibleMove &&
+      currentHistoryIndex >= history.length - 1
+    ) {
       checkersGame.movePiece(
         selectedPiece.row,
         selectedPiece.col,
@@ -674,7 +675,7 @@ const Game = () => {
   const renderCurrentBoard = () => {
     setCheckersBoard(checkersGame.board);
     setCurrentTrackedBoard(checkersBoard);
-    setCurrentHistoryIndex(history.length);
+    setCurrentHistoryIndex(history.length - 1);
   };
 
   return (
