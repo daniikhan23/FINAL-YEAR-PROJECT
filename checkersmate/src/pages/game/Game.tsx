@@ -396,18 +396,14 @@ const Game = () => {
           };
           movesHistory.current.push(newMove);
           setHistory((currentHistory) => {
-            let newBoardState: (CheckersPiece | null)[][];
-            [
-              (newBoardState = newGame.board.map((row) =>
-                row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-              )),
-            ];
-            return [
-              ...currentHistory,
-              newBoardState,
-            ] as (typeof checkersBoard)[];
+            const newBoardState = newGame.board.map((row) =>
+              row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+            );
+            const newHistory = [...currentHistory, newBoardState];
+            setCurrentHistoryIndex(newHistory.length - 1);
+
+            return newHistory;
           });
-          setCurrentHistoryIndex(history.length);
           checkersGame.checkEndOfGame();
           if (checkersGame.currentState === State.gameFinished) {
             setGameStatus(checkersGame.currentState);
@@ -477,15 +473,14 @@ const Game = () => {
 
       movesHistory.current.push(newMove);
       setHistory((currentHistory) => {
-        let newBoardState: (CheckersPiece | null)[][];
-        [
-          (newBoardState = newGame.board.map((row) =>
-            row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-          )),
-        ];
-        return [...currentHistory, newBoardState] as (typeof checkersBoard)[];
+        const newBoardState = newGame.board.map((row) =>
+          row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+        );
+        const newHistory = [...currentHistory, newBoardState];
+        setCurrentHistoryIndex(newHistory.length - 1);
+
+        return newHistory;
       });
-      setCurrentHistoryIndex(history.length);
       checkersGame.checkEndOfGame();
       if (checkersGame.currentState === State.gameFinished) {
         setGameStatus(checkersGame.currentState);
@@ -546,15 +541,14 @@ const Game = () => {
         };
         movesHistory.current.push(newMove);
         setHistory((currentHistory) => {
-          let newBoardState: (CheckersPiece | null)[][];
-          [
-            (newBoardState = newGame.board.map((row) =>
-              row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-            )),
-          ];
-          return [...currentHistory, newBoardState] as (typeof checkersBoard)[];
+          const newBoardState = newGame.board.map((row) =>
+            row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+          );
+          const newHistory = [...currentHistory, newBoardState];
+          setCurrentHistoryIndex(newHistory.length - 1);
+
+          return newHistory;
         });
-        setCurrentHistoryIndex(history.length);
         checkersGame.checkEndOfGame();
         if (checkersGame.currentState === State.gameFinished) {
           setGameStatus(checkersGame.currentState);
@@ -651,27 +645,6 @@ const Game = () => {
     setGameStatus(checkersGame.currentState);
     handleRatingChange();
   };
-
-  // const renderPrevBoard = () => {
-  //   let checkBoardEquality: boolean = false;
-  //   let boardVersion = 0;
-  //   if (history.length > 0) {
-  //     for (let num = history.length - 1; num > 0; num--) {
-  //       for (let i = 0; i < 8; i++) {
-  //         for (let j = 0; j < 8; j++) {
-  //           if (currentTrackedBoard[i][j] === history[num][i][j]) {
-  //             checkBoardEquality = true;
-  //             boardVersion = num;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   if (checkBoardEquality) {
-  //     setCurrentTrackedBoard(history[boardVersion - 1]);
-  //     setCheckersBoard(history[boardVersion - 1]);
-  //   }
-  // };
 
   const renderPrevBoard = () => {
     if (currentHistoryIndex > 0) {
