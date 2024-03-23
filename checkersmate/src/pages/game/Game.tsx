@@ -763,15 +763,15 @@ const Game = () => {
             </div>
           </div>
           <div className="game-info">
-            <h5>History</h5>
-            <h5>Turns: {checkersGame.numOfTurns}</h5>
-            <h5>History of Moves:</h5>
-            {movesHistory.current.map((move, index) => (
-              <h6 key={index}>
-                {index + 1}. ({move.from.row + 1}, {move.from.col + 1}) to (
-                {move.to.row + 1}, {move.to.col + 1})
-              </h6>
-            ))}
+            <div className="history-section">
+              <h5>History of Moves:</h5>
+              {movesHistory.current.map((move, index) => (
+                <h6 key={index}>
+                  {index + 1}. ({move.from.row + 1}, {move.from.col + 1}) to (
+                  {move.to.row + 1}, {move.to.col + 1})
+                </h6>
+              ))}
+            </div>
           </div>
         </div>
       </div>
