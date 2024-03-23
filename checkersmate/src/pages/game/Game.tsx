@@ -31,6 +31,10 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../context/UserAuthContext";
 import ReactCountryFlag from "react-country-flag";
+import { MdOutlineRestartAlt } from "react-icons/md";
+import { MdArrowBackIos } from "react-icons/md";
+import { GrNext } from "react-icons/gr";
+import { FaRegFlag } from "react-icons/fa6";
 
 interface ProfileData {
   username: string;
@@ -771,6 +775,16 @@ const Game = () => {
                   {move.to.row + 1}, {move.to.col + 1})
                 </h6>
               ))}
+            </div>
+            <div className="buttons">
+              {/* <button>Restart</button>
+              <button>Back</button>
+              <button>Forward</button>
+              <button>Resign</button> */}
+              <MdOutlineRestartAlt />
+              <MdArrowBackIos />
+              <GrNext />
+              <FaRegFlag />
             </div>
           </div>
         </div>
