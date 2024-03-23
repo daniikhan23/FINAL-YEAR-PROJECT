@@ -548,7 +548,7 @@ const Game = () => {
     );
   };
 
-  const replayAI = () => {
+  const replayGame = () => {
     window.location.reload();
   };
 
@@ -610,89 +610,91 @@ const Game = () => {
     console.log(updates);
   };
 
+  const resign = () => {
+    checkersGame.currentState = State.gameFinished;
+    checkersGame.winner = checkersGame.players[1];
+    setGameStatus(checkersGame.currentState);
+    handleRatingChange();
+  };
+
   return (
     <>
       {/* End of game scorecard */}
-      {
-        // gameStatus === State.gameFinished
-        gameStatus === State.gameFinished ? (
-          <>
-            <div className="game-backdrop"></div>
-            <div className="game-finished">
-              <img
-                className="winner"
-                src={
-                  checkersGame.winner === checkersGame.players[0]
-                    ? redKing
-                    : blackKing
-                }
-                alt=""
-              />
-              <h3>Winner: {checkersGame.winner?.name}</h3>
-              <h3>
-                Game Mode:{" "}
-                {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
-              </h3>
-              <div className="player-names">
+      {gameStatus === State.gameFinished ? (
+        <>
+          <div className="game-backdrop"></div>
+          <div className="game-finished">
+            <img
+              className="winner"
+              src={
+                checkersGame.winner === checkersGame.players[0]
+                  ? redKing
+                  : blackKing
+              }
+              alt=""
+            />
+            <h3>Winner: {checkersGame.winner?.name}</h3>
+            <h3>
+              Game Mode:{" "}
+              {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
+            </h3>
+            <div className="player-names">
+              <h4>
+                {userCountry && (
+                  <ReactCountryFlag
+                    countryCode={userCountry}
+                    svg
+                    style={{
+                      width: "45px",
+                      height: "45px",
+                      marginRight: "10px",
+                    }}
+                    title={userCountry}
+                  />
+                )}
+                {checkersGame.players[0].name}
+              </h4>
+              <div className="row-player-two">
+                {checkersGame.players[1] instanceof CheckersAI ? (
+                  <GiArtificialIntelligence />
+                ) : (
+                  <img
+                    className="flag-world"
+                    src={flagWorld}
+                    alt=""
+                    height={"45px"}
+                    width={"45px"}
+                  />
+                )}
                 <h4>
-                  {userCountry && (
-                    <ReactCountryFlag
-                      countryCode={userCountry}
-                      svg
-                      style={{
-                        width: "45px",
-                        height: "45px",
-                        marginRight: "10px",
-                      }}
-                      title={userCountry}
-                    />
-                  )}
-                  {checkersGame.players[0].name}
+                  {state.playerTwoUser === ""
+                    ? "Player Two"
+                    : state.playerTwoUser}
                 </h4>
-                <div className="row-player-two">
-                  {checkersGame.players[1] instanceof CheckersAI ? (
-                    <GiArtificialIntelligence />
-                  ) : (
-                    <img
-                      className="flag-world"
-                      src={flagWorld}
-                      alt=""
-                      height={"45px"}
-                      width={"45px"}
-                    />
-                  )}
-                  <h4>
-                    {state.playerTwoUser === ""
-                      ? "Player Two"
-                      : state.playerTwoUser}
-                  </h4>
-                </div>
-              </div>
-              <div className="player-scores">
-                <h4>Score: {checkersGame.players[0].score}</h4>
-                <h4>Score: {checkersGame.players[1].score}</h4>
-              </div>
-              <div className="captured-pieces">
-                <h4>
-                  Pieces Captured: {checkersGame.players[0].capturedPieces}
-                </h4>
-                <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
-              </div>
-              <div className="replay-buttons">
-                <h4>Would you like to play again?</h4>
-                <button className="mp-btn" onClick={replayAI}>
-                  Replay Match
-                </button>
-                <button className="ai-btn" onClick={differentMode}>
-                  Try a different mode?
-                </button>
               </div>
             </div>
-          </>
-        ) : (
-          ""
-        )
-      }
+            <div className="player-scores">
+              <h4>Score: {checkersGame.players[0].score}</h4>
+              <h4>Score: {checkersGame.players[1].score}</h4>
+            </div>
+            <div className="captured-pieces">
+              <h4>Pieces Captured: {checkersGame.players[0].capturedPieces}</h4>
+              <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
+            </div>
+            <div className="replay-buttons">
+              <h4>Would you like to play again?</h4>
+              <button className="mp-btn" onClick={replayGame}>
+                Replay Match
+              </button>
+              <button className="ai-btn" onClick={differentMode}>
+                Try a different mode?
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
       <div className="game">
         <div className="game-container">
           {/* AI Analysis conditional section */}
@@ -777,14 +779,10 @@ const Game = () => {
               ))}
             </div>
             <div className="buttons">
-              {/* <button>Restart</button>
-              <button>Back</button>
-              <button>Forward</button>
-              <button>Resign</button> */}
-              <MdOutlineRestartAlt />
+              <MdOutlineRestartAlt onClick={() => replayGame()} />
               <MdArrowBackIos />
               <GrNext />
-              <FaRegFlag />
+              <FaRegFlag onClick={() => resign()} />
             </div>
           </div>
         </div>

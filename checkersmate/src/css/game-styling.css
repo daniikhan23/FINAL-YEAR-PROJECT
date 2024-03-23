@@ -399,7 +399,6 @@
 .game .game-container .game-info .buttons svg {
   color: #f5ac8e;
   font-size: 20px;
-  /* background-color: rgba(0, 0, 0, 0.25); */
   background-color: rgba(140, 138, 138, 0.25);
   border: 0px solid rgba(140, 138, 138, 0.25);
   border-radius: 5px;
