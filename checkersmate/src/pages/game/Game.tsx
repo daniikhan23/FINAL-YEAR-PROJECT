@@ -575,6 +575,10 @@ const Game = () => {
             profileData.rating.normal - checkersGame.players[0].score * 10
           ),
         };
+      } else {
+        updates = {
+          "record.draws": profileData.record.draws + 1,
+        };
       }
     } else {
       if (checkersGame.winner === checkersGame.players[0]) {
@@ -592,6 +596,10 @@ const Game = () => {
             profileData.rating.enforcedJumps -
               checkersGame.players[0].score * 10
           ),
+        };
+      } else {
+        updates = {
+          "record.draws": profileData.record.draws + 1,
         };
       }
     }
@@ -633,7 +641,11 @@ const Game = () => {
               }
               alt=""
             />
-            <h3>Winner: {checkersGame.winner?.name}</h3>
+            <h3>
+              {checkersGame.winner
+                ? `Winner: ${checkersGame.winner?.name}`
+                : `It's a draw!`}
+            </h3>
             <h3>
               Game Mode:{" "}
               {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
