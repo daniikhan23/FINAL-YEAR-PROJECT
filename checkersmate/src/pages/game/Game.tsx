@@ -522,7 +522,7 @@ const Game = () => {
           move.endCol === endCol
       );
 
-      if (piece && isValidMove) {
+      if (piece && isValidMove && currentHistoryIndex >= history.length - 1) {
         checkersGame.movePiece(startRow, startCol, endRow, endCol);
         setCapturedBlack(checkersGame.players[0].capturedPieces);
         setCapturedRed(checkersGame.players[1].capturedPieces);
@@ -536,6 +536,7 @@ const Game = () => {
         setPossibleMoves([]);
         const newGame = checkersGame.deepCopyGame();
         setCheckersGame(checkersGame);
+        setCheckersBoard(checkersGame.board);
         setCurrentTrackedBoard(checkersBoard);
         const newMove = {
           from: { row: startRow, col: startCol },
