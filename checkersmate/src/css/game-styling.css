@@ -413,6 +413,23 @@
   transform: translateY(3px);
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: rgba(140, 138, 138, 0.25);
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(140, 138, 138, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f5ac8e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: white;
+}
+
 /* Footer Section */
 .footer-section {
   border: 0 solid black;
