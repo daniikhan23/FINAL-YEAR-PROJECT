@@ -210,7 +210,8 @@ const Game = () => {
     ]
   );
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(
-    history.length
+    // history.length
+    0
   );
   const [gameStatus, setGameStatus] = useState(checkersGame.currentState);
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
@@ -657,14 +658,23 @@ const Game = () => {
     }
   };
 
+  const renderNextBoard = () => {
+    if (history.length > 1 && currentHistoryIndex < history.length - 1) {
+      const nextBoardVersionIndex = currentHistoryIndex + 1;
+      setCurrentTrackedBoard(history[nextBoardVersionIndex]);
+      setCheckersBoard(history[nextBoardVersionIndex]);
+      setCurrentHistoryIndex(nextBoardVersionIndex);
+    } else if (currentHistoryIndex === history.length - 1) {
+      renderCurrentBoard();
+    } else {
+      console.log("Back at the latest state of the game.");
+    }
+  };
+
   const renderCurrentBoard = () => {
     setCheckersBoard(checkersGame.board);
     setCurrentTrackedBoard(checkersBoard);
     setCurrentHistoryIndex(history.length);
-  };
-
-  const renderNextBoard = () => {
-    if (history[1]) setCheckersBoard(history[1]);
   };
 
   return (
