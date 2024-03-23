@@ -363,6 +363,10 @@
   color: #f5ac8e;
 }
 
+.game .game-container .game-info h6 {
+  font-size: 1.5rem;
+}
+
 /* Footer Section */
 .footer-section {
   border: 0 solid black;

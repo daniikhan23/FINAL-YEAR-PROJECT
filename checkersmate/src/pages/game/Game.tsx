@@ -51,6 +51,11 @@ interface Position {
   col: number;
 }
 
+interface Move {
+  from: { row: number; col: number };
+  to: { row: number; col: number };
+}
+
 // will have to change this when making responsive
 const SQUARE_SIZE = 70;
 
@@ -215,6 +220,7 @@ const Game = () => {
       enforcedJumps: 0,
     },
   });
+  const movesHistory = useRef<Move[]>([]);
 
   const [userCountry, setUserCountry] = useState("");
   const navigate = useNavigate();
@@ -363,6 +369,11 @@ const Game = () => {
           });
           const newGame = checkersGame.deepCopyGame();
           setCheckersGame((checkersGame) => checkersGame);
+          const newMove = {
+            from: { row: aiMove.startRow, col: aiMove.startCol },
+            to: { row: aiMove.endRow, col: aiMove.endCol },
+          };
+          movesHistory.current.push(newMove);
           setHistory((currentHistory) => {
             const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
               (row) =>
@@ -375,7 +386,7 @@ const Game = () => {
           });
           checkersGame.checkEndOfGame();
           if (checkersGame.currentState === State.gameFinished) {
-            setGameStatus(State.gameFinished);
+            setGameStatus(checkersGame.currentState);
             handleRatingChange();
           }
         }
@@ -434,6 +445,12 @@ const Game = () => {
       setPossibleMoves([]);
       const newGame = checkersGame.deepCopyGame();
       setCheckersGame((checkersGame) => checkersGame);
+      const newMove = {
+        from: { row: selectedPiece.row, col: selectedPiece.col },
+        to: { row: rowIndex, col: colIndex },
+      };
+
+      movesHistory.current.push(newMove);
       setHistory((currentHistory) => {
         const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
           (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
@@ -442,7 +459,7 @@ const Game = () => {
       });
       checkersGame.checkEndOfGame();
       if (checkersGame.currentState === State.gameFinished) {
-        setGameStatus(State.gameFinished);
+        setGameStatus(checkersGame.currentState);
         handleRatingChange();
       }
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
@@ -493,6 +510,11 @@ const Game = () => {
         setPossibleMoves([]);
         const newGame = checkersGame.deepCopyGame();
         setCheckersGame((checkersGame) => checkersGame);
+        const newMove = {
+          from: { row: startRow, col: startCol },
+          to: { row: endRow, col: endCol },
+        };
+        movesHistory.current.push(newMove);
         setHistory((currentHistory) => {
           const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
             (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
@@ -502,8 +524,9 @@ const Game = () => {
             newBoardState,
           ] as (CheckersPiece | null)[][];
         });
+        checkersGame.checkEndOfGame();
         if (checkersGame.currentState === State.gameFinished) {
-          setGameStatus(State.gameFinished);
+          setGameStatus(checkersGame.currentState);
           handleRatingChange();
         }
         forceUpdate();
@@ -586,81 +609,86 @@ const Game = () => {
   return (
     <>
       {/* End of game scorecard */}
-      {gameStatus === State.gameFinished ? (
-        <>
-          <div className="game-backdrop"></div>
-          <div className="game-finished">
-            <img
-              className="winner"
-              src={
-                checkersGame.winner === checkersGame.players[0]
-                  ? redKing
-                  : blackKing
-              }
-              alt=""
-            />
-            <h3>Winner: {checkersGame.winner?.name}</h3>
-            <h3>
-              Game Mode:{" "}
-              {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
-            </h3>
-            <div className="player-names">
-              <h4>
-                {userCountry && (
-                  <ReactCountryFlag
-                    countryCode={userCountry}
-                    svg
-                    style={{
-                      width: "45px",
-                      height: "45px",
-                      marginRight: "10px",
-                    }}
-                    title={userCountry}
-                  />
-                )}
-                {checkersGame.players[0].name}
-              </h4>
-              <div className="row-player-two">
-                {checkersGame.players[1] instanceof CheckersAI ? (
-                  <GiArtificialIntelligence />
-                ) : (
-                  <img
-                    className="flag-world"
-                    src={flagWorld}
-                    alt=""
-                    height={"45px"}
-                    width={"45px"}
-                  />
-                )}
+      {
+        // gameStatus === State.gameFinished
+        gameStatus === State.gameFinished ? (
+          <>
+            <div className="game-backdrop"></div>
+            <div className="game-finished">
+              <img
+                className="winner"
+                src={
+                  checkersGame.winner === checkersGame.players[0]
+                    ? redKing
+                    : blackKing
+                }
+                alt=""
+              />
+              <h3>Winner: {checkersGame.winner?.name}</h3>
+              <h3>
+                Game Mode:{" "}
+                {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
+              </h3>
+              <div className="player-names">
                 <h4>
-                  {state.playerTwoUser === ""
-                    ? "Player Two"
-                    : state.playerTwoUser}
+                  {userCountry && (
+                    <ReactCountryFlag
+                      countryCode={userCountry}
+                      svg
+                      style={{
+                        width: "45px",
+                        height: "45px",
+                        marginRight: "10px",
+                      }}
+                      title={userCountry}
+                    />
+                  )}
+                  {checkersGame.players[0].name}
                 </h4>
+                <div className="row-player-two">
+                  {checkersGame.players[1] instanceof CheckersAI ? (
+                    <GiArtificialIntelligence />
+                  ) : (
+                    <img
+                      className="flag-world"
+                      src={flagWorld}
+                      alt=""
+                      height={"45px"}
+                      width={"45px"}
+                    />
+                  )}
+                  <h4>
+                    {state.playerTwoUser === ""
+                      ? "Player Two"
+                      : state.playerTwoUser}
+                  </h4>
+                </div>
+              </div>
+              <div className="player-scores">
+                <h4>Score: {checkersGame.players[0].score}</h4>
+                <h4>Score: {checkersGame.players[1].score}</h4>
+              </div>
+              <div className="captured-pieces">
+                <h4>
+                  Pieces Captured: {checkersGame.players[0].capturedPieces}
+                </h4>
+                <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
+              </div>
+              <div className="replay-buttons">
+                <h4>Would you like to play again?</h4>
+                <button className="mp-btn" onClick={replayAI}>
+                  Replay Match
+                </button>
+                <button className="ai-btn" onClick={differentMode}>
+                  Try a different mode?
+                </button>
               </div>
             </div>
-            <div className="player-scores">
-              <h4>Score: {checkersGame.players[0].score}</h4>
-              <h4>Score: {checkersGame.players[1].score}</h4>
-            </div>
-            <div className="captured-pieces">
-              <h4>Pieces Captured: {checkersGame.players[0].capturedPieces}</h4>
-              <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
-            </div>
-            <div className="replay-buttons">
-              <h4>Would you like to play again?</h4>
-              <button className="mp-btn" onClick={replayAI}>
-                Replay Match
-              </button>
-              <button className="ai-btn" onClick={differentMode}>
-                Try a different mode?
-              </button>
-            </div>
-          </div>
-        </>
-      ) : (
-        ""
-      )}
+          </>
+        ) : (
+          ""
+        )
+      }
       <div className="game">
         <div className="game-container">
           {/* AI Analysis conditional section */}
@@ -738,10 +766,12 @@ const Game = () => {
             <h5>History</h5>
             <h5>Turns: {checkersGame.numOfTurns}</h5>
             <h5>History of Moves:</h5>
-            <h5>
-              Turn {checkersGame.numOfTurns}:{" "}
-              {`${lastMove.from.row}, ${lastMove.from.col} to ${lastMove.to.row}, ${lastMove.to.col}`}
-            </h5>
+            {movesHistory.current.map((move, index) => (
+              <h6 key={index}>
+                {index + 1}. ({move.from.row + 1}, {move.from.col + 1}) to (
+                {move.to.row + 1}, {move.to.col + 1})
+              </h6>
+            ))}
           </div>
         </div>
       </div>
