@@ -10,6 +10,7 @@ import {
   Player,
   CheckersGame,
   Moves,
+  CheckersBoard,
 } from "../../components/game/checkersGame";
 import { CheckersAI } from "../../components/game/checkersAI";
 import regularBlack from "../../assets/img/blackBase.png";
@@ -35,6 +36,7 @@ import { MdOutlineRestartAlt } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { GrNext } from "react-icons/gr";
 import { FaRegFlag } from "react-icons/fa6";
+import { BiCurrentLocation } from "react-icons/bi";
 
 interface ProfileData {
   username: string;
@@ -193,8 +195,16 @@ const Game = () => {
   const [checkersGame, setCheckersGame] = useState(
     new CheckersGame(playerOne, playerTwo, state.gameMode)
   );
-  const [history, setHistory] = useState<(CheckersPiece | null)[][]>(
-    checkersGame.board
+  const [checkersBoard, setCheckersBoard] = useState<
+    (CheckersPiece | null)[][]
+  >(checkersGame.board);
+  const [history, setHistory] = useState<(typeof checkersBoard)[]>(
+    // checkersGame.board
+    [
+      checkersGame.board.map((row) =>
+        row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+      ),
+    ]
   );
   const [gameStatus, setGameStatus] = useState(checkersGame.currentState);
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
@@ -301,7 +311,7 @@ const Game = () => {
   };
 
   const renderBoard = () => {
-    return checkersGame.board.map((row, rowIndex) => (
+    return checkersBoard.map((row, rowIndex) => (
       <div key={rowIndex} className="board-row">
         {row.map((col, colIndex) => {
           const isPossibleMove = possibleMoves.some(
@@ -379,14 +389,16 @@ const Game = () => {
           };
           movesHistory.current.push(newMove);
           setHistory((currentHistory) => {
-            const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
-              (row) =>
+            let newBoardState: (CheckersPiece | null)[][];
+            [
+              (newBoardState = newGame.board.map((row) =>
                 row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-            );
+              )),
+            ];
             return [
               ...currentHistory,
               newBoardState,
-            ] as (CheckersPiece | null)[][];
+            ] as (typeof checkersBoard)[];
           });
           checkersGame.checkEndOfGame();
           if (checkersGame.currentState === State.gameFinished) {
@@ -456,10 +468,13 @@ const Game = () => {
 
       movesHistory.current.push(newMove);
       setHistory((currentHistory) => {
-        const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
-          (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-        );
-        return [...currentHistory, newBoardState] as (CheckersPiece | null)[][];
+        let newBoardState: (CheckersPiece | null)[][];
+        [
+          (newBoardState = newGame.board.map((row) =>
+            row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+          )),
+        ];
+        return [...currentHistory, newBoardState] as (typeof checkersBoard)[];
       });
       checkersGame.checkEndOfGame();
       if (checkersGame.currentState === State.gameFinished) {
@@ -520,13 +535,13 @@ const Game = () => {
         };
         movesHistory.current.push(newMove);
         setHistory((currentHistory) => {
-          const newBoardState: (CheckersPiece | null)[][] = newGame.board.map(
-            (row) => row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-          );
-          return [
-            ...currentHistory,
-            newBoardState,
-          ] as (CheckersPiece | null)[][];
+          let newBoardState: (CheckersPiece | null)[][];
+          [
+            (newBoardState = newGame.board.map((row) =>
+              row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+            )),
+          ];
+          return [...currentHistory, newBoardState] as (typeof checkersBoard)[];
         });
         checkersGame.checkEndOfGame();
         if (checkersGame.currentState === State.gameFinished) {
@@ -623,6 +638,20 @@ const Game = () => {
     checkersGame.winner = checkersGame.players[1];
     setGameStatus(checkersGame.currentState);
     handleRatingChange();
+  };
+
+  const currentBoard = checkersGame.board;
+
+  const renderPrevBoard = () => {
+    setCheckersBoard(history[0]);
+  };
+
+  const renderCurrentBoard = () => {
+    setCheckersBoard(checkersGame.board);
+  };
+
+  const renderNextBoard = () => {
+    if (history[1]) setCheckersBoard(history[1]);
   };
 
   return (
@@ -792,8 +821,9 @@ const Game = () => {
             </div>
             <div className="buttons">
               <MdOutlineRestartAlt onClick={() => replayGame()} />
-              <MdArrowBackIos />
-              <GrNext />
+              <MdArrowBackIos onClick={() => renderPrevBoard()} />
+              <BiCurrentLocation onClick={() => renderCurrentBoard()} />
+              <GrNext onClick={() => renderNextBoard()} />
               <FaRegFlag onClick={() => resign()} />
             </div>
           </div>
