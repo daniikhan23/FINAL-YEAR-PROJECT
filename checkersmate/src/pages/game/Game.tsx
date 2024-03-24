@@ -766,7 +766,29 @@ const Game = () => {
           {/* AI Analysis conditional section */}
           {checkersGame.players[1] instanceof CheckersAI ? (
             <div className="ai-analysis">
-              <h5>AI analysis</h5>
+              <div className="header">
+                <h5>AI analysis</h5>
+              </div>
+              <div className="info">
+                <h6>Number of positions analysed: </h6>
+                <h6>Time Taken: </h6>
+                <h6>Chosen Move: </h6>
+                <h6>Evaluated Score of Move:</h6>
+              </div>
+              <div className="heuristic">
+                <h5>AI's Prioritisation Metric</h5>
+                <h6>Comparison of Kings: Difference x 20</h6>
+                <h6>Comparison of regular pieces: Difference x 15</h6>
+                <h6>
+                  Opponent's Possible Captures: - No. of Captures available
+                </h6>
+                <h6>Central box: +/- 3 for every Black/Red Piece</h6>
+                <h6>Back Row Guard (For first 10 turns): +/- 10 Black/Red</h6>
+                <h6>Basic Piece Protection: +6 per piece protected</h6>
+                <h6>Pyramid Formation (For first 15 turns): + 5-15</h6>
+                <h6>Vulnerable Pieces: -/+ 6 Black/Red</h6>
+                <h6></h6>
+              </div>
             </div>
           ) : (
             ""

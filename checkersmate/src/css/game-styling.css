@@ -1,3 +1,20 @@
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: rgba(140, 138, 138, 0.25);
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(140, 138, 138, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f5ac8e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: white;
+}
+
 .game .game-container {
   display: flex;
   justify-content: center;
@@ -413,21 +430,48 @@
   transform: translateY(3px);
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-  background-color: rgba(140, 138, 138, 0.25);
+.game .game-container .ai-analysis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  height: 560px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 45px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #f5ac8e;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(140, 138, 138, 0.25);
+.game .game-container .ai-analysis .header h5 {
+  margin-top: 25px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #f5ac8e;
+.game .game-container .ai-analysis .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: white;
+.game .game-container .ai-analysis .info h6 {
+  font-size: 1.5rem;
+}
+
+.game .game-container .ai-analysis .heuristic {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.game .game-container .ai-analysis .heuristic h6 {
+  text-align: center;
+  font-size: 1.3rem;
 }
 
 /* Footer Section */
