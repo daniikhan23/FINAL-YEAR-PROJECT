@@ -298,3 +298,7 @@ Player cards above and below the board
 AI move animations, player cards and end of game screens have all been succesfully implemented. FINALLY. I've merged the react-conversion branch now back into main as a 
 significant portion of the work that was planned is now done. Animations and overall user experience of playing the game feels super smooth and fluid. Next steps are now 
 to implement the history and AI analysis section. To be continued.
+
+The history and AI analysis sections are both now complete. There's some bugs to fix related to rating changes as well as minor bugs in dragging piece during previous 
+versions of the board (history section). The next step will be after fixing the bugs, to make the entire website responsive to different screens and then further 
+development will depend on available time. The website is now deployed onto firebase for users to check out: https://checkersmate.web.app/
