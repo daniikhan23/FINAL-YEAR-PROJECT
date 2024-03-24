@@ -239,6 +239,7 @@ const Game = () => {
     },
   });
   const movesHistory = useRef<Move[]>([]);
+  const evaluatedScore = useRef(0);
 
   const [userCountry, setUserCountry] = useState("");
   const navigate = useNavigate();
@@ -360,52 +361,55 @@ const Game = () => {
   async function handleAIMove() {
     if (checkersGame.players[1] instanceof CheckersAI) {
       while (checkersGame.currentPlayer === checkersGame.players[1]) {
-        const aiMove = await checkersGame.players[1].makeMove();
-        console.log(aiMove);
+        const result = await checkersGame.players[1].makeMove();
+        if (result !== null) {
+          const aiMove = result[1];
+          evaluatedScore.current = result[0];
 
-        if (aiMove && currentHistoryIndex >= history.length - 1) {
-          await new Promise<void>((resolve) => {
-            animateAIMove(
-              { row: aiMove.startRow, col: aiMove.startCol },
-              { row: aiMove.endRow, col: aiMove.endCol },
-              () => resolve()
+          if (aiMove && currentHistoryIndex >= history.length - 1) {
+            await new Promise<void>((resolve) => {
+              animateAIMove(
+                { row: aiMove.startRow, col: aiMove.startCol },
+                { row: aiMove.endRow, col: aiMove.endCol },
+                () => resolve()
+              );
+            });
+            console.log(aiMove);
+
+            checkersGame.movePiece(
+              aiMove.startRow,
+              aiMove.startCol,
+              aiMove.endRow,
+              aiMove.endCol
             );
-          });
-          console.log(aiMove);
+            setCapturedRed(checkersGame.players[1].capturedPieces);
+            setPlayerTwoScore(checkersGame.players[1].score);
+            setLastMove({
+              from: { row: aiMove.startRow, col: aiMove.startCol },
+              to: { row: aiMove.endRow, col: aiMove.endCol },
+            });
+            const newGame = checkersGame.deepCopyGame();
+            setCheckersGame(checkersGame);
+            setCurrentTrackedBoard(checkersBoard);
+            const newMove = {
+              from: { row: aiMove.startRow, col: aiMove.startCol },
+              to: { row: aiMove.endRow, col: aiMove.endCol },
+            };
+            movesHistory.current.push(newMove);
+            setHistory((currentHistory) => {
+              const newBoardState = newGame.board.map((row) =>
+                row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+              );
+              const newHistory = [...currentHistory, newBoardState];
+              setCurrentHistoryIndex(newHistory.length - 1);
 
-          checkersGame.movePiece(
-            aiMove.startRow,
-            aiMove.startCol,
-            aiMove.endRow,
-            aiMove.endCol
-          );
-          setCapturedRed(checkersGame.players[1].capturedPieces);
-          setPlayerTwoScore(checkersGame.players[1].score);
-          setLastMove({
-            from: { row: aiMove.startRow, col: aiMove.startCol },
-            to: { row: aiMove.endRow, col: aiMove.endCol },
-          });
-          const newGame = checkersGame.deepCopyGame();
-          setCheckersGame(checkersGame);
-          setCurrentTrackedBoard(checkersBoard);
-          const newMove = {
-            from: { row: aiMove.startRow, col: aiMove.startCol },
-            to: { row: aiMove.endRow, col: aiMove.endCol },
-          };
-          movesHistory.current.push(newMove);
-          setHistory((currentHistory) => {
-            const newBoardState = newGame.board.map((row) =>
-              row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-            );
-            const newHistory = [...currentHistory, newBoardState];
-            setCurrentHistoryIndex(newHistory.length - 1);
-
-            return newHistory;
-          });
-          checkersGame.checkEndOfGame();
-          if (checkersGame.currentState === State.gameFinished) {
-            setGameStatus(checkersGame.currentState);
-            handleRatingChange();
+              return newHistory;
+            });
+            checkersGame.checkEndOfGame();
+            if (checkersGame.currentState === State.gameFinished) {
+              setGameStatus(checkersGame.currentState);
+              handleRatingChange();
+            }
           }
         }
       }
@@ -770,10 +774,35 @@ const Game = () => {
                 <h5>AI analysis</h5>
               </div>
               <div className="info">
+                <h6>Minimax Depth: 5</h6>
                 <h6>Number of positions analysed: </h6>
                 <h6>Time Taken: </h6>
-                <h6>Chosen Move: </h6>
-                <h6>Evaluated Score of Move:</h6>
+                <h6>
+                  Chosen Move:{" "}
+                  {checkersGame.playerTwoMoves.length > 0
+                    ? `(${
+                        checkersGame.playerTwoMoves[
+                          checkersGame.playerTwoMoves.length - 1
+                        ].startRow + 1
+                      },
+                  ${
+                    checkersGame.playerTwoMoves[
+                      checkersGame.playerTwoMoves.length - 1
+                    ].startCol + 1
+                  }) to 
+                  (${
+                    checkersGame.playerTwoMoves[
+                      checkersGame.playerTwoMoves.length - 1
+                    ].endRow + 1
+                  }, 
+                    ${
+                      checkersGame.playerTwoMoves[
+                        checkersGame.playerTwoMoves.length - 1
+                      ].endCol + 1
+                    })`
+                    : ""}
+                </h6>
+                <h6>Evaluated Score of Move: {evaluatedScore.current}</h6>
               </div>
               <div className="heuristic">
                 <h5>AI's Prioritisation Metric</h5>

@@ -512,7 +512,7 @@ export class CheckersAI extends Player {
   /**
    * Method for the AI to make a move using the minimax algorithm to get the 'best' move and using that.
    */
-  public makeMove(): Moves | null {
+  public makeMove(): [number, Moves] | null {
     if (this.game.currentState === State.gameFinished) {
       console.log("Game is finished. AI cannot make a move.");
       this.game.changeTurn();
@@ -522,13 +522,7 @@ export class CheckersAI extends Player {
       if (this.currentOpening) {
         const move = this.getOpeningMove();
         if (move) {
-          // this.game.movePiece(
-          //   move.startRow,
-          //   move.startCol,
-          //   move.endRow,
-          //   move.endCol
-          // );
-          return move;
+          return [999, move];
         } else {
           return this.playMinimaxMove();
         }
@@ -538,29 +532,26 @@ export class CheckersAI extends Player {
         this.game.getPiece(3, 4) === null
       ) {
         const move: Moves = new Moves(2, 5, 3, 4);
-        // this.game.movePiece(2, 5, 3, 4);
-        return move;
+        return [999, move];
       } else if (
         this.game.numOfTurns === 3 &&
         this.game.getPiece(2, 5) === null
       ) {
         const move: Moves = new Moves(1, 6, 2, 5);
-        // this.game.movePiece(1, 6, 2, 5);
-        return move;
+        return [999, move];
       } else if (
         this.game.numOfTurns === 5 &&
         this.game.getPiece(1, 6) === null
       ) {
         const move: Moves = new Moves(0, 7, 1, 6);
-        // this.game.movePiece(0, 7, 1, 6);
-        return move;
+        return [999, move];
       } else {
         return this.playMinimaxMove();
       }
     }
   }
 
-  public playMinimaxMove(): Moves | null {
+  public playMinimaxMove(): [number, Moves] | null {
     const [score, move] = this.minimax(
       this.game,
       this.depth,
@@ -579,7 +570,7 @@ export class CheckersAI extends Player {
         `AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`
       );
       console.log(`Evaluated Score of move: ${score}`);
-      return move;
+      return [score, move];
     } else {
       console.log(`${this.game.players[1].name} has no valid moves!`);
       this.game.changeTurn();
