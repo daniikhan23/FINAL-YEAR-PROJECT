@@ -433,6 +433,7 @@
 .game .game-container .ai-analysis {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 350px;
   height: 560px;
@@ -461,7 +462,7 @@
 }
 
 .game .game-container .ai-analysis .heuristic {
-  margin-top: 60px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;

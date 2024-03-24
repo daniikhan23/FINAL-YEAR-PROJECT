@@ -238,6 +238,7 @@ const Game = () => {
       enforcedJumps: 0,
     },
   });
+  const aiMoveTime = useRef(0);
   const movesHistory = useRef<Move[]>([]);
   const evaluatedScore = useRef(0);
 
@@ -361,7 +362,11 @@ const Game = () => {
   async function handleAIMove() {
     if (checkersGame.players[1] instanceof CheckersAI) {
       while (checkersGame.currentPlayer === checkersGame.players[1]) {
+        const startTime = Date.now();
         const result = await checkersGame.players[1].makeMove();
+        const endTime = Date.now();
+        aiMoveTime.current = endTime - startTime;
+        // setAiMoveTime(endTime - startTime);
         if (result !== null) {
           const aiMove = result[1];
           evaluatedScore.current = result[0];
@@ -776,7 +781,7 @@ const Game = () => {
               <div className="info">
                 <h6>Minimax Depth: 5</h6>
                 <h6>Number of positions analysed: </h6>
-                <h6>Time Taken: </h6>
+                <h6>Time Taken: {aiMoveTime.current} ms</h6>
                 <h6>
                   Chosen Move:{" "}
                   {checkersGame.playerTwoMoves.length > 0
