@@ -241,6 +241,7 @@ const Game = () => {
   const aiMoveTime = useRef(0);
   const movesHistory = useRef<Move[]>([]);
   const evaluatedScore = useRef(0);
+  const aiNumOfPositions = useRef(0);
 
   const [userCountry, setUserCountry] = useState("");
   const navigate = useNavigate();
@@ -370,6 +371,7 @@ const Game = () => {
         if (result !== null) {
           const aiMove = result[1];
           evaluatedScore.current = result[0];
+          aiNumOfPositions.current = result[2];
 
           if (aiMove && currentHistoryIndex >= history.length - 1) {
             await new Promise<void>((resolve) => {
@@ -780,7 +782,9 @@ const Game = () => {
               </div>
               <div className="info">
                 <h6>Minimax Depth: 5</h6>
-                <h6>Number of positions analysed: </h6>
+                <h6>
+                  Number of positions analysed: {aiNumOfPositions.current}
+                </h6>
                 <h6>Time Taken: {aiMoveTime.current} ms</h6>
                 <h6>
                   Chosen Move:{" "}

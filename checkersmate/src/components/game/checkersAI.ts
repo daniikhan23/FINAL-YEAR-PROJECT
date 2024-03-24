@@ -18,6 +18,7 @@ export class CheckersAI extends Player {
   private depth: number;
   private openings: Map<string, Moves[]>;
   private currentOpening: string | null;
+  public positionsAnalysed: number;
 
   constructor(
     name: string,
@@ -30,6 +31,7 @@ export class CheckersAI extends Player {
     this.depth = depth;
     this.openings = this.openingSet();
     this.currentOpening = null;
+    this.positionsAnalysed = 0;
   }
 
   /**
@@ -427,6 +429,7 @@ export class CheckersAI extends Player {
           const piece = game.getPiece(row, col);
           if (piece && piece.color === PieceColor.Black) {
             const moves = game.possibleMoves(row, col);
+            this.positionsAnalysed++;
             for (const move of moves) {
               const gameCopy = game.deepCopyGame();
 
@@ -469,6 +472,7 @@ export class CheckersAI extends Player {
           const piece = game.getPiece(row, col);
           if (piece && piece.color === PieceColor.Red) {
             const moves = game.possibleMoves(row, col);
+            this.positionsAnalysed++;
             for (const move of moves) {
               const gameCopy = game.deepCopyGame();
 
@@ -512,7 +516,8 @@ export class CheckersAI extends Player {
   /**
    * Method for the AI to make a move using the minimax algorithm to get the 'best' move and using that.
    */
-  public makeMove(): [number, Moves] | null {
+  public makeMove(): [number, Moves, number] | null {
+    let numOfPositions = this.positionsAnalysed;
     if (this.game.currentState === State.gameFinished) {
       console.log("Game is finished. AI cannot make a move.");
       this.game.changeTurn();
@@ -522,7 +527,7 @@ export class CheckersAI extends Player {
       if (this.currentOpening) {
         const move = this.getOpeningMove();
         if (move) {
-          return [999, move];
+          return [999, move, 1];
         } else {
           return this.playMinimaxMove();
         }
@@ -532,26 +537,26 @@ export class CheckersAI extends Player {
         this.game.getPiece(3, 4) === null
       ) {
         const move: Moves = new Moves(2, 5, 3, 4);
-        return [999, move];
+        return [999, move, 1];
       } else if (
         this.game.numOfTurns === 3 &&
         this.game.getPiece(2, 5) === null
       ) {
         const move: Moves = new Moves(1, 6, 2, 5);
-        return [999, move];
+        return [999, move, 1];
       } else if (
         this.game.numOfTurns === 5 &&
         this.game.getPiece(1, 6) === null
       ) {
         const move: Moves = new Moves(0, 7, 1, 6);
-        return [999, move];
+        return [999, move, numOfPositions];
       } else {
         return this.playMinimaxMove();
       }
     }
   }
 
-  public playMinimaxMove(): [number, Moves] | null {
+  public playMinimaxMove(): [number, Moves, number] | null {
     const [score, move] = this.minimax(
       this.game,
       this.depth,
@@ -559,6 +564,8 @@ export class CheckersAI extends Player {
       Infinity,
       true
     );
+    const numOfPositions = this.positionsAnalysed;
+    this.positionsAnalysed = 0;
     if (move) {
       this.game.movePiece(
         move?.startRow,
@@ -570,7 +577,7 @@ export class CheckersAI extends Player {
         `AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`
       );
       console.log(`Evaluated Score of move: ${score}`);
-      return [score, move];
+      return [score, move, numOfPositions];
     } else {
       console.log(`${this.game.players[1].name} has no valid moves!`);
       this.game.changeTurn();
