@@ -1,109 +1,14 @@
-html,
-body {
-  font-size: 10px;
-  font-weight: 400;
-  scroll-behavior: smooth;
-  line-height: 1.5;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
-}
-
-h1 {
-  font-size: 9rem;
-  line-height: 1.4;
-  font-weight: 600;
-}
-
-h2 {
-  font-size: 4.7rem;
-  font-weight: 600;
-  display: inline-block;
-  text-transform: capitalize;
-  line-height: 1.2;
-  margin-bottom: 2rem;
-}
-
-h3 {
-  font-size: 3.1rem;
-  line-height: 1.2;
-  font-weight: 700;
-}
-
-h4 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-h5 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  line-height: 1;
-}
-
-p {
-  font-size: 1.6rem;
-  line-height: 1.6;
-  margin-top: 1rem;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-a,
-a:active,
-a:focus,
-a:hover,
-button {
-  text-decoration: none;
-  outline: 0;
-}
-
-a:hover,
-button:hover {
-  --webkit-transition: all 0.3s ease-in;
-  -o-transition: all 0.3s ease-in;
-  -moz-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
-}
-
-* {
-  font-family: "Black Ops One", cursive;
-}
-
-body {
-  background-color: wheat;
-}
-
 /* Intro Section */
 .intro .intro-container .container-fluid {
   background-image: url(../assets/img/checkers-board.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  padding: 20rem 0rem;
 }
 
 .intro .intro-container .container-fluid h1 {
   text-align: center;
   color: black;
-  font-size: 5rem;
-}
-
-.divider .container {
-  margin: 100px;
-  margin-left: 190px;
 }
 
 .divider .container .row {
@@ -114,39 +19,32 @@ body {
 
 .divider .container .row .col .title {
   color: white;
-  font-size: 50px;
   font-weight: 100;
-  margin-bottom: 0;
 }
 
 .divider .container .row .col .col .title-color {
   color: #f5ac8e;
-  font-size: 50px;
   font-weight: 100;
 }
 
 .divider .container .row .col .border-center .border-start {
-  height: 125px;
-  width: 2px;
   background-color: #000;
   color: #000;
-  display: inline-block;
-  margin-left: 200px;
-  margin-right: 150px;
 }
 
 .divider .container .row .col .description {
   color: #f5ac8e;
-  font-size: 20px;
   font-weight: 100;
-  width: 400px;
   word-break: normal;
 }
 
 /* Card Section */
 
 .cards .container {
-  margin: 10rem 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .cards .container .row {
@@ -156,28 +54,312 @@ body {
 .cards .card {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
-  /* background-color: #eeeee4; */
   border-radius: 2%;
 }
 
 .cards .container .row .col .card {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   word-break: normal;
-  margin: 10px;
-  padding: 10px;
-  width: 600px;
-  height: 350px;
 }
 
 .cards h5 {
   color: white;
-  font-size: 3rem;
   text-align: center;
 }
 
 .cards p {
   color: #f5ac8e;
-  font-size: 1.5rem;
   text-align: center;
-  /* margin: 1rem; */
+}
+
+.cards .container .row .col .card svg {
+  color: #f5ac8e;
+}
+
+/* XS devices */
+@media (max-width: 575.98px) {
+  .intro .intro-container .container-fluid {
+    padding: 10rem 0rem;
+  }
+
+  .intro .intro-container .container-fluid h1 {
+    font-size: 2rem;
+  }
+
+  .divider .container {
+    margin: 5rem 0;
+  }
+
+  .divider .container .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .divider .container .row .col .title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .divider .container .row .col .col .title-color {
+    font-size: 2rem;
+  }
+
+  .divider .container .row .col .border-center .border-start {
+    height: 0.2rem;
+    width: 20rem;
+    display: inline-block;
+  }
+
+  .divider .container .row .col .description {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+  }
+
+  .cards .container .row .col .card {
+    width: 15rem;
+    height: 16rem;
+    padding: 1rem;
+    margin: 0.25rem;
+  }
+
+  .cards .container .row .col .card svg {
+    width: 7.5rem;
+    height: 7.5rem;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .cards h5 {
+    font-size: 1rem;
+  }
+
+  .cards p {
+    font-size: 0.75rem;
+  }
+
+  .cards {
+    margin-bottom: 3rem;
+  }
+}
+
+/* S Devices */
+@media (min-width: 576px) {
+  .intro .intro-container .container-fluid {
+    padding: 12.5rem 0rem;
+  }
+
+  .intro .intro-container .container-fluid h1 {
+    font-size: 2rem;
+  }
+
+  .divider .container {
+    margin: 7.5rem 0;
+  }
+
+  .divider .container .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8.5rem;
+  }
+
+  .divider .container .row .col .title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    margin-left: 15rem;
+  }
+
+  .divider .container .row .col .col .title-color {
+    font-size: 2.5rem;
+    margin-left: 15rem;
+  }
+
+  .divider .container .row .col .border-center .border-start {
+    height: 20rem;
+    width: 0.2rem;
+    display: inline-block;
+    margin: 0 2rem;
+  }
+
+  .divider .container .row .col .description {
+    margin-top: 2rem;
+    font-size: 2rem;
+    word-wrap: break-word;
+    margin-right: 10rem;
+  }
+
+  .cards .container .row .col .card {
+    width: 30rem;
+    height: 25rem;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .cards .container .row .col .card svg {
+    width: 12.5rem;
+    height: 12.5rem;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .cards h5 {
+    font-size: 2rem;
+  }
+
+  .cards p {
+    font-size: 1rem;
+  }
+
+  .cards {
+    margin-bottom: 3rem;
+  }
+}
+
+/* L devices */
+@media (min-width: 992px) {
+  .intro .intro-container .container-fluid {
+    padding: 15rem 0rem;
+  }
+
+  .intro .intro-container .container-fluid h1 {
+    font-size: 2.5rem;
+  }
+
+  .divider .container {
+    margin: 10rem 0;
+  }
+
+  .divider .container .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+  }
+
+  .divider .container .row .col .title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    margin-left: 24rem;
+  }
+
+  .divider .container .row .col .col .title-color {
+    font-size: 3rem;
+    margin-left: 24rem;
+  }
+
+  .divider .container .row .col .border-center .border-start {
+    height: 15rem;
+    width: 0.2rem;
+    display: inline-block;
+    margin: 0 2rem;
+  }
+
+  .divider .container .row .col .description {
+    margin-top: 2rem;
+    font-size: 2rem;
+    word-wrap: break-word;
+    margin-right: 10rem;
+  }
+
+  .cards .container .row .col .card {
+    width: 45rem;
+    height: 35rem;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .cards .container .row .col .card svg {
+    width: 15rem;
+    height: 15rem;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .cards h5 {
+    font-size: 2.5rem;
+  }
+
+  .cards p {
+    font-size: 1.5rem;
+  }
+
+  .cards {
+    margin-bottom: 5rem;
+  }
+}
+
+/* XL devices */
+@media (min-width: 1200px) {
+  .intro .intro-container .container-fluid {
+    padding: 20rem 0rem;
+  }
+
+  .intro .intro-container .container-fluid h1 {
+    font-size: 3.5rem;
+  }
+
+  .divider .container {
+    margin: 7.5rem 0;
+  }
+
+  .divider .container .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 13.5rem;
+  }
+
+  .divider .container .row .col .title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    margin-left: 46rem;
+  }
+
+  .divider .container .row .col .col .title-color {
+    font-size: 3.5rem;
+    margin-left: 46rem;
+  }
+
+  .divider .container .row .col .border-center .border-start {
+    height: 15rem;
+    width: 0.2rem;
+    display: inline-block;
+    margin: 0 2rem;
+  }
+
+  .divider .container .row .col .description {
+    margin-top: 2rem;
+    font-size: 2.5rem;
+    word-wrap: break-word;
+    margin-right: 15rem;
+  }
+
+  .cards .container .row .col .card {
+    width: 60rem;
+    height: 45rem;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .cards .container .row .col .card svg {
+    width: 20rem;
+    height: 20rem;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .cards h5 {
+    font-size: 3rem;
+  }
+
+  .cards p {
+    font-size: 2rem;
+  }
+
+  .cards {
+    margin-bottom: 5rem;
+  }
 }

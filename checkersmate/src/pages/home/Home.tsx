@@ -59,15 +59,7 @@ const Home = () => {
           <div className="row">
             <div className="col">
               <div className="card">
-                <FontAwesomeIcon
-                  icon={faUserGroup}
-                  fontSize="200px"
-                  style={{
-                    color: "#f5ac8e",
-                    margin: "10px",
-                    marginBottom: "30px",
-                  }}
-                />
+                <FontAwesomeIcon icon={faUserGroup} />
                 <div className="card-body">
                   <h5 className="card-title">Local Play</h5>
                   <p className="card-text">
@@ -79,15 +71,7 @@ const Home = () => {
             </div>
             <div className="col">
               <div className="card">
-                <FontAwesomeIcon
-                  icon={faAndroid}
-                  fontSize="200px"
-                  style={{
-                    color: "#f5ac8e",
-                    margin: "10px",
-                    marginBottom: "30px",
-                  }}
-                />
+                <FontAwesomeIcon icon={faAndroid} />
                 <div className="card-body">
                   <h5 className="card-title">Play Against the AI</h5>
                   <p className="card-text">
@@ -100,15 +84,7 @@ const Home = () => {
           <div className="row">
             <div className="col">
               <div className="card">
-                <FontAwesomeIcon
-                  icon={faChessKing}
-                  fontSize="200px"
-                  style={{
-                    color: "#f5ac8e",
-                    margin: "10px",
-                    marginBottom: "30px",
-                  }}
-                />
+                <FontAwesomeIcon icon={faChessKing} />
                 <div className="card-body">
                   <h5 className="card-title">Become a King of the Game</h5>
                   <p className="card-text">
@@ -120,15 +96,7 @@ const Home = () => {
             </div>
             <div className="col">
               <div className="card">
-                <FontAwesomeIcon
-                  icon={faBars}
-                  fontSize="200px"
-                  style={{
-                    color: "#f5ac8e",
-                    margin: "10px",
-                    marginBottom: "30px",
-                  }}
-                />
+                <FontAwesomeIcon icon={faBars} />
                 <div className="card-body">
                   <h5 className="card-title">Stay tuned for more</h5>
                   <p className="card-text">

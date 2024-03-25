@@ -214,6 +214,7 @@
   }
 }
 
+/* XL devices */
 @media (min-width: 1200px) {
   .main .main-login-container {
     margin-top: 150px;
