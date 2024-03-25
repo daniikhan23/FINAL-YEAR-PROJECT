@@ -277,4 +277,68 @@ h3 {
 
 /* XL devices */
 @media (min-width: 1200px) {
+  .intro .intro-container .container {
+    margin-top: 7.5rem;
+  }
+
+  .intro .intro-container .container h1 {
+    font-size: 3rem;
+  }
+
+  .rules .rules-container .container {
+    margin: 5rem 0;
+  }
+
+  .rules .rules-container .container .board .row,
+  .rules .rules-container .container .movement .row,
+  .rules .rules-container .container .scores .row {
+    flex-direction: row;
+  }
+
+  .rules .rules-container .container h3 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .rules .rules-container .container li {
+    font-size: 1.5rem;
+    word-break: keep-all;
+    margin: 0.5rem 15rem;
+  }
+
+  .rules .rules-container .container .board .row .col img {
+    margin: 5rem 0;
+    height: 30rem;
+    width: 45rem;
+    margin-right: 20rem;
+  }
+
+  .rules .rules-container .container .movement .col {
+    display: flex;
+  }
+
+  .rules .rules-container .container .movement {
+    margin: 5rem 0;
+  }
+
+  .rules
+    .rules-container
+    .container
+    .movement
+    .row
+    .col
+    .row-regular-pieces
+    img,
+  .rules .rules-container .container .movement .row .col .row-king-pieces img {
+    height: 15rem;
+    width: 15rem;
+    margin-right: 10rem;
+  }
+
+  .rules .rules-container .container .scores .row .col .captures,
+  .rules .rules-container .container .scores .row .col .promotion {
+    height: 30rem;
+    width: 45rem;
+  }
 }
