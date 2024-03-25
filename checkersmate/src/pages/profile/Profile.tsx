@@ -142,7 +142,6 @@ const Profile = () => {
             <button onClick={handleSaveAboutMe}>Save</button>
           </div>
         </div>
-        <div className="footer-section">Made by Daniyal Ashraf Khan</div>
       </div>
     </>
   );

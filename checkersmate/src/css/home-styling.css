@@ -181,17 +181,3 @@ body {
   text-align: center;
   /* margin: 1rem; */
 }
-
-/* Footer Section */
-.footer-section {
-  border: 0 solid black;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  color: #f5ac8e;
-  font-size: 1rem;
-  padding: 1.3rem;
-}

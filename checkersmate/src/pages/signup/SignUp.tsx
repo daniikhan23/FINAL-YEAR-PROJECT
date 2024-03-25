@@ -204,9 +204,6 @@ const Signup = () => {
           </div>
         </form>
       </div>
-
-      {/* Footer Section */}
-      <div className="footer-section">Made by Daniyal Ashraf Khan</div>
     </>
   );
 };

@@ -127,8 +127,6 @@ export default function About() {
           </div>
         </div>
       </div>
-      {/* Footer Section */}
-      <div className="footer-section">Made by Daniyal Ashraf Khan</div>
     </>
   );
 }

@@ -6,7 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdMenu } from "react-icons/io";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import "../../css/navbar-styling.css";
+import "../../css/navbar/navbar-styling.css";
+import "../../css/navbar/navbar-responsive.css";
 
 const Navbar = () => {
   const auth = getAuth();

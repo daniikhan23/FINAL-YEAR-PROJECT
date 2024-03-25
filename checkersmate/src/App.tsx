@@ -18,6 +18,7 @@ import About from "./pages/about/About";
 import SignUp from "./pages/signup/SignUp";
 import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
+import Footer from "./components/footer/Footer";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 
@@ -126,6 +127,7 @@ function App() {
             />
             <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
+          <Footer />
         </Router>
       </>
     </StyleProvider>
