@@ -8,5 +8,12 @@
   text-align: center;
   color: #f5ac8e;
   font-size: 1rem;
-  padding: 1.3rem;
+  padding: 0.5rem;
+}
+
+@media (min-width: 1200px) {
+  .footer-section {
+    font-size: 1.3rem;
+    padding: 0.5rem;
+  }
 }
