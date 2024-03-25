@@ -86,32 +86,21 @@ body {
   background-color: wheat;
 }
 
-/* About Section */
 .about .about-container .container {
-  margin-top: 2rem;
-  padding: 5rem;
-  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .about .about-container .container img {
-  height: 40rem;
-  width: 80rem;
   border: black;
   border-radius: 2%;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5rem;
-}
-
-.about .about-container .container h3,
-h5 {
-  margin: 2rem;
 }
 
 .about .about-container .container h3 {
   color: #f5ac8e;
-  margin: 5rem;
 }
 
 .about .about-container .container h5 {
@@ -122,13 +111,7 @@ h5 {
   color: #f5ac8e;
 }
 
-.about .about-container .container .lists {
-  margin: 5rem;
-}
-
 .about .about-container .container li {
-  margin: 1rem;
-  font-size: 1.6rem;
   list-style-type: disc;
   color: #f5ac8e;
 }
@@ -138,38 +121,328 @@ p {
 }
 
 /* About Me Section */
-.about-me .about-me-container .container {
-  padding: 5rem;
-}
 
 .about-me .about-me-container .container img {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: 40rem;
-  width: 50rem;
   border-radius: 2%;
-  margin-bottom: 10rem;
 }
 
 .about-me .about-me-container .container h4 {
-  margin: 2rem;
   color: #f5ac8e;
 }
 
-.about-me .about-me-container .container p {
-  margin: 2rem;
+/* XS devices */
+@media (max-width: 575.98px) {
+  .about .about-container .container img {
+    height: 40rem;
+    width: 100vw;
+  }
+
+  .about .about-container .container h5 {
+    font-size: 1.5rem;
+    margin-bottom: 5rem;
+    text-align: center;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .about .about-container .container h3 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    font-size: 2rem;
+    text-align: center;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .about .about-container .container .lists {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5rem;
+  }
+
+  .about .about-container .container li {
+    margin: 1rem;
+    font-size: 1.2rem;
+    margin-left: 2rem;
+    text-align: center;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .about .about-container .container h4 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .about-me .about-me-container .container {
+    margin-bottom: 5rem;
+  }
+
+  .about-me .about-me-container .container img {
+    height: 30rem;
+    width: 30rem;
+    margin: 5rem auto;
+    margin-top: 2.5rem;
+  }
+
+  .about-me .about-me-container .container h4 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .about-me .about-me-container .container p {
+    margin: 2rem 0;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
 }
 
-/* Footer Section */
-.footer-section {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  color: #f5ac8e;
-  background-color: black;
-  font-size: 1rem;
-  padding: 1.3rem;
+/* M devices */
+@media (min-width: 768px) {
+  .about .about-container .container img {
+    height: 40rem;
+    width: 100vw;
+  }
+
+  .about .about-container .container h5 {
+    font-size: 2rem;
+    margin-bottom: 5rem;
+    text-align: center;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  .about .about-container .container h3 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  .about .about-container .container .lists {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5rem;
+  }
+
+  .about .about-container .container li {
+    margin: 1rem;
+    font-size: 1.5rem;
+    margin-left: 2rem;
+    text-align: center;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  .about .about-container .container h4 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  .about-me .about-me-container .container {
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .about-me .about-me-container .container img {
+    margin-top: 5rem;
+    height: 40rem;
+    width: 60rem;
+    margin-bottom: 10rem;
+  }
+
+  .about-me .about-me-container .container h4 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  .about-me .about-me-container .container p {
+    margin: 2rem 0;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+}
+
+/* L devices */
+@media (min-width: 992px) {
+  .about .about-container .container img {
+    height: 50rem;
+    width: 100vw;
+  }
+
+  .about .about-container .container h5 {
+    font-size: 2rem;
+    margin-bottom: 5rem;
+    text-align: center;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+
+  .about .about-container .container h3 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+
+  .about .about-container .container .lists {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5rem;
+  }
+
+  .about .about-container .container li {
+    margin: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+
+  .about .about-container .container h4 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+
+  .about-me .about-me-container .container {
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .about-me .about-me-container .container img {
+    margin-top: 5rem;
+    height: 40rem;
+    width: 60rem;
+    margin-bottom: 10rem;
+  }
+
+  .about-me .about-me-container .container h4 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+
+  .about-me .about-me-container .container p {
+    margin: 2rem 0;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+}
+
+/* XL devices */
+@media (min-width: 1200px) {
+  .about .about-container .container img {
+    height: 60rem;
+    width: 99vw;
+  }
+
+  .about .about-container .container h5 {
+    font-size: 2rem;
+    margin-bottom: 5rem;
+    text-align: center;
+    margin-left: 25rem;
+    margin-right: 25rem;
+  }
+
+  .about .about-container .container h3 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-left: 25rem;
+    margin-right: 25rem;
+  }
+
+  .about .about-container .container .lists {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5rem;
+  }
+
+  .about .about-container .container li {
+    margin: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left: 25rem;
+    margin-right: 25rem;
+  }
+
+  .about .about-container .container h4 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    margin-left: 25rem;
+    margin-right: 25rem;
+  }
+
+  .about-me .about-me-container .container {
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .about-me .about-me-container .container img {
+    margin-top: 5rem;
+    height: 40rem;
+    width: 60rem;
+    margin-bottom: 10rem;
+  }
+
+  .about-me .about-me-container .container h4 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .about-me .about-me-container .container p {
+    margin: 2rem 0;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left: 25rem;
+    margin-right: 25rem;
+  }
 }
