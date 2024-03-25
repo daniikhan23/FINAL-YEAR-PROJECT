@@ -13,11 +13,8 @@ import {
   CheckersBoard,
 } from "../../components/game/checkersGame";
 import { CheckersAI } from "../../components/game/checkersAI";
-import regularBlack from "../../assets/img/blackBase.png";
-import regularRed from "../../assets/img/redBase.png";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { ToastContainer, toast } from "react-toastify";
 import backgroundImage from "../../assets/img/background.png";
 import blackKing from "../../assets/img/blackKingCustom.png";
 import redKing from "../../assets/img/redKingCustom.png";
@@ -29,6 +26,7 @@ import {
   getDoc,
   setDoc,
   updateDoc,
+  increment,
 } from "firebase/firestore";
 import { useAuth } from "../../context/UserAuthContext";
 import ReactCountryFlag from "react-country-flag";
@@ -598,43 +596,38 @@ const Game = () => {
     if (checkersGame.forcedJumps === false) {
       if (checkersGame.winner === checkersGame.players[0]) {
         updates = {
-          "record.wins": profileData.record.wins + 1,
-          "rating.normal":
-            profileData.rating.normal + checkersGame.players[0].score * 10,
+          "record.wins": increment(1),
+          "rating.normal": increment(checkersGame.players[0].score * 10),
         };
       } else if (checkersGame.winner === checkersGame.players[1]) {
         updates = {
-          "record.losses": profileData.record.losses + 1,
-          "rating.normal": Math.max(
-            0,
-            profileData.rating.normal - checkersGame.players[0].score * 10
+          "record.losses": increment(1),
+          "rating.normal": increment(
+            Math.min(0, -checkersGame.players[0].score * 10)
           ),
         };
       } else {
         updates = {
-          "record.draws": profileData.record.draws + 1,
+          "record.draws": increment(1),
         };
       }
     } else {
       if (checkersGame.winner === checkersGame.players[0]) {
         updates = {
-          "record.wins": profileData.record.wins + 1,
-          "rating.enforcedJumps":
-            profileData.rating.enforcedJumps +
-            checkersGame.players[0].score * 10,
+          "record.wins": increment(1),
+          "rating.enforcedJumps": increment(checkersGame.players[0].score * 10),
         };
       } else if (checkersGame.winner === checkersGame.players[1]) {
         updates = {
-          "record.losses": profileData.record.losses + 1,
-          "rating.enforcedJumps": Math.max(
+          "record.losses": increment(1),
+          "rating.enforcedJumps": Math.min(
             0,
-            profileData.rating.enforcedJumps -
-              checkersGame.players[0].score * 10
+            -checkersGame.players[0].score * 10
           ),
         };
       } else {
         updates = {
-          "record.draws": profileData.record.draws + 1,
+          "record.draws": increment(1),
         };
       }
     }
