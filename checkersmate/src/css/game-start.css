@@ -13,15 +13,10 @@
   background-color: rgba(0, 0, 0, 0.5);
   border: 0px solid black;
   border-radius: 5%;
-  padding: 25px 125px;
-  margin-top: 50px;
 }
 
 .game-start .game-start-container .img-header img {
-  height: 150px;
-  width: 150px;
   filter: drop-shadow(0 0 1.5rem #f5ac8e);
-  margin-bottom: 25px;
 }
 
 .game-start .game-start-container .img-header img:hover {
@@ -39,7 +34,6 @@
 .game-start .game-start-container .main {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   text-align: center;
 }
 
@@ -51,15 +45,11 @@ h4 {
 .game-start .game-start-container .main select {
   border: 1px solid black;
   border-radius: 2%;
-  height: 25px;
-  font-size: 15px;
   text-align: center;
   background-color: #f5ac8e;
 }
 
 .game-start .game-start-container .main input {
-  height: 25px;
-  font-size: 15px;
   text-align: center;
   background-color: transparent;
   border: 0px solid rgba(0, 0, 0, 0.5);
@@ -69,8 +59,6 @@ h4 {
 .game-start .game-start-container .main button {
   border: 1px solid black;
   border-radius: 4%;
-  height: 25px;
-  font-size: 15px;
   text-align: center;
   background-color: #f5ac8e;
   cursor: pointer;
@@ -82,4 +70,172 @@ h4 {
 
 .game-start .game-start-container .main button:active {
   transform: translateY(4px);
+}
+
+/* XS devices */
+@media (max-width: 575.98px) {
+  .game-start .game-start-container {
+    padding: 5px 15px;
+    margin-top: 175px;
+  }
+
+  .game-start .game-start-container .img-header img {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 20px;
+  }
+
+  .game-start .game-start-container .main h5,
+  h4 {
+    color: #f5ac8e;
+  }
+
+  .game-start .game-start-container .main h4 {
+    font-size: 15px;
+  }
+
+  .game-start .game-start-container .main h5 {
+    font-size: 10px;
+  }
+
+  .game-start .game-start-container .main {
+    gap: 10px;
+  }
+
+  .game-start .game-start-container .main select {
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .game-start .game-start-container .main input {
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .game-start .game-start-container .main button {
+    height: 20px;
+    font-size: 10px;
+  }
+}
+
+/* S Devices */
+@media (min-width: 576px) {
+  .game-start .game-start-container {
+    padding: 10px 20px;
+    margin-top: 85px;
+  }
+
+  .game-start .game-start-container .img-header img {
+    height: 115px;
+    width: 115px;
+    margin-bottom: 20px;
+  }
+
+  .game-start .game-start-container .main h4 {
+    font-size: 17.5px;
+  }
+
+  .game-start .game-start-container .main h5 {
+    font-size: 12.5px;
+  }
+
+  .game-start .game-start-container .main {
+    gap: 15px;
+  }
+
+  .game-start .game-start-container .main select {
+    height: 20px;
+    font-size: 12.5px;
+  }
+
+  .game-start .game-start-container .main input {
+    height: 20px;
+    font-size: 12.5px;
+  }
+
+  .game-start .game-start-container .main button {
+    height: 20px;
+    font-size: 12.5px;
+  }
+}
+/* L devices */
+@media (min-width: 992px) {
+  .game-start .game-start-container {
+    padding: 12.5px 22.5px;
+    margin-top: 85px;
+  }
+
+  .game-start .game-start-container .img-header img {
+    height: 120px;
+    width: 120px;
+    margin-bottom: 20px;
+  }
+
+  .game-start .game-start-container .main h4 {
+    font-size: 20px;
+  }
+
+  .game-start .game-start-container .main h5 {
+    font-size: 15px;
+  }
+
+  .game-start .game-start-container .main {
+    gap: 15px;
+  }
+
+  .game-start .game-start-container .main select {
+    height: 20px;
+    font-size: 15px;
+  }
+
+  .game-start .game-start-container .main input {
+    height: 20px;
+    font-size: 15px;
+  }
+
+  .game-start .game-start-container .main button {
+    height: 20px;
+    font-size: 15px;
+  }
+}
+
+/* XL devices */
+@media (min-width: 1200px) {
+  .game-start .game-start-container {
+    padding: 15px 25px;
+    margin-top: 100px;
+  }
+
+  .game-start .game-start-container .img-header img {
+    height: 150px;
+    width: 150px;
+    margin-bottom: 20px;
+  }
+
+  .game-start .game-start-container .main h4 {
+    font-size: 25px;
+  }
+
+  .game-start .game-start-container .main h5 {
+    font-size: 20px;
+  }
+
+  .game-start .game-start-container .main {
+    gap: 15px;
+  }
+
+  .game-start .game-start-container .main select {
+    height: 20px;
+    font-size: 15px;
+  }
+
+  .game-start .game-start-container .main input {
+    height: 20px;
+    font-size: 20px;
+  }
+
+  .game-start .game-start-container .main button {
+    height: 20px;
+    font-size: 15px;
+  }
 }
