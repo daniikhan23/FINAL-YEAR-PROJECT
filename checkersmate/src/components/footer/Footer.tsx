@@ -1,4 +1,5 @@
 import "../../css/footer/footer.css";
+import "../../css/footer/footer-responsive.css";
 
 const Footer = () => {
   return (

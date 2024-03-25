@@ -1,7 +1,3 @@
-* {
-  font-family: "Black Ops One", cursive;
-}
-
 .navbar .navbar-container {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -10,7 +6,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 2px;
 }
 
 .navbar .navbar-container .container .home button {
@@ -19,7 +14,6 @@
 }
 
 .navbar .navbar-container .container .home button a {
-  font-size: 2rem;
   color: #f5ac8e;
 }
 
@@ -44,13 +38,11 @@
 .navbar .navbar-container .container .list li button {
   border: 0 solid black;
   background-color: transparent;
-  font-size: 1.5rem;
   color: #f5ac8e;
   cursor: pointer;
 }
 
 .navbar .navbar-container .container .list li button a {
-  font-size: 1.5rem;
   color: #f5ac8e;
 }
 
@@ -79,7 +71,6 @@
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid #f5ac8e;
   border-radius: 5%;
-  font-size: 1.5rem;
   cursor: pointer;
   text-align: center;
 }
@@ -97,4 +88,99 @@
   box-shadow: 0 5px #666;
   transform: translateY(4px);
   transition: all 0.1s ease-in;
+}
+
+/* XS devices */
+@media (max-width: 575.98px) {
+  .navbar .navbar-container .container .home button a {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list li button {
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-container .container .list li button a {
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-container .container .list .dropdown-menu {
+    font-size: 1rem;
+  }
+}
+
+/* S Devices */
+@media (min-width: 576px) {
+  .navbar .navbar-container .container .home button a {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list li button {
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-container .container .list li button a {
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-container .container .list .dropdown-menu {
+    font-size: 1rem;
+  }
+}
+
+/* M devices */
+@media (min-width: 768px) {
+  .navbar .navbar-container .container .home button a {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list li button {
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-container .container .list li button a {
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-container .container .list .dropdown-menu {
+    font-size: 1rem;
+  }
+}
+
+/* L devices */
+@media (min-width: 992px) {
+  .navbar .navbar-container .container .home button a {
+    font-size: 2rem;
+  }
+
+  .navbar .navbar-container .container .list li button {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list li button a {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list .dropdown-menu {
+    font-size: 1.5rem;
+  }
+}
+
+/* XL devices */
+@media (min-width: 1200px) {
+  .navbar .navbar-container .container .home button a {
+    font-size: 2rem;
+  }
+
+  .navbar .navbar-container .container .list li button {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list li button a {
+    font-size: 1.5rem;
+  }
+
+  .navbar .navbar-container .container .list .dropdown-menu {
+    font-size: 1.5rem;
+  }
 }
