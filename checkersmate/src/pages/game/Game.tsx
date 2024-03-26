@@ -715,8 +715,6 @@ const Game = () => {
                     countryCode={userCountry}
                     svg
                     style={{
-                      width: "45px",
-                      height: "45px",
                       marginRight: "10px",
                     }}
                     title={userCountry}
@@ -749,7 +747,7 @@ const Game = () => {
             </div>
             <div className="captured-pieces">
               <h4>Pieces Captured: {checkersGame.players[0].capturedPieces}</h4>
-              <h4>Score: {checkersGame.players[1].capturedPieces}</h4>
+              <h4>Pieces Captured: {checkersGame.players[1].capturedPieces}</h4>
             </div>
             <div className="replay-buttons">
               <h4>Would you like to play again?</h4>
@@ -860,17 +858,15 @@ const Game = () => {
             </DndProvider>
             <div className="player-card">
               <div className="first-col">
-                {userCountry && (
-                  <ReactCountryFlag
-                    countryCode={userCountry}
-                    svg
-                    style={{
-                      width: "45px",
-                      height: "45px",
-                    }}
-                    title={userCountry}
-                  />
-                )}
+                <div className="country-flag">
+                  {userCountry && (
+                    <ReactCountryFlag
+                      countryCode={userCountry}
+                      svg
+                      title={userCountry}
+                    />
+                  )}
+                </div>
                 <div className="row">
                   <div className="column">
                     <h5>
