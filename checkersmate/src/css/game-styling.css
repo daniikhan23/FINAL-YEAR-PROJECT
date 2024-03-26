@@ -22,6 +22,30 @@
 
 /* Game Board Section */
 
+.game .game-container .main .board-container {
+  display: flex;
+}
+
+.game .game-container .main .row-left div,
+.game .game-container .main .row-right div,
+.game .game-container .main .col div {
+  color: #f5ac8e;
+}
+
+.game .game-container .main .board-container .row-left,
+.game .game-container .main .board-container .row-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game .game-container .main .col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .game .game-container .main .board {
   display: flex;
   flex-direction: column;
@@ -351,6 +375,8 @@
 @media (max-width: 575.98px) {
   .game .game-container {
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     /* gap: 25px; */
     margin-top: 50px;
   }
@@ -359,9 +385,26 @@
     border: 0px;
   }
 
+  .game .game-container .main .board-container .row-left {
+    margin-right: 0.5rem;
+  }
+
+  .game .game-container .main .board-container .row-right {
+    margin-left: 0.5rem;
+  }
+
+  .game .game-container .main .col {
+    gap: 3.4rem;
+  }
+
+  .game .game-container .main .board-container .row-left,
+  .game .game-container .main .board-container .row-right {
+    gap: 2.5rem;
+  }
+
   .game .game-container .main .board .board-row .board-col {
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 40px;
   }
 
   .game .game-container .main .board .board-row .board-col .piece-black,
@@ -535,9 +578,7 @@
 
   .game .game-container .game-info .buttons {
     gap: 10px;
-    /* margin-top: 10px; */
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 1.5rem 1.5rem;
   }
 
   .game .game-container .game-info .buttons svg {
@@ -581,6 +622,23 @@
     /* flex-direction: column; */
     gap: 25px;
     margin-top: 15px;
+  }
+
+  .game .game-container .main .board-container .row-left {
+    margin-right: 0.5rem;
+  }
+
+  .game .game-container .main .board-container .row-right {
+    margin-left: 0.5rem;
+  }
+
+  .game .game-container .main .col {
+    gap: 4rem;
+  }
+
+  .game .game-container .main .board-container .row-left,
+  .game .game-container .main .board-container .row-right {
+    gap: 3.5rem;
   }
 
   .game .game-container .main .board {
@@ -811,11 +869,29 @@
 @media (min-width: 992px) {
   .game .game-container {
     gap: 25px;
-    margin-top: 5px;
+    /* margin-top: 30px; */
   }
 
   .game .game-container .main .board {
     border: 0px;
+  }
+
+  .game .game-container .main .board-container .row-left {
+    margin-right: 0.5rem;
+  }
+
+  .game .game-container .main .board-container .row-right {
+    margin-left: 0.5rem;
+  }
+
+  .game .game-container .main .col {
+    gap: 5rem;
+    margin-top: 0.5rem;
+  }
+
+  .game .game-container .main .board-container .row-left,
+  .game .game-container .main .board-container .row-right {
+    gap: 4.5rem;
   }
 
   .game .game-container .main .board .board-row .board-col {
@@ -902,7 +978,7 @@
 
   .game .game-container .main .opponent-card .score,
   .game .game-container .main .player-card .score {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-right: 10px;
   }
 
@@ -1011,12 +1087,10 @@
 
   .game .game-container .ai-analysis {
     display: flex;
-    /* flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-    width: 350px;
-    height: 510px;
-    margin-top: 40px;
+    padding: 10px;
+    width: 360px;
+    height: 530px;
+    margin-top: 35px;
     margin-left: 10px;
   }
 
@@ -1051,15 +1125,29 @@
 @media (min-width: 1200px) {
   .game .game-container {
     gap: 25px;
-    margin-top: 5px;
+    margin-top: 10px;
   }
 
-  .game .game-container .main .board {
-    /* border: 0px; */
+  .game .game-container .main .board-container .row-left {
+    margin-right: 0.5rem;
+  }
+
+  .game .game-container .main .board-container .row-right {
+    margin-left: 0.5rem;
+  }
+
+  .game .game-container .main .col {
+    gap: 6.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .game .game-container .main .board-container .row-left,
+  .game .game-container .main .board-container .row-right {
+    gap: 5rem;
   }
 
   .game .game-container .main .board .board-row .board-col {
-    height: 70px;
+    height: 65px;
     width: 70px;
   }
 
@@ -1068,8 +1156,8 @@
   .game .game-container .main .board .board-row .board-col .piece-red,
   .game .game-container .main .board .board-row .board-col .piece-red-king {
     background-size: 140% 140%;
-    height: 55px;
-    width: 55px;
+    height: 50px;
+    width: 50px;
   }
 
   .game .game-container .main .board .board-row .board-col .piece-black:hover,

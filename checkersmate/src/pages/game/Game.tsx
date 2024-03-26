@@ -854,7 +854,49 @@ const Game = () => {
               <h5 className="score">Score: {playerTwoScore}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>
-              <div className="board">{renderBoard()}</div>
+              <div className="col">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+              </div>
+              <div className="board-container">
+                <div className="row-left">
+                  <div>1</div>
+                  <div>2</div>
+                  <div>3</div>
+                  <div>4</div>
+                  <div>5</div>
+                  <div>6</div>
+                  <div>7</div>
+                  <div>8</div>
+                </div>
+                <div className="board">{renderBoard()}</div>
+                <div className="row-right">
+                  <div>1</div>
+                  <div>2</div>
+                  <div>3</div>
+                  <div>4</div>
+                  <div>5</div>
+                  <div>6</div>
+                  <div>7</div>
+                  <div>8</div>
+                </div>
+              </div>
+              <div className="col">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+              </div>
             </DndProvider>
             <div className="player-card">
               <div className="first-col">
@@ -885,7 +927,7 @@ const Game = () => {
           </div>
           <div className="game-info">
             <div className="history-section">
-              <h5>History of Moves:</h5>
+              <h5>History of Moves (Row, Column): </h5>
               {movesHistory.current.map((move, index) => (
                 <h6 key={index}>
                   {index + 1}. ({move.from.row + 1}, {move.from.col + 1}) to (
