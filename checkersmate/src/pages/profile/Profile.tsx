@@ -127,7 +127,7 @@ const Profile = () => {
               <h5>{profileData.email}</h5>
               <h5>{profileData.country}</h5>
               <h5>{`${profileData.record.wins}-${profileData.record.losses}-${profileData.record.draws}`}</h5>
-              <h5>{`${profileData.rating.normal}-${profileData.rating.enforcedJumps}`}</h5>
+              <h5>{`${profileData.rating.normal}/${profileData.rating.enforcedJumps}`}</h5>
             </div>
           </div>
           <div className="about">

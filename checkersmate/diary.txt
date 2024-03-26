@@ -302,3 +302,8 @@ to implement the history and AI analysis section. To be continued.
 The history and AI analysis sections are both now complete. There's some bugs to fix related to rating changes as well as minor bugs in dragging piece during previous 
 versions of the board (history section). The next step will be after fixing the bugs, to make the entire website responsive to different screens and then further 
 development will depend on available time. The website is now deployed onto firebase for users to check out: https://checkersmate.web.app/
+
+Rating and record bugs are now fixed as well as the website being fully responsive to different screen sizes and devices. Responsivity is still being tested to ensure 
+it's a positive experience on various devices but seems good for the moment. Furthermore, I've added a number grid outside the game board so users are able to see the 
+positions of the board better as well as there being a sound when moves are made. The website is officially now done. Next steps will just be to make sure everything 
+is in order and working as expected. 
