@@ -35,6 +35,7 @@ import { MdArrowBackIos } from "react-icons/md";
 import { GrNext } from "react-icons/gr";
 import { FaRegFlag } from "react-icons/fa6";
 import { BiCurrentLocation } from "react-icons/bi";
+import MoveSound from "../../assets/audio/move-sound.mp3";
 
 interface ProfileData {
   username: string;
@@ -248,6 +249,9 @@ const Game = () => {
   const db = getFirestore();
   const forceUpdate = useForceUpdate();
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   const { changeBodyBackground } = useStyle();
   useEffect(() => {
     const fetchPlayer1Country = async () => {
@@ -365,13 +369,13 @@ const Game = () => {
         const result = await checkersGame.players[1].makeMove();
         const endTime = Date.now();
         aiMoveTime.current = endTime - startTime;
-        // setAiMoveTime(endTime - startTime);
         if (result !== null) {
           const aiMove = result[1];
           evaluatedScore.current = result[0];
           aiNumOfPositions.current = result[2];
 
           if (aiMove && currentHistoryIndex >= history.length - 1) {
+            await delay(1000);
             await new Promise<void>((resolve) => {
               animateAIMove(
                 { row: aiMove.startRow, col: aiMove.startCol },
@@ -387,6 +391,7 @@ const Game = () => {
               aiMove.endRow,
               aiMove.endCol
             );
+            playMoveSound();
             setCapturedRed(checkersGame.players[1].capturedPieces);
             setPlayerTwoScore(checkersGame.players[1].score);
             setLastMove({
@@ -462,6 +467,7 @@ const Game = () => {
         rowIndex,
         colIndex
       );
+      playMoveSound();
       setCapturedBlack(checkersGame.players[0].capturedPieces);
       setCapturedRed(checkersGame.players[1].capturedPieces);
       setPlayerOneScore(checkersGame.players[0].score);
@@ -533,6 +539,7 @@ const Game = () => {
 
       if (piece && isValidMove && currentHistoryIndex >= history.length - 1) {
         checkersGame.movePiece(startRow, startCol, endRow, endCol);
+        playMoveSound();
         setCapturedBlack(checkersGame.players[0].capturedPieces);
         setCapturedRed(checkersGame.players[1].capturedPieces);
         setPlayerOneScore(checkersGame.players[0].score);
@@ -681,6 +688,13 @@ const Game = () => {
     setCheckersBoard(checkersGame.board);
     setCurrentTrackedBoard(checkersBoard);
     setCurrentHistoryIndex(history.length - 1);
+  };
+
+  const playMoveSound = () => {
+    const sound = new Audio(MoveSound);
+    sound
+      .play()
+      .catch((error) => console.log("Error playing the sound:", error));
   };
 
   return (
