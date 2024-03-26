@@ -7,6 +7,10 @@
   color: #f5ac8e;
 }
 
+.main .main-signup-container .main-header h3 {
+  color: #f5ac8e;
+}
+
 .main .main-signup-container .main-central-img {
   margin-bottom: 2rem;
 }
@@ -72,7 +76,7 @@
 /* XS devices */
 @media (max-width: 575.98px) {
   .main .main-signup-container {
-    margin-top: 100px;
+    margin-top: 50px;
   }
 
   .main .main-signup-container .main-header h3 {

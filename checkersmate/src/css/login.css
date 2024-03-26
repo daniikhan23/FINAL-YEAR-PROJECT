@@ -10,6 +10,10 @@
   color: #f5ac8e;
 }
 
+.main .main-login-container .main-header h3 {
+  color: #f5ac8e;
+}
+
 .main .main-login-container .main-central-img {
   display: flex;
 }
@@ -85,7 +89,7 @@
   }
 
   .main .main-login-container {
-    margin-top: 175px;
+    margin-top: 130px;
   }
 
   .main .main-login-container .main-header {

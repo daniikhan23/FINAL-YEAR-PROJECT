@@ -352,7 +352,7 @@
   .game .game-container {
     flex-direction: column;
     /* gap: 25px; */
-    margin-top: 80px;
+    margin-top: 50px;
   }
 
   .game .game-container .main .board {
