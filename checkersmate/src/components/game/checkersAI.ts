@@ -23,10 +23,11 @@ export class CheckersAI extends Player {
   constructor(
     name: string,
     color: PieceColor,
+    isAI: boolean,
     game: CheckersGame,
     depth: number
   ) {
-    super(name, color);
+    super(name, color, isAI);
     this.game = game;
     this.depth = depth;
     this.openings = this.openingSet();

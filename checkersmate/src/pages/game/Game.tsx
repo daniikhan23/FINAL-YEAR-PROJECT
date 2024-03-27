@@ -14,6 +14,7 @@ import {
 } from "../../components/game/checkersGame";
 import { CheckersAI } from "../../components/game/checkersAI";
 import { Board, Position } from "../../components/game/Board";
+import GameFinished from "../../components/game/GameFinished";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../assets/img/background.png";
@@ -57,14 +58,6 @@ interface Move {
   to: { row: number; col: number };
 }
 
-const useForceUpdate = () => {
-  const [, setTick] = useState(0);
-  const update = useCallback(() => {
-    setTick((tick) => tick + 1);
-  }, []);
-  return update;
-};
-
 const Game = () => {
   const location = useLocation();
   const state = location.state as {
@@ -73,9 +66,13 @@ const Game = () => {
     gameMode: boolean;
   };
   const AI = state.playerTwoUser === "Minimax A/B 5";
-  const playerTwoName = "Player two";
-  const playerOne = new Player(state.playerOneUser, PieceColor.Red);
-  const playerTwo = new Player(state.playerTwoUser, PieceColor.Black);
+  const playerOne = new Player(state.playerOneUser, PieceColor.Red, false);
+  let playerTwo;
+  if (state.playerTwoUser === "Minimax A/B 5") {
+    playerTwo = new Player(state.playerTwoUser, PieceColor.Black, true);
+  } else {
+    playerTwo = new Player(state.playerTwoUser, PieceColor.Black, false);
+  }
   const [checkersGame, setCheckersGame] = useState(
     new CheckersGame(playerOne, playerTwo, state.gameMode)
   );
@@ -126,6 +123,7 @@ const Game = () => {
   const [squareSize, setSquareSize] = useState(
     getSquareSize(window.innerWidth)
   );
+  const [userCountry, setUserCountry] = useState("");
 
   // Helper function to determine square size
   function getSquareSize(width: number) {
@@ -187,13 +185,10 @@ const Game = () => {
   const movesHistory = useRef<Move[]>([]);
   const evaluatedScore = useRef(0);
   const aiNumOfPositions = useRef(0);
-
-  const [userCountry, setUserCountry] = useState("");
   const navigate = useNavigate();
 
   const { currentUser } = useAuth();
   const db = getFirestore();
-  const forceUpdate = useForceUpdate();
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -292,6 +287,7 @@ const Game = () => {
         const aiPlayer = new CheckersAI(
           "Minimax A/B 5",
           PieceColor.Black,
+          AI,
           checkersGame,
           5
         );
@@ -299,7 +295,7 @@ const Game = () => {
       }
     }
     handleAIMove();
-  }, [AI, playerOne, state.gameMode]);
+  });
 
   // Handle selection of pieces, highlight potential moves and move pieces
   async function handleCellClick(rowIndex: number, colIndex: number) {
@@ -537,77 +533,14 @@ const Game = () => {
       {/* End of game scorecard */}
       {gameStatus === State.gameFinished ? (
         <>
-          <div className="game-backdrop"></div>
-          <div className="game-finished">
-            <img
-              className="winner"
-              src={
-                checkersGame.winner === checkersGame.players[0]
-                  ? redKing
-                  : blackKing
-              }
-              alt=""
-            />
-            <h3>
-              {checkersGame.winner
-                ? `Winner: ${checkersGame.winner?.name}`
-                : `It's a draw!`}
-            </h3>
-            <h3>
-              Game Mode:{" "}
-              {checkersGame.forcedJumps ? "Forced Captures" : "Normal"}
-            </h3>
-            <div className="player-names">
-              <h4>
-                {userCountry && (
-                  <ReactCountryFlag
-                    countryCode={userCountry}
-                    svg
-                    style={{
-                      marginRight: "10px",
-                    }}
-                    title={userCountry}
-                  />
-                )}
-                {checkersGame.players[0].name}
-              </h4>
-              <div className="row-player-two">
-                {checkersGame.players[1] instanceof CheckersAI ? (
-                  <GiArtificialIntelligence />
-                ) : (
-                  <img
-                    className="flag-world"
-                    src={flagWorld}
-                    alt=""
-                    height={"45px"}
-                    width={"45px"}
-                  />
-                )}
-                <h4>
-                  {state.playerTwoUser === ""
-                    ? "Player Two"
-                    : state.playerTwoUser}
-                </h4>
-              </div>
-            </div>
-            <div className="player-scores">
-              <h4>Score: {checkersGame.players[0].score}</h4>
-              <h4>Score: {checkersGame.players[1].score}</h4>
-            </div>
-            <div className="captured-pieces">
-              <h4>Pieces Captured: {checkersGame.players[0].capturedPieces}</h4>
-              <h4>Pieces Captured: {checkersGame.players[1].capturedPieces}</h4>
-            </div>
-            <div className="replay-buttons">
-              <h4>Would you like to play again?</h4>
-              <button className="mp-btn" onClick={replayGame}>
-                Replay Match
-              </button>
-              <button className="ai-btn" onClick={differentMode}>
-                Try a different mode?
-              </button>
-            </div>
-          </div>
+          <GameFinished
+            winner={checkersGame.winner}
+            players={[checkersGame.players[0], checkersGame.players[1]]}
+            gameMode={checkersGame.forcedJumps}
+            onReplayClick={replayGame}
+            onChangeModeClick={differentMode}
+            userCountry={userCountry}
+          />
         </>
       ) : (
         ""
@@ -615,7 +548,7 @@ const Game = () => {
       <div className="game">
         <div className="game-container">
           {/* AI Analysis conditional section */}
-          {checkersGame.players[1] instanceof CheckersAI ? (
+          {checkersGame.players[1].isAI ? (
             <div className="ai-analysis">
               <div className="header">
                 <h5>AI analysis</h5>
@@ -674,7 +607,7 @@ const Game = () => {
           <div className="main">
             <div className="opponent-card">
               <div className="first-col">
-                {checkersGame.players[1] instanceof CheckersAI ? (
+                {checkersGame.players[1].isAI ? (
                   <GiArtificialIntelligence />
                 ) : (
                   <img
@@ -699,7 +632,6 @@ const Game = () => {
                   </div>
                 </div>
               </div>
-
               <h5 className="score">Score: {playerTwoScore}</h5>
             </div>
             <DndProvider backend={HTML5Backend}>

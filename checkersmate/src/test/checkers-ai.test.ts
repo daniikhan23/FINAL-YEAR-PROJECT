@@ -12,11 +12,11 @@ describe("CheckersGame", () => {
 
   beforeEach(() => {
     game = new CheckersGame(
-      new Player("Player 1", PieceColor.Red),
-      new Player("AI", PieceColor.Black),
+      new Player("Player 1", PieceColor.Red, false),
+      new Player("AI", PieceColor.Black, true),
       false
     );
-    ai = new CheckersAI("Zero", PieceColor.Black, game, 1); // depth set to 1 for simplicity
+    ai = new CheckersAI("Zero", PieceColor.Black, true, game, 1); // depth set to 1 for simplicity
     game.setAI(ai);
   });
 

@@ -13,6 +13,7 @@ export enum State {
  */
 export class Player {
   public name: string;
+  public isAI: boolean;
   public color: PieceColor;
   public score: number;
   public capturedPieces: number;
@@ -25,8 +26,9 @@ export class Player {
    * @param {string} name - The name of the player.
    * @param {PieceColor} color - The color assigned to the player.
    */
-  constructor(name: string, color: PieceColor) {
+  constructor(name: string, color: PieceColor, isAI: boolean) {
     this.name = name;
+    this.isAI = isAI;
     this.color = color;
     this.score = 0;
     this.capturedPieces = 0;
@@ -56,7 +58,7 @@ export class Player {
    * @returns {Player} - copy of the player instance
    */
   public deepCopyPlayer(): Player {
-    let copiedPlayer = new Player(this.name, this.color);
+    let copiedPlayer = new Player(this.name, this.color, this.isAI);
     copiedPlayer.numOfPieces = this.numOfPieces;
     copiedPlayer.numOfKings = this.numOfKings;
 

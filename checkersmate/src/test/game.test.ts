@@ -13,8 +13,8 @@ describe("CheckersGame", () => {
   let playerTwo: Player;
 
   beforeEach(() => {
-    playerOne = new Player("Dani", PieceColor.Red);
-    playerTwo = new Player("Khan", PieceColor.Black);
+    playerOne = new Player("Dani", PieceColor.Red, false);
+    playerTwo = new Player("Khan", PieceColor.Black, false);
     game = new CheckersGame(playerOne, playerTwo, false);
   });
 
