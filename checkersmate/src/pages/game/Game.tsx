@@ -57,43 +57,6 @@ interface Move {
   to: { row: number; col: number };
 }
 
-// will have to change this when making responsive
-const SQUARE_SIZE = 70;
-
-const animateAIMove = (
-  startPosition: Position,
-  endPosition: Position,
-  callback: () => void
-) => {
-  const pieceElement = document.querySelector(
-    `.piece-selector-for-${startPosition.row}-${startPosition.col}`
-  ) as HTMLElement | null;
-
-  if (!pieceElement) return;
-
-  const deltaX = (endPosition.col - startPosition.col) * SQUARE_SIZE;
-  const deltaY = (endPosition.row - startPosition.row) * SQUARE_SIZE;
-
-  // setting css variables for animation
-  pieceElement.style.setProperty("--endX", `${deltaX}px`);
-  pieceElement.style.setProperty("--endY", `${deltaY}px`);
-
-  // add animation class
-  pieceElement.classList.add("piece-animation");
-
-  // ensure piece is visually moved to its new location after the aniamation ends
-  pieceElement.addEventListener(
-    "animationend",
-    () => {
-      pieceElement.classList.remove("piece-animation");
-      pieceElement.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-
-      callback();
-    },
-    { once: true }
-  );
-};
-
 const useForceUpdate = () => {
   const [, setTick] = useState(0);
   const update = useCallback(() => {
@@ -159,6 +122,67 @@ const Game = () => {
       enforcedJumps: 0,
     },
   });
+
+  const [squareSize, setSquareSize] = useState(
+    getSquareSize(window.innerWidth)
+  );
+
+  // Helper function to determine square size
+  function getSquareSize(width: number) {
+    if (width < 576) {
+      return 50; // Mobile
+    } else if (width < 992) {
+      return 60; //13ish'
+    }
+    return 70; // 15'
+  }
+
+  // for animation on small screen
+  useEffect(() => {
+    function handleResize() {
+      setSquareSize(getSquareSize(window.innerWidth));
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const animateMove = (
+    startPosition: Position,
+    endPosition: Position,
+    callback: () => void
+  ) => {
+    const pieceElement = document.querySelector(
+      `.piece-selector-for-${startPosition.row}-${startPosition.col}`
+    ) as HTMLElement | null;
+
+    if (!pieceElement) return;
+
+    const deltaX = (endPosition.col - startPosition.col) * squareSize;
+    const deltaY = (endPosition.row - startPosition.row) * squareSize;
+
+    // setting css variables for animation
+    pieceElement.style.setProperty("--endX", `${deltaX}px`);
+    pieceElement.style.setProperty("--endY", `${deltaY}px`);
+
+    // add animation class
+    pieceElement.classList.add("piece-animation");
+
+    // ensure piece is visually moved to its new location after the aniamation ends
+    pieceElement.addEventListener(
+      "animationend",
+      () => {
+        pieceElement.classList.remove("piece-animation");
+        pieceElement.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
+        callback();
+      },
+      { once: true }
+    );
+  };
+
   const aiMoveTime = useRef(0);
   const movesHistory = useRef<Move[]>([]);
   const evaluatedScore = useRef(0);
@@ -242,7 +266,7 @@ const Game = () => {
           if (aiMove && currentHistoryIndex >= history.length - 1) {
             await delay(1000);
             await new Promise<void>((resolve) => {
-              animateAIMove(
+              animateMove(
                 { row: aiMove.startRow, col: aiMove.startCol },
                 { row: aiMove.endRow, col: aiMove.endCol },
                 () => resolve()
@@ -278,7 +302,7 @@ const Game = () => {
   }, [AI, playerOne, state.gameMode]);
 
   // Handle selection of pieces, highlight potential moves and move pieces
-  const handleCellClick = (rowIndex: number, colIndex: number) => {
+  async function handleCellClick(rowIndex: number, colIndex: number) {
     // Deselect if the same piece is clicked again
     if (selectedPiece.row === rowIndex && selectedPiece.col === colIndex) {
       setSelectedPiece({ row: -1, col: -1 });
@@ -296,6 +320,13 @@ const Game = () => {
       currentHistoryIndex >= history.length - 1 &&
       !(checkersGame.currentPlayer instanceof CheckersAI)
     ) {
+      await new Promise<void>((resolve) => {
+        animateMove(
+          { row: selectedPiece.row, col: selectedPiece.col },
+          { row: rowIndex, col: colIndex },
+          () => resolve()
+        );
+      });
       handleMove(selectedPiece.row, selectedPiece.col, rowIndex, colIndex);
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
       // Select the piece and show possible moves
@@ -306,7 +337,7 @@ const Game = () => {
       setSelectedPiece({ row: -1, col: -1 });
       setPossibleMoves([]);
     }
-  };
+  }
 
   // Handles drag and drop of pieces to make moves
   const onPieceDropped = (

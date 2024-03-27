@@ -178,7 +178,7 @@
 }
 
 .game .game-container .main .board .board-row .board-col .piece-animation {
-  animation: slidePiece 0.5s ease-out forwards;
+  animation: slidePiece 0.25s ease-out forwards;
 }
 
 /* Player scorecards section */
