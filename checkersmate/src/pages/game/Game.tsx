@@ -248,43 +248,12 @@ const Game = () => {
                 () => resolve()
               );
             });
-            console.log(aiMove);
-
-            checkersGame.movePiece(
+            handleMove(
               aiMove.startRow,
               aiMove.startCol,
               aiMove.endRow,
               aiMove.endCol
             );
-            playMoveSound();
-            setCapturedRed(checkersGame.players[1].capturedPieces);
-            setPlayerTwoScore(checkersGame.players[1].score);
-            setLastMove({
-              from: { row: aiMove.startRow, col: aiMove.startCol },
-              to: { row: aiMove.endRow, col: aiMove.endCol },
-            });
-            const newGame = checkersGame.deepCopyGame();
-            setCheckersGame(checkersGame);
-            setCurrentTrackedBoard(checkersBoard);
-            const newMove = {
-              from: { row: aiMove.startRow, col: aiMove.startCol },
-              to: { row: aiMove.endRow, col: aiMove.endCol },
-            };
-            movesHistory.current.push(newMove);
-            setHistory((currentHistory) => {
-              const newBoardState = newGame.board.map((row) =>
-                row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-              );
-              const newHistory = [...currentHistory, newBoardState];
-              setCurrentHistoryIndex(newHistory.length - 1);
-
-              return newHistory;
-            });
-            checkersGame.checkEndOfGame();
-            if (checkersGame.currentState === State.gameFinished) {
-              setGameStatus(checkersGame.currentState);
-              handleRatingChange();
-            }
           }
         }
       }
@@ -324,50 +293,10 @@ const Game = () => {
     if (
       selectedPiece.row !== -1 &&
       isPossibleMove &&
-      currentHistoryIndex >= history.length - 1
+      currentHistoryIndex >= history.length - 1 &&
+      !(checkersGame.currentPlayer instanceof CheckersAI)
     ) {
-      checkersGame.movePiece(
-        selectedPiece.row,
-        selectedPiece.col,
-        rowIndex,
-        colIndex
-      );
-      playMoveSound();
-      setCapturedBlack(checkersGame.players[0].capturedPieces);
-      setCapturedRed(checkersGame.players[1].capturedPieces);
-      setPlayerOneScore(checkersGame.players[0].score);
-      setPlayerTwoScore(checkersGame.players[1].score);
-      setLastMove({
-        from: { row: selectedPiece.row, col: selectedPiece.col },
-        to: { row: rowIndex, col: colIndex },
-      });
-
-      // Refresh the state to reflect the move
-      setSelectedPiece({ row: -1, col: -1 });
-      setPossibleMoves([]);
-      const newGame = checkersGame.deepCopyGame();
-      setCheckersGame(checkersGame);
-      setCurrentTrackedBoard(checkersBoard);
-      const newMove = {
-        from: { row: selectedPiece.row, col: selectedPiece.col },
-        to: { row: rowIndex, col: colIndex },
-      };
-
-      movesHistory.current.push(newMove);
-      setHistory((currentHistory) => {
-        const newBoardState = newGame.board.map((row) =>
-          row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-        );
-        const newHistory = [...currentHistory, newBoardState];
-        setCurrentHistoryIndex(newHistory.length - 1);
-
-        return newHistory;
-      });
-      checkersGame.checkEndOfGame();
-      if (checkersGame.currentState === State.gameFinished) {
-        setGameStatus(checkersGame.currentState);
-        handleRatingChange();
-      }
+      handleMove(selectedPiece.row, selectedPiece.col, rowIndex, colIndex);
     } else if (piece && piece.color === checkersGame.currentPlayer.color) {
       // Select the piece and show possible moves
       setSelectedPiece({ row: rowIndex, col: colIndex });
@@ -384,7 +313,10 @@ const Game = () => {
     item: { color: PieceColor; position: { row: number; col: number } },
     newPosition: { row: number; col: number }
   ) => {
-    if (checkersGame.currentPlayer.color === item.color) {
+    if (
+      checkersGame.currentPlayer.color === item.color &&
+      !(checkersGame.currentPlayer instanceof CheckersAI)
+    ) {
       const startRow = item.position.row;
       const startCol = item.position.col;
       const endRow = newPosition.row;
@@ -403,42 +335,7 @@ const Game = () => {
       );
 
       if (piece && isValidMove && currentHistoryIndex >= history.length - 1) {
-        checkersGame.movePiece(startRow, startCol, endRow, endCol);
-        playMoveSound();
-        setCapturedBlack(checkersGame.players[0].capturedPieces);
-        setCapturedRed(checkersGame.players[1].capturedPieces);
-        setPlayerOneScore(checkersGame.players[0].score);
-        setPlayerTwoScore(checkersGame.players[1].score);
-        setLastMove({
-          from: { row: startRow, col: startCol },
-          to: { row: endRow, col: endCol },
-        });
-        setSelectedPiece({ row: -1, col: -1 });
-        setPossibleMoves([]);
-        const newGame = checkersGame.deepCopyGame();
-        setCheckersGame(checkersGame);
-        setCheckersBoard(checkersGame.board);
-        setCurrentTrackedBoard(checkersBoard);
-        const newMove = {
-          from: { row: startRow, col: startCol },
-          to: { row: endRow, col: endCol },
-        };
-        movesHistory.current.push(newMove);
-        setHistory((currentHistory) => {
-          const newBoardState = newGame.board.map((row) =>
-            row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-          );
-          const newHistory = [...currentHistory, newBoardState];
-          setCurrentHistoryIndex(newHistory.length - 1);
-
-          return newHistory;
-        });
-        checkersGame.checkEndOfGame();
-        if (checkersGame.currentState === State.gameFinished) {
-          setGameStatus(checkersGame.currentState);
-          handleRatingChange();
-        }
-        forceUpdate();
+        handleMove(startRow, startCol, endRow, endCol);
       } else {
         console.log("invalid turn");
       }
@@ -560,6 +457,48 @@ const Game = () => {
     sound
       .play()
       .catch((error) => console.log("Error playing the sound:", error));
+  };
+
+  const handleMove = (
+    startRow: number,
+    startCol: number,
+    endRow: number,
+    endCol: number
+  ) => {
+    checkersGame.movePiece(startRow, startCol, endRow, endCol);
+    playMoveSound();
+    setCapturedBlack(checkersGame.players[0].capturedPieces);
+    setPlayerOneScore(checkersGame.players[0].score);
+    setCapturedRed(checkersGame.players[1].capturedPieces);
+    setPlayerTwoScore(checkersGame.players[1].score);
+    setLastMove({
+      from: { row: startRow, col: startCol },
+      to: { row: endRow, col: endCol },
+    });
+    setSelectedPiece({ row: -1, col: -1 });
+    setPossibleMoves([]);
+    const newGame = checkersGame.deepCopyGame();
+    setCheckersGame(checkersGame);
+    setCurrentTrackedBoard(checkersBoard);
+    const newMove = {
+      from: { row: startRow, col: startCol },
+      to: { row: endRow, col: endCol },
+    };
+    movesHistory.current.push(newMove);
+    setHistory((currentHistory) => {
+      const newBoardState = newGame.board.map((row) =>
+        row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+      );
+      const newHistory = [...currentHistory, newBoardState];
+      setCurrentHistoryIndex(newHistory.length - 1);
+
+      return newHistory;
+    });
+    checkersGame.checkEndOfGame();
+    if (checkersGame.currentState === State.gameFinished) {
+      setGameStatus(checkersGame.currentState);
+      handleRatingChange();
+    }
   };
 
   return (
