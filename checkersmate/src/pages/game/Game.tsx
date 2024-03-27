@@ -13,6 +13,7 @@ import {
   CheckersBoard,
 } from "../../components/game/checkersGame";
 import { CheckersAI } from "../../components/game/checkersAI";
+import { Board, Position } from "../../components/game/Board";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../assets/img/background.png";
@@ -49,11 +50,6 @@ interface ProfileData {
     normal: number;
     enforcedJumps: number;
   };
-}
-
-interface Position {
-  row: number;
-  col: number;
 }
 
 interface Move {
@@ -104,80 +100,6 @@ const useForceUpdate = () => {
     setTick((tick) => tick + 1);
   }, []);
   return update;
-};
-
-interface PieceProps {
-  color: PieceColor;
-  position: { row: number; col: number };
-  isSelected: boolean;
-  isKing: boolean;
-}
-
-interface SquareProps {
-  position: { row: number; col: number };
-  onPieceDropped: (
-    item: { color: PieceColor; position: { row: number; col: number } },
-    position: { row: number; col: number }
-  ) => void;
-  onClick?: () => void;
-  isPossibleMove?: boolean;
-  children?: React.ReactNode;
-  isSelected?: boolean;
-  isLastMoveStart?: boolean;
-  isLastMoveEnd?: boolean;
-}
-
-const Square: React.FC<SquareProps> = ({
-  position,
-  onPieceDropped,
-  onClick,
-  isPossibleMove,
-  isSelected,
-  children,
-  isLastMoveStart,
-  isLastMoveEnd,
-}) => {
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "piece",
-    drop: (item: any, monitor) => {
-      const typedItem = item as {
-        color: PieceColor;
-        position: { row: number; col: number };
-      };
-      onPieceDropped(typedItem, position);
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
-
-  let backgroundColor = "";
-  if (isOver) {
-    backgroundColor = "#dead59";
-  } else if (isLastMoveStart) {
-    // backgroundColor = "#dead59";
-    backgroundColor = "#579669";
-  } else if (isLastMoveEnd) {
-    // backgroundColor = "#dead59";
-    backgroundColor = "#579669";
-  }
-
-  const squareStyle = {
-    backgroundColor: backgroundColor,
-  };
-
-  return (
-    <div
-      ref={drop}
-      onClick={onClick}
-      className={`board-col ${isPossibleMove ? "possible-move" : ""} ${
-        isSelected ? "selected" : ""
-      }`}
-      style={squareStyle}
-    >
-      {children}
-    </div>
-  );
 };
 
 const Game = () => {
@@ -290,75 +212,18 @@ const Game = () => {
     return checkersGame.currentPlayer.color === color;
   };
 
-  const Piece: React.FC<PieceProps> = ({
-    color,
-    position,
-    isSelected,
-    isKing,
-  }) => {
-    const [{ isDragging }, drag] = useDrag(() => ({
-      type: "piece",
-      item: { color, position },
-      collect: (monitor) => ({
-        isDragging: !!monitor.isDragging(),
-      }),
-    }));
-
-    return (
-      <div
-        ref={drag}
-        className={`piece-${color}${isKing ? "-king" : ""} ${
-          isSelected ? "-selected" : ""
-        } ${isCurrentPlayer(color) ? "-turn" : ""}
-        piece-selector-for-${position.row}-${position.col}
-        `}
-        style={{
-          opacity: isDragging ? 0.5 : 1,
-        }}
-      ></div>
-    );
-  };
-
   const renderBoard = () => {
-    return checkersBoard.map((row, rowIndex) => (
-      <div key={rowIndex} className="board-row">
-        {row.map((col, colIndex) => {
-          const isPossibleMove = possibleMoves.some(
-            (move) => move.endRow === rowIndex && move.endCol === colIndex
-          );
-          const isLastMoveEnd =
-            lastMove.to.row === rowIndex && lastMove.to.col === colIndex;
-          return (
-            <Square
-              key={colIndex}
-              position={{ row: rowIndex, col: colIndex }}
-              onPieceDropped={onPieceDropped}
-              isPossibleMove={isPossibleMove}
-              onClick={() => handleCellClick(rowIndex, colIndex)}
-              isSelected={
-                selectedPiece.row === rowIndex && selectedPiece.col === colIndex
-              }
-              isLastMoveStart={
-                lastMove.from.row === rowIndex && lastMove.from.col === colIndex
-              }
-              isLastMoveEnd={isLastMoveEnd}
-            >
-              {col && (
-                <Piece
-                  color={col.color}
-                  position={{ row: rowIndex, col: colIndex }}
-                  isSelected={
-                    selectedPiece.row === rowIndex &&
-                    selectedPiece.col === colIndex
-                  }
-                  isKing={col.isKing}
-                />
-              )}
-            </Square>
-          );
-        })}
-      </div>
-    ));
+    return (
+      <Board
+        board={checkersBoard}
+        onPieceDropped={onPieceDropped}
+        selectedPiece={selectedPiece}
+        possibleMoves={possibleMoves}
+        handleCellClick={handleCellClick}
+        lastMove={lastMove}
+        isCurrentPlayerTurn={isCurrentPlayer}
+      />
+    );
   };
 
   // handling AI move and animation asynchronously
@@ -889,7 +754,7 @@ const Game = () => {
                   <div>7</div>
                   <div>8</div>
                 </div>
-                <div className="board">{renderBoard()}</div>
+                {renderBoard()}
                 <div className="row-right">
                   <div>1</div>
                   <div>2</div>

@@ -430,7 +430,8 @@
     .main
     .board
     .board-row
-    .board-col.piece-red-king:hover {
+    .board-col
+    .piece-red-king:hover {
     height: 40px;
     width: 40px;
   }
@@ -673,7 +674,8 @@
     .main
     .board
     .board-row
-    .board-col.piece-red-king:hover {
+    .board-col
+    .piece-red-king:hover {
     height: 45px;
     width: 45px;
   }
@@ -922,7 +924,8 @@
     .main
     .board
     .board-row
-    .board-col.piece-red-king:hover {
+    .board-col
+    .piece-red-king:hover {
     height: 55px;
     width: 55px;
   }
@@ -1174,7 +1177,8 @@
     .main
     .board
     .board-row
-    .board-col.piece-red-king:hover {
+    .board-col
+    .piece-red-king:hover {
     height: 60px;
     width: 60px;
   }
