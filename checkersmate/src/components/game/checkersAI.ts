@@ -417,7 +417,6 @@ export class CheckersAI extends Player {
 
     if (depth == 0 || game.currentState === State.gameFinished) {
       let score = this.heuristic(game);
-      // console.log(`Base case reached, depth: ${depth}, score: ${score}`);
       return [score, null];
     }
 
@@ -440,8 +439,6 @@ export class CheckersAI extends Player {
                 move.endRow,
                 move.endCol
               );
-
-              // console.log(`Maximizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
 
               const [evaluatedScore] = this.minimax(
                 gameCopy,
@@ -484,8 +481,6 @@ export class CheckersAI extends Player {
                 move.endCol
               );
 
-              // console.log(`Minimizing call - move: (${move.startRow}, ${move.startCol}), (${move.endRow}, ${move.endCol}), depth: ${depth}`);
-
               const [evaluatedScore] = this.minimax(
                 gameCopy,
                 depth - 1,
@@ -520,7 +515,6 @@ export class CheckersAI extends Player {
   public makeMove(): [number, Moves, number] | null {
     let numOfPositions = this.positionsAnalysed;
     if (this.game.currentState === State.gameFinished) {
-      console.log("Game is finished. AI cannot make a move.");
       this.game.changeTurn();
       return null;
     } else {
@@ -574,10 +568,6 @@ export class CheckersAI extends Player {
         move?.endRow,
         move?.endCol
       );
-      console.log(
-        `AI moved from: (${move?.startRow}, ${move?.startCol}) to (${move?.endRow}, ${move?.endCol})`
-      );
-      console.log(`Evaluated Score of move: ${score}`);
       return [score, move, numOfPositions];
     } else {
       console.log(`${this.game.players[1].name} has no valid moves!`);

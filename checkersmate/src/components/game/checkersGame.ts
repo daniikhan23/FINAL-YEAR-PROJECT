@@ -174,7 +174,6 @@ export class CheckersBoard {
    */
   constructor() {
     this.initializeBoard();
-    // console.log(this.board);
   }
 
   /**
@@ -551,7 +550,6 @@ export class CheckersGame {
         const nextCaptures = this.chainCaptures(endRow, endCol);
         if (nextCaptures && capturedAlready === true) {
           if (nextCaptures.length > 0) {
-            console.log(nextCaptures);
             this.chainingRow = endRow;
             this.chainingCol = endCol;
             return;
@@ -567,13 +565,6 @@ export class CheckersGame {
         }
       }
     }
-    console.log(this.numOfTurns);
-    console.log(
-      `Number of Black Pieces: ${this.players[1].numOfPieces}, Kings: ${this.players[1].numOfKings}`
-    );
-    console.log(
-      `Number of Red Pieces: ${this.players[0].numOfPieces}, Kings: ${this.players[0].numOfKings}`
-    );
   }
 
   /**

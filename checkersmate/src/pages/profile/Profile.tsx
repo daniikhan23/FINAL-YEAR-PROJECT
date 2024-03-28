@@ -26,7 +26,14 @@ interface ProfileData {
   aboutMe?: string;
 }
 
+/**
+ * Displays and allows editing of the user's profile, including personal information and game statistics.
+ * Users can view their username, full name, email address, country, game record (wins, losses, draws),
+ * ratings (normal, enforced jumps), and a personal description ("About me").
+ * The "About me" section can be edited and saved to the database.
+ */
 const Profile = () => {
+  // State for storing and updating profile data
   const [profileData, setProfileData] = useState<ProfileData>({
     username: "",
     fullName: "",
@@ -42,23 +49,40 @@ const Profile = () => {
       enforcedJumps: 0,
     },
   });
+  // State for the "About me" text area
   const [aboutMe, setAboutMe] = useState("");
+  // Context hook for accessing the current user
   const { currentUser } = useAuth();
   const db = getFirestore();
 
+  // Context hook for changing body background
   const { changeBodyBackground } = useStyle();
 
+  /**
+   * Sets the profile's background image on component mount and reverts it back on unmount.
+   */
   useEffect(() => {
     changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  /**
+   * Handles changes to the "About me" text area, updating the local state.
+   *
+   * @param {React.ChangeEvent<HTMLTextAreaElement>} event - The change event from the text area.
+   */
   const handleAboutMeChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setAboutMe(event.target.value);
   };
 
+  /**
+   * Saves the "About me" text to the user's profile in the database.
+   * Displays a success message on successful update or an error message on failure.
+   *
+   * @async
+   */
   const handleSaveAboutMe = async () => {
     if (currentUser) {
       try {
@@ -72,6 +96,10 @@ const Profile = () => {
     }
   };
 
+  /**
+   * Fetches the user's profile data from Firestore on component mount
+   * and updates the profile state accordingly.
+   */
   useEffect(() => {
     const fetchProfileData = async () => {
       if (currentUser) {

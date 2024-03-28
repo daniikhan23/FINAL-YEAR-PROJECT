@@ -15,17 +15,34 @@ import backgroundImage from "../../assets/img/background.png";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+/**
+ * Provides a login interface for users to access their CheckersMate account.
+ * Users can enter their email and password to log in. The form also provides links
+ * to sign up for a new account or to reset the password.
+ */
 const Login = () => {
+  // State hooks for managing user input
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Hook for programmatic navigation
   const navigate = useNavigate();
+
+  // Context hook for changing body background
   const { changeBodyBackground } = useStyle();
 
+  /**
+   * Sets the background image on component mount and reverts it back on unmount.
+   */
   useEffect(() => {
     changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  /**
+   * Attempts to log the user in with the provided email and password.
+   * On success, navigates to the homepage. On failure, displays an error message.
+   */
   const loginUser = () => {
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)

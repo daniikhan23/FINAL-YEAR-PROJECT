@@ -8,14 +8,32 @@ import blackKing from "../../assets/img/blackKing.png";
 import { useAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * The GameStart component allows users to configure and start a new game.
+ * Users can select the game mode, specify the player names, and choose between local play and playing against an AI.
+ * It fetches the current user's username from Firebase Firestore and sets it as Player 1.
+ * The background image for the component is set on mount and reset on unmount.
+ *
+ * Uses `useNavigate` from `react-router-dom` to navigate to the game page with selected options.
+ */
 const GameStart = () => {
+  // State to hold player usernames and game mode.
   const [playerOneUser, setPlayerOneUser] = useState("");
   const [playerTwoUser, setPlayerTwoUser] = useState("");
+
+  // false for Normal, true for Forced Captures.
   const [gameMode, setGameMode] = useState(false);
+
+  // Context and Firestore initialization for user authentication and data fetching.
   const { currentUser } = useAuth();
   const db = getFirestore();
   const { changeBodyBackground } = useStyle();
   const navigate = useNavigate();
+
+  /**
+   * Fetches the current user's username from Firestore and updates the component state.
+   * Additionally, sets the background image for the page.
+   */
   useEffect(() => {
     const fetchPlayer1Username = async () => {
       if (currentUser) {
@@ -34,6 +52,11 @@ const GameStart = () => {
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  /**
+   * Navigates to the game page with selected game options.
+   *
+   * @param {boolean} vsAI - Determines if the game will be played against an AI.
+   */
   const startGame = (vsAI: boolean) => {
     navigate("/game", {
       state: {
@@ -44,10 +67,20 @@ const GameStart = () => {
     });
   };
 
+  /**
+   * Handles changes to the game mode selection.
+   *
+   * @param {ChangeEvent<HTMLSelectElement>} event - The change event on the game mode select element.
+   */
   const handleGameModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setGameMode(event.target.value !== "Normal");
   };
 
+  /**
+   * Updates the state with the second player's name as entered in the input field.
+   *
+   * @param {ChangeEvent<HTMLInputElement>} event - The change event on the player two name input field.
+   */
   const handlePlayerTwoName = (event: ChangeEvent<HTMLInputElement>) => {
     setPlayerTwoUser(event.target.value);
   };

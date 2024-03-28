@@ -61,14 +61,23 @@ interface Move {
   to: { row: number; col: number };
 }
 
+/**
+ * The Game component orchestrates the logic and presentation of a checkers game. It manages game state,
+ * handles user interactions, and renders the game board, AI analysis, game information, and game completion components.
+ * This component leverages various hooks for state management and effects to handle game logic, AI moves,
+ * resizing for responsive design, fetching user profile data, and updating user ratings after a game concludes.
+ * It also incorporates drag-and-drop functionality for piece movement.
+ *
+ **/
 const Game = () => {
+  // State for the game setup, fetched from the URL parameters or defaults
   const location = useLocation();
   const state = location.state as {
     playerOneUser: string;
     playerTwoUser: string;
     gameMode: boolean;
   };
-  const AI = state.playerTwoUser === "Minimax A/B 5";
+  const AI = state.playerTwoUser === "Minimax A/B 5"; // Check if the opponent is AI
   const playerOne = new Player(state.playerOneUser, PieceColor.Red, false);
   let playerTwo;
   if (state.playerTwoUser === "Minimax A/B 5") {
@@ -76,6 +85,7 @@ const Game = () => {
   } else {
     playerTwo = new Player(state.playerTwoUser, PieceColor.Black, false);
   }
+  // State initialization for game logic, board, and gameplay elements
   const [checkersGame, setCheckersGame] = useState(
     new CheckersGame(playerOne, playerTwo, state.gameMode)
   );
@@ -120,6 +130,7 @@ const Game = () => {
     },
   });
 
+  // State for move animation adjustments and firebase integration
   const [squareSize, setSquareSize] = useState(
     getSquareSize(window.innerWidth)
   );
@@ -192,6 +203,7 @@ const Game = () => {
     );
   };
 
+  // Refs for handling AI analysis and delay for AI move
   const aiMoveTime = useRef(0);
   const movesHistory = useRef<Move[]>([]);
   const evaluatedScore = useRef(0);

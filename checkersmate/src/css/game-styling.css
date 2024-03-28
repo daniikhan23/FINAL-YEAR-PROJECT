@@ -377,7 +377,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* gap: 25px; */
     margin-top: 50px;
   }
 
@@ -434,11 +433,6 @@
     .piece-red-king:hover {
     height: 40px;
     width: 40px;
-  }
-
-  .game .game-container .main .opponent-card,
-  .game .game-container .main .player-card {
-    /* gap: 10px; */
   }
 
   .game .game-container .main .opponent-card {
@@ -557,16 +551,7 @@
     margin-left: 10px;
   }
 
-  .game .game-container .game-info {
-    /* width: 300px; */
-    /* height: 560px; */
-    /* margin-top: 45px; */
-  }
-
   .game .game-container .game-info .history-section {
-    /* height: 450px;
-    padding: 10px;
-    gap: 5px; */
     display: none;
   }
 
@@ -620,7 +605,6 @@
 /* S Devices */
 @media (min-width: 576px) {
   .game .game-container {
-    /* flex-direction: column; */
     gap: 25px;
     margin-top: 15px;
   }
@@ -871,7 +855,6 @@
 @media (min-width: 992px) {
   .game .game-container {
     gap: 25px;
-    /* margin-top: 30px; */
   }
 
   .game .game-container .main .board {

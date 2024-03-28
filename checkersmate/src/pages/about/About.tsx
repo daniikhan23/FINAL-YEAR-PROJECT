@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/navbar/Navbar.tsx";
 import "../../css/about.css";
 import CheckersCoolBoard from "../../assets/img/checkers-cool-board.jpg";
 import Picture from "../../assets/img/pix-mate.jpg";

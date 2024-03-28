@@ -40,29 +40,45 @@ const selectCountryOptions = countryOptions.map(({ code, name }) => ({
   ),
 }));
 
+/**
+ * Provides a form for users to sign up for a new account. It includes fields for email, full name,
+ * username, country, password, and password confirmation. Upon form submission, it attempts to
+ * create a new user with Firebase authentication and stores additional user information in Firestore.
+ * The form also includes a country selector with flags, using `react-select` and `ReactCountryFlag`.
+ * It manages form state with React hooks and uses toast notifications for feedback.
+ */
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [username, setUsername] = useState("");
-  const [country, setCountry] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState(""); // Email input state
+  const [fullName, setFullName] = useState(""); // Full name input state
+  const [username, setUsername] = useState(""); // Username input state
+  const [country, setCountry] = useState(""); // Country select state
+  const [password, setPassword] = useState(""); // Password input state
+  const [passwordRepeat, setPasswordRepeat] = useState(""); // Password repeat input state
+  const navigate = useNavigate(); // Hook to navigate between routes
   const { currentUser } = useAuth();
 
-  const { changeBodyBackground } = useStyle();
+  const { changeBodyBackground } = useStyle(); // Context hook for changing the body background
 
+  /**
+   * Sets the background image on component mount and reverts it back to default on unmount.
+   */
   useEffect(() => {
     changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  /**
+   * Attempts to sign up a new user with the provided email and password, validates the username
+   * uniqueness within Firestore, and then stores user information in Firestore. It navigates
+   * the user to the home page upon successful account creation.
+   */
   const signUpUser = async () => {
     if (password !== passwordRepeat) {
       toast.error("Passwords do not match!");
       return;
     }
 
+    // Check if username already exists in FIrestore
     const usernameRef = doc(db, "usernames", username);
     const docSnap = await getDoc(usernameRef);
     if (docSnap.exists()) {
@@ -70,6 +86,7 @@ const Signup = () => {
       return;
     }
 
+    // Attempt to create user with Firebase Auth and store additional information in Firestore
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
