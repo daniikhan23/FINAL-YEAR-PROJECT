@@ -16,6 +16,18 @@ interface GameFinishedProps {
   userCountry: string;
 }
 
+/**
+ * Displays the game over screen with the winner, scores, and an option to replay or change the game mode.
+ *
+ * @param {GameFinishedProps} props - The props for the GameFinished component.
+ * @param {Player | null} props.winner - The winner of the game. `null` if the game is a draw.
+ * @param {[Player, Player | CheckersAI]} props.players - The players of the game.
+ * @param {boolean} props.gameMode - The mode of the game (true for forced captures, false for normal).
+ * @param {() => void} props.onReplayClick - Function to call when the replay button is clicked.
+ * @param {() => void} props.onChangeModeClick - Function to call when changing the game mode.
+ * @param {string} props.userCountry - The country code of the user.
+ * @returns {React.ReactElement} - A React element displaying the game over screen.
+ */
 const GameFinished: React.FC<GameFinishedProps> = ({
   winner,
   players,

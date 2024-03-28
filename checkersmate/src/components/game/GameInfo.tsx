@@ -19,6 +19,19 @@ interface GameInfoProps {
   resign: () => void;
 }
 
+/**
+ * Displays the game information section including the history of moves and control buttons
+ * for replaying the game, navigating through the history of moves, and resigning.
+ *
+ * @param {GameInfoProps} props - The props for the GameInfo component.
+ * @param {Move[]} props.movesHistory - An array of moves made during the game.
+ * @param {() => void} props.replayGame - Function to call to replay the game.
+ * @param {() => void} props.renderPrevBoard - Function to call to render the previous board state.
+ * @param {() => void} props.renderNextBoard - Function to call to render the next board state.
+ * @param {() => void} props.renderCurrentBoard - Function to call to render the current board state.
+ * @param {() => void} props.resign - Function to call if the player decides to resign.
+ * @returns {React.ReactElement} - A React element displaying game information and controls.
+ */
 const GameInfo: React.FC<GameInfoProps> = ({
   movesHistory,
   replayGame,

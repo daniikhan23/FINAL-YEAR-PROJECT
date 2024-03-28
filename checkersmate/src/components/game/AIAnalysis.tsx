@@ -9,6 +9,18 @@ interface AIAnalysisProps {
   evaluatedScore: number;
 }
 
+/**
+ * Displays analysis and metrics used by the AI during the game, including the last move made,
+ * the number of positions analyzed, and the time taken for analysis.
+ *
+ * @param {AIAnalysisProps} props - The props for the AIAnalysis component.
+ * @param {number} props.minimaxDepth - The depth used by the minimax algorithm.
+ * @param {number} props.numOfPositions - The number of positions analyzed by the AI.
+ * @param {number} props.aiMoveTime - The time taken by the AI to make a move, in milliseconds.
+ * @param {Moves[]} props.playerTwoMoves - An array of moves made by player two (the AI).
+ * @param {number} props.evaluatedScore - The score evaluated by the AI for its move.
+ * @returns {React.ReactElement} - A React element displaying the AI analysis information.
+ */
 const AIAnalysis: React.FC<AIAnalysisProps> = ({
   minimaxDepth,
   numOfPositions,

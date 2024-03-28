@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStyle } from "../../context/StyleContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../css/game-styling.css";
@@ -17,7 +16,7 @@ import { Board, Position } from "../../components/game/Board";
 import GameFinished from "../../components/game/GameFinished";
 import GameInfo from "../../components/game/GameInfo";
 import AIAnalysis from "../../components/game/AIAnalysis";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../assets/img/background.png";
 import blackKing from "../../assets/img/blackKingCustom.png";
@@ -28,19 +27,18 @@ import {
   getFirestore,
   doc,
   getDoc,
-  setDoc,
   updateDoc,
   increment,
 } from "firebase/firestore";
 import { useAuth } from "../../context/UserAuthContext";
 import ReactCountryFlag from "react-country-flag";
-import { MdOutlineRestartAlt } from "react-icons/md";
-import { MdArrowBackIos } from "react-icons/md";
-import { GrNext } from "react-icons/gr";
-import { FaRegFlag } from "react-icons/fa6";
-import { BiCurrentLocation } from "react-icons/bi";
 import MoveSound from "../../assets/audio/move-sound.mp3";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+/**
+ * Represents the profile data of a player including username, country, win/loss/draw record, and ratings.
+ */
 interface ProfileData {
   username: string;
   country: string;
@@ -55,6 +53,9 @@ interface ProfileData {
   };
 }
 
+/**
+ * Represents a move from one board position to another.
+ */
 interface Move {
   from: { row: number; col: number };
   to: { row: number; col: number };
@@ -84,14 +85,11 @@ const Game = () => {
   const [currentTrackedBoard, setCurrentTrackedBoard] = useState<
     (CheckersPiece | null)[][]
   >(checkersGame.board);
-  const [history, setHistory] = useState<(typeof checkersBoard)[]>(
-    // checkersGame.board
-    [
-      checkersGame.board.map((row) =>
-        row.map((piece) => (piece ? piece.deepCopyPiece() : null))
-      ),
-    ]
-  );
+  const [history, setHistory] = useState<(typeof checkersBoard)[]>([
+    checkersGame.board.map((row) =>
+      row.map((piece) => (piece ? piece.deepCopyPiece() : null))
+    ),
+  ]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [gameStatus, setGameStatus] = useState(checkersGame.currentState);
   const [possibleMoves, setPossibleMoves] = useState<Moves[] | []>([]);
@@ -127,7 +125,12 @@ const Game = () => {
   );
   const [userCountry, setUserCountry] = useState("");
 
-  // Helper function to determine square size
+  /**
+   * Determines the square size based on the window width, optimizing for different screen sizes.
+   *
+   * @param {number} width - The current window width.
+   * @returns {number} - The calculated square size.
+   */
   function getSquareSize(width: number) {
     if (width < 576) {
       return 40; // Mobile
@@ -137,7 +140,9 @@ const Game = () => {
     return 65; // 15'
   }
 
-  // for animation on small screen
+  /**
+   * Attaches an resize event listener to the window to adjust the square size used for animation of moves based on the screen size.
+   */
   useEffect(() => {
     function handleResize() {
       setSquareSize(getSquareSize(window.innerWidth));
@@ -149,6 +154,13 @@ const Game = () => {
     };
   }, []);
 
+  /**
+   * Animates the movement of a piece from a start position to an end position.
+   *
+   * @param {Position} startPosition - The starting position of the piece.
+   * @param {Position} endPosition - The ending position of the piece.
+   * @param {() => void} callback - A callback function to execute after the animation completes.
+   */
   const animateMove = (
     startPosition: Position,
     endPosition: Position,
@@ -163,14 +175,11 @@ const Game = () => {
     const deltaX = (endPosition.col - startPosition.col) * squareSize;
     const deltaY = (endPosition.row - startPosition.row) * squareSize;
 
-    // setting css variables for animation
     pieceElement.style.setProperty("--endX", `${deltaX}px`);
     pieceElement.style.setProperty("--endY", `${deltaY}px`);
 
-    // add animation class
     pieceElement.classList.add("piece-animation");
 
-    // ensure piece is visually moved to its new location after the aniamation ends
     pieceElement.addEventListener(
       "animationend",
       () => {
@@ -196,6 +205,10 @@ const Game = () => {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const { changeBodyBackground } = useStyle();
+
+  /**
+   * Fetches the country information of the current user and sets the application's background.
+   */
   useEffect(() => {
     const fetchPlayer1Country = async () => {
       if (currentUser) {
@@ -204,16 +217,17 @@ const Game = () => {
         if (userDocSnap.exists()) {
           const userData = userDocSnap.data();
           setUserCountry(userData.country);
-          console.log(userCountry);
         }
       }
     };
     fetchPlayer1Country();
-    // set background
     changeBodyBackground(backgroundImage);
     return () => changeBodyBackground("wheat");
   }, [changeBodyBackground]);
 
+  /**
+   * Fetches the profile data of the current user from the database.
+   */
   useEffect(() => {
     const fetchProfileData = async () => {
       if (currentUser) {
@@ -233,6 +247,12 @@ const Game = () => {
     return checkersGame.currentPlayer.color === color;
   };
 
+  /**
+   * Renders the game board component with its current state including the board configuration,
+   * selected piece, possible moves, and the last move made.
+   *
+   * @returns The Board component populated with the current game state.
+   */
   const renderBoard = () => {
     return (
       <Board
@@ -247,7 +267,13 @@ const Game = () => {
     );
   };
 
-  // handling AI move and animation asynchronously
+  /**
+   * Handles the logic for an AI move also including timing and animation.
+   *
+   * @async
+   * @example
+   * await handleAIMove();
+   */
   async function handleAIMove() {
     if (checkersGame.players[1] instanceof CheckersAI) {
       while (checkersGame.currentPlayer === checkersGame.players[1]) {
@@ -281,9 +307,10 @@ const Game = () => {
     }
   }
 
-  // Ensuring AI initialisation into the game
+  /**
+   * Initializes the AI player if the second player is an AI and handles AI moves.
+   */
   useEffect(() => {
-    // Check if it's AI's turn and the current player is an instance of CheckersAI
     if (!(checkersGame.players[1] instanceof CheckersAI)) {
       if (AI) {
         const aiPlayer = new CheckersAI(
@@ -299,7 +326,14 @@ const Game = () => {
     handleAIMove();
   });
 
-  // Handle selection of pieces, highlight potential moves and move pieces
+  /**
+   * Handles the user interaction with the game board when a cell (piece) is clicked.
+   * Determines whether to select a piece, move a piece, or show possible moves.
+   *
+   * @param {number} rowIndex - The row index of the clicked cell (where piece is being moved).
+   * @param {number} colIndex - The column index of the clicked cell (where piece is being moved).
+   * @async
+   */
   async function handleCellClick(rowIndex: number, colIndex: number) {
     // Deselect if the same piece is clicked again
     if (selectedPiece.row === rowIndex && selectedPiece.col === colIndex) {
@@ -307,11 +341,8 @@ const Game = () => {
       setPossibleMoves([]);
       return;
     }
-
     const piece = checkersGame.getPiece(rowIndex, colIndex);
     const isPossibleMove = isMovePossible(rowIndex, colIndex);
-
-    // Execute the move if a piece is selected and the target is a possible move
     if (
       selectedPiece.row !== -1 &&
       isPossibleMove &&
@@ -337,7 +368,13 @@ const Game = () => {
     }
   }
 
-  // Handles drag and drop of pieces to make moves
+  /**
+   * Handles the logic when a piece is dropped onto a new position on the board.
+   * Validates the move and updates the game state accordingly.
+   *
+   * @param {{ color: PieceColor; position: { row: number; col: number }}} item - The dragged piece's information.
+   * @param {{ row: number; col: number }} newPosition - The new position where the piece is dropped.
+   */
   const onPieceDropped = (
     item: { color: PieceColor; position: { row: number; col: number } },
     newPosition: { row: number; col: number }
@@ -365,30 +402,43 @@ const Game = () => {
 
       if (piece && isValidMove && currentHistoryIndex >= history.length - 1) {
         handleMove(startRow, startCol, endRow, endCol);
-      } else {
-        console.log("invalid turn");
       }
-    } else {
-      console.log("Its not your turn");
     }
   };
 
+  /**
+   * Checks if the move to the specified position is possible based on the current game state.
+   *
+   * @param {number} rowIndex - The row index to check for a possible move.
+   * @param {number} colIndex - The column index to check for a possible move.
+   * @returns {boolean} - True if the move is possible, otherwise false.
+   */
   const isMovePossible = (rowIndex: number, colIndex: number) => {
     return possibleMoves.some(
       (move) => move.endRow === rowIndex && move.endCol === colIndex
     );
   };
 
+  /**
+   * Initiates a game replay by reloading the page to reset the game state.
+   */
   const replayGame = () => {
     window.location.reload();
   };
 
+  /**
+   * Navigates the user to Game Start page to select a different game mode.
+   */
   const differentMode = () => {
     navigate("/game-start");
   };
 
+  /**
+   * Updates the player's rating and game record based on the game outcome.
+   *
+   * @async
+   */
   const handleRatingChange = async () => {
-    console.log(currentUser);
     let updates = {};
 
     if (checkersGame.forcedJumps === false) {
@@ -434,16 +484,17 @@ const Game = () => {
       const userDocRef = doc(db, "users", currentUser.uid);
       await updateDoc(userDocRef, updates)
         .then(() => {
-          console.log("Profile updated successfully!");
+          toast.success(`Rating and Record updated!`);
         })
         .catch((error) => {
-          console.log(`Failed to update profile: ${error.message}`);
+          toast.error(`Failed to update profile: ${error.message}`);
         });
     }
-    console.log("handleRatingChange called");
-    console.log(updates);
   };
 
+  /**
+   * Handles the player's action to resign from the current game.
+   */
   const resign = () => {
     checkersGame.currentState = State.gameFinished;
     checkersGame.winner = checkersGame.players[1];
@@ -451,6 +502,9 @@ const Game = () => {
     handleRatingChange();
   };
 
+  /**
+   * Renders the previous board state from the history.
+   */
   const renderPrevBoard = () => {
     if (currentHistoryIndex > 0) {
       const prevBoardVersionIndex = currentHistoryIndex - 1;
@@ -458,10 +512,13 @@ const Game = () => {
       setCheckersBoard(history[prevBoardVersionIndex]);
       setCurrentHistoryIndex(prevBoardVersionIndex);
     } else {
-      console.log("Already at the beginning of the game history.");
+      toast.error("Already at the beginning of the game history.");
     }
   };
 
+  /**
+   * Renders the next board state from the history or returns to the current state if at the latest state.
+   */
   const renderNextBoard = () => {
     if (history.length > 1 && currentHistoryIndex < history.length - 1) {
       const nextBoardVersionIndex = currentHistoryIndex + 1;
@@ -471,16 +528,22 @@ const Game = () => {
     } else if (currentHistoryIndex === history.length - 1) {
       renderCurrentBoard();
     } else {
-      console.log("Back at the latest state of the game.");
+      toast.error("Back at the latest state of the game.");
     }
   };
 
+  /**
+   * Renders the current board state based on the latest game state.
+   */
   const renderCurrentBoard = () => {
     setCheckersBoard(checkersGame.board);
     setCurrentTrackedBoard(checkersBoard);
     setCurrentHistoryIndex(history.length - 1);
   };
 
+  /**
+   * Plays the move sound effect.
+   */
   const playMoveSound = () => {
     const sound = new Audio(MoveSound);
     sound
@@ -488,6 +551,16 @@ const Game = () => {
       .catch((error) => console.log("Error playing the sound:", error));
   };
 
+  /**
+   * Handles the movement of a piece from one position to another.
+   * Updates the game related state, including the board and player scores.
+   * Also checks for end game situation and updates player scores
+   *
+   * @param {number} startRow - The starting row of the piece.
+   * @param {number} startCol - The starting column of the piece.
+   * @param {number} endRow - The ending row of the move.
+   * @param {number} endCol - The ending column of the move.
+   */
   const handleMove = (
     startRow: number,
     startCol: number,
@@ -532,6 +605,7 @@ const Game = () => {
 
   return (
     <>
+      <ToastContainer />
       {gameStatus === State.gameFinished ? (
         <>
           <GameFinished

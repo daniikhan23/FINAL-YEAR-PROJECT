@@ -10,6 +10,18 @@ interface PieceProps {
   isCurrentPlayerTurn: boolean;
 }
 
+/**
+ * Represents a draggable piece in the checkers game.
+ * This component uses the useDrag hook from react-dnd to enable drag-and-drop functionality.
+ *
+ * @param {PieceProps} props - The props for the Piece component.
+ * @param {PieceColor} props.color - The color of the piece (black or red).
+ * @param {{ row: number; col: number }} props.position - The current position of the piece on the board.
+ * @param {boolean} props.isSelected - Indicates if the piece is selected.
+ * @param {boolean} props.isKing - Indicates if the piece isa king.
+ * @param {boolean} props.isCurrentPlayerTurn - Indicates if it's the current player's turn.
+ * @returns {React.ReactElement} - A React element representing the draggable piece.
+ */
 export const Piece: React.FC<PieceProps> = ({
   color,
   position,
