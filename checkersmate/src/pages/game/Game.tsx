@@ -15,6 +15,7 @@ import {
 import { CheckersAI } from "../../components/game/checkersAI";
 import { Board, Position } from "../../components/game/Board";
 import GameFinished from "../../components/game/GameFinished";
+import GameInfo from "../../components/game/GameInfo";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../assets/img/background.png";
@@ -128,11 +129,11 @@ const Game = () => {
   // Helper function to determine square size
   function getSquareSize(width: number) {
     if (width < 576) {
-      return 50; // Mobile
+      return 40; // Mobile
     } else if (width < 992) {
-      return 60; //13ish'
+      return 50; //13ish'
     }
-    return 70; // 15'
+    return 65; // 15'
   }
 
   // for animation on small screen
@@ -706,24 +707,14 @@ const Game = () => {
               <h5 className="score">Score: {playerOneScore}</h5>
             </div>
           </div>
-          <div className="game-info">
-            <div className="history-section">
-              <h5>History of Moves (Row, Column): </h5>
-              {movesHistory.current.map((move, index) => (
-                <h6 key={index}>
-                  {index + 1}. ({move.from.row + 1}, {move.from.col + 1}) to (
-                  {move.to.row + 1}, {move.to.col + 1})
-                </h6>
-              ))}
-            </div>
-            <div className="buttons">
-              <MdOutlineRestartAlt onClick={() => replayGame()} />
-              <MdArrowBackIos onClick={() => renderPrevBoard()} />
-              <BiCurrentLocation onClick={() => renderCurrentBoard()} />
-              <GrNext onClick={() => renderNextBoard()} />
-              <FaRegFlag onClick={() => resign()} />
-            </div>
-          </div>
+          <GameInfo
+            movesHistory={movesHistory.current}
+            replayGame={replayGame}
+            renderPrevBoard={renderPrevBoard}
+            renderNextBoard={renderNextBoard}
+            renderCurrentBoard={renderCurrentBoard}
+            resign={resign}
+          />
         </div>
       </div>
     </>
