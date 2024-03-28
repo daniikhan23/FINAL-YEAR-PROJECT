@@ -16,6 +16,7 @@ import { CheckersAI } from "../../components/game/checkersAI";
 import { Board, Position } from "../../components/game/Board";
 import GameFinished from "../../components/game/GameFinished";
 import GameInfo from "../../components/game/GameInfo";
+import AIAnalysis from "../../components/game/AIAnalysis";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../assets/img/background.png";
@@ -531,7 +532,6 @@ const Game = () => {
 
   return (
     <>
-      {/* End of game scorecard */}
       {gameStatus === State.gameFinished ? (
         <>
           <GameFinished
@@ -548,60 +548,14 @@ const Game = () => {
       )}
       <div className="game">
         <div className="game-container">
-          {/* AI Analysis conditional section */}
           {checkersGame.players[1].isAI ? (
-            <div className="ai-analysis">
-              <div className="header">
-                <h5>AI analysis</h5>
-              </div>
-              <div className="info">
-                <h6>Minimax Depth: 5</h6>
-                <h6>
-                  Number of positions analysed: {aiNumOfPositions.current}
-                </h6>
-                <h6>Time Taken: {aiMoveTime.current} ms</h6>
-                <h6>
-                  Chosen Move:{" "}
-                  {checkersGame.playerTwoMoves.length > 0
-                    ? `(${
-                        checkersGame.playerTwoMoves[
-                          checkersGame.playerTwoMoves.length - 1
-                        ].startRow + 1
-                      },
-                  ${
-                    checkersGame.playerTwoMoves[
-                      checkersGame.playerTwoMoves.length - 1
-                    ].startCol + 1
-                  }) to 
-                  (${
-                    checkersGame.playerTwoMoves[
-                      checkersGame.playerTwoMoves.length - 1
-                    ].endRow + 1
-                  }, 
-                    ${
-                      checkersGame.playerTwoMoves[
-                        checkersGame.playerTwoMoves.length - 1
-                      ].endCol + 1
-                    })`
-                    : ""}
-                </h6>
-                <h6>Evaluated Score of Move: {evaluatedScore.current}</h6>
-              </div>
-              <div className="heuristic">
-                <h5>AI's Prioritisation Metric</h5>
-                <h6>Comparison of Kings: Difference x 20</h6>
-                <h6>Comparison of regular pieces: Difference x 15</h6>
-                <h6>
-                  Opponent's Possible Captures: - No. of Captures available
-                </h6>
-                <h6>Central box: +/- 3 for every Black/Red Piece</h6>
-                <h6>Back Row Guard (For first 10 turns): +/- 10 Black/Red</h6>
-                <h6>Basic Piece Protection: +6 per piece protected</h6>
-                <h6>Pyramid Formation (For first 15 turns): + 5-15</h6>
-                <h6>Vulnerable Pieces: -/+ 6 Black/Red</h6>
-                <h6></h6>
-              </div>
-            </div>
+            <AIAnalysis
+              minimaxDepth={5}
+              numOfPositions={aiNumOfPositions.current}
+              aiMoveTime={aiMoveTime.current}
+              playerTwoMoves={checkersGame.playerTwoMoves}
+              evaluatedScore={evaluatedScore.current}
+            />
           ) : (
             ""
           )}
