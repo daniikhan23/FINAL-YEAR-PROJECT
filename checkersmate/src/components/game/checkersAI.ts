@@ -44,25 +44,52 @@ export class CheckersAI extends Player {
   public heuristic(game: CheckersGame): number {
     let score = 0;
     // Heuristic Component Scores
-    const scorePawn = 1;
-    const scoreKing = 1.75;
-    const scoreSafePawn = 1.25;
+    const scorePawn = 10;
+    const scoreKing = 20;
+    const scoreSafePawn = 1.5;
     const scoreSafeKing = 2;
+    const scoreMovablePawn = 1.1;
+    const scoreMovableKing = 1.85;
 
     this.game.board.forEach((row, rowIndex) => {
       row.forEach((piece, colIndex) => {
         if (piece) {
-          // Component 1: Number of pawns and kings
+          // Component 1 & 2: Number of pawns and kings
           let baseScore = piece.isKing ? scoreKing : scorePawn;
           score += piece.color === PieceColor.Black ? baseScore : -baseScore;
-
-          // Component 2: Safe pawns and kings
+          // Component 3 & 4: Safe pawns and kings
           const safe = this.isPieceSafe(rowIndex, colIndex, piece, game.board);
           // AI player
           if (safe && piece.color === this.color) {
             score += piece.isKing ? scoreSafeKing : scoreSafePawn;
           } else if (!safe && piece.color !== this.color) {
             score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
+          }
+
+          // 5. Number of moveable pawns (i.e. able to perform a move other than capturing).
+          // 6. Number of moveable kings. Parameters 5 and 6 are calculated taking no notice of
+          //    capturing priority;
+          const moves = game.possibleMoves(rowIndex, colIndex);
+          const nonCapturingMoves = moves.filter(
+            (move) => Math.abs(move.startRow - move.endRow) === 1
+          );
+
+          if (piece.color === this.color) {
+            if (nonCapturingMoves.length > 0) {
+              if (piece.isKing) {
+                score += scoreMovableKing * nonCapturingMoves.length;
+              } else {
+                score += scoreMovablePawn * nonCapturingMoves.length;
+              }
+            }
+          } else {
+            if (nonCapturingMoves.length > 0) {
+              if (piece.isKing) {
+                score -= scoreMovableKing * nonCapturingMoves.length;
+              } else {
+                score -= scoreMovablePawn * nonCapturingMoves.length;
+              }
+            }
           }
         }
       });

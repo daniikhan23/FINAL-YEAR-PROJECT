@@ -46,7 +46,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({
         <h6>Number of positions analysed: {numOfPositions}</h6>
         <h6>Time Taken: {aiMoveTime} ms</h6>
         <h6>Chosen Move: {formatLastMove()}</h6>
-        <h6>Evaluated Score of Move: {evaluatedScore}</h6>
+        <h6>Evaluated Score of Move: {evaluatedScore.toFixed(2)}</h6>
       </div>
       <div className="heuristic">
         <h5>AI's Prioritisation Metric</h5>
