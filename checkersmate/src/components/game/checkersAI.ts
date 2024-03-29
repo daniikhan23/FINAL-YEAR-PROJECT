@@ -43,104 +43,106 @@ export class CheckersAI extends Player {
 
   public heuristic(game: CheckersGame): number {
     let score = 0;
-    let aiPieceCount = game.players[1].numOfPieces,
-      playerPieceCount = game.players[0].numOfPieces;
-    let aiKingCount = 0,
-      playerKingCount = 0;
+    // Heuristic Component Scores
+    const scorePawn = 1;
+    const scoreKing = 1.75;
+    const scoreSafePawn = 1.25;
+    const scoreSafeKing = 2;
 
-    // Compare number of pieces
-    score += aiPieceCount * 15 - playerPieceCount * 15;
-
-    // Single capture
-    score -= this.countOpponentCapturesPossible(PieceColor.Red, game);
-
-    for (let row = 0; row < 8; row++) {
-      for (let col = 0; col < 8; col++) {
-        let piece = game.getPiece(row, col);
+    this.game.board.forEach((row, rowIndex) => {
+      row.forEach((piece, colIndex) => {
         if (piece) {
-          // Compare King Counts
-          if (piece.color === PieceColor.Black && piece.isKing === true) {
-            aiKingCount++;
-          } else if (piece.color === PieceColor.Red && piece.isKing === true) {
-            playerKingCount++;
-          }
-          // Central box
-          if (col >= 2 && col <= 5 && row >= 3 && row <= 4) {
-            score += piece.color === PieceColor.Black ? 2.5 : -2.5;
-          }
-          // Central boundaries
-          if (row >= 3 && row <= 4 && col < 2 && col > 5) {
-            score += piece.color === PieceColor.Black ? 0.5 : -0.5;
-          }
-          // Back Row Guard
-          if (game.numOfTurns < 10) {
-            if (piece.color === PieceColor.Black && row === 0) {
-              if (col === 1 || col === 5) {
-                score += 10;
-              }
-            } else if (piece.color === PieceColor.Red && row === 7) {
-              if (col === 2 || col === 6) {
-                score -= 10;
-              }
-            }
-          }
+          // Component 1: Number of pawns and kings
+          let baseScore = piece.isKing ? scoreKing : scorePawn;
+          score += piece.color === PieceColor.Black ? baseScore : -baseScore;
 
-          // Basic Piece Protection
-          if (row >= 1 && row <= 6 && col >= 1 && col <= 6) {
-            let backwardRow =
-              piece.color === PieceColor.Black ? row - 1 : row + 1;
-
-            let leftProtectionPiece = game.getPiece(backwardRow, col - 1);
-            let rightProtectionPiece = game.getPiece(backwardRow, col + 1);
-
-            if (
-              leftProtectionPiece &&
-              leftProtectionPiece.color === piece.color
-            ) {
-              // Increase score because the piece is protected from the left
-              score += piece.color === PieceColor.Black ? 6 : -6;
-            }
-            if (
-              rightProtectionPiece &&
-              rightProtectionPiece.color === piece.color
-            ) {
-              // Increase score because the piece is protected from the right
-              score += piece.color === PieceColor.Black ? 6 : -6;
-            }
-          }
-
-          // Pyramid Formation
-          if (game.numOfTurns < 15) {
-            if (piece.color === PieceColor.Black) {
-              if (row === 0) {
-                if (col === 1 || col === 3 || col == 5) {
-                  score += 5;
-                }
-              }
-              if (row === 1) {
-                if (col === 2 || col === 4) {
-                  score += 5;
-                }
-              }
-              if (row === 2) {
-                if (col === 3) {
-                  score += 5;
-                }
-              }
-            }
-          }
-
-          // Protect vulnerable pieces
-          if (!game.isVulnerable(row, col)) {
-            score += piece.color === PieceColor.Black ? -6 : 6;
+          // Component 2: Safe pawns and kings
+          const safe = this.isPieceSafe(rowIndex, colIndex, piece, game.board);
+          // AI player
+          if (safe && piece.color === this.color) {
+            score += piece.isKing ? scoreSafeKing : scoreSafePawn;
+          } else if (!safe && piece.color !== this.color) {
+            score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
           }
         }
-      }
-    }
-
-    score += aiKingCount * 20 - playerKingCount * 20;
+      });
+    });
 
     return score;
+  }
+
+  public isPieceSafe(
+    row: number,
+    col: number,
+    piece: CheckersPiece,
+    board: (CheckersPiece | null)[][]
+  ): boolean {
+    // Edge of the board is always safe
+    if (row === 0 || row === 7 || col === 0 || col === 7) {
+      return true;
+    }
+
+    // Directions for black regular
+    let directions = [
+      [-1, -1],
+      [-1, 1],
+    ];
+
+    // If checking for a king, consider all directions
+    if (piece.isKing) {
+      directions = [
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+      ];
+    }
+
+    let isSafe = true;
+
+    directions.forEach(([dr, dc]) => {
+      // Check for potential capturers from all directions for king pieces
+      for (let multiplier = 1; multiplier <= 7; multiplier++) {
+        const captureRow = row + dr * multiplier;
+        const captureCol = col + dc * multiplier;
+
+        // Break the loop if we go off the board, as further checks aren't needed
+        if (
+          captureRow < 0 ||
+          captureRow > 7 ||
+          captureCol < 0 ||
+          captureCol > 7
+        )
+          break;
+
+        const capturePiece = board[captureRow][captureCol];
+        // If we encounter a piece, check if it's an opponent's piece
+        if (capturePiece) {
+          if (capturePiece.color !== piece.color) {
+            // If it's an opponent's king or the first piece we encounter in this direction, it's a potential threat
+            if (capturePiece.isKing || multiplier === 1) {
+              // Check if the capturing move is possible (empty landing spot)
+              const landingRow = captureRow + dr;
+              const landingCol = captureCol + dc;
+              if (
+                landingRow >= 0 &&
+                landingRow < 8 &&
+                landingCol >= 0 &&
+                landingCol < 8 &&
+                !board[landingRow][landingCol]
+              ) {
+                isSafe = false;
+              } else {
+                isSafe = true;
+              }
+            }
+          }
+          break; // Stop checking in this direction once any piece is encountered
+        }
+      }
+    });
+
+    return isSafe;
   }
 
   private countOpponentCapturesPossible(
@@ -512,42 +514,44 @@ export class CheckersAI extends Player {
   /**
    * Method for the AI to make a move using the minimax algorithm to get the 'best' move and using that.
    */
+
   public makeMove(): [number, Moves, number] | null {
     let numOfPositions = this.positionsAnalysed;
     if (this.game.currentState === State.gameFinished) {
       this.game.changeTurn();
       return null;
     } else {
-      this.identifyOpening();
-      if (this.currentOpening) {
-        const move = this.getOpeningMove();
-        if (move) {
-          return [999, move, 1];
-        } else {
-          return this.playMinimaxMove();
-        }
-        // Optimal Opening Alternative
-      } else if (
-        this.game.numOfTurns === 1 &&
-        this.game.getPiece(3, 4) === null
-      ) {
-        const move: Moves = new Moves(2, 5, 3, 4);
-        return [999, move, 1];
-      } else if (
-        this.game.numOfTurns === 3 &&
-        this.game.getPiece(2, 5) === null
-      ) {
-        const move: Moves = new Moves(1, 6, 2, 5);
-        return [999, move, 1];
-      } else if (
-        this.game.numOfTurns === 5 &&
-        this.game.getPiece(1, 6) === null
-      ) {
-        const move: Moves = new Moves(0, 7, 1, 6);
-        return [999, move, numOfPositions];
-      } else {
-        return this.playMinimaxMove();
-      }
+      return this.playMinimaxMove();
+      // this.identifyOpening();
+      // if (this.currentOpening) {
+      //   const move = this.getOpeningMove();
+      //   if (move) {
+      //     return [999, move, 1];
+      //   } else {
+      //     return this.playMinimaxMove();
+      //   }
+      //   // Optimal Opening Alternative
+      // } else if (
+      //   this.game.numOfTurns === 1 &&
+      //   this.game.getPiece(3, 4) === null
+      // ) {
+      //   const move: Moves = new Moves(2, 5, 3, 4);
+      //   return [999, move, 1];
+      // } else if (
+      //   this.game.numOfTurns === 3 &&
+      //   this.game.getPiece(2, 5) === null
+      // ) {
+      //   const move: Moves = new Moves(1, 6, 2, 5);
+      //   return [999, move, 1];
+      // } else if (
+      //   this.game.numOfTurns === 5 &&
+      //   this.game.getPiece(1, 6) === null
+      // ) {
+      //   const move: Moves = new Moves(0, 7, 1, 6);
+      //   return [999, move, numOfPositions];
+      // } else {
+      //   return this.playMinimaxMove();
+      // }
     }
   }
 
