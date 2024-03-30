@@ -51,6 +51,7 @@ export class CheckersAI extends Player {
     const scoreMovablePawn = 1.1;
     const scoreMovableKing = 1.85;
     const scoreDistanceToPromotionLine = 0.1;
+    const scoreUnoccupiedOnPromotionLine = 0.5;
 
     this.game.board.forEach((row, rowIndex) => {
       row.forEach((piece, colIndex) => {
@@ -66,7 +67,6 @@ export class CheckersAI extends Player {
           } else if (!safe && piece.color !== this.color) {
             score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
           }
-
           // 5. Number of moveable pawns (i.e. able to perform a move other than capturing).
           // 6. Number of moveable kings. Parameters 5 and 6 are calculated taking no notice of
           //    capturing priority;
@@ -74,7 +74,6 @@ export class CheckersAI extends Player {
           const nonCapturingMoves = moves.filter(
             (move) => Math.abs(move.startRow - move.endRow) === 1
           );
-
           if (piece.color === this.color) {
             if (nonCapturingMoves.length > 0) {
               if (piece.isKing) {
@@ -92,7 +91,6 @@ export class CheckersAI extends Player {
               }
             }
           }
-
           // 7. Aggregated distance of the pawns to promotion line
           if (!piece.isKing) {
             if (piece.color !== this.color) {
@@ -106,6 +104,35 @@ export class CheckersAI extends Player {
         }
       });
     });
+
+    // Component 8: Number of unoccupied fields on promotion line
+    const redPromotionCols = [1, 3, 5, 7];
+    const blackPromotionCols = [0, 2, 4, 6];
+
+    // Calculate empty or own piece in promotion lines
+    let blackPromotionLineEmpty = blackPromotionCols.reduce((acc, col) => {
+      const cell = game.board[7][col];
+      if (cell === null || (cell && cell.color === PieceColor.Black)) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
+    let redPromotionLineEmpty = redPromotionCols.reduce((acc, col) => {
+      const cell = game.board[0][col];
+      if (cell === null || (cell && cell.color === PieceColor.Red)) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
+    if (this.color === PieceColor.Black) {
+      score += scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Promotion line for Black
+      score -= scoreUnoccupiedOnPromotionLine * redPromotionLineEmpty; // Red's promotion line
+    } else {
+      score += scoreUnoccupiedOnPromotionLine * redPromotionLineEmpty; // Promotion line for Red
+      score -= scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Red's promotion line
+    }
 
     return score;
   }
