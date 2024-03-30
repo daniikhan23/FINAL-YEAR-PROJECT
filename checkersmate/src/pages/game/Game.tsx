@@ -330,7 +330,7 @@ const Game = () => {
           PieceColor.Black,
           AI,
           checkersGame,
-          5
+          1
         );
         checkersGame.setAI(aiPlayer);
       }

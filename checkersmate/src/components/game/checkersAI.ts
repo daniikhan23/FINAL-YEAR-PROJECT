@@ -50,6 +50,7 @@ export class CheckersAI extends Player {
     const scoreSafeKing = 2;
     const scoreMovablePawn = 1.1;
     const scoreMovableKing = 1.85;
+    const scoreDistanceToPromotionLine = 0.1;
 
     this.game.board.forEach((row, rowIndex) => {
       row.forEach((piece, colIndex) => {
@@ -89,6 +90,17 @@ export class CheckersAI extends Player {
               } else {
                 score -= scoreMovablePawn * nonCapturingMoves.length;
               }
+            }
+          }
+
+          // 7. Aggregated distance of the pawns to promotion line
+          if (!piece.isKing) {
+            if (piece.color !== this.color) {
+              const distanceToPromotion = rowIndex;
+              score -= scoreDistanceToPromotionLine * distanceToPromotion;
+            } else {
+              const distanceToPromotion = 7 - rowIndex;
+              score += scoreDistanceToPromotionLine * distanceToPromotion;
             }
           }
         }
