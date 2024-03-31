@@ -52,6 +52,7 @@ export class CheckersAI extends Player {
     const scoreMovableKing = 1.85;
     const scoreDistanceToPromotionLine = 0.1;
     const scoreUnoccupiedOnPromotionLine = 0.5;
+    const scoreDefenderPiece = 2;
 
     this.game.board.forEach((row, rowIndex) => {
       row.forEach((piece, colIndex) => {
@@ -134,6 +135,37 @@ export class CheckersAI extends Player {
       score -= scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Red's promotion line
     }
 
+    // Component 9: Number of defender pieces
+
+    // Determine the number of defender pieces
+    let blackDefenders = 0;
+    let redDefenders = 0;
+
+    // Check the two uppermost rows for Black defenders
+    for (let row = 0; row < 2; row++) {
+      game.board[row].forEach((piece, col) => {
+        if (piece && piece.color === PieceColor.Black) {
+          blackDefenders++;
+        }
+      });
+    }
+
+    // Check the two lowermost rows for Red defenders
+    for (let row = 6; row < 8; row++) {
+      game.board[row].forEach((piece, col) => {
+        if (piece && piece.color === PieceColor.Red) {
+          redDefenders++;
+        }
+      });
+    }
+
+    if (this.color === PieceColor.Black) {
+      score += scoreDefenderPiece * blackDefenders; // Reward for having Black defenders
+      score -= scoreDefenderPiece * redDefenders; // Penalize for opponent's Red defenders
+    } else {
+      score += scoreDefenderPiece * redDefenders; // Reward for having Red defenders
+      score -= scoreDefenderPiece * blackDefenders; // Penalize for opponent's Black defenders
+    }
     return score;
   }
 
