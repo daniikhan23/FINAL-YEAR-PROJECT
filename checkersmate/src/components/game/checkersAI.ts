@@ -53,8 +53,24 @@ export class CheckersAI extends Player {
     const scoreDistanceToPromotionLine = 0.1;
     const scoreUnoccupiedOnPromotionLine = 0.5;
     const scoreDefenderPiece = 2;
+    const scoreCentralPawn = 3;
+    const scoreCentralKing = 5;
+    const scoreAttackingPawn = 2.5;
+    const scoreDiagonalPawn = 2;
+    const scoreDiagonalKing = 4;
+    const scoreDoubleDiagonalPawn = 2;
+    const scoreDoubleDiagonalKing = 4;
+    const scoreLonerPawn = -1;
+    const scoreLonerKing = -0.5;
+    const trianglePattern = 1.5;
+    const bridgePattern = 3;
+    const dogPattern = 4.5;
 
-    this.game.board.forEach((row, rowIndex) => {
+    let trianglePatterns = 0;
+    let lonerPawns = 0;
+    let lonerKings = 0;
+
+    game.board.forEach((row, rowIndex) => {
       row.forEach((piece, colIndex) => {
         if (piece) {
           // Component 1 & 2: Number of pawns and kings
@@ -102,6 +118,26 @@ export class CheckersAI extends Player {
               score += scoreDistanceToPromotionLine * distanceToPromotion;
             }
           }
+
+          // 17 && 18. Number of loner pawns and kings
+          if (this.isLoner(rowIndex, colIndex, game.board)) {
+            if (piece.isKing) {
+              lonerKings += piece.color === this.color ? 1 : -1;
+            } else {
+              lonerPawns += piece.color === this.color ? 1 : -1;
+            }
+          }
+
+          // 19. Triangle Pattern
+          if (piece.color === this.color) {
+            if (this.isTrianglePattern(rowIndex, colIndex, game.board)) {
+              trianglePatterns++;
+            }
+          } else {
+            if (this.isTrianglePattern(rowIndex, colIndex, game.board)) {
+              trianglePatterns--;
+            }
+          }
         }
       });
     });
@@ -136,7 +172,6 @@ export class CheckersAI extends Player {
     }
 
     // Component 9: Number of defender pieces
-
     // Determine the number of defender pieces
     let blackDefenders = 0;
     let redDefenders = 0;
@@ -166,7 +201,296 @@ export class CheckersAI extends Player {
       score += scoreDefenderPiece * redDefenders; // Reward for having Red defenders
       score -= scoreDefenderPiece * blackDefenders; // Penalize for opponent's Black defenders
     }
+
+    // 10. Number of attacking pawns
+    // Detmine number of attacking pieces
+    let blackAttackingPawns = 0;
+    let redAttackingPawns = 0;
+
+    // Count Black attacking pawns in the top 3 rows
+    for (let row = 2; row < 5; row++) {
+      game.board[row].forEach((piece) => {
+        if (piece && piece.color === PieceColor.Black && !piece.isKing) {
+          blackAttackingPawns++;
+        }
+      });
+    }
+
+    // Count Red attacking pawns in the bottom 3 rows
+    for (let row = 3; row < 6; row++) {
+      game.board[row].forEach((piece) => {
+        if (piece && piece.color === PieceColor.Red && !piece.isKing) {
+          redAttackingPawns++;
+        }
+      });
+    }
+
+    if (this.color === PieceColor.Black) {
+      score += scoreAttackingPawn * blackAttackingPawns; // Reward for having Black attacking pawns
+      score -= scoreAttackingPawn * redAttackingPawns; // Penalize for opponent's Red attacking pawns
+    } else {
+      score += scoreAttackingPawn * redAttackingPawns; // Reward for having Red attacking pawns
+      score -= scoreAttackingPawn * blackAttackingPawns; // Penalize for opponent's Black attacking pawns
+    }
+
+    // Components 11 & 12: Central pawns and kings
+    const centralPositions = [
+      [2, 3],
+      [2, 5],
+      [3, 2],
+      [3, 4],
+      [4, 3],
+      [4, 5],
+      [5, 2],
+      [5, 4],
+    ];
+
+    let centralPawns = 0;
+    let centralKings = 0;
+
+    centralPositions.forEach(([row, col]) => {
+      const piece = game.board[row][col];
+      if (piece) {
+        if (piece.isKing) {
+          // Count centrally positioned kings
+          centralKings += piece.color === this.color ? 1 : -1;
+        } else {
+          // Count centrally positioned pawns
+          centralPawns += piece.color === this.color ? 1 : -1;
+        }
+      }
+    });
+
+    score += scoreCentralPawn * centralPawns;
+    score += scoreCentralKing * centralKings;
+
+    // EXPERIMENTAL
+    // 13 & 14. Number of pawns and kings positioned on the main diagonal
+    let diagonalPawns = 0;
+    let diagonalKings = 0;
+
+    const mainDiagonal = [
+      [0, 7],
+      [1, 6],
+      [2, 5],
+      [3, 4],
+      [4, 3],
+      [5, 2],
+      [6, 1],
+      [7, 0],
+    ];
+
+    for (let i = 0; i < 8; i++) {
+      const piece = game.board[i][i];
+      if (piece) {
+        if (piece.isKing) {
+          diagonalKings += piece.color === this.color ? 1 : -1;
+        } else {
+          diagonalPawns += piece.color === this.color ? 1 : -1;
+        }
+      }
+    }
+
+    score += scoreDiagonalPawn * diagonalPawns;
+    score += scoreDiagonalKing * diagonalKings;
+
+    // 15 && 16. Number of pawns and kings situated on double diagonal
+    const doubleDiagonalOne = [
+      [1, 0],
+      [2, 1],
+      [3, 2],
+      [4, 3],
+      [5, 4],
+      [6, 5],
+      [7, 6],
+    ];
+    const doubleDiagonalTwo = [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+    ];
+
+    // Count pawns and kings on these positions
+    const doubleDiagonals = doubleDiagonalOne.concat(doubleDiagonalTwo);
+
+    let doubleDiagonalPawns = 0;
+    let doubleDiagonalKings = 0;
+
+    doubleDiagonals.forEach(([row, col]) => {
+      const piece = game.board[row][col];
+      if (piece && piece.color === this.color) {
+        if (piece.isKing) {
+          doubleDiagonalKings++;
+        } else {
+          doubleDiagonalPawns++;
+        }
+      } else if (piece && piece.color !== this.color) {
+        if (piece.isKing) {
+          doubleDiagonalKings--;
+        } else {
+          doubleDiagonalPawns--;
+        }
+      }
+    });
+
+    score += scoreDoubleDiagonalPawn * doubleDiagonalPawns;
+    score += scoreDoubleDiagonalKing * doubleDiagonalKings;
+
+    score += scoreLonerPawn * lonerPawns;
+    score += scoreLonerKing * lonerKings;
+
+    score += trianglePatterns * trianglePattern;
+
+    // 20. Bridge pattern
+    if (this.RedBridgePattern(game)) {
+      score -= bridgePattern * 5;
+    } else if (this.BlackBridgePattern(game)) {
+      score += bridgePattern * 5;
+    }
+
+    // 21. Dog pattern
+    if (this.RedDogPattern(game)) {
+      score -= dogPattern * 5;
+    } else if (this.BlackDogPattern(game)) {
+      score += dogPattern * 5;
+    }
+
     return score;
+  }
+
+  public RedDogPattern(game: CheckersGame): boolean {
+    const pieceOne = game.getPiece(6, 7);
+    const pieceTwo = game.getPiece(7, 6);
+
+    if (pieceOne && pieceTwo) {
+      if (
+        !(pieceOne.isKing && pieceTwo.isKing) &&
+        pieceOne.color === PieceColor.Red &&
+        pieceTwo.color === PieceColor.Red
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public BlackDogPattern(game: CheckersGame): boolean {
+    const pieceOne = game.getPiece(0, 1);
+    const pieceTwo = game.getPiece(1, 0);
+
+    if (pieceOne && pieceTwo) {
+      if (
+        !(pieceOne.isKing && pieceTwo.isKing) &&
+        pieceOne.color === PieceColor.Black &&
+        pieceTwo.color === PieceColor.Black
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public BlackBridgePattern(game: CheckersGame): boolean {
+    const pieceOne = game.getPiece(0, 1);
+    const pieceTwo = game.getPiece(0, 5);
+
+    if (!pieceOne?.isKing && !pieceTwo?.isKing) {
+      if (
+        pieceOne &&
+        pieceTwo &&
+        pieceOne.color === PieceColor.Black &&
+        pieceTwo.color === PieceColor.Black
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public RedBridgePattern(game: CheckersGame): boolean {
+    const pieceOne = game.getPiece(7, 2);
+    const pieceTwo = game.getPiece(7, 6);
+
+    if (!pieceOne?.isKing && !pieceTwo?.isKing) {
+      if (
+        pieceOne &&
+        pieceTwo &&
+        pieceOne.color === PieceColor.Red &&
+        pieceTwo.color === PieceColor.Red
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public isTrianglePattern(
+    row: number,
+    col: number,
+    board: (CheckersPiece | null)[][]
+  ): boolean {
+    const trianglePosition = [
+      [
+        [-1, -1],
+        [-1, 1],
+        [-2, 0],
+      ],
+    ];
+
+    const piece = board[row][col];
+    if (!piece) return false;
+
+    // Check if a triangle pattern exists around the piece
+    for (const positions of trianglePosition) {
+      const isPattern = positions.every(([dr, dc]) => {
+        const newRow = row + dr;
+        const newCol = col + dc;
+        return (
+          newRow >= 0 &&
+          newRow < 8 &&
+          newCol >= 0 &&
+          newCol < 8 &&
+          board[newRow][newCol] &&
+          board[newRow][newCol]?.color === piece.color
+        );
+      });
+
+      if (isPattern) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public isLoner(
+    row: number,
+    col: number,
+    board: (CheckersPiece | null)[][]
+  ): boolean {
+    const directions = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+    ];
+
+    return directions.every(([dr, dc]) => {
+      const newRow = row + dr,
+        newCol = col + dc;
+      if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+        return board[newRow][newCol] === null;
+      }
+      return true;
+    });
   }
 
   public isPieceSafe(
