@@ -42,10 +42,11 @@ export class CheckersAI extends Player {
    */
 
   public heuristic(game: CheckersGame): number {
+    const gamePhase = this.getGamePhase(game);
     let score = 0;
     // Heuristic Component Scores
-    const scorePawn = 10;
-    const scoreKing = 20;
+    const scorePawn = gamePhase === "endgame" ? 20 : "midgame" ? 15 : 10;
+    const scoreKing = gamePhase === "endgame" ? 30 : "midgame" ? 25 : 20;
     const scoreSafePawn = 1.5;
     const scoreSafeKing = 2;
     const scoreMovablePawn = 1.1;
@@ -360,6 +361,15 @@ export class CheckersAI extends Player {
     }
 
     return score;
+  }
+
+  private getGamePhase(game: CheckersGame): "opening" | "midgame" | "endgame" {
+    const totalPieces = game.board
+      .flat()
+      .filter((piece) => piece !== null).length;
+    if (totalPieces > 20) return "opening";
+    else if (totalPieces > 10) return "midgame";
+    else return "endgame";
   }
 
   public RedDogPattern(game: CheckersGame): boolean {
