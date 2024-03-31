@@ -45,8 +45,12 @@ export class CheckersAI extends Player {
     const gamePhase = this.getGamePhase(game);
     let score = 0;
     // Heuristic Component Scores
-    const scorePawn = gamePhase === "endgame" ? 20 : "midgame" ? 15 : 10;
-    const scoreKing = gamePhase === "endgame" ? 30 : "midgame" ? 25 : 20;
+    const scorePawn =
+      // gamePhase === "endgame" ? 20 : "midgame" ? 15 :
+      10;
+    const scoreKing =
+      // gamePhase === "endgame" ? 30 : "midgame" ? 25 :
+      20;
     const scoreSafePawn = 1.5;
     const scoreSafeKing = 2;
     const scoreMovablePawn = 1.1;
@@ -80,11 +84,20 @@ export class CheckersAI extends Player {
           // Component 3 & 4: Safe pawns and kings
           const safe = this.isPieceSafe(rowIndex, colIndex, piece, game.board);
           // AI player
-          if (safe && piece.color === this.color) {
-            score += piece.isKing ? scoreSafeKing : scoreSafePawn;
-          } else if (!safe && piece.color !== this.color) {
-            score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
+          if (safe) {
+            if (piece.color === this.color) {
+              score += piece.isKing ? scoreSafeKing : scoreSafePawn;
+            } else {
+              score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
+            }
+          } else {
+            if (piece.color === this.color) {
+              score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
+            } else {
+              score += piece.isKing ? scoreSafeKing : scoreSafePawn;
+            }
           }
+
           // 5. Number of moveable pawns (i.e. able to perform a move other than capturing).
           // 6. Number of moveable kings. Parameters 5 and 6 are calculated taking no notice of
           //    capturing priority;
@@ -109,6 +122,7 @@ export class CheckersAI extends Player {
               }
             }
           }
+
           // 7. Aggregated distance of the pawns to promotion line
           if (!piece.isKing) {
             if (piece.color !== this.color) {
@@ -123,9 +137,9 @@ export class CheckersAI extends Player {
           // 17 && 18. Number of loner pawns and kings
           if (this.isLoner(rowIndex, colIndex, game.board)) {
             if (piece.isKing) {
-              lonerKings += piece.color === this.color ? 1 : -1;
+              lonerKings += piece.color === this.color ? -1 : 1;
             } else {
-              lonerPawns += piece.color === this.color ? 1 : -1;
+              lonerPawns += piece.color === this.color ? -1 : 1;
             }
           }
 
@@ -164,7 +178,7 @@ export class CheckersAI extends Player {
       return acc;
     }, 0);
 
-    if (this.color === PieceColor.Black) {
+    if (game.currentPlayer.color === PieceColor.Black) {
       score += scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Promotion line for Black
       score -= scoreUnoccupiedOnPromotionLine * redPromotionLineEmpty; // Red's promotion line
     } else {
@@ -195,7 +209,7 @@ export class CheckersAI extends Player {
       });
     }
 
-    if (this.color === PieceColor.Black) {
+    if (game.currentPlayer.color === PieceColor.Black) {
       score += scoreDefenderPiece * blackDefenders; // Reward for having Black defenders
       score -= scoreDefenderPiece * redDefenders; // Penalize for opponent's Red defenders
     } else {
@@ -226,7 +240,7 @@ export class CheckersAI extends Player {
       });
     }
 
-    if (this.color === PieceColor.Black) {
+    if (game.currentPlayer.color === PieceColor.Black) {
       score += scoreAttackingPawn * blackAttackingPawns; // Reward for having Black attacking pawns
       score -= scoreAttackingPawn * redAttackingPawns; // Penalize for opponent's Red attacking pawns
     } else {
