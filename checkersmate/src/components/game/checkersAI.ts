@@ -51,16 +51,16 @@ export class CheckersAI extends Player {
     const scoreKing =
       // gamePhase === "endgame" ? 30 : "midgame" ? 25 :
       20;
-    const scoreSafePawn = 1.5;
-    const scoreSafeKing = 2;
+    const scoreSafePawn = 6;
+    const scoreSafeKing = 7.5;
     const scoreMovablePawn = 1.1;
     const scoreMovableKing = 1.85;
     const scoreDistanceToPromotionLine = 0.1;
     const scoreUnoccupiedOnPromotionLine = 0.5;
-    const scoreDefenderPiece = 2;
-    const scoreCentralPawn = 3;
+    const scoreDefenderPiece = 1;
+    const scoreCentralPawn = 4;
     const scoreCentralKing = 5;
-    const scoreAttackingPawn = 2.5;
+    const scoreAttackingPawn = 3.5;
     const scoreDiagonalPawn = 2;
     const scoreDiagonalKing = 4;
     const scoreDoubleDiagonalPawn = 2;
@@ -68,8 +68,9 @@ export class CheckersAI extends Player {
     const scoreLonerPawn = -1;
     const scoreLonerKing = -0.5;
     const trianglePattern = 1.5;
-    const bridgePattern = 3;
+    const bridgePattern = 4;
     const dogPattern = 4.5;
+    const scoreRedPromotion = 15;
 
     let trianglePatterns = 0;
     let lonerPawns = 0;
@@ -245,10 +246,10 @@ export class CheckersAI extends Player {
       if (piece) {
         if (piece.isKing) {
           // Count centrally positioned kings
-          centralKings += piece.color === this.color ? 1 : -1;
+          centralKings += 1;
         } else {
           // Count centrally positioned pawns
-          centralPawns += piece.color === this.color ? 1 : -1;
+          centralPawns += 1;
         }
       }
     });
@@ -256,7 +257,7 @@ export class CheckersAI extends Player {
     score += scoreCentralPawn * centralPawns;
     score += scoreCentralKing * centralKings;
 
-    // // EXPERIMENTAL
+    // EXPERIMENTAL
     // 13 & 14. Number of pawns and kings positioned on the main diagonal
     let diagonalPawns = 0;
     let diagonalKings = 0;
@@ -364,6 +365,19 @@ export class CheckersAI extends Player {
     } else if (this.BlackDogPattern(game)) {
       score += dogPattern * 5;
     }
+
+    // 22. Danger of Red Promotion
+    let redPromotion = 0;
+    for (let row = 1; row < 8; row++) {
+      for (let col = 1; col < 8; col++) {
+        const piece = game.getPiece(row, col);
+        if (piece && piece.isKing === false && piece.color === PieceColor.Red) {
+          redPromotion++;
+        }
+      }
+    }
+
+    score -= redPromotion * scoreRedPromotion;
 
     return score;
   }
