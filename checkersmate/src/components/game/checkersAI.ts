@@ -81,31 +81,27 @@ export class CheckersAI extends Player {
           // Component 1 & 2: Number of pawns and kings
           let baseScore = piece.isKing ? scoreKing : scorePawn;
           score += piece.color === PieceColor.Black ? baseScore : -baseScore;
+
           // Component 3 & 4: Safe pawns and kings
           const safe = this.isPieceSafe(rowIndex, colIndex, piece, game.board);
-          // AI player
           if (safe) {
-            if (piece.color === this.color) {
+            if (piece.color === PieceColor.Black) {
               score += piece.isKing ? scoreSafeKing : scoreSafePawn;
-            } else {
-              score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
             }
           } else {
-            if (piece.color === this.color) {
+            if (piece.color === PieceColor.Black) {
               score -= piece.isKing ? scoreSafeKing : scoreSafePawn;
-            } else {
-              score += piece.isKing ? scoreSafeKing : scoreSafePawn;
             }
           }
 
           // 5. Number of moveable pawns (i.e. able to perform a move other than capturing).
           // 6. Number of moveable kings. Parameters 5 and 6 are calculated taking no notice of
-          //    capturing priority;
+          //  capturing priority;
           const moves = game.possibleMoves(rowIndex, colIndex);
           const nonCapturingMoves = moves.filter(
             (move) => Math.abs(move.startRow - move.endRow) === 1
           );
-          if (piece.color === this.color) {
+          if (piece.color === PieceColor.Black) {
             if (nonCapturingMoves.length > 0) {
               if (piece.isKing) {
                 score += scoreMovableKing * nonCapturingMoves.length;
@@ -125,10 +121,10 @@ export class CheckersAI extends Player {
 
           // 7. Aggregated distance of the pawns to promotion line
           if (!piece.isKing) {
-            if (piece.color !== this.color) {
+            if (piece.color === PieceColor.Red) {
               const distanceToPromotion = rowIndex;
               score -= scoreDistanceToPromotionLine * distanceToPromotion;
-            } else {
+            } else if (piece.color === PieceColor.Black) {
               const distanceToPromotion = 7 - rowIndex;
               score += scoreDistanceToPromotionLine * distanceToPromotion;
             }
@@ -137,20 +133,17 @@ export class CheckersAI extends Player {
           // 17 && 18. Number of loner pawns and kings
           if (this.isLoner(rowIndex, colIndex, game.board)) {
             if (piece.isKing) {
-              lonerKings += piece.color === this.color ? -1 : 1;
+              lonerKings += piece.color === PieceColor.Black ? -1 : 1;
             } else {
-              lonerPawns += piece.color === this.color ? -1 : 1;
+              lonerPawns += piece.color === PieceColor.Black ? -1 : 1;
             }
           }
 
+          // Might need to be readjusted
           // 19. Triangle Pattern
-          if (piece.color === this.color) {
+          if (piece.color === PieceColor.Black) {
             if (this.isTrianglePattern(rowIndex, colIndex, game.board)) {
               trianglePatterns++;
-            }
-          } else {
-            if (this.isTrianglePattern(rowIndex, colIndex, game.board)) {
-              trianglePatterns--;
             }
           }
         }
@@ -178,16 +171,10 @@ export class CheckersAI extends Player {
       return acc;
     }, 0);
 
-    if (game.currentPlayer.color === PieceColor.Black) {
-      score += scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Promotion line for Black
-      score -= scoreUnoccupiedOnPromotionLine * redPromotionLineEmpty; // Red's promotion line
-    } else {
-      score += scoreUnoccupiedOnPromotionLine * redPromotionLineEmpty; // Promotion line for Red
-      score -= scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Red's promotion line
-    }
+    score += scoreUnoccupiedOnPromotionLine * blackPromotionLineEmpty; // Promotion line for Black
+    score -= scoreUnoccupiedOnPromotionLine * redPromotionLineEmpty; // Red's promotion line
 
     // Component 9: Number of defender pieces
-    // Determine the number of defender pieces
     let blackDefenders = 0;
     let redDefenders = 0;
 
@@ -201,52 +188,42 @@ export class CheckersAI extends Player {
     }
 
     // Check the two lowermost rows for Red defenders
-    for (let row = 6; row < 8; row++) {
-      game.board[row].forEach((piece, col) => {
-        if (piece && piece.color === PieceColor.Red) {
-          redDefenders++;
-        }
-      });
-    }
+    // for (let row = 6; row < 8; row++) {
+    //   game.board[row].forEach((piece, col) => {
+    //     if (piece && piece.color === PieceColor.Red) {
+    //       redDefenders++;
+    //     }
+    //   });
+    // }
 
-    if (game.currentPlayer.color === PieceColor.Black) {
-      score += scoreDefenderPiece * blackDefenders; // Reward for having Black defenders
-      score -= scoreDefenderPiece * redDefenders; // Penalize for opponent's Red defenders
-    } else {
-      score += scoreDefenderPiece * redDefenders; // Reward for having Red defenders
-      score -= scoreDefenderPiece * blackDefenders; // Penalize for opponent's Black defenders
-    }
+    score += scoreDefenderPiece * blackDefenders; // Reward for having Black defenders
 
     // 10. Number of attacking pawns
-    // Detmine number of attacking pieces
     let blackAttackingPawns = 0;
     let redAttackingPawns = 0;
 
     // Count Black attacking pawns in the top 3 rows
     for (let row = 2; row < 5; row++) {
-      game.board[row].forEach((piece) => {
+      for (let col = 1; col <= 5; col++) {
+        const piece = game.board[row][col];
         if (piece && piece.color === PieceColor.Black && !piece.isKing) {
           blackAttackingPawns++;
         }
-      });
+      }
     }
 
     // Count Red attacking pawns in the bottom 3 rows
     for (let row = 3; row < 6; row++) {
-      game.board[row].forEach((piece) => {
+      for (let col = 1; col <= 5; col++) {
+        const piece = game.board[row][col];
         if (piece && piece.color === PieceColor.Red && !piece.isKing) {
           redAttackingPawns++;
         }
-      });
+      }
     }
 
-    if (game.currentPlayer.color === PieceColor.Black) {
-      score += scoreAttackingPawn * blackAttackingPawns; // Reward for having Black attacking pawns
-      score -= scoreAttackingPawn * redAttackingPawns; // Penalize for opponent's Red attacking pawns
-    } else {
-      score += scoreAttackingPawn * redAttackingPawns; // Reward for having Red attacking pawns
-      score -= scoreAttackingPawn * blackAttackingPawns; // Penalize for opponent's Black attacking pawns
-    }
+    score += scoreAttackingPawn * blackAttackingPawns; // Reward for having Black attacking pawns
+    score -= scoreAttackingPawn * redAttackingPawns; // Penalize for opponent's Red attacking pawns
 
     // Components 11 & 12: Central pawns and kings
     const centralPositions = [
@@ -279,7 +256,7 @@ export class CheckersAI extends Player {
     score += scoreCentralPawn * centralPawns;
     score += scoreCentralKing * centralKings;
 
-    // EXPERIMENTAL
+    // // EXPERIMENTAL
     // 13 & 14. Number of pawns and kings positioned on the main diagonal
     let diagonalPawns = 0;
     let diagonalKings = 0;
@@ -299,9 +276,9 @@ export class CheckersAI extends Player {
       const piece = game.board[i][i];
       if (piece) {
         if (piece.isKing) {
-          diagonalKings += piece.color === this.color ? 1 : -1;
+          diagonalKings += piece.color === game.currentPlayer.color ? 1 : -1;
         } else {
-          diagonalPawns += piece.color === this.color ? 1 : -1;
+          diagonalPawns += piece.color === game.currentPlayer.color ? 1 : -1;
         }
       }
     }
@@ -329,13 +306,27 @@ export class CheckersAI extends Player {
       [6, 7],
     ];
 
-    // Count pawns and kings on these positions
-    const doubleDiagonals = doubleDiagonalOne.concat(doubleDiagonalTwo);
-
     let doubleDiagonalPawns = 0;
     let doubleDiagonalKings = 0;
 
-    doubleDiagonals.forEach(([row, col]) => {
+    doubleDiagonalOne.forEach(([row, col]) => {
+      const piece = game.board[row][col];
+      if (piece && piece.color === this.color) {
+        if (piece.isKing) {
+          doubleDiagonalKings++;
+        } else {
+          doubleDiagonalPawns++;
+        }
+      } else if (piece && piece.color !== this.color) {
+        if (piece.isKing) {
+          doubleDiagonalKings--;
+        } else {
+          doubleDiagonalPawns--;
+        }
+      }
+    });
+
+    doubleDiagonalTwo.forEach(([row, col]) => {
       const piece = game.board[row][col];
       if (piece && piece.color === this.color) {
         if (piece.isKing) {
