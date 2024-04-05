@@ -1027,6 +1027,25 @@ export class CheckersAI extends Player {
       );
       return [score, move, numOfPositions];
     } else {
+      if (this.game.players[1].numOfPieces !== 0) {
+        console.log("inside test final move");
+        for (let i = 0; i < 8; i++) {
+          for (let j = 0; j < 8; j++) {
+            const piece = this.game.getPiece(i, j);
+            if (piece && piece.color === PieceColor.Black) {
+              const moves = this.game.possibleMoves(i, j);
+              const move = moves[0];
+              this.game.movePiece(
+                move.startRow,
+                move.startCol,
+                move.endRow,
+                move.endCol
+              );
+              return [-999, move, 1];
+            }
+          }
+        }
+      }
       console.log(`${this.game.players[1].name} has no valid moves!`);
       this.game.changeTurn();
       return null;
