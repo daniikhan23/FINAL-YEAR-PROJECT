@@ -21,10 +21,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const countryOptions = Object.entries(countries).map(([code, country]) => ({
-  code,
-  name: country.name,
-}));
+const countryOptions = Object.entries(countries)
+  .map(([code, country]) => ({
+    code,
+    name: country.name,
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 const selectCountryOptions = countryOptions.map(({ code, name }) => ({
   value: code,
