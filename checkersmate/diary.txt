@@ -307,3 +307,12 @@ Rating and record bugs are now fixed as well as the website being fully responsi
 it's a positive experience on various devices but seems good for the moment. Furthermore, I've added a number grid outside the game board so users are able to see the 
 positions of the board better as well as there being a sound when moves are made. The website is officially now done. Next steps will just be to make sure everything 
 is in order and working as expected. 
+
+Made some adjustments to the heuristic used by minimax. It still does not seem to be 'amazing' but i guess that is to be expected at this level. Minimax alone has its 
+challenges in terms of making a strong AI. Making a strong heuristic as an individual alone without any real resources to consult regarding checkers theory makes this 
+an impossible task. I've made a version of it now that seems to be the best so far but idk how else to improve it at this point because I really don't know what to do.
+Though, I am not completely happy with it, I am happy with the progress and learning so far regarding creating an AI for a game. I never thought I'd make a playable
+game letalone an AI for it. I think future considerations for this will be looking into perhaps machine learning and neural networks and how they could work but for
+now, this will be fine. I'll have to clarify and discuss at length the AI and the heuristic and the challenges of making a strong AI. FOcus is now on the final 
+report and once that is complete, if enough time remains, I'll take a look at what else i can do for the website in general or the AI. Let's keep going in this final 
+step!
