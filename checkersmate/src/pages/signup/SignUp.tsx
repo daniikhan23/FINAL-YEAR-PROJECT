@@ -40,6 +40,7 @@ const selectCountryOptions = countryOptions.map(({ code, name }) => ({
       {name}
     </div>
   ),
+  searchableLabel: name,
 }));
 
 /**
@@ -182,6 +183,17 @@ const Signup = () => {
               className="country-select"
               isClearable={true}
               isSearchable={true}
+              filterOption={(option, inputValue) => {
+                if (
+                  option.data &&
+                  typeof option.data.searchableLabel === "string"
+                ) {
+                  return option.data.searchableLabel
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase());
+                }
+                return false;
+              }}
             />
             <label htmlFor="password">
               <b>Password</b>
