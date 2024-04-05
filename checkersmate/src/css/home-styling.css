@@ -79,6 +79,14 @@
   color: #f5ac8e;
 }
 
+.cards .container .row .col .card:hover {
+  background-color: rgba(28, 27, 27, 0.5);
+}
+
+.cards .container .row .col .card::after {
+  transform: translateY(8px);
+}
+
 /* XS devices */
 @media (max-width: 575.98px) {
   .intro .intro-container .container-fluid {
