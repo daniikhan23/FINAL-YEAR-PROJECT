@@ -44,33 +44,35 @@ export class CheckersAI extends Player {
   public heuristic(game: CheckersGame): number {
     const gamePhase = this.getGamePhase(game);
     let score = 0;
+
     // Heuristic Component Scores
-    const scorePawn =
-      // gamePhase === "endgame" ? 20 : "midgame" ? 15 :
-      10;
-    const scoreKing =
-      // gamePhase === "endgame" ? 30 : "midgame" ? 25 :
-      20;
-    const scoreSafePawn = 6;
-    const scoreSafeKing = 7.5;
-    const scoreMovablePawn = 1.1;
-    const scoreMovableKing = 1.85;
-    const scoreDistanceToPromotionLine = 0.1;
-    const scoreUnoccupiedOnPromotionLine = 0.5;
-    const scoreDefenderPiece = 1;
-    const scoreCentralPawn = 4;
-    const scoreCentralKing = 5;
-    const scoreAttackingPawn = 3.5;
-    const scoreDiagonalPawn = 2;
-    const scoreDiagonalKing = 4;
+    const scorePawn = gamePhase === "endgame" ? 40 : "midgame" ? 20 : 10;
+    const scoreKing = gamePhase === "endgame" ? 80 : "midgame" ? 40 : 20;
+    const scoreSafePawn = gamePhase === "endgame" ? 8 : "midgame" ? 7 : 6;
+    const scoreSafeKing = gamePhase === "endgame" ? 32 : "midgame" ? 16 : 8;
+    const scoreMovablePawn = gamePhase === "endgame" ? 5 : "midgame" ? 3 : 2;
+    const scoreMovableKing =
+      gamePhase === "endgame" ? 7.5 : "midgame" ? 4.5 : 3.5;
+    const scoreDistanceToPromotionLine =
+      gamePhase === "endgame" ? 1.5 : "midgame" ? 1 : 0.5;
+    const scoreUnoccupiedOnPromotionLine =
+      gamePhase === "endgame" ? 1 : "midgame" ? 5 : 2.5;
+    const scoreDefenderPiece =
+      gamePhase === "endgame" ? 0 : "midgame" ? 3 : 1.5;
+    const scoreCentralPawn = gamePhase === "endgame" ? 12 : "midgame" ? 9 : 6;
+    const scoreCentralKing = gamePhase === "endgame" ? 15 : "midgame" ? 12 : 9;
+    const scoreAttackingPawn =
+      gamePhase === "endgame" ? 20 : "midgame" ? 10 : 7.5;
+    const scoreDiagonalPawn = gamePhase === "endgame" ? 0 : "midgame" ? 0 : 2;
+    const scoreDiagonalKing = gamePhase === "endgame" ? 0 : "midgame" ? 0 : 4;
     const scoreDoubleDiagonalPawn = 2;
     const scoreDoubleDiagonalKing = 4;
     const scoreLonerPawn = -1;
     const scoreLonerKing = -0.5;
-    const trianglePattern = 1.5;
-    const bridgePattern = 4;
-    const dogPattern = 4.5;
-    const scoreRedPromotion = 15;
+    const trianglePattern = gamePhase === "endgame" ? 0 : "midgame" ? 2.5 : 3.5;
+    const bridgePattern = gamePhase === "endgame" ? 1 : "midgame" ? 4.5 : 4;
+    const dogPattern = gamePhase === "endgame" ? 0 : "midgame" ? 5 : 4.5;
+    const scoreRedPromotion = 0;
 
     let trianglePatterns = 0;
     let lonerPawns = 0;
@@ -972,37 +974,37 @@ export class CheckersAI extends Player {
       this.game.changeTurn();
       return null;
     } else {
-      return this.playMinimaxMove();
-      // this.identifyOpening();
-      // if (this.currentOpening) {
-      //   const move = this.getOpeningMove();
-      //   if (move) {
-      //     return [999, move, 1];
-      //   } else {
-      //     return this.playMinimaxMove();
-      //   }
-      //   // Optimal Opening Alternative
-      // } else if (
-      //   this.game.numOfTurns === 1 &&
-      //   this.game.getPiece(3, 4) === null
-      // ) {
-      //   const move: Moves = new Moves(2, 5, 3, 4);
-      //   return [999, move, 1];
-      // } else if (
-      //   this.game.numOfTurns === 3 &&
-      //   this.game.getPiece(2, 5) === null
-      // ) {
-      //   const move: Moves = new Moves(1, 6, 2, 5);
-      //   return [999, move, 1];
-      // } else if (
-      //   this.game.numOfTurns === 5 &&
-      //   this.game.getPiece(1, 6) === null
-      // ) {
-      //   const move: Moves = new Moves(0, 7, 1, 6);
-      //   return [999, move, numOfPositions];
-      // } else {
-      //   return this.playMinimaxMove();
-      // }
+      // return this.playMinimaxMove();
+      this.identifyOpening();
+      if (this.currentOpening) {
+        const move = this.getOpeningMove();
+        if (move) {
+          return [999, move, 1];
+        } else {
+          return this.playMinimaxMove();
+        }
+        // Optimal Opening Alternative
+      } else if (
+        this.game.numOfTurns === 1 &&
+        this.game.getPiece(3, 4) === null
+      ) {
+        const move: Moves = new Moves(2, 5, 3, 4);
+        return [999, move, 1];
+      } else if (
+        this.game.numOfTurns === 3 &&
+        this.game.getPiece(2, 5) === null
+      ) {
+        const move: Moves = new Moves(1, 6, 2, 5);
+        return [999, move, 1];
+      } else if (
+        this.game.numOfTurns === 5 &&
+        this.game.getPiece(1, 6) === null
+      ) {
+        const move: Moves = new Moves(0, 7, 1, 6);
+        return [999, move, numOfPositions];
+      } else {
+        return this.playMinimaxMove();
+      }
     }
   }
 
