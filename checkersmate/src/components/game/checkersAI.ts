@@ -1029,19 +1029,21 @@ export class CheckersAI extends Player {
     } else {
       if (this.game.players[1].numOfPieces !== 0) {
         console.log("inside test final move");
-        for (let i = 0; i < 8; i++) {
-          for (let j = 0; j < 8; j++) {
-            const piece = this.game.getPiece(i, j);
+        for (let row = 0; row < 8; row++) {
+          for (let col = 0; col < 8; col++) {
+            const piece = this.game.getPiece(row, col);
             if (piece && piece.color === PieceColor.Black) {
-              const moves = this.game.possibleMoves(i, j);
+              const moves = this.game.possibleMoves(row, col);
               const move = moves[0];
-              this.game.movePiece(
-                move.startRow,
-                move.startCol,
-                move.endRow,
-                move.endCol
-              );
-              return [-999, move, 1];
+              if (move) {
+                this.game.movePiece(
+                  move.startRow,
+                  move.startCol,
+                  move.endRow,
+                  move.endCol
+                );
+                return [-999, move, 1];
+              }
             }
           }
         }
