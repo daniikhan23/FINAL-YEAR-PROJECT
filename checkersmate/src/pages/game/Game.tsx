@@ -146,9 +146,12 @@ const Game = () => {
     if (width < 576) {
       return 40; // Mobile
     } else if (width < 992) {
+      return 45; // Tablet
+    } else if (width < 1200) {
       return 50; //13ish'
+    } else {
+      return 65; // 15'
     }
-    return 65; // 15'
   }
 
   /**

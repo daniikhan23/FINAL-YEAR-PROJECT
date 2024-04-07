@@ -17,7 +17,7 @@
 .game .game-container {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
 }
 
 /* Game Board Section */
@@ -792,13 +792,13 @@
   }
 
   .game .game-container .game-info {
-    width: 250px;
-    height: 400px;
-    margin-top: 50px;
+    width: 275px;
+    height: 85vh;
+    margin-top: 0px;
   }
 
   .game .game-container .game-info .history-section {
-    height: 290px;
+    height: 68vh;
     padding: 10px;
     gap: 5px;
   }
@@ -856,6 +856,11 @@
 @media (min-width: 992px) {
   .game .game-container {
     gap: 25px;
+    margin-top: 0;
+  }
+
+  .game .game-container .main {
+    margin-top: 15px;
   }
 
   .game .game-container .main .board {
@@ -881,8 +886,8 @@
   }
 
   .game .game-container .main .board .board-row .board-col {
-    height: 60px;
-    width: 60px;
+    height: 55px;
+    width: 55px;
   }
 
   .game .game-container .main .board .board-row .board-col .piece-black,
@@ -890,8 +895,8 @@
   .game .game-container .main .board .board-row .board-col .piece-red,
   .game .game-container .main .board .board-row .board-col .piece-red-king {
     background-size: 140% 140%;
-    height: 50px;
-    width: 50px;
+    height: 45px;
+    width: 45px;
   }
 
   .game .game-container .main .board .board-row .board-col .piece-black:hover,
@@ -910,8 +915,8 @@
     .board-row
     .board-col
     .piece-red-king:hover {
-    height: 55px;
-    width: 55px;
+    height: 50px;
+    width: 50px;
   }
 
   .game .game-container .main .opponent-card {
@@ -1042,13 +1047,14 @@
 
   .game .game-container .game-info {
     width: 250px;
-    height: 475px;
-    margin-top: 53px;
+    height: 88vh;
+    margin-top: 0;
+    margin-bottom: 10px;
     margin-right: 10px;
   }
 
   .game .game-container .game-info .history-section {
-    height: 365px;
+    height: 70vh;
     padding: 10px;
     gap: 5px;
   }
@@ -1076,8 +1082,9 @@
     display: flex;
     padding: 10px;
     width: 360px;
-    height: 530px;
-    margin-top: 35px;
+    height: 85vh;
+    margin-bottom: 5px;
+    margin-top: 5px;
     margin-left: 10px;
   }
 
@@ -1112,7 +1119,11 @@
 @media (min-width: 1200px) {
   .game .game-container {
     gap: 25px;
-    margin-top: 10px;
+    margin-top: 0px;
+  }
+
+  .game .game-container .main {
+    margin-top: 15px;
   }
 
   .game .game-container .main .board-container .row-left {
@@ -1295,13 +1306,14 @@
   }
 
   .game .game-container .game-info {
-    width: 300px;
-    height: 560px;
-    margin-top: 50px;
+    width: 325px;
+    height: 88vh;
+    margin-top: 0px;
+    margin-bottom: 5px;
   }
 
   .game .game-container .game-info .history-section {
-    height: 450px;
+    height: 73vh;
     padding: 10px;
     gap: 5px;
   }
@@ -1327,15 +1339,15 @@
 
   .game .game-container .ai-analysis {
     display: flex;
-    width: 400px;
-    height: 560px;
+    width: 450px;
+    height: 85vh;
     padding: 10px;
-    margin-top: 35px;
+    margin-top: 0px;
   }
 
   .game .game-container .ai-analysis .header h5 {
     margin-top: 5px;
-    font-size: 1.75rem;
+    font-size: 2.25rem;
   }
 
   .game .game-container .ai-analysis .info {
@@ -1353,10 +1365,10 @@
   }
 
   .game .game-container .ai-analysis .heuristic h5 {
-    font-size: 1.75rem;
+    font-size: 2.25rem;
   }
 
   .game .game-container .ai-analysis .heuristic h6 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 }

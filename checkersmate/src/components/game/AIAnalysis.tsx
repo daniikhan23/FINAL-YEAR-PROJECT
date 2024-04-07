@@ -54,7 +54,6 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({
         <h5>AI's Prioritisation Metric</h5>
         <h6>Piece Differential (Kings, Pawns)</h6>
         <h6>Piece Safety and Mobility</h6>
-        <h6>Opponent's Possible Captures: - No. of Captures available</h6>
         <h6>Distances to Promotion and almost promoted pieces</h6>
         <h6>Central Pieces</h6>
         <h6>Attacking and Defending Pieces</h6>
