@@ -9,6 +9,8 @@ interface AIAnalysisProps {
   evaluatedScore: number;
 }
 
+const colToLetter = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
 /**
  * Displays analysis and metrics used by the AI during the game, including the last move made,
  * the number of positions analyzed, and the time taken for analysis.
@@ -31,9 +33,9 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({
   const formatLastMove = () => {
     const lastMove = playerTwoMoves[playerTwoMoves.length - 1];
     if (!lastMove) return "N/A";
-    return `(${lastMove.startRow + 1}, ${lastMove.startCol + 1}) to (${
-      lastMove.endRow + 1
-    }, ${lastMove.endCol + 1})`;
+    return `(${colToLetter[lastMove.startCol]}${lastMove.startRow + 1}) to (${
+      colToLetter[lastMove.endCol]
+    }${lastMove.endRow + 1})`;
   };
 
   return (

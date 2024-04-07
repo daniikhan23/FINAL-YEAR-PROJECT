@@ -19,6 +19,8 @@ interface GameInfoProps {
   resign: () => void;
 }
 
+const colToLetter = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
 /**
  * Displays the game information section including the history of moves and control buttons
  * for replaying the game, navigating through the history of moves, and resigning.
@@ -43,11 +45,11 @@ const GameInfo: React.FC<GameInfoProps> = ({
   return (
     <div className="game-info">
       <div className="history-section">
-        <h5>History of Moves (Row, Column): </h5>
+        <h5>History of Moves:</h5>
         {movesHistory.map((move, index) => (
           <h6 key={index}>
-            {index + 1}. ({move.from.row + 1}, {move.from.col + 1}) to (
-            {move.to.row + 1}, {move.to.col + 1})
+            {index + 1}. ({colToLetter[move.from.col]}, {move.from.row + 1}) to
+            ({colToLetter[move.to.col]}, {move.to.row + 1})
           </h6>
         ))}
       </div>
