@@ -50,15 +50,15 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({
       </div>
       <div className="heuristic">
         <h5>AI's Prioritisation Metric</h5>
-        <h6>Comparison of Kings: Difference x 20</h6>
-        <h6>Comparison of regular pieces: Difference x 15</h6>
+        <h6>Piece Differential (Kings, Pawns)</h6>
+        <h6>Piece Safety and Mobility</h6>
         <h6>Opponent's Possible Captures: - No. of Captures available</h6>
-        <h6>Central box: +/- 3 for every Black/Red Piece</h6>
-        <h6>Back Row Guard (For first 10 turns): +/- 10 Black/Red</h6>
-        <h6>Basic Piece Protection: +6 per piece protected</h6>
-        <h6>Pyramid Formation (For first 15 turns): + 5-15</h6>
-        <h6>Vulnerable Pieces: -/+ 6 Black/Red</h6>
-        <h6></h6>
+        <h6>Distances to Promotion and almost promoted pieces</h6>
+        <h6>Central Pieces</h6>
+        <h6>Attacking and Defending Pieces</h6>
+        <h6>Loner Pieces</h6>
+        <h6>Defensive Structures (Bridge, Dog, Triangle)</h6>
+        <h6>Priorities change in early, mid to endgame</h6>
       </div>
     </div>
   );

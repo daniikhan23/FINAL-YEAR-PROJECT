@@ -457,14 +457,12 @@ const Game = () => {
       if (checkersGame.winner === checkersGame.players[0]) {
         updates = {
           "record.wins": increment(1),
-          "rating.normal": increment(checkersGame.players[0].score * 10),
+          "rating.normal": increment(checkersGame.players[0].score * 5),
         };
       } else if (checkersGame.winner === checkersGame.players[1]) {
         updates = {
           "record.losses": increment(1),
-          "rating.normal": increment(
-            Math.min(0, -checkersGame.players[0].score * 10)
-          ),
+          "rating.normal": increment(-checkersGame.players[1].score * 5),
         };
       } else {
         updates = {
@@ -475,15 +473,12 @@ const Game = () => {
       if (checkersGame.winner === checkersGame.players[0]) {
         updates = {
           "record.wins": increment(1),
-          "rating.enforcedJumps": increment(checkersGame.players[0].score * 10),
+          "rating.enforcedJumps": increment(checkersGame.players[0].score * 5),
         };
       } else if (checkersGame.winner === checkersGame.players[1]) {
         updates = {
           "record.losses": increment(1),
-          "rating.enforcedJumps": Math.min(
-            0,
-            -checkersGame.players[0].score * 10
-          ),
+          "rating.enforcedJumps": increment(-checkersGame.players[1].score * 5),
         };
       } else {
         updates = {

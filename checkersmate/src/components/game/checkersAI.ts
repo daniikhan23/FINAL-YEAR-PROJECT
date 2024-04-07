@@ -1028,7 +1028,6 @@ export class CheckersAI extends Player {
       return [score, move, numOfPositions];
     } else {
       if (this.game.players[1].numOfPieces !== 0) {
-        console.log("inside test final move");
         for (let row = 0; row < 8; row++) {
           for (let col = 0; col < 8; col++) {
             const piece = this.game.getPiece(row, col);
