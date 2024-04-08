@@ -80,36 +80,39 @@ const Signup = () => {
       toast.error("Passwords do not match!");
       return;
     }
+    if (password.length > 8) {
+      // Check if username already exists in FIrestore
+      const usernameRef = doc(db, "usernames", username);
+      const docSnap = await getDoc(usernameRef);
+      if (docSnap.exists()) {
+        toast.error("Username already taken");
+        return;
+      }
 
-    // Check if username already exists in FIrestore
-    const usernameRef = doc(db, "usernames", username);
-    const docSnap = await getDoc(usernameRef);
-    if (docSnap.exists()) {
-      toast.error("Username already taken");
-      return;
-    }
+      // Attempt to create user with Firebase Auth and store additional information in Firestore
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          await setDoc(doc(db, "users", user.uid), {
+            fullName,
+            username,
+            email: user.email,
+            country,
+            record: { wins: 0, losses: 0, draws: 0 },
+            rating: { normal: 0, enforcedJumps: 0 },
+          });
 
-    // Attempt to create user with Firebase Auth and store additional information in Firestore
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        await setDoc(doc(db, "users", user.uid), {
-          fullName,
-          username,
-          email: user.email,
-          country,
-          record: { wins: 0, losses: 0, draws: 0 },
-          rating: { normal: 0, enforcedJumps: 0 },
+          await setDoc(doc(db, "usernames", username), { userId: user.uid });
+          toast.success(`User created successfully with email: ${user.email}`);
+          navigate("/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          toast.error(`Error signing up: ${error.message}`);
         });
-
-        await setDoc(doc(db, "usernames", username), { userId: user.uid });
-        toast.success(`User created successfully with email: ${user.email}`);
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        toast.error(`Error signing up: ${error.message}`);
-      });
+    } else {
+      toast.error("Password too short!");
+    }
   };
 
   return (
@@ -125,7 +128,7 @@ const Signup = () => {
           }}
         >
           <div className="main-header">
-            <h3>Create your CheckersMate account.</h3>
+            <h3>Create your CheckersMate Account</h3>
           </div>
           <div className="main-central-img">
             <img src={RedKing} alt="" className="red" />

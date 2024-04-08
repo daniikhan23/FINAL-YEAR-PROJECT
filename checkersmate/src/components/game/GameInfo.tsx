@@ -48,8 +48,9 @@ const GameInfo: React.FC<GameInfoProps> = ({
         <h5>History of Moves:</h5>
         {movesHistory.map((move, index) => (
           <h6 key={index}>
-            {index + 1}. ({colToLetter[move.from.col]}, {move.from.row + 1}) to
-            ({colToLetter[move.to.col]}, {move.to.row + 1})
+            {index + 1}. {colToLetter[move.from.col]}
+            {move.from.row + 1} to {colToLetter[move.to.col]}
+            {move.to.row + 1}
           </h6>
         ))}
       </div>

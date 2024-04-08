@@ -33,9 +33,9 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({
   const formatLastMove = () => {
     const lastMove = playerTwoMoves[playerTwoMoves.length - 1];
     if (!lastMove) return "N/A";
-    return `(${colToLetter[lastMove.startCol]}${lastMove.startRow + 1}) to (${
+    return `${colToLetter[lastMove.startCol]}${lastMove.startRow + 1} to ${
       colToLetter[lastMove.endCol]
-    }${lastMove.endRow + 1})`;
+    }${lastMove.endRow + 1}`;
   };
 
   return (
@@ -45,7 +45,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({
       </div>
       <div className="info">
         <h6>Minimax Depth: {minimaxDepth}</h6>
-        <h6>Number of positions analysed: {numOfPositions}</h6>
+        <h6>Number of positions analysed: {numOfPositions.toLocaleString()}</h6>
         <h6>Time Taken: {aiMoveTime} ms</h6>
         <h6>Chosen Move: {formatLastMove()}</h6>
         <h6>Evaluated Score of Move: {evaluatedScore.toFixed(2)}</h6>

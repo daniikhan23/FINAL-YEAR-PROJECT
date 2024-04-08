@@ -974,7 +974,6 @@ export class CheckersAI extends Player {
       this.game.changeTurn();
       return null;
     } else {
-      // return this.playMinimaxMove();
       this.identifyOpening();
       if (this.currentOpening) {
         const move = this.getOpeningMove();
