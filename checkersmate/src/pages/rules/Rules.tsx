@@ -56,10 +56,10 @@ export default function Rules() {
                       masterstroke. Plot wisely!
                     </li>
                     <li>
-                      Currently only 2 modes in the game:
+                      Currently these modes in the game:
                       <ul>
-                        <li>Local multiplayer</li>
-                        <li>Play vs the AI</li>
+                        <li>Local multiplayer or Play vs the AI</li>
+                        <li>Normal or Forced Captures</li>
                       </ul>
                     </li>
                   </ul>

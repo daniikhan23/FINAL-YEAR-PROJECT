@@ -316,3 +316,6 @@ game letalone an AI for it. I think future considerations for this will be looki
 now, this will be fine. I'll have to clarify and discuss at length the AI and the heuristic and the challenges of making a strong AI. FOcus is now on the final 
 report and once that is complete, if enough time remains, I'll take a look at what else i can do for the website in general or the AI. Let's keep going in this final 
 step!
+
+Code is now complete, all the necessary changes have been made. Not sure of what else can be done but this is likely (hopefully???) going to be the final commit before 
+submission. I will be back after my exams, see ya sooon CheckersMate

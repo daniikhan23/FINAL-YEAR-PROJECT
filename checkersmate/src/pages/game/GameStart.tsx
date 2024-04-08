@@ -110,6 +110,7 @@ const GameStart = () => {
               value={playerTwoUser}
               onChange={handlePlayerTwoName}
               placeholder="Enter name"
+              maxLength={10}
               required
             />
             <button onClick={() => startGame(false)}>Local Play</button>
