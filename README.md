@@ -41,5 +41,25 @@ npm run dev
 o
 ```
 
+## File Structure
+
+Tech Stack: ViteJS, React, TypeScript, Firebase, Jest for testing, Node Package Manager
+
+Within checkersmate is everything related to the project.
+
+App.tsx is the entry point for the browser
+
+Inside checkersmate you will find all the relevant config files
+
+Within src/assets holds the images and audio used
+
+Within src/components are the usable components made such as navbar, footer and game related components (including the game and AI code)
+
+src/context has the authentication and background styling context
+
+src/pages has the React TS files for all the webpages
+
+src also has the files related to testing and css styling
+
 And there we go! This will open up CheckersMate in your preferred browser and you can proceed as you please.
 Enjoy :smile:
