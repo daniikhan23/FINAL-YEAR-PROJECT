@@ -1,11 +1,45 @@
 # Final Year Project
 
-Hi and welcome to CheckersMate!
+Hi and Welcome to CheckersMate!
 
-If you're interested in checking the website out, its running live, hosted on Firebae: https://checkersmate.web.app/
-Otherwise you could clone the repository, go into its directory, run npm install. Once that is complete, run 'npm run dev', press o and enjoy
-the website in your browser of choice!
+CheckersMate is a platform built in React TypeScript hosted via Firebase for Checkers enthusiasts to play locally with one another or test their skills against the AI. This is a third year
+university project for Royal Holloway University of London and will be continuing in it's development.
 
-Here's a link to the documentation: https://daniikhan23.github.io/FINAL-YEAR-PROJECT/docs/modules.html
+The website can be accessed at: https://checkersmate.web.app/ or if you would like to run the app locally you may install it according to the
+instructions below.
 
-You may edit it as you like, but please do not remove the default topics or the project members list. These need to stay as currently defined in order for your supervisor to be able to find your project.
+## Installation
+
+Simply clone the repository:
+
+```bash
+git clone [repo https]
+```
+
+Authenticate with your account information and go into the Checkers Directory:
+
+```bash
+cd PROJECT/checkersmate
+```
+
+Open up the project in your preferred IDE (VSCode for example):
+
+```bash
+code .
+```
+
+Install the relevant node modules for this project:
+
+```bash
+npm install
+```
+
+Simply start the vite js server to locally host the program:
+
+```bash
+npm run dev
+o
+```
+
+And there we go! This will open up CheckersMate in your preferred browser and you can proceed as you please.
+Enjoy :smile:
